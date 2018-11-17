@@ -6,6 +6,7 @@ namespace EditorModel
     /// <summary>
     /// Класс хранения данных заливки фигуры
     /// </summary>
+    [Serializable]
     public class Fill
     {
         /// <summary>

@@ -7,6 +7,7 @@ namespace EditorModel
     /// <summary>
     /// Содержит текст
     /// </summary>
+    [Serializable]
     internal class TextGeometry : Geometry
     {
         /// <summary>
@@ -27,7 +28,8 @@ namespace EditorModel
         /// <summary>
         /// Локальное поле для хранения пути (нет возможности сериализовать!)
         /// </summary>
-        private GraphicsPath _path = new GraphicsPath();
+        //private GraphicsPath _path = new GraphicsPath();
+        private readonly SerializableGraphicsPath _serializablePath = new SerializableGraphicsPath();
 
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
@@ -37,15 +39,22 @@ namespace EditorModel
             get
             {
                 // сброс пути. TODO: зачем?
-                _path.Reset();
+                //_path.Reset();
+                _serializablePath.Path.Reset();
                 // добавляем в путь текстовую строку
-                _path.AddString(Text ?? "", 
-                    new FontFamily(FontName), 0, FontSize, Point.Empty,
-                                   StringFormat.GenericTypographic);
+                //_path.AddString(Text ?? "", 
+                //    new FontFamily(FontName), 0, FontSize, Bounds,
+                //                   StringFormat.GenericTypographic);
+                _serializablePath.Path.AddString(Text ?? "",
+                    new FontFamily(FontName), 0, FontSize, Bounds,
+                                    StringFormat.GenericTypographic);
                 // возвращаем настроенный путь
-                return _path;
+                //return _path;
+                return _serializablePath.Path;
             }
         }
+
+        public RectangleF Bounds { get; internal set; }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel

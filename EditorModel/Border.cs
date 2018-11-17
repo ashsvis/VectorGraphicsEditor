@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace EditorModel
 {
     /// <summary>
     /// Класс хранения данных контура фигуры
     /// </summary>
+    [Serializable]
     public class Border
     {
         /// <summary>

@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace EditorModel
 {
     /// <summary>
     /// Класс рисовальщика фигуры
     /// </summary>
+    [Serializable]
     public class Renderer
     {
         /// <summary>
