@@ -37,6 +37,7 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var textfigure = new Figure();
+            textfigure.Transform.Matrix.Translate(10, 10);
             // настраиваем геометрию на текст
             builder.BuildTextGeometry(textfigure, 
                 "The test for text string rendering complete.");
@@ -57,6 +58,8 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var square = new Figure();
+            square.Transform.Matrix.Translate(50, 50);
+            square.Transform.Matrix.Scale(80, 80);
             // настраиваем геометрию на квадрат
             builder.BuildSquareGeometry(square);
             // проверим, что все внутренние классы были подключены
@@ -76,6 +79,8 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var circle = new Figure();
+            circle.Transform.Matrix.Translate(50, 50);
+            circle.Transform.Matrix.Scale(80, 80);
             // настраиваем геометрию на круг
             builder.BuildCircleGeometry(circle);
             // проверим, что все внутренние классы были подключены

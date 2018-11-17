@@ -13,7 +13,7 @@ namespace EditorModel
 
         public SerializableGraphicsMatrix(SerializationInfo info, StreamingContext context)
         {
-            if (info.MemberCount ==6)
+            if (info.MemberCount == 1)
             {
                 var el = (float[])info.GetValue("e", typeof(float[]));
                 Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);

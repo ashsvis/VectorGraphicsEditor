@@ -41,7 +41,7 @@ namespace EditorModel
                 path.Path.Reset();
                 // добавляем в путь текстовую строку
                 path.Path.AddString(Text ?? "",
-                    new FontFamily(FontName), 0, FontSize, Point.Empty,
+                    new FontFamily(FontName), 0, FontSize, PointF.Empty,
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь
                 return path;
