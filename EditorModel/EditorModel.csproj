@@ -44,11 +44,14 @@
   <ItemGroup>
     <Compile Include="Border.cs" />
     <Compile Include="Figure.cs" />
+    <Compile Include="FigureBuilder.cs" />
     <Compile Include="Fill.cs" />
     <Compile Include="Geometry.cs" />
+    <Compile Include="PrimitiveGeometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Style.cs" />
+    <Compile Include="TextGeometry.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

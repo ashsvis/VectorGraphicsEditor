@@ -18,12 +18,12 @@ namespace EditorModel
             using (var path = figure.GetTransformedPath())
             {
                 // если разрешено использование заливки
-                if (figure.Style.FillStyle.Draw)
+                if (figure.Style.FillStyle.IsVisible)
                     // то получаем кисть из стиля рисования фигуры
                     using (var brush = figure.Style.FillStyle.GetBrush(figure))
                         graphics.FillPath(brush, path);
                 // если разрешено рисование контура
-                if (figure.Style.BorderStyle.Draw)
+                if (figure.Style.BorderStyle.IsVisible)
                     // то получаем карандаш из стиля рисования фигуры
                     using (var pen = figure.Style.BorderStyle.GetPen(figure))
                         graphics.DrawPath(pen, path);

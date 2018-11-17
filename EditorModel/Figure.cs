@@ -23,12 +23,16 @@ namespace EditorModel
         public Style Style { get; set; }
 
         /// <summary>
-        /// Предоставление геометрии для рисования
+        /// Предоставление трансформированной геометрии для рисования
         /// </summary>
         /// <returns></returns>
         public GraphicsPath GetTransformedPath()
         {
-            return Geometry.Path;
+            // создаём кописю геометрии фигуры
+            var path = (GraphicsPath)Geometry.Path.Clone();
+            // трансформируем её при помощи Трансформера
+            path.Transform(Transform);
+            return path;
         }
 
         /// <summary>

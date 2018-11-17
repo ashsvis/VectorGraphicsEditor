@@ -9,9 +9,25 @@ namespace EditorModel
     public class Fill
     {
         /// <summary>
+        /// Конструктор класса хранения данных заливки фигуры
+        /// </summary>
+        public Fill()
+        {
+            // по умолчанию заливка разрешена
+            IsVisible = true;
+            // по умолчанию белый цвет заливки
+            Color = Color.White;
+        }
+
+        /// <summary>
+        /// Цвет для заполнения фона (цвет заливки)
+        /// </summary>
+        public Color Color { get; set; }
+
+        /// <summary>
         /// Признак возможности заливки фигуры
         /// </summary>
-        public bool Draw { get; internal set; }
+        public bool IsVisible { get; internal set; }
 
         /// <summary>
         /// Предоставление кисти для заливки фигуры
@@ -20,7 +36,9 @@ namespace EditorModel
         /// <returns></returns>
         public Brush GetBrush(Figure figure)
         {
-            return figure.Style.FillStyle.GetBrush(figure);
+            // возвращаем созданную и настроенную кисть для фигуры
+            //TODO: А зачем нам тогда параметр Figure figure?
+            return new SolidBrush(Color);
         }
     }
 
