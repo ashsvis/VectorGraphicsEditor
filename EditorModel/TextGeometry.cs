@@ -26,10 +26,9 @@ namespace EditorModel
         public float FontSize { get; set; }
 
         /// <summary>
-        /// Локальное поле для хранения пути (нет возможности сериализовать!)
+        /// Локальное поле для хранения пути
         /// </summary>
-        //private GraphicsPath _path = new GraphicsPath();
-        private readonly SerializableGraphicsPath _serializablePath = new SerializableGraphicsPath();
+        private readonly SerializableGraphicsPath path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
@@ -39,22 +38,15 @@ namespace EditorModel
             get
             {
                 // сброс пути. TODO: зачем?
-                //_path.Reset();
-                _serializablePath.Path.Reset();
+                path.Path.Reset();
                 // добавляем в путь текстовую строку
-                //_path.AddString(Text ?? "", 
-                //    new FontFamily(FontName), 0, FontSize, Bounds,
-                //                   StringFormat.GenericTypographic);
-                _serializablePath.Path.AddString(Text ?? "",
-                    new FontFamily(FontName), 0, FontSize, Bounds,
+                path.Path.AddString(Text ?? "",
+                    new FontFamily(FontName), 0, FontSize, Point.Empty,
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь
-                //return _path;
-                return _serializablePath.Path;
+                return path;
             }
         }
-
-        public RectangleF Bounds { get; internal set; }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel

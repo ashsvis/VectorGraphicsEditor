@@ -10,25 +10,24 @@ namespace EditorModel
     internal class PrimitiveGeometry : Geometry
     {
         /// <summary>
-        /// Локальное поле для хранения пути (нет возможности сериализовать!)
+        /// Локальное поле для хранения пути
         /// </summary>
-        //private readonly GraphicsPath _path;
-        private readonly SerializableGraphicsPath _serializablePath = new SerializableGraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Свойство возвращает путь, указанный в конструкторе
         /// </summary>
-        public override GraphicsPath Path { get { return _serializablePath.Path; } }
+        public override GraphicsPath Path { get { return _path; } }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel
         /// (только для внутреннего использования)
         /// </summary>
         /// <param name="path">Закрепляемый путь для примитивной геометрии</param>
-        internal PrimitiveGeometry(SerializableGraphicsPath path /*GraphicsPath path*/)
+        internal PrimitiveGeometry(GraphicsPath path)
         {
             // запоминаем переданный в конструкторе путь в локальном поле
-            _serializablePath = path;
+            _path = path;
         }
     }
 }

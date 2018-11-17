@@ -16,9 +16,7 @@ namespace EditorModel
     {
         public GraphicsPath Path = new GraphicsPath();
 
-        public SerializableGraphicsPath()
-        {
-        }
+        public SerializableGraphicsPath() { }
 
         private SerializableGraphicsPath(SerializationInfo info, StreamingContext context)
         {
@@ -37,6 +35,16 @@ namespace EditorModel
             if (Path.PointCount <= 0) return;
             info.AddValue("p", Path.PathPoints);
             info.AddValue("t", Path.PathTypes);
+        }
+
+        public static implicit operator GraphicsPath(SerializableGraphicsPath path)
+        {
+            return path.Path;
+        }
+
+        public static implicit operator SerializableGraphicsPath(GraphicsPath path)
+        {
+            return new SerializableGraphicsPath() { Path = path };
         }
     }
 

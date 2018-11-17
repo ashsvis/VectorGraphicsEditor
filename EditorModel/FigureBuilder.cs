@@ -11,47 +11,30 @@ namespace EditorModel
         /// Построение пути для квадрата
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        /// <param name="origin">левый верхний угол</param>
-        /// <param name="side">размер стороны квадрата</param>
-        public void BuildSquareGeometry(Figure figure, PointF origin, float side)
+        public void BuildSquareGeometry(Figure figure)
         {
-            //var path = new GraphicsPath();
-            var serializablePath = new SerializableGraphicsPath();
-            // path.AddRectangle(new RectangleF(origin.X, origin.Y, side, side));
-            serializablePath.Path.AddRectangle(new RectangleF(origin.X, origin.Y, side, side));
-            figure.Geometry = new PrimitiveGeometry(serializablePath);
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path);
         }
 
         /// <summary>
         /// Построение пути для круга
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        /// <param name="center">Центр окружности</param>
-        /// <param name="radius">Радиус</param>
-        public void BuildCircleGeometry(Figure figure, PointF center, float radius)
+        public void BuildCircleGeometry(Figure figure)
         {
-            //var path = new GraphicsPath();
-            var serializablePath = new SerializableGraphicsPath();
-            serializablePath.Path.AddEllipse(new RectangleF(center.X - radius, center.Y - radius, radius * 2, radius * 2));
-            figure.Geometry = new PrimitiveGeometry(serializablePath);
+            var path = new SerializableGraphicsPath();
+            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path);
         }
 
         //и т.д. для всех примитивных фигур
         //todo
 
-        public void BuildTextGeometry(Figure figure, string text, RectangleF rectangle)
+        public void BuildTextGeometry(Figure figure, string text)
         {
-            figure.Geometry = new TextGeometry { Text = text, Bounds = rectangle };
-        }
-
-        public void BuildRectangleGeometry(Figure figure, RectangleF rectangle)
-        {
-            figure.Geometry = new RectangleGeometry { Bounds = rectangle };
-        }
-
-        public void BuildEllipceGeometry(Figure figure, RectangleF rectangle)
-        {
-            figure.Geometry = new EllipceGeometry { Bounds = rectangle };
+            figure.Geometry = new TextGeometry { Text = text };
         }
 
     }

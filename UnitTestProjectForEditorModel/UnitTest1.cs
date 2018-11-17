@@ -9,36 +9,17 @@ namespace UnitTestProjectForEditorModel
     [TestClass]
     public class UnitTest1
     {
-        /* пока отставить
-        [TestMethod]
-        public void SerializationFigureTestMethod()
+        private static Figure SerializeDeserialize(Figure rect)
         {
-            var builder = new FigureBuilder();
-            // создаём фигуру, чтобы помучить
-            var rect = new Figure();
-            // настраиваем геометрию на прямоугольник
-            builder.BuildRectangleGeometry(rect, new RectangleF(10f, 10f, 180f, 80f));
-            // проверим, что все внутренние классы были подключены
-            CheckInternalClassesConnection(rect);
-
             byte[] buff;
             using (var ms = new MemoryStream())
             {
                 new BinaryFormatter().Serialize(ms, rect);
                 buff = ms.GetBuffer();
             }
-            Figure restored;
             using (var fs = new MemoryStream(buff, false))
-                restored = (Figure)new BinaryFormatter().Deserialize(fs);
-            // пробуем отрисовывать
-            using (var bmp = new Bitmap(200, 100))
-            {
-                using (var canvas = Graphics.FromImage(bmp))
-                    rect.Renderer.Render(canvas, rect);
-                bmp.Save("RestoredRectangleFigure.bmp");
-            }
+                return  (Figure)new BinaryFormatter().Deserialize(fs);
         }
-        */
 
         private static void CheckInternalClassesConnection(Figure figure)
         {
@@ -58,10 +39,10 @@ namespace UnitTestProjectForEditorModel
             var textfigure = new Figure();
             // настраиваем геометрию на текст
             builder.BuildTextGeometry(textfigure, 
-                "The test for text string rendering complete.",
-                new RectangleF(10f, 10f, 190f, 80f));
+                "The test for text string rendering complete.");
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(textfigure);
+            textfigure = SerializeDeserialize(textfigure);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -77,9 +58,10 @@ namespace UnitTestProjectForEditorModel
             var builder = new FigureBuilder();
             var square = new Figure();
             // настраиваем геометрию на квадрат
-            builder.BuildSquareGeometry(square, new PointF(50f, 10f), 80f);
+            builder.BuildSquareGeometry(square);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(square);
+            square = SerializeDeserialize(square);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -95,9 +77,10 @@ namespace UnitTestProjectForEditorModel
             var builder = new FigureBuilder();
             var circle = new Figure();
             // настраиваем геометрию на круг
-            builder.BuildCircleGeometry(circle, new PointF(100f, 50f), 40f);
+            builder.BuildCircleGeometry(circle);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(circle);
+            circle = SerializeDeserialize(circle);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -107,42 +90,5 @@ namespace UnitTestProjectForEditorModel
             }
         }
 
-        [TestMethod]
-        public void CreateRectangleFigureTestMethod()
-        {
-            var builder = new FigureBuilder();
-            // создаём фигуру, чтобы помучить
-            var rect = new Figure();
-            // настраиваем геометрию на прямоугольник
-            builder.BuildRectangleGeometry(rect, new RectangleF(10f, 10f, 180f, 80f));
-            // проверим, что все внутренние классы были подключены
-            CheckInternalClassesConnection(rect);
-            // пробуем отрисовывать
-            using (var bmp = new Bitmap(200, 100))
-            {
-                using (var canvas = Graphics.FromImage(bmp))
-                    rect.Renderer.Render(canvas, rect);
-                bmp.Save("CreateRectangleFigure.bmp");
-            }
-        }
-
-        [TestMethod]
-        public void CreateEllipceFigureTestMethod()
-        {
-            var builder = new FigureBuilder();
-            // создаём фигуру, чтобы помучить
-            var rect = new Figure();
-            // настраиваем геометрию на овал
-            builder.BuildEllipceGeometry(rect, new RectangleF(10f, 10f, 180f, 80f));
-            // проверим, что все внутренние классы были подключены
-            CheckInternalClassesConnection(rect);
-            // пробуем отрисовывать
-            using (var bmp = new Bitmap(200, 100))
-            {
-                using (var canvas = Graphics.FromImage(bmp))
-                    rect.Renderer.Render(canvas, rect);
-                bmp.Save("CreateEllipceFigure.bmp");
-            }
-        }
     }
 }
