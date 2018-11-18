@@ -17,7 +17,20 @@ namespace EditorModel
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly SerializableGraphicsPath path = new SerializableGraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+
+        /// <summary>
+        /// Локальное поле для хранения ограничений для операций
+        /// </summary>
+        private readonly AllowedOperations _allowedOperations;
+
+        /// <summary>
+        /// Конструктор с настройками по умолчанию
+        /// </summary>
+        internal PolygoneGeometry()
+        {
+            _allowedOperations = AllowedOperations.All;
+        }
 
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
@@ -27,7 +40,7 @@ namespace EditorModel
             get
             {
                 // сброс пути. Я взял это по аналогии TextGeometry.
-                path.Path.Reset();
+                _path.Path.Reset();
                 var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
                 var points = new List<PointF>
                 {
@@ -37,10 +50,15 @@ namespace EditorModel
                     new PointF(rect.Left, rect.Top + rect.Height)
                 };
                 // добавляем в путь построенный по точкам единичного прямоугольника полизон
-                path.Path.AddPolygon(points.ToArray());
+                _path.Path.AddPolygon(points.ToArray());
                 // возвращаем настроенный путь
-                return path;
+                return _path;
             }
         }
+
+        /// <summary>
+        /// Свойство возвращает определённые в конструкторе ограничения для операций
+        /// </summary>
+        public override AllowedOperations AllowedOperations { get { return _allowedOperations; } }
     }
 }

@@ -16,7 +16,18 @@ namespace EditorModel
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
+        }
+
+        /// <summary>
+        /// Построение пути для прямоугольника
+        /// </summary>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        public void BuildRectangleGeometry(Figure figure)
+        {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
         /// <summary>
@@ -27,7 +38,18 @@ namespace EditorModel
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
+        }
+
+        /// <summary>
+        /// Построение пути для эллипса
+        /// </summary>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        public void BuildEllipseGeometry(Figure figure)
+        {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
         //и т.д. для всех примитивных фигур

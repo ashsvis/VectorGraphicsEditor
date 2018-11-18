@@ -58,8 +58,8 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var polygon = new Figure();
-            polygon.Transform.Matrix.Translate(50, 50);
-            polygon.Transform.Matrix.Scale(80, 80);
+            polygon.Transform.Matrix.Translate(100, 50);
+            polygon.Transform.Matrix.Scale(160, 80);
             // настраиваем геометрию на квадрат
             builder.BuildPolygoneGeometry(polygon);
             // проверим, что все внутренние классы были подключены
@@ -79,8 +79,9 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var square = new Figure();
-            square.Transform.Matrix.Translate(50, 50);
-            square.Transform.Matrix.Scale(80, 80);
+            square.Transform.Matrix.Translate(100, 50);
+            //square.Transform.Matrix.Scale(80, 80);
+            square.Transform.Matrix.Scale(160, 80);  // здесь должно срабатывать ограничение AllowedOperations.Size
             // настраиваем геометрию на квадрат
             builder.BuildSquareGeometry(square);
             // проверим, что все внутренние классы были подключены
@@ -96,12 +97,34 @@ namespace UnitTestProjectForEditorModel
         }
 
         [TestMethod]
+        public void CreateRectangleFigureTestMethod()
+        {
+            var builder = new FigureBuilder();
+            var rect = new Figure();
+            rect.Transform.Matrix.Translate(100, 50);
+            rect.Transform.Matrix.Scale(160, 80);
+            // настраиваем геометрию на квадрат
+            builder.BuildRectangleGeometry(rect);
+            // проверим, что все внутренние классы были подключены
+            CheckInternalClassesConnection(rect);
+            rect = SerializeDeserialize(rect);
+            // пробуем отрисовывать
+            using (var bmp = new Bitmap(200, 100))
+            {
+                using (var canvas = Graphics.FromImage(bmp))
+                    rect.Renderer.Render(canvas, rect);
+                bmp.Save("CreateRectangleFigure.bmp");
+            }
+        }
+
+        [TestMethod]
         public void CreateCircleFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var circle = new Figure();
-            circle.Transform.Matrix.Translate(50, 50);
-            circle.Transform.Matrix.Scale(80, 80);
+            circle.Transform.Matrix.Translate(100, 50);
+            //circle.Transform.Matrix.Scale(80, 80);
+            circle.Transform.Matrix.Scale(160, 80);  // здесь должно срабатывать ограничение AllowedOperations.Size
             // настраиваем геометрию на круг
             builder.BuildCircleGeometry(circle);
             // проверим, что все внутренние классы были подключены
@@ -113,6 +136,27 @@ namespace UnitTestProjectForEditorModel
                 using (var canvas = Graphics.FromImage(bmp))
                     circle.Renderer.Render(canvas, circle);
                 bmp.Save("CreateCircleFigure.bmp");
+            }
+        }
+
+        [TestMethod]
+        public void CreateEllipseFigureTestMethod()
+        {
+            var builder = new FigureBuilder();
+            var oval = new Figure();
+            oval.Transform.Matrix.Translate(100, 50);
+            oval.Transform.Matrix.Scale(160, 80);
+            // настраиваем геометрию на круг
+            builder.BuildEllipseGeometry(oval);
+            // проверим, что все внутренние классы были подключены
+            CheckInternalClassesConnection(oval);
+            oval = SerializeDeserialize(oval);
+            // пробуем отрисовывать
+            using (var bmp = new Bitmap(200, 100))
+            {
+                using (var canvas = Graphics.FromImage(bmp))
+                    oval.Renderer.Render(canvas, oval);
+                bmp.Save("CreateEllipseFigure.bmp");
             }
         }
 

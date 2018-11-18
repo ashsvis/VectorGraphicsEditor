@@ -28,7 +28,12 @@ namespace EditorModel
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly SerializableGraphicsPath path = new SerializableGraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+
+        /// <summary>
+        /// Локальное поле для хранения ограничений для операций
+        /// </summary>
+        private readonly AllowedOperations _allowedOperations;
 
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
@@ -38,15 +43,20 @@ namespace EditorModel
             get
             {
                 // сброс пути. TODO: зачем?
-                path.Path.Reset();
+                _path.Path.Reset();
                 // добавляем в путь текстовую строку
-                path.Path.AddString(Text ?? "",
+                _path.Path.AddString(Text ?? "",
                     new FontFamily(FontName), 0, FontSize, PointF.Empty,
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь
-                return path;
+                return _path;
             }
         }
+
+        /// <summary>
+        /// Свойство возвращает определённые в конструкторе ограничения для операций
+        /// </summary>
+        public override AllowedOperations AllowedOperations { get { return _allowedOperations; } }
 
         /// <summary>
         /// Конструктор, недоступный вне проекта EditorModel
@@ -54,6 +64,7 @@ namespace EditorModel
         /// </summary>
         internal TextGeometry()
         {
+            _allowedOperations = AllowedOperations.All;
             Text = String.Empty;
             FontName = "Arial";
             FontSize = 14f;
