@@ -51,6 +51,7 @@
     <Compile Include="PrimitiveGeometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
+    <Compile Include="Selection.cs" />
     <Compile Include="SerializableGraphicsMatrix.cs" />
     <Compile Include="SerializableGraphicsPath.cs" />
     <Compile Include="Style.cs" />
