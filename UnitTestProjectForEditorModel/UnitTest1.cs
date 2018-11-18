@@ -54,6 +54,27 @@ namespace UnitTestProjectForEditorModel
         }
 
         [TestMethod]
+        public void CreatePolygonFigureTestMethod()
+        {
+            var builder = new FigureBuilder();
+            var polygon = new Figure();
+            polygon.Transform.Matrix.Translate(50, 50);
+            polygon.Transform.Matrix.Scale(80, 80);
+            // настраиваем геометрию на квадрат
+            builder.BuildPolygoneGeometry(polygon);
+            // проверим, что все внутренние классы были подключены
+            CheckInternalClassesConnection(polygon);
+            polygon = SerializeDeserialize(polygon);
+            // пробуем отрисовывать
+            using (var bmp = new Bitmap(200, 100))
+            {
+                using (var canvas = Graphics.FromImage(bmp))
+                    polygon.Renderer.Render(canvas, polygon);
+                bmp.Save("CreatePolygonFigure.bmp");
+            }
+        }
+
+        [TestMethod]
         public void CreateSquareFigureTestMethod()
         {
             var builder = new FigureBuilder();

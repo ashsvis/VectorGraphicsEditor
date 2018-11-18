@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 namespace EditorModel
 {
     /// <summary>
-    /// Содержит текст
+    /// Содержит геометрию текстовой строки
     /// </summary>
     [Serializable]
     internal class TextGeometry : Geometry
