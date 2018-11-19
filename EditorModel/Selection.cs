@@ -73,7 +73,7 @@ namespace EditorModel
         public void PushTransformToSelectedFigures()
         {
             foreach (var fig in _selected)
-                fig.Transform.Multiply(Transform);
+                fig.Transform.Multiply(Transform, MatrixOrder.Append);
 
             GrabGeometry();
         }
