@@ -3,12 +3,12 @@ using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
 {
-    internal class Marker : Figure
+    public class Marker : Figure
     {
         /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
-        internal Marker()
+        public Marker()
         {
             var path = new GraphicsPath();
             path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));

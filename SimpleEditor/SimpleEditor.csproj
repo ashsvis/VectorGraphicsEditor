@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionController.cs" />
     <EmbeddedResource Include="FormSimpleEditor.resx">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,6 +172,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ungrouping.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EditorModel\EditorModel.csproj">
+      <Project>{134d1e65-a6b1-4b0a-b010-19914a733be2}</Project>
+      <Name>EditorModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

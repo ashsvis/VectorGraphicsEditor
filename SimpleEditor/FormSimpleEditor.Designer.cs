@@ -134,9 +134,9 @@
             this.panelForScroll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelForScroll.Controls.Add(this.pbCanvas);
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelForScroll.Location = new System.Drawing.Point(27, 52);
+            this.panelForScroll.Location = new System.Drawing.Point(26, 52);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(830, 434);
+            this.panelForScroll.Size = new System.Drawing.Size(831, 434);
             this.panelForScroll.TabIndex = 7;
             // 
             // pbCanvas
@@ -144,6 +144,7 @@
             this.pbCanvas.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pbCanvas.Location = new System.Drawing.Point(0, 0);
             this.pbCanvas.Name = "pbCanvas";
+            this.pbCanvas.Padding = new System.Windows.Forms.Padding(4);
             this.pbCanvas.Size = new System.Drawing.Size(826, 428);
             this.pbCanvas.TabIndex = 6;
             this.pbCanvas.TabStop = false;
@@ -436,7 +437,8 @@
             this.tsbCircle});
             this.tsFigures.Location = new System.Drawing.Point(0, 49);
             this.tsFigures.Name = "tsFigures";
-            this.tsFigures.Size = new System.Drawing.Size(24, 440);
+            this.tsFigures.Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.tsFigures.Size = new System.Drawing.Size(23, 440);
             this.tsFigures.TabIndex = 8;
             // 
             // tsbPrint

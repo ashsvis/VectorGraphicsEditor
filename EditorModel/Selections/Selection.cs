@@ -88,7 +88,7 @@ namespace EditorModel.Selections
         /// <summary>
         /// Переводит точку из локальных нормализированных координат (0,0)-(1,1) в мировые координаты
         /// </summary>
-        internal PointF ToWorldCoordinates(PointF p)
+        public PointF ToWorldCoordinates(PointF p)
         {
             var bounds = GetTransformedPath().GetBounds();
             return new PointF(bounds.Left + p.X * bounds.Width, bounds.Top + p.Y * bounds.Height);
