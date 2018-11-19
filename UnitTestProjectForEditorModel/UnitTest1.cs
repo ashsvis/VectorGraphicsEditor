@@ -48,6 +48,69 @@ namespace UnitTestProjectForEditorModel
         }
 
         [TestMethod]
+        public void SelectionTest2()
+        {
+            //создаем первую фигуру
+            var builder = new FigureBuilder();
+            var fig1 = new Figure();
+            fig1.Transform.Translate(150, 150);
+            fig1.Transform.Scale(30, 30);
+            builder.BuildEllipseGeometry(fig1);
+
+            //создаем вторую фигуру
+            var fig2 = new Figure();
+            fig2.Transform.Translate(200, 200);
+            fig2.Transform.Scale(30, 30);
+            builder.BuildRectangleGeometry(fig2);
+
+            //рисуем до выделения
+            Draw("2_1.png", fig1, fig2);
+
+            //создаем selection
+            var selection = new Selection();
+            selection.Style.BorderStyle.Width = 1;
+            selection.Style.BorderStyle.Color = Color.Magenta;
+
+            //выделяем фигуры 
+            selection.Add(fig1);
+            selection.Add(fig2);
+
+            //ресайз по X относительно левого края
+            selection.Scale(2, 1, new PointF(0, 0.5f));
+            selection.PushTransformToSelectedFigures();
+            //рисуем
+            Draw("2_2.png", fig1, fig2, selection);
+
+            //ресайз по Y относительно нижнего края
+            selection.Scale(1, 2, new PointF(0.5f, 1));
+            selection.PushTransformToSelectedFigures();
+            //рисуем
+            Draw("2_3.png", fig1, fig2, selection);
+
+            //вращение относительно центра
+            selection.Rotate(45, new PointF(0.5f, 0.5f));
+            selection.PushTransformToSelectedFigures();
+            //рисуем
+            Draw("2_4.png", fig1, fig2, selection);
+
+            //сдвиг
+            selection.Translate(100, 100);
+            selection.PushTransformToSelectedFigures();
+            //рисуем
+            Draw("2_5.png", fig1, fig2, selection);
+
+            //skew по X относительно нижней границы
+            selection.Skew(0.5f, 0, new PointF(0.5f, 1));
+            selection.PushTransformToSelectedFigures();
+            //рисуем
+            Draw("2_6.png", fig1, fig2, selection);
+
+            //результат
+            selection.Clear();
+            Draw("2_7.png", fig1, fig2, selection);
+        }
+
+        [TestMethod]
         public void SelectionFigureTestMethod()
         {
             //создаем первую фигуру
@@ -64,7 +127,7 @@ namespace UnitTestProjectForEditorModel
             builder.BuildRectangleGeometry(fig2);
 
             //рисуем до выделения
-            Draw("1.png", fig1, fig2);
+            Draw("1_1.png", fig1, fig2);
 
             //создаем selection
             var selection = new Selection();
@@ -76,7 +139,7 @@ namespace UnitTestProjectForEditorModel
             selection.Add(fig2);
 
             //рисуем после выделения
-            Draw("2.png", fig1, fig2, selection);
+            Draw("1_2.png", fig1, fig2, selection);
 
             //вращаем и выделенные фигуры
             Matrix m = selection.Transform;
@@ -84,7 +147,7 @@ namespace UnitTestProjectForEditorModel
             selection.PushTransformToSelectedFigures();
 
             //рисуем после вращения выделенных фигур
-            Draw("3.png", fig1, fig2, selection);
+            Draw("1_3.png", fig1, fig2, selection);
 
             //перемещаем выделенные фигуры
             m = selection.Transform;
@@ -92,11 +155,11 @@ namespace UnitTestProjectForEditorModel
             selection.PushTransformToSelectedFigures();
 
             //рисуем после перемещения выделенных фигур
-            Draw("4.png", fig1, fig2, selection);
+            Draw("1_4.png", fig1, fig2, selection);
 
             //снимаем выделение, отрисовываем результат
             selection.Clear();
-            Draw("5.png", fig1, fig2, selection);
+            Draw("1_5.png", fig1, fig2, selection);
         }
 
         [TestMethod]

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
@@ -76,6 +78,110 @@ namespace EditorModel
                 fig.Transform.Multiply(Transform, MatrixOrder.Append);
 
             GrabGeometry();
+        }
+
+        /*
+         *  Добавлено 19.11.2018 от Storm23
+         */
+
+        /// <summary>
+        /// Переводит точку из локальных нормализированных координат (0,0)-(1,1) в мировые координаты
+        /// </summary>
+        private PointF ToWorldCoordinates(PointF p)
+        {
+            var bounds = GetTransformedPath().GetBounds();
+            return new PointF(bounds.Left + p.X * bounds.Width, bounds.Top + p.Y * bounds.Height);
+        }
+
+        /// <summary>
+        /// Перенос фигур из списка
+        /// </summary>
+        /// <param name="offsetX">Смещение по горизонтали</param>
+        /// <param name="offsetY">Смещение по вертикали</param>
+        public void Translate(float offsetX, float offsetY)
+        {
+            var m = new Matrix();
+            m.Translate(offsetX, offsetY);
+            // делаем на "чистой" матрице
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Масштабирование
+        /// </summary>
+        /// <param name="scaleX">Коэффициент масштабирования по горизонтали</param>
+        /// <param name="scaleY">Коэффициент масштабирования по вертикали</param>
+        /// <param name="anchor">Координаты "якоря" (точки привязки)</param>
+        public void Scale(float scaleX, float scaleY, PointF anchor)
+        {
+            //можем менять размер?
+            var allowSize = Geometry.AllowedOperations.HasFlag(AllowedOperations.Size);
+            var allowScale = Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale);
+
+            if (!allowScale && !allowSize)
+                return; //не можем менять размеры
+
+            if (allowScale && !allowSize)
+                //можем шкалировать, но с сохранением аспекта
+                //сохраняем аспект
+                scaleX = scaleY = Math.Max(scaleX, scaleY);
+
+            //считаем якорь в мировых координатах
+            var worldAnchor = ToWorldCoordinates(anchor);
+
+            //шкалируем относительно якоря
+            var m = new Matrix();
+            m.Translate(worldAnchor.X, worldAnchor.Y);    //переводим центр координат в якорь
+            m.Scale(scaleX, scaleY);                      //масштабируем
+            m.Translate(-worldAnchor.X, -worldAnchor.Y);  //возвращаем центр координат
+
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Искривление
+        /// </summary>
+        /// <param name="skewX">Коэффициент сдвига по горизонтали</param>
+        /// <param name="skewY">Коэффициент сдвига по вертикали</param>
+        /// <param name="anchor">Координаты "якоря" (точки привязки)</param>
+        public void Skew(float skewX, float skewY, PointF anchor)
+        {
+            //считаем якорь в мировых координатах
+            var worldAnchor = ToWorldCoordinates(anchor);
+
+            //сдвигаем относительно якоря
+            var m = new Matrix();
+            m.Translate(worldAnchor.X, worldAnchor.Y);    //переводим центр координат в якорь
+            m.Shear(skewX, skewY);                        //сдвигаем
+            m.Translate(-worldAnchor.X, -worldAnchor.Y);  //возвращаем центр координат
+
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Поворот
+        /// </summary>
+        /// <param name="angle">Угол поворота, в градусах</param>
+        /// <param name="center">Координаты центра вращения</param>
+        public void Rotate(float angle, PointF center)
+        {
+            //можем вращать?
+            var allowRotate = Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate);
+
+            if (!allowRotate)
+                return; //не можем вращать
+
+            //считаем якорь в мировых координатах
+            var worldAnchor = ToWorldCoordinates(center);
+
+            //вращаем относительно якоря
+            var m = new Matrix();
+            m.RotateAt(angle, worldAnchor);      //вращаем
+
+            //
+            Transform = m;
         }
     }
 }
