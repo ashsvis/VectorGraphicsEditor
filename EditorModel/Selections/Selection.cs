@@ -16,6 +16,16 @@ namespace EditorModel.Selections
         private readonly HashSet<Figure> _selected = new HashSet<Figure>();
 
         /// <summary>
+        /// Количество фигур в списке выбранных
+        /// </summary>
+        public int Count { get { return _selected.Count; } }
+
+        public bool Contains(Figure figure)
+        {
+            return _selected.Contains(figure);
+        }
+
+        /// <summary>
         /// Очистка списка выделенных фигур
         /// </summary>
         public void Clear()

@@ -36,7 +36,7 @@ namespace EditorModel.Figures
         {
             Transform = new Matrix();
             Style = new Style();
-            Renderer = new Renderer();
+            Renderer = new Renderer(this);
         }
 
         /// <summary>

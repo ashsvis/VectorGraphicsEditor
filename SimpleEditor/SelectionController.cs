@@ -11,10 +11,18 @@ namespace EditorModel.Selections
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
     /// выполняет преобразования над фигурами
     /// </summary>
-    class SelectionController
+    public class SelectionController
     {
-        private readonly Selection _selection = new Selection();
-        private readonly List<Marker> _markers = new List<Marker>();
+        private readonly Selection _selection;
+        private readonly List<Marker> _markers;
+        private readonly Layer _layer;
+
+        public SelectionController(Layer layer)
+        {
+            _selection = new Selection();
+            _markers = new List<Marker>();
+            _layer = layer;
+        }
 
         /// <summary>
         /// Текущий слой
@@ -44,14 +52,27 @@ namespace EditorModel.Selections
             _wasMouseMoving = false;
             _isMouseDown = true;
         }
- 
-        public void OnMouseUp(Point p, Keys modifierKeys)
+
+        public void OnMouseUp(Point point, Keys modifierKeys)
         {
             _isMouseDown = false;
- 
+
             //перебираем фигуры, выделяем/снимаем выделение
             //todo
- 
+            var found = false;
+            foreach (var fig in _layer.Figures)
+            {
+                var path = fig.GetTransformedPath();
+                if (path.IsVisible(point) )
+                {
+                    if (!_selection.Contains(fig))
+                        _selection.Add(fig);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                _selection.Clear();
             //строим маркеры
             BuildMarkers();
             UpdateMarkerPositions();
@@ -62,7 +83,8 @@ namespace EditorModel.Selections
             Markers.Clear();
  
             //создаем маркеры масштаба
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
+            if (Selection.Count > 0 && 
+                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
             {
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0) });
@@ -71,7 +93,8 @@ namespace EditorModel.Selections
             }
  
             //создаем маркеры ресайза по верт и гориз
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено изменение размера
+            if (Selection.Count > 0 && 
+                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено изменение размера
             {
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f) });
@@ -80,7 +103,8 @@ namespace EditorModel.Selections
             }
  
             //создаем маркер вращения
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate))//если разрешено вращение
+            if (Selection.Count > 0 && 
+                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate))//если разрешено вращение
             {
                 var rotateMarker = new Marker {NormalizedLocalCoordinates = new PointF(1.1f, 0)};
                 Markers.Add(rotateMarker);
@@ -115,7 +139,8 @@ namespace EditorModel.Selections
  
         public Cursor GetCursor(Point p, Keys modifierKeys)
         {
-            throw new NotImplementedException();
+            return Cursors.Cross;
+            //throw new NotImplementedException();
         }
     }
 }

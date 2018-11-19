@@ -148,6 +148,10 @@
             this.pbCanvas.Size = new System.Drawing.Size(826, 428);
             this.pbCanvas.TabIndex = 6;
             this.pbCanvas.TabStop = false;
+            this.pbCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCanvas_Paint);
+            this.pbCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseDown);
+            this.pbCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseMove);
+            this.pbCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseUp);
             // 
             // menuStripMain
             // 
@@ -351,7 +355,7 @@
             this.tsbEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.tsbEllipse.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbEllipse.Name = "tsbEllipse";
-            this.tsbEllipse.Size = new System.Drawing.Size(29, 20);
+            this.tsbEllipse.Size = new System.Drawing.Size(22, 20);
             this.tsbEllipse.Text = "Эллипс";
             // 
             // tsbUndo
@@ -370,7 +374,7 @@
             this.tsbCircle.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsbCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCircle.Name = "tsbCircle";
-            this.tsbCircle.Size = new System.Drawing.Size(29, 20);
+            this.tsbCircle.Size = new System.Drawing.Size(22, 20);
             this.tsbCircle.Text = "Круг";
             // 
             // tsbSquare
@@ -379,7 +383,7 @@
             this.tsbSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsbSquare.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSquare.Name = "tsbSquare";
-            this.tsbSquare.Size = new System.Drawing.Size(29, 20);
+            this.tsbSquare.Size = new System.Drawing.Size(22, 20);
             this.tsbSquare.Text = "Квадрат";
             // 
             // tsbRect
@@ -388,7 +392,7 @@
             this.tsbRect.Image = global::SimpleEditor.Properties.Resources.rect;
             this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(29, 20);
+            this.tsbRect.Size = new System.Drawing.Size(22, 20);
             this.tsbRect.Text = "Прямоугольник";
             // 
             // tsbPolygon
@@ -397,7 +401,7 @@
             this.tsbPolygon.Image = global::SimpleEditor.Properties.Resources.poligon;
             this.tsbPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolygon.Name = "tsbPolygon";
-            this.tsbPolygon.Size = new System.Drawing.Size(29, 20);
+            this.tsbPolygon.Size = new System.Drawing.Size(22, 20);
             this.tsbPolygon.Text = "Полигон";
             this.tsbPolygon.ToolTipText = "Полигон";
             // 
@@ -407,7 +411,7 @@
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.poliline;
             this.tsbPolyline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolyline.Name = "tsbPolyline";
-            this.tsbPolyline.Size = new System.Drawing.Size(29, 20);
+            this.tsbPolyline.Size = new System.Drawing.Size(22, 20);
             this.tsbPolyline.Text = "Линия";
             this.tsbPolyline.ToolTipText = "Линия";
             // 
@@ -420,7 +424,7 @@
             this.tsbArrow.Image = global::SimpleEditor.Properties.Resources.arrow;
             this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbArrow.Name = "tsbArrow";
-            this.tsbArrow.Size = new System.Drawing.Size(29, 20);
+            this.tsbArrow.Size = new System.Drawing.Size(22, 20);
             this.tsbArrow.Text = "Выбор фигур";
             // 
             // tsFigures
@@ -437,7 +441,7 @@
             this.tsbCircle});
             this.tsFigures.Location = new System.Drawing.Point(0, 49);
             this.tsFigures.Name = "tsFigures";
-            this.tsFigures.Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.tsFigures.Padding = new System.Windows.Forms.Padding(0);
             this.tsFigures.Size = new System.Drawing.Size(23, 440);
             this.tsFigures.TabIndex = 8;
             // 
@@ -802,9 +806,12 @@
             this.ClientSize = new System.Drawing.Size(860, 511);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.KeyPreview = true;
             this.Name = "FormSimpleEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "FormSimpleEditor";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSimpleEditor_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormSimpleEditor_KeyUp);
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
             this.menuStripMain.ResumeLayout(false);
