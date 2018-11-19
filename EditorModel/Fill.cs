@@ -28,13 +28,13 @@ namespace EditorModel
         /// <summary>
         /// Признак возможности заливки фигуры
         /// </summary>
-        public bool IsVisible { get; internal set; }
+        public bool IsVisible { get; private set; }
 
         /// <summary>
         /// Предоставление кисти для заливки фигуры
         /// </summary>
         /// <param name="figure">Ссылка на фигуру</param>
-        /// <returns></returns>
+        /// <returns>Возвращаем настроенную кисть</returns>
         public Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры

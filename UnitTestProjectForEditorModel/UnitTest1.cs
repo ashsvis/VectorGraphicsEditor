@@ -1,4 +1,7 @@
-﻿using EditorModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using EditorModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
@@ -32,131 +35,195 @@ namespace UnitTestProjectForEditorModel
             Assert.AreNotEqual(figure.Renderer, null, "Класс Figure.Renderer не подключен");
         }
 
+        private static void Draw(string fileName, params Figure[] figures)
+        {
+            using (var bmp = new Bitmap(400, 400))
+            {
+                using (var canvas = Graphics.FromImage(bmp))
+                {
+                    canvas.Clear(Color.White);
+                    foreach (var fig in figures)
+                        fig.Renderer.Render(canvas, fig);
+                }
+                bmp.Save(fileName);
+            }
+        }
+
         [TestMethod]
-        public void CreateTextFigureTestMethod()
+        public void SelectionFigureTestMethod()
+        {
+            //создаем первую фигуру
+            var builder = new FigureBuilder();
+            var fig1 = new Figure();
+            fig1.Transform.Translate(50, 50);
+            fig1.Transform.Scale(100, 100);
+            builder.BuildEllipseGeometry(fig1);
+
+            //создаем вторую фигуру
+            var fig2 = new Figure();
+            fig2.Transform.Translate(150, 150);
+            fig2.Transform.Scale(100, 100);
+            builder.BuildRectangleGeometry(fig2);
+
+            //рисуем до выделения
+            Draw("1.png", fig1, fig2);
+
+            //создаем selection
+            var selection = new Selection();
+            selection.Style.BorderStyle.Width = 1;
+            selection.Style.BorderStyle.Color = Color.Magenta;
+
+            //выделяем фигуры 
+            selection.Add(fig1);
+            selection.Add(fig2);
+
+            //рисуем после выделения
+            Draw("2.png", fig1, fig2, selection);
+
+            //вращаем и выделенные фигуры
+            Matrix m = selection.Transform;
+            m.RotateAt(45, new PointF(100, 100));
+            selection.PushTransformToSelectedFigures();
+
+            //рисуем после вращения выделенных фигур
+            Draw("3.png", fig1, fig2, selection);
+
+            //перемещаем выделенные фигуры
+            m = selection.Transform;
+            m.Translate(0, 100);
+            selection.PushTransformToSelectedFigures();
+
+            //рисуем после перемещения выделенных фигур
+            Draw("4.png", fig1, fig2, selection);
+
+            //снимаем выделение, отрисовываем результат
+            selection.Clear();
+            Draw("5.png", fig1, fig2, selection);
+        }
+
+        [TestMethod]
+        public void TextFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var textfigure = new Figure();
-            textfigure.Transform.Matrix.Translate(10, 10);
+            textfigure.Transform.Translate(10, 10);
             // настраиваем геометрию на текст
             builder.BuildTextGeometry(textfigure, 
                 "The test for text string rendering complete.");
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(textfigure);
-            textfigure = SerializeDeserialize(textfigure);
+            //textfigure = SerializeDeserialize(textfigure);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     textfigure.Renderer.Render(canvas, textfigure);
-                bmp.Save("CreateTextFigure.bmp");
+                bmp.Save("TextFigure.png");
             }
         }
 
         [TestMethod]
-        public void CreatePolygonFigureTestMethod()
+        public void PolygonFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var polygon = new Figure();
-            polygon.Transform.Matrix.Translate(100, 50);
-            polygon.Transform.Matrix.Scale(160, 80);
+            polygon.Transform.Translate(100, 50);
+            polygon.Transform.Scale(160, 80);
             // настраиваем геометрию на квадрат
             builder.BuildPolygoneGeometry(polygon);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(polygon);
-            polygon = SerializeDeserialize(polygon);
+            //polygon = SerializeDeserialize(polygon);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     polygon.Renderer.Render(canvas, polygon);
-                bmp.Save("CreatePolygonFigure.bmp");
+                bmp.Save("PolygonFigure.png");
             }
         }
 
         [TestMethod]
-        public void CreateSquareFigureTestMethod()
+        public void SquareFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var square = new Figure();
-            square.Transform.Matrix.Translate(100, 50);
-            //square.Transform.Matrix.Scale(80, 80);
-            square.Transform.Matrix.Scale(160, 80);  // здесь должно срабатывать ограничение AllowedOperations.Size
+            square.Transform.Translate(100, 50);
+            square.Transform.Scale(80, 80); 
             // настраиваем геометрию на квадрат
             builder.BuildSquareGeometry(square);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(square);
-            square = SerializeDeserialize(square);
+            //square = SerializeDeserialize(square);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     square.Renderer.Render(canvas, square);
-                bmp.Save("CreateSquareFigure.bmp");
+                bmp.Save("SquareFigure.png");
             }
         }
 
         [TestMethod]
-        public void CreateRectangleFigureTestMethod()
+        public void RectangleFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var rect = new Figure();
-            rect.Transform.Matrix.Translate(100, 50);
-            rect.Transform.Matrix.Scale(160, 80);
+            rect.Transform.Translate(100, 50);
+            rect.Transform.Scale(160, 80);
             // настраиваем геометрию на квадрат
             builder.BuildRectangleGeometry(rect);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(rect);
-            rect = SerializeDeserialize(rect);
+            //rect = SerializeDeserialize(rect);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     rect.Renderer.Render(canvas, rect);
-                bmp.Save("CreateRectangleFigure.bmp");
+                bmp.Save("RectangleFigure.png");
             }
         }
 
         [TestMethod]
-        public void CreateCircleFigureTestMethod()
+        public void CircleFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var circle = new Figure();
-            circle.Transform.Matrix.Translate(100, 50);
-            //circle.Transform.Matrix.Scale(80, 80);
-            circle.Transform.Matrix.Scale(160, 80);  // здесь должно срабатывать ограничение AllowedOperations.Size
+            circle.Transform.Translate(100, 50);
+            circle.Transform.Scale(80, 80);
             // настраиваем геометрию на круг
             builder.BuildCircleGeometry(circle);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(circle);
-            circle = SerializeDeserialize(circle);
+            //circle = SerializeDeserialize(circle);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     circle.Renderer.Render(canvas, circle);
-                bmp.Save("CreateCircleFigure.bmp");
+                bmp.Save("CircleFigure.png");
             }
         }
 
         [TestMethod]
-        public void CreateEllipseFigureTestMethod()
+        public void EllipseFigureTestMethod()
         {
             var builder = new FigureBuilder();
             var oval = new Figure();
-            oval.Transform.Matrix.Translate(100, 50);
-            oval.Transform.Matrix.Scale(160, 80);
+            oval.Transform.Translate(100, 50);
+            oval.Transform.Scale(160, 80);
             // настраиваем геометрию на круг
             builder.BuildEllipseGeometry(oval);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(oval);
-            oval = SerializeDeserialize(oval);
+            //oval = SerializeDeserialize(oval);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
                 using (var canvas = Graphics.FromImage(bmp))
                     oval.Renderer.Render(canvas, oval);
-                bmp.Save("CreateEllipseFigure.bmp");
+                bmp.Save("EllipseFigure.png");
             }
         }
 

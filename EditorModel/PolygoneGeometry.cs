@@ -11,13 +11,10 @@ namespace EditorModel
     [Serializable]
     internal class PolygoneGeometry : Geometry
     {
-        // контейнер для хранения точек фигуры
-        internal readonly List<PointF> Points = new List<PointF>();
-
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+        private readonly GraphicsPath _path = new GraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -40,7 +37,7 @@ namespace EditorModel
             get
             {
                 // сброс пути. Я взял это по аналогии TextGeometry.
-                _path.Path.Reset();
+                _path.Reset();
                 var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
                 var points = new List<PointF>
                 {
@@ -50,7 +47,7 @@ namespace EditorModel
                     new PointF(rect.Left, rect.Top + rect.Height)
                 };
                 // добавляем в путь построенный по точкам единичного прямоугольника полизон
-                _path.Path.AddPolygon(points.ToArray());
+                _path.AddPolygon(points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
             }

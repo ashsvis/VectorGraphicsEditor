@@ -28,7 +28,7 @@ namespace EditorModel
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+        private readonly GraphicsPath _path = new GraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -43,9 +43,9 @@ namespace EditorModel
             get
             {
                 // сброс пути. TODO: зачем?
-                _path.Path.Reset();
+                _path.Reset();
                 // добавляем в путь текстовую строку
-                _path.Path.AddString(Text ?? "",
+                _path.AddString(Text ?? "",
                     new FontFamily(FontName), 0, FontSize, PointF.Empty,
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь

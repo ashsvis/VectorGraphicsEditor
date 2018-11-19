@@ -11,7 +11,7 @@ namespace EditorModel
 
         public SerializableGraphicsMatrix() { }
 
-        public SerializableGraphicsMatrix(SerializationInfo info, StreamingContext context)
+        protected SerializableGraphicsMatrix(SerializationInfo info, StreamingContext context)
         {
             if (info.MemberCount == 1)
             {
@@ -35,7 +35,7 @@ namespace EditorModel
 
         public static implicit operator SerializableGraphicsMatrix(Matrix matrix)
         {
-            return new SerializableGraphicsMatrix() { Matrix = matrix };
+            return new SerializableGraphicsMatrix { Matrix = matrix };
         }
     }
 

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel
 {
@@ -14,8 +14,8 @@ namespace EditorModel
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildSquareGeometry(Figure figure)
         {
-            var path = new SerializableGraphicsPath();
-            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new GraphicsPath();
+            path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
         }
 
@@ -25,8 +25,8 @@ namespace EditorModel
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildRectangleGeometry(Figure figure)
         {
-            var path = new SerializableGraphicsPath();
-            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new GraphicsPath();
+            path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
@@ -36,8 +36,8 @@ namespace EditorModel
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildCircleGeometry(Figure figure)
         {
-            var path = new SerializableGraphicsPath();
-            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new GraphicsPath();
+            path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
         }
 
@@ -47,8 +47,8 @@ namespace EditorModel
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildEllipseGeometry(Figure figure)
         {
-            var path = new SerializableGraphicsPath();
-            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new GraphicsPath();
+            path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
@@ -60,7 +60,8 @@ namespace EditorModel
         /// <summary>
         /// Подключаем к фигуре геометрию текстовой строки
         /// </summary>
-        /// <param name="figure"></param>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        /// <param name="text">Текстовая строка</param>
         public void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text };

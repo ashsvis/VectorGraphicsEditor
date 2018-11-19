@@ -12,7 +12,7 @@ namespace EditorModel
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+        private readonly GraphicsPath _path = new GraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -34,7 +34,8 @@ namespace EditorModel
         /// (только для внутреннего использования)
         /// </summary>
         /// <param name="path">Закрепляемый путь для примитивной геометрии</param>
-        internal PrimitiveGeometry(SerializableGraphicsPath path, AllowedOperations allowed)
+        /// <param name="allowed">набор прав для операций</param>
+        internal PrimitiveGeometry(GraphicsPath path, AllowedOperations allowed)
         {
             // запоминаем переданный в конструкторе путь в локальном поле
             _path = path;

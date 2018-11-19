@@ -12,7 +12,7 @@ namespace EditorModel
         /// <summary>
         /// Свойство трансформера фигуры
         /// </summary>
-        public SerializableGraphicsMatrix Transform { get; set; }
+        public Matrix Transform { get; protected set; }
 
         /// <summary>
         /// Свойство источника геометрии фигуры
@@ -22,19 +22,19 @@ namespace EditorModel
         /// <summary>
         /// Свойство стиля рисования фигуры
         /// </summary>
-        public Style Style { get; set; }
+        public Style Style { get; private set; }
 
         /// <summary>
         /// Свойство рисовальщика фигуры
         /// </summary>
-        public Renderer Renderer { get; set; }
+        public Renderer Renderer { get; private set; }
 
         /// <summary>
         /// Конструктор фигуры для задания свойств по умолчанию
         /// </summary>
         public Figure()
         {
-            Transform = new SerializableGraphicsMatrix();
+            Transform = new Matrix();
             Style = new Style();
             Renderer = new Renderer();
         }

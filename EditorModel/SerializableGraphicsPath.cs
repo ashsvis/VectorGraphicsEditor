@@ -44,7 +44,7 @@ namespace EditorModel
 
         public static implicit operator SerializableGraphicsPath(GraphicsPath path)
         {
-            return new SerializableGraphicsPath() { Path = path };
+            return new SerializableGraphicsPath { Path = path };
         }
     }
 

@@ -10,7 +10,7 @@ namespace EditorModel
     public class Selection : Figure
     {
         // внутренний набор для хранения списка выделенных фигур
-        private HashSet<Figure> _selected = new HashSet<Figure>();
+        private readonly HashSet<Figure> _selected = new HashSet<Figure>();
 
         /// <summary>
         /// Очистка списка выделенных фигур
@@ -24,7 +24,7 @@ namespace EditorModel
         /// <summary>
         /// Добавление фигуры к списку выделенных фигур
         /// </summary>
-        /// <param name="fig"></param>
+        /// <param name="fig">Добавляемая фигура</param>
         public void Add(Figure fig)
         {
             _selected.Add(fig);
@@ -34,7 +34,7 @@ namespace EditorModel
         /// <summary>
         /// Исключение фигуры из списка выделенных фигур
         /// </summary>
-        /// <param name="fig"></param>
+        /// <param name="fig">Исключаемая фигура</param>
         public void Remove(Figure fig)
         {
             _selected.Remove(fig);
@@ -47,13 +47,13 @@ namespace EditorModel
         private void GrabGeometry()
         {
             // захватываем геометрию выбранных фигур
-            var path = new SerializableGraphicsPath();
+            var path = new GraphicsPath();
             foreach (var fig in _selected)
-                ((GraphicsPath)path).AddPath(fig.GetTransformedPath(), false);
+                path.AddPath(fig.GetTransformedPath(), false);
 
             // нарисовать рамку вокруг выбранных фигур 
-            var bounds = ((GraphicsPath)path).GetBounds();
-            ((GraphicsPath)path).AddRectangle(bounds);
+            var bounds = path.GetBounds();
+            path.AddRectangle(bounds);
 
             // выбираем разрешённые операции
             // если выбрана только одна фигура - просто используем её AllowedOperations
@@ -64,7 +64,7 @@ namespace EditorModel
             Geometry = new PrimitiveGeometry(path, allowedOperations);
 
             // сбрасываем преобразование в единичную матрицу
-            Transform = new SerializableGraphicsMatrix();
+            Transform = new Matrix();
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace EditorModel
         public void PushTransformToSelectedFigures()
         {
             foreach (var fig in _selected)
-                fig.Transform.Matrix.Multiply(Transform);
+                fig.Transform.Multiply(Transform);
 
             GrabGeometry();
         }
