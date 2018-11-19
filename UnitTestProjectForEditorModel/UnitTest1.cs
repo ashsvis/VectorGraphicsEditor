@@ -1,5 +1,7 @@
 ﻿using System.Drawing.Drawing2D;
 using EditorModel;
+using EditorModel.Figures;
+using EditorModel.Selections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using System.IO;
