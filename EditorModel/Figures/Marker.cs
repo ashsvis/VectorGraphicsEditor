@@ -11,10 +11,9 @@ namespace EditorModel.Figures
         public Marker()
         {
             var path = new GraphicsPath();
-            path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            this.Geometry = new PrimitiveGeometry(path, 
-                AllowedOperations.All ^ 
-                (AllowedOperations.Size & AllowedOperations.Rotate & AllowedOperations.Select));
+            // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
+            path.AddRectangle(new RectangleF(-2f, -2f, 5f, 5f));
+            Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
         /// <summary>

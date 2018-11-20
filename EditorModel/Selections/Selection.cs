@@ -16,16 +16,6 @@ namespace EditorModel.Selections
         private readonly HashSet<Figure> _selected = new HashSet<Figure>();
 
         /// <summary>
-        /// Количество фигур в списке выбранных
-        /// </summary>
-        public int Count { get { return _selected.Count; } }
-
-        public bool Contains(Figure figure)
-        {
-            return _selected.Contains(figure);
-        }
-
-        /// <summary>
         /// Очистка списка выделенных фигур
         /// </summary>
         public void Clear()
@@ -71,7 +61,9 @@ namespace EditorModel.Selections
             // выбираем разрешённые операции
             // если выбрана только одна фигура - просто используем её AllowedOperations
             // иначе - разрешаем все операции
-            var allowedOperations = _selected.Count == 1 ? _selected.First().Geometry.AllowedOperations : AllowedOperations.All;
+            var allowedOperations = _selected.Count == 1 
+                ? _selected.First().Geometry.AllowedOperations 
+                : AllowedOperations.All;
 
             // присваиваем геометрию
             Geometry = new PrimitiveGeometry(path, allowedOperations);
@@ -193,6 +185,37 @@ namespace EditorModel.Selections
 
             //
             Transform = m;
+        }
+
+        /*
+         *  Добавлено 19.11.2018 от ashsvis
+         */
+
+        /// <summary>
+        /// Наличие фигуры в списке выбранных
+        /// </summary>
+        /// <param name="figure">Проверфемая фигура</param>
+        /// <returns>True - фигура в списке</returns>
+        public bool Contains(Figure figure)
+        {
+            return _selected.Contains(figure);
+        }
+
+        /*
+         *  Добавлено 20.11.2018 от ashsvis
+         */
+
+        /// <summary>
+        /// Конструктор с инициализацией по умолчанию
+        /// </summary>
+        public Selection()
+        {
+            // настройки вида рамки выбора
+            Style.BorderStyle.DashStyle = DashStyle.Dash;
+            Style.BorderStyle.Color = Color.Magenta;
+            Style.FillStyle.IsVisible = false;
+            // в списке ничего нет, но объект Geometry инициализируется
+            GrabGeometry();
         }
     }
 }

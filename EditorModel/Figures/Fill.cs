@@ -28,7 +28,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Признак возможности заливки фигуры
         /// </summary>
-        public bool IsVisible { get; private set; }
+        public bool IsVisible { get; set; }
 
         /// <summary>
         /// Предоставление кисти для заливки фигуры

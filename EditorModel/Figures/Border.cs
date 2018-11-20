@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
 {
@@ -20,6 +21,7 @@ namespace EditorModel.Figures
             Color = Color.Black;
             // по умолчанию 1 единица
             Width = 1f;
+            DashStyle = DashStyle.Solid;
         }
 
         /// <summary>
@@ -35,7 +37,9 @@ namespace EditorModel.Figures
         /// <summary>
         /// Признак возможности рисования контура
         /// </summary>
-        public bool IsVisible { get; internal set; }
+        public bool IsVisible { get; set; }
+
+        public DashStyle DashStyle { get; set; }
 
         /// <summary>
         /// Предоставление карандаша для рисования контура
@@ -46,7 +50,7 @@ namespace EditorModel.Figures
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
             //TODO: А зачем нам тогда параметр Figure figure?
-            return new Pen(Color, Width);
+            return new Pen(Color, Width) { DashStyle = DashStyle };
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Figures;
 
@@ -47,7 +48,7 @@ namespace EditorModel.Selections
         private bool _wasMouseMoving = false;
         private bool _isMouseDown = false;
  
-        public void OnMouseDown(Point p, Keys modifierKeys)
+        public void OnMouseDown(Point point, Keys modifierKeys)
         {
             _wasMouseMoving = false;
             _isMouseDown = true;
@@ -59,54 +60,100 @@ namespace EditorModel.Selections
 
             //перебираем фигуры, выделяем/снимаем выделение
             //todo
-            var found = false;
-            foreach (var fig in _layer.Figures)
+            Figure fig;
+            if (FindFigureAt(point, out fig))
             {
-                var path = fig.GetTransformedPath();
-                if (path.IsVisible(point) )
+                var marker = fig as Marker;
+                if (marker != null)
+                {
+
+                }
+                else
                 {
                     if (!_selection.Contains(fig))
+                    {
                         _selection.Add(fig);
-                    found = true;
-                    break;
+                        OnSelectedFigureChanged();
+                    }
                 }
             }
-            if (!found)
+            else
+            {
                 _selection.Clear();
+                OnSelectedFigureChanged();
+            }
             //строим маркеры
             BuildMarkers();
             UpdateMarkerPositions();
         }
- 
+
+        /// <summary>
+        /// Вызываем привязынный к событию метод
+        /// </summary>
+        private void OnSelectedFigureChanged()
+        {
+            if (SelectedFigureChanged != null)
+                SelectedFigureChanged();
+        }
+
+        private bool FindFigureAt(Point point, out Figure figure)
+        {
+            figure = null;
+            var found = false;
+            for (var i = _layer.Figures.Count - 1; i >= 0; i--)
+            {
+                var fig = _layer.Figures[i];
+                var path = fig.GetTransformedPath();
+                if (!path.IsVisible(point)) continue;
+                figure = fig;
+                found = true;
+                break;
+            }
+            return found;
+        }
+
+        private bool FindMarkerAt(Point point, out Marker marker)
+        {
+            marker = null;
+            var found = false;
+            for (var i = Markers.Count - 1; i >= 0; i--)
+            {
+                var fig = Markers[i];
+                var path = fig.GetTransformedPath();
+                if (!path.IsVisible(point)) continue;
+                marker = fig;
+                found = true;
+                break;
+            }
+            return found;
+        }
+
         private void BuildMarkers()
         {
             Markers.Clear();
  
             //создаем маркеры масштаба
-            if (Selection.Count > 0 && 
-                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
+            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
             {
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1) });
             }
- 
+
             //создаем маркеры ресайза по верт и гориз
-            if (Selection.Count > 0 && 
-                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено изменение размера
+            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено изменение размера
             {
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1) });
                 Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f) });
             }
- 
+
             //создаем маркер вращения
-            if (Selection.Count > 0 && 
-                Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate))//если разрешено вращение
+            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
             {
-                var rotateMarker = new Marker {NormalizedLocalCoordinates = new PointF(1.1f, 0)};
+                var rotateMarker = new Marker { NormalizedLocalCoordinates = new PointF(1.1f, 0) };
                 Markers.Add(rotateMarker);
             }
         }
@@ -127,7 +174,7 @@ namespace EditorModel.Selections
             }
         }
  
-        public void OnMouseMove(Point p, Keys modifierKeys)
+        public void OnMouseMove(Point point, Keys modifierKeys)
         {
             if (_isMouseDown)
             {
@@ -137,10 +184,25 @@ namespace EditorModel.Selections
             }
         }
  
-        public Cursor GetCursor(Point p, Keys modifierKeys)
+        /// <summary>
+        /// Форма курсора в зависимости от контекста
+        /// </summary>
+        /// <param name="point">Позиция курсора</param>
+        /// <param name="modifierKeys">Управляющие клавиши</param>
+        /// <returns></returns>
+        public Cursor GetCursor(Point point, Keys modifierKeys)
         {
-            return Cursors.Cross;
-            //throw new NotImplementedException();
+            Marker marker;
+            if (FindMarkerAt(point, out marker))
+            {
+                return Cursors.Hand;                
+            }
+            Figure fig;
+            if (FindFigureAt(point, out fig))
+            {
+                return Cursors.SizeAll;
+            }
+            return Cursors.Default;
         }
     }
 }
