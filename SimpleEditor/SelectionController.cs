@@ -43,7 +43,17 @@ namespace EditorModel.Selections
         /// Изменилась выделенная фигура/фигуры
         /// </summary>
         public event Action SelectedFigureChanged = delegate { };
- 
+
+        /// <summary>
+        /// Выделенная фигура/фигуры начинают/продолжают трансформироваться
+        /// </summary>
+        public event Action SelectedTransformChanging = delegate { };
+
+        /// <summary>
+        /// Трансформировалась выделенная фигура/фигуры 
+        /// </summary>
+        public event Action SelectedTransformChanged = delegate { };
+
         private bool _wasMouseMoving = false;
         private bool _isMouseDown = false;
         private Point _firstMouseDown;
@@ -62,37 +72,30 @@ namespace EditorModel.Selections
             _firstMouseDown = point;
             //перебираем фигуры, выделяем/снимаем выделение
             FindMarkerAt(point, out _movedMarker);
-            if (_movedMarker == null)
+            if (_movedMarker == null)   // маркера под курсором не встретилось...
             {
                 Figure fig;
-                if (FindFigureAt(point, out fig))
+                if (FindFigureAt(point, out fig)) // попробуем найти фигуру...
                 {
-                    _movedMarker = fig as Marker;
-                    if (_movedMarker != null)
+                    // фигура найдена.
+                    // если этой фигуры не было в списке
+                    if (!_selection.Contains(fig))
                     {
-                        Console.WriteLine(_movedMarker);
+                        // если не нажата управляющая клавиша Ctrl
+                        if (!modifierKeys.HasFlag(Keys.Control))
+                            _selection.Clear(); // очистим список выбранных
+                                                // то добавим её в список
+                        _selection.Add(fig);
+                        OnSelectedFigureChanged();
                     }
-                    else // выбрана фигура, а не маркер
+                    else if (modifierKeys.HasFlag(Keys.Control))
                     {
-                        // если этой фигуры не было в списке
-                        if (!_selection.Contains(fig))
+                        // при нажатой клавише Ctrl удаляем эту фигуру из списка
+                        // если она не последняя
+                        if (_selection.Count > 1)
                         {
-                            // если не нажата управляющая клавиша Ctrl
-                            if (!modifierKeys.HasFlag(Keys.Control))
-                                _selection.Clear(); // очистим список выбранных
-                            // то добавим её в список
-                            _selection.Add(fig);
+                            _selection.Remove(fig);
                             OnSelectedFigureChanged();
-                        }
-                        else if (modifierKeys.HasFlag(Keys.Control))
-                        {
-                            // при нажатой клавише Ctrl удаляем эту фигуру из списка
-                            // если она не последняя
-                            if (_selection.Count > 1)
-                            {
-                                _selection.Remove(fig);
-                                OnSelectedFigureChanged();
-                            }
                         }
                     }
                 }
@@ -120,7 +123,7 @@ namespace EditorModel.Selections
                 {
                     // фиксация перемещения фигур
                     _selection.PushTransformToSelectedFigures();
-                    OnSelectedFigureChanged();
+                    OnSelectedTransformChanged();
                 }
             }
 
@@ -131,7 +134,7 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Вызываем привязынный к событию метод
+        /// Вызываем привязынный к событию метод при выборе фигур
         /// </summary>
         private void OnSelectedFigureChanged()
         {
@@ -139,6 +142,30 @@ namespace EditorModel.Selections
                 SelectedFigureChanged();
         }
 
+        /// <summary>
+        /// Вызываем привязынный к событию метод в процессе изменения фигур
+        /// </summary>
+        private void OnSelectedTransformChanging()
+        {
+            if (SelectedTransformChanging != null)
+                SelectedTransformChanging();
+        }
+
+        /// <summary>
+        /// Вызываем привязынный к событию метод в конце изменения фигур
+        /// </summary>
+        private void OnSelectedTransformChanged()
+        {
+            if (SelectedTransformChanged != null)
+                SelectedTransformChanged();
+        }
+
+        /// <summary>
+        /// Ищем фигуру в данной точке
+        /// </summary>
+        /// <param name="point">Положение курсора</param>
+        /// <param name="figure">Найденная фигура или null</param>
+        /// <returns></returns>
         private bool FindFigureAt(Point point, out Figure figure)
         {
             figure = null;
@@ -155,6 +182,12 @@ namespace EditorModel.Selections
             return found;
         }
 
+        /// <summary>
+        /// Ищем маркер в данной точке
+        /// </summary>
+        /// <param name="point">Положение курсора</param>
+        /// <param name="marker">Найденный маркер или null</param>
+        /// <returns></returns>
         private bool FindMarkerAt(Point point, out Marker marker)
         {
             marker = null;
@@ -171,9 +204,14 @@ namespace EditorModel.Selections
             return found;
         }
 
+        /// <summary>
+        /// Метод строит маркеры у объекта Selection
+        /// </summary>
         private void BuildMarkers()
         {
+            // стираем предыдущие маркеры
             Markers.Clear();
+            // если ничего не выбрано, выходим
             if (Selection.Count == 0) return;
             //создаем маркеры масштаба
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
@@ -204,6 +242,7 @@ namespace EditorModel.Selections
                     };
                 Markers.Add(rotateMarker);
             }
+            // определяем геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
                 figureBuilder.BuildMarkerGeometry(marker);
@@ -217,8 +256,8 @@ namespace EditorModel.Selections
         /// <summary>
         /// Метод для работы с перемещением маркеров масштабирования
         /// </summary>
-        /// <param name="marker"></param>
-        /// <param name="offset"></param>
+        /// <param name="marker">Маркер, вызвавший этот метод</param>
+        /// <param name="offset">Смещение</param>
         private void ScaleMarkerMoved(Marker marker, Point offset)
         {
             var p = marker.NormalizedLocalCoordinates;
@@ -248,6 +287,9 @@ namespace EditorModel.Selections
             return Math.Abs(coordinate - 1) < float.Epsilon ? 0 : 1;
         }
 
+        /// <summary>
+        /// Вызываем этот метод, чтобы маркеры двигались синхронно с выделением
+        /// </summary>
         private void UpdateMarkerPositions()
         {
             foreach (var marker in Markers)
@@ -279,13 +321,13 @@ namespace EditorModel.Selections
                 {
                     // вызываем метод маркера для выполения действия
                     _movedMarker.Moved(_movedMarker, _mouseOffset);
-                    OnSelectedFigureChanged();
+                    OnSelectedTransformChanging();
                 }
                 else // выбрана фигура, а не маркер
                 {
                     // показываем, как будет перемещаться список выбранных фигур
                     _selection.Translate(_mouseOffset.X, _mouseOffset.Y);
-                    OnSelectedFigureChanged();
+                    OnSelectedTransformChanging();
                 }
             }
         }
