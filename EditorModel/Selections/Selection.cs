@@ -194,7 +194,7 @@ namespace EditorModel.Selections
         /// <summary>
         /// Наличие фигуры в списке выбранных
         /// </summary>
-        /// <param name="figure">Проверфемая фигура</param>
+        /// <param name="figure">Проверяемая фигура</param>
         /// <returns>True - фигура в списке</returns>
         public bool Contains(Figure figure)
         {
@@ -217,5 +217,10 @@ namespace EditorModel.Selections
             // в списке ничего нет, но объект Geometry инициализируется
             GrabGeometry();
         }
+
+        /// <summary>
+        /// Количество фигур в списке
+        /// </summary>
+        public int Count { get { return _selected.Count; }  }
     }
 }

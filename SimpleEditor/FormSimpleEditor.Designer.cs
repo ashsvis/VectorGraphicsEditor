@@ -810,8 +810,6 @@
             this.Name = "FormSimpleEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "FormSimpleEditor";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSimpleEditor_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormSimpleEditor_KeyUp);
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
             this.menuStripMain.ResumeLayout(false);

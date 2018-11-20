@@ -17,7 +17,6 @@ namespace SimpleEditor
         EditorMode _editorMode = EditorMode.Select;
         readonly Layer _layer;
         readonly SelectionController _selectionController;
-        private Keys _modifers;
 
         public FormSimpleEditor()
         {
@@ -50,30 +49,23 @@ namespace SimpleEditor
             pbCanvas.Invalidate();
         }
 
-        private void FormSimpleEditor_KeyDown(object sender, KeyEventArgs e)
-        {
-            _modifers = e.Modifiers;
-        }
-
-        private void FormSimpleEditor_KeyUp(object sender, KeyEventArgs e)
-        {
-            _modifers = e.Modifiers;
-        }
-
         private void pbCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-            _selectionController.OnMouseDown(e.Location, _modifers);
+            if (e.Button == MouseButtons.Left)
+                _selectionController.OnMouseDown(e.Location, ModifierKeys);
         }
 
         private void pbCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            Cursor =  _selectionController.GetCursor(e.Location, _modifers);
-            _selectionController.OnMouseMove(e.Location, _modifers);
+            Cursor = _selectionController.GetCursor(e.Location, ModifierKeys);
+            if (e.Button == MouseButtons.Left)
+                _selectionController.OnMouseMove(e.Location, ModifierKeys);
         }
 
         private void pbCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            _selectionController.OnMouseUp(e.Location, _modifers);
+            if (e.Button == MouseButtons.Left)
+                _selectionController.OnMouseUp(e.Location, ModifierKeys);
         }
 
         /// <summary>
@@ -85,12 +77,13 @@ namespace SimpleEditor
         {
             // отрисовка созданных фигур
             foreach (var fig in _layer.Figures)
-                fig.Renderer.Render(e.Graphics);
+                fig.Renderer.Render(e.Graphics, fig);
             // отрисовка выделения
-            _selectionController.Selection.Renderer.Render(e.Graphics);
+            _selectionController.Selection.Renderer.Render(e.Graphics, 
+                _selectionController.Selection);
             // отрисовка маркеров
             foreach (var marker in _selectionController.Markers)
-                marker.Renderer.Render(e.Graphics);
+                marker.Renderer.Render(e.Graphics, marker);
         }
     }
 }

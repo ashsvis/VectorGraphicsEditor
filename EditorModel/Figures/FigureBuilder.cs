@@ -52,6 +52,19 @@ namespace EditorModel.Figures
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
         }
 
+        /// <summary>
+        /// Построение пути для маркера
+        /// </summary>
+        /// <param name="marker"></param>
+        public void BuildMarkerGeometry(Marker marker)
+        {
+            var path = new GraphicsPath();
+            // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
+            path.AddRectangle(new RectangleF(-2f, -2f, 5f, 5f));
+            marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
+                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select));         
+        }
+
         //и т.д. для всех примитивных фигур
         //todo
         // а ромб - это примитивная геометрия или нет?

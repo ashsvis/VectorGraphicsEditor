@@ -47,17 +47,19 @@ namespace EditorModel.Selections
  
         private bool _wasMouseMoving = false;
         private bool _isMouseDown = false;
+        private Point _firstMouseDown;
+        private Size _mouseOffset;
  
+        /// <summary>
+        /// Обработчик нажатия левой кнопки мышки
+        /// </summary>
+        /// <param name="point">Координаты курсора</param>
+        /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
         public void OnMouseDown(Point point, Keys modifierKeys)
         {
             _wasMouseMoving = false;
             _isMouseDown = true;
-        }
-
-        public void OnMouseUp(Point point, Keys modifierKeys)
-        {
-            _isMouseDown = false;
-
+            _firstMouseDown = point;
             //перебираем фигуры, выделяем/снимаем выделение
             //todo
             Figure fig;
@@ -68,12 +70,27 @@ namespace EditorModel.Selections
                 {
 
                 }
-                else
+                else // выбрана фигура, а не маркер
                 {
+                    // если этой фигуры не было в списке
                     if (!_selection.Contains(fig))
                     {
+                        // если не нажата управляющая клавиша Ctrl
+                        if (!modifierKeys.HasFlag(Keys.Control))
+                            _selection.Clear(); // очистим список выбранных
+                        // то добавим её в список
                         _selection.Add(fig);
                         OnSelectedFigureChanged();
+                    }
+                    else if (modifierKeys.HasFlag(Keys.Control))
+                    {
+                        // при нажатой клавише Ctrl удаляем эту фигуру из списка
+                        // если она не последняя
+                        if (_selection.Count > 1)
+                        {
+                            _selection.Remove(fig);
+                            OnSelectedFigureChanged();
+                        }
                     }
                 }
             }
@@ -82,6 +99,29 @@ namespace EditorModel.Selections
                 _selection.Clear();
                 OnSelectedFigureChanged();
             }
+            //строим маркеры
+            BuildMarkers();
+            UpdateMarkerPositions();
+        }
+
+        /// <summary>
+        /// Обработчик отпускания левой кнопки мышки
+        /// </summary>
+        /// <param name="point">Координаты курсора</param>
+        /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
+        public void OnMouseUp(Point point, Keys modifierKeys)
+        {
+            if (_isMouseDown)
+            {
+                if (_wasMouseMoving)
+                {
+                    // фиксация перемещения фигур
+                    _selection.PushTransformToSelectedFigures();
+                    OnSelectedFigureChanged();
+                }
+            }
+
+            _isMouseDown = false;
             //строим маркеры
             BuildMarkers();
             UpdateMarkerPositions();
@@ -130,34 +170,47 @@ namespace EditorModel.Selections
 
         private void BuildMarkers()
         {
+
             Markers.Clear();
- 
             //создаем маркеры масштаба
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1) });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0), GetCursor = () => Cursors.SizeNWSE, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0), GetCursor = () => Cursors.SizeNESW, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1), GetCursor = () => Cursors.SizeNWSE, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1), GetCursor = () => Cursors.SizeNESW, Moved = MarkerMoved });
             }
 
-            //создаем маркеры ресайза по верт и гориз
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено изменение размера
+            //создаем маркеры ресайза по вертикали и горизонтали
+            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1) });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f) });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0), GetCursor = () => Cursors.SizeNS, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1), GetCursor = () => Cursors.SizeNS, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = MarkerMoved });
             }
 
             //создаем маркер вращения
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
             {
-                var rotateMarker = new Marker { NormalizedLocalCoordinates = new PointF(1.1f, 0) };
+                var rotateMarker = new Marker
+                    {
+                        NormalizedLocalCoordinates = new PointF(1.1f, 0),
+                        GetCursor = () => Cursors.UpArrow,
+                        Moved = MarkerMoved
+                    };
                 Markers.Add(rotateMarker);
             }
+            var figureBuilder = new FigureBuilder();
+            foreach (var marker in Markers)
+                figureBuilder.BuildMarkerGeometry(marker);
         }
  
+        private static void MarkerMoved(Marker marker)
+        {
+            Console.WriteLine(marker);
+        }
+
         private void UpdateMarkerPositions()
         {
             foreach (var marker in Markers)
@@ -174,13 +227,20 @@ namespace EditorModel.Selections
             }
         }
  
+        /// <summary>
+        /// Обработчик перемещения мышки при нажатой левой кнопки мышки 
+        /// </summary>
+        /// <param name="point">Координаты курсора</param>
+        /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
         public void OnMouseMove(Point point, Keys modifierKeys)
         {
             if (_isMouseDown)
             {
+                _mouseOffset = new Size(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
                 _wasMouseMoving = true;
-                //todo
-                UpdateMarkerPositions();
+                // показываем, как будет перемещаться список выбранных фигур
+                _selection.Translate(_mouseOffset.Width, _mouseOffset.Height);
+                OnSelectedFigureChanged();
             }
         }
  
@@ -188,15 +248,13 @@ namespace EditorModel.Selections
         /// Форма курсора в зависимости от контекста
         /// </summary>
         /// <param name="point">Позиция курсора</param>
-        /// <param name="modifierKeys">Управляющие клавиши</param>
+        /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
         /// <returns></returns>
         public Cursor GetCursor(Point point, Keys modifierKeys)
         {
             Marker marker;
             if (FindMarkerAt(point, out marker))
-            {
-                return Cursors.Hand;                
-            }
+                return (Cursor)marker.GetCursor();
             Figure fig;
             if (FindFigureAt(point, out fig))
             {
