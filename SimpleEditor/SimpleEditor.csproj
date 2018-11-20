@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CursorsBuilder.cs" />
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +179,9 @@
       <Project>{134d1e65-a6b1-4b0a-b010-19914a733be2}</Project>
       <Name>EditorModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rotate.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

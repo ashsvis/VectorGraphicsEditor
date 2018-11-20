@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using EditorModel;
 using EditorModel.Figures;
+using EditorModel.Selections;
 
-namespace EditorModel.Selections
+namespace SimpleEditor
 {
     /// <summary>
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
@@ -237,7 +239,7 @@ namespace EditorModel.Selections
                 var rotateMarker = new Marker
                     {
                         NormalizedLocalCoordinates = new PointF(1.1f, 0),
-                        GetCursor = () => Cursors.UpArrow,
+                        GetCursor = () => CursorsBuilder.GetCursor("rotate"),
                         Moved = MarkerMoved
                     };
                 Markers.Add(rotateMarker);
