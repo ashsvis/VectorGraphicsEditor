@@ -24,7 +24,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Реакция маркера на перемещение мышью
         /// </summary>
-        public Action<Marker> Moved;
+        public Action<Marker, Point> Moved;
 
         public Func<object> GetCursor;
 

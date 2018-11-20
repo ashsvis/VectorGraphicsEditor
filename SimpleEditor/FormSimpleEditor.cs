@@ -29,7 +29,7 @@ namespace SimpleEditor
             var fig1 = new Figure();
             fig1.Transform.Translate(150, 150);
             fig1.Transform.Scale(130, 130);
-            builder.BuildEllipseGeometry(fig1);
+            builder.BuildCircleGeometry(fig1);
             _layer.Figures.Add(fig1);
             //создаем вторую фигуру
             var fig2 = new Figure();

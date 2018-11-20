@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Figures;
 
@@ -48,7 +47,8 @@ namespace EditorModel.Selections
         private bool _wasMouseMoving = false;
         private bool _isMouseDown = false;
         private Point _firstMouseDown;
-        private Size _mouseOffset;
+        private Point _mouseOffset;
+        private Marker _movedMarker;
  
         /// <summary>
         /// Обработчик нажатия левой кнопки мышки
@@ -61,43 +61,46 @@ namespace EditorModel.Selections
             _isMouseDown = true;
             _firstMouseDown = point;
             //перебираем фигуры, выделяем/снимаем выделение
-            //todo
-            Figure fig;
-            if (FindFigureAt(point, out fig))
+            FindMarkerAt(point, out _movedMarker);
+            if (_movedMarker == null)
             {
-                var marker = fig as Marker;
-                if (marker != null)
+                Figure fig;
+                if (FindFigureAt(point, out fig))
                 {
-
-                }
-                else // выбрана фигура, а не маркер
-                {
-                    // если этой фигуры не было в списке
-                    if (!_selection.Contains(fig))
+                    _movedMarker = fig as Marker;
+                    if (_movedMarker != null)
                     {
-                        // если не нажата управляющая клавиша Ctrl
-                        if (!modifierKeys.HasFlag(Keys.Control))
-                            _selection.Clear(); // очистим список выбранных
-                        // то добавим её в список
-                        _selection.Add(fig);
-                        OnSelectedFigureChanged();
+                        Console.WriteLine(_movedMarker);
                     }
-                    else if (modifierKeys.HasFlag(Keys.Control))
+                    else // выбрана фигура, а не маркер
                     {
-                        // при нажатой клавише Ctrl удаляем эту фигуру из списка
-                        // если она не последняя
-                        if (_selection.Count > 1)
+                        // если этой фигуры не было в списке
+                        if (!_selection.Contains(fig))
                         {
-                            _selection.Remove(fig);
+                            // если не нажата управляющая клавиша Ctrl
+                            if (!modifierKeys.HasFlag(Keys.Control))
+                                _selection.Clear(); // очистим список выбранных
+                            // то добавим её в список
+                            _selection.Add(fig);
                             OnSelectedFigureChanged();
+                        }
+                        else if (modifierKeys.HasFlag(Keys.Control))
+                        {
+                            // при нажатой клавише Ctrl удаляем эту фигуру из списка
+                            // если она не последняя
+                            if (_selection.Count > 1)
+                            {
+                                _selection.Remove(fig);
+                                OnSelectedFigureChanged();
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                _selection.Clear();
-                OnSelectedFigureChanged();
+                else
+                {
+                    _selection.Clear();
+                    OnSelectedFigureChanged();
+                }
             }
             //строим маркеры
             BuildMarkers();
@@ -170,15 +173,15 @@ namespace EditorModel.Selections
 
         private void BuildMarkers()
         {
-
             Markers.Clear();
+            if (Selection.Count == 0) return;
             //создаем маркеры масштаба
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0), GetCursor = () => Cursors.SizeNWSE, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0), GetCursor = () => Cursors.SizeNESW, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1), GetCursor = () => Cursors.SizeNWSE, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1), GetCursor = () => Cursors.SizeNESW, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0), GetCursor = () => Cursors.SizeNWSE, Moved = ScaleMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0), GetCursor = () => Cursors.SizeNESW, Moved = ScaleMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1), GetCursor = () => Cursors.SizeNWSE, Moved = ScaleMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1), GetCursor = () => Cursors.SizeNESW, Moved = ScaleMarkerMoved });
             }
 
             //создаем маркеры ресайза по вертикали и горизонтали
@@ -206,9 +209,43 @@ namespace EditorModel.Selections
                 figureBuilder.BuildMarkerGeometry(marker);
         }
  
-        private static void MarkerMoved(Marker marker)
+        private void MarkerMoved(Marker marker, Point offset)
         {
-            Console.WriteLine(marker);
+            
+        }
+
+        /// <summary>
+        /// Метод для работы с перемещением маркеров масштабирования
+        /// </summary>
+        /// <param name="marker"></param>
+        /// <param name="offset"></param>
+        private void ScaleMarkerMoved(Marker marker, Point offset)
+        {
+            var p = marker.NormalizedLocalCoordinates;
+            var bounds = _selection.Geometry.Path.GetBounds();
+            var scaleX = (bounds.Width + offset.X * ChangeSign(p.X)) / bounds.Width;
+            var scaleY = (bounds.Height + offset.Y * ChangeSign(p.Y)) / bounds.Height;
+            _selection.Scale(scaleX, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
+        }
+
+        /// <summary>
+        /// Для 1 возвращает +1, для 0 возвращает -1
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        private static int ChangeSign(float coordinate)
+        {
+            return Math.Abs(coordinate - 1) < float.Epsilon ? 1 : -1;
+        }
+
+        /// <summary>
+        /// Меняет 0 на 1 и наоборот
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        private static int Reverse(float coordinate)
+        {
+            return Math.Abs(coordinate - 1) < float.Epsilon ? 0 : 1;
         }
 
         private void UpdateMarkerPositions()
@@ -236,11 +273,20 @@ namespace EditorModel.Selections
         {
             if (_isMouseDown)
             {
-                _mouseOffset = new Size(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
+                _mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
                 _wasMouseMoving = true;
-                // показываем, как будет перемещаться список выбранных фигур
-                _selection.Translate(_mouseOffset.Width, _mouseOffset.Height);
-                OnSelectedFigureChanged();
+                if (_movedMarker != null)
+                {
+                    // вызываем метод маркера для выполения действия
+                    _movedMarker.Moved(_movedMarker, _mouseOffset);
+                    OnSelectedFigureChanged();
+                }
+                else // выбрана фигура, а не маркер
+                {
+                    // показываем, как будет перемещаться список выбранных фигур
+                    _selection.Translate(_mouseOffset.X, _mouseOffset.Y);
+                    OnSelectedFigureChanged();
+                }
             }
         }
  
