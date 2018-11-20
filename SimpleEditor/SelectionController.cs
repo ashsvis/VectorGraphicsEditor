@@ -225,10 +225,10 @@ namespace EditorModel.Selections
             //создаем маркеры ресайза по вертикали и горизонтали
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0), GetCursor = () => Cursors.SizeNS, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1), GetCursor = () => Cursors.SizeNS, Moved = MarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = MarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0), GetCursor = () => Cursors.SizeNS, Moved = HeightMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = WidthMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1), GetCursor = () => Cursors.SizeNS, Moved = HeightMarkerMoved });
+                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = WidthMarkerMoved });
             }
 
             //создаем маркер вращения
@@ -247,7 +247,43 @@ namespace EditorModel.Selections
             foreach (var marker in Markers)
                 figureBuilder.BuildMarkerGeometry(marker);
         }
- 
+
+        /// <summary>
+        /// Метод для работы с перемещением маркеров размеров по ширине
+        /// </summary>
+        /// <param name="marker">Маркер, вызвавший этот метод</param>
+        /// <param name="offset">Смещение</param>
+        private void WidthMarkerMoved(Marker marker, Point offset)
+        {
+            var p = marker.NormalizedLocalCoordinates;
+            var bounds = _selection.Geometry.Path.GetBounds();
+            var scaleX = (bounds.Width + offset.X * ChangeSign(p.X)) / bounds.Width;
+            if (scaleX <= 0) scaleX = 1;
+            try
+            {
+                _selection.Scale(scaleX, 1, new PointF(Reverse(p.X), Reverse(p.Y)));
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Метод для работы с перемещением маркеров размеров по высоте
+        /// </summary>
+        /// <param name="marker">Маркер, вызвавший этот метод</param>
+        /// <param name="offset">Смещение</param>
+        private void HeightMarkerMoved(Marker marker, Point offset)
+        {
+            var p = marker.NormalizedLocalCoordinates;
+            var bounds = _selection.Geometry.Path.GetBounds();
+            var scaleY = (bounds.Height + offset.Y * ChangeSign(p.Y)) / bounds.Height;
+            if (scaleY <= 0) scaleY = 1;
+            try
+            {
+                _selection.Scale(1, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
+            }
+            catch { }
+        }
+
         private void MarkerMoved(Marker marker, Point offset)
         {
             
@@ -263,8 +299,14 @@ namespace EditorModel.Selections
             var p = marker.NormalizedLocalCoordinates;
             var bounds = _selection.Geometry.Path.GetBounds();
             var scaleX = (bounds.Width + offset.X * ChangeSign(p.X)) / bounds.Width;
+            if (scaleX <= 0) scaleX = 1;
             var scaleY = (bounds.Height + offset.Y * ChangeSign(p.Y)) / bounds.Height;
-            _selection.Scale(scaleX, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
+            if (scaleY <= 0) scaleY = 1;
+            try
+            {
+                _selection.Scale(scaleX, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
+            }
+            catch { }
         }
 
         /// <summary>

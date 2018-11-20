@@ -15,6 +15,7 @@ namespace SimpleEditor
     public partial class FormSimpleEditor : Form
     {
         EditorMode _editorMode = EditorMode.Select;
+
         private Cursor _mouseDownCursor;
         readonly Layer _layer;
         readonly SelectionController _selectionController;
@@ -24,6 +25,7 @@ namespace SimpleEditor
             InitializeComponent();
             _layer = new Layer();
             _selectionController = new SelectionController(_layer);
+            
             // пока что эти события требуют обновить поверхность pbCanvas, когда будет время...
             _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
