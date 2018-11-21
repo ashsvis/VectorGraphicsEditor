@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using EditorModel;
 using EditorModel.Figures;
 using EditorModel.Selections;
+using SimpleEditor.Common;
 
 namespace SimpleEditor
 {
@@ -56,8 +57,8 @@ namespace SimpleEditor
         /// </summary>
         public event Action SelectedTransformChanged = delegate { };
 
-        private bool _wasMouseMoving = false;
-        private bool _isMouseDown = false;
+        private bool _wasMouseMoving;
+        private bool _isMouseDown;
         private Point _firstMouseDown;
         private Point _mouseOffset;
         private Marker _movedMarker;
@@ -207,6 +208,29 @@ namespace SimpleEditor
         }
 
         /// <summary>
+        /// Метода для более краткой записи при создании маркера
+        /// </summary>
+        /// <param name="normX"></param>
+        /// <param name="normY"></param>
+        /// <param name="cursor"></param>
+        /// <param name="moved"></param>
+        /// <returns></returns>
+        private Marker CreateMarker(float normX, float normY, UserCursor cursor, Action<Marker, Point> moved, float anchX, float anchY)
+        {
+            var normPoint = new PointF(normX, normY);
+            var anchPoint = new PointF(anchX, anchY);
+            return new Marker
+            {
+                NormalizedLocalCoordinates = normPoint,
+                GetCursor = () => CursorsBuilder.GetCursor(cursor),
+                Moved = moved,
+                AbsolutePosition = _selection.ToWorldCoordinates(normPoint),
+                Anchor = new PointF(anchX, anchY),
+                AnchorPosition = _selection.ToWorldCoordinates(anchPoint)
+            };
+        }
+
+        /// <summary>
         /// Метод строит маркеры у объекта Selection
         /// </summary>
         private void BuildMarkers()
@@ -218,31 +242,25 @@ namespace SimpleEditor
             //создаем маркеры масштаба
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0), GetCursor = () => Cursors.SizeNWSE, Moved = ScaleMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0), GetCursor = () => Cursors.SizeNESW, Moved = ScaleMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 1), GetCursor = () => Cursors.SizeNWSE, Moved = ScaleMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 1), GetCursor = () => Cursors.SizeNESW, Moved = ScaleMarkerMoved });
+                Markers.Add(CreateMarker(0, 0, UserCursor.SizeNWSE, ScaleMarkerMoved, 1, 1));
+                Markers.Add(CreateMarker(1, 0, UserCursor.SizeNESW, ScaleMarkerMoved, 0, 1));
+                Markers.Add(CreateMarker(1, 1, UserCursor.SizeNWSE, ScaleMarkerMoved, 0 ,0));
+                Markers.Add(CreateMarker(0, 1, UserCursor.SizeNESW, ScaleMarkerMoved, 1, 0));
             }
 
             //создаем маркеры ресайза по вертикали и горизонтали
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
             {
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 0), GetCursor = () => Cursors.SizeNS, Moved = HeightMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(1, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = WidthMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0.5f, 1), GetCursor = () => Cursors.SizeNS, Moved = HeightMarkerMoved });
-                Markers.Add(new Marker { NormalizedLocalCoordinates = new PointF(0, 0.5f), GetCursor = () => Cursors.SizeWE, Moved = WidthMarkerMoved });
+                Markers.Add(CreateMarker(0.5f, 0, UserCursor.SizeNS, HeightMarkerMoved, 0, 1));
+                Markers.Add(CreateMarker(1, 0.5f, UserCursor.SizeWE, WidthMarkerMoved, 0, 1));
+                Markers.Add(CreateMarker(0.5f, 1, UserCursor.SizeNS, HeightMarkerMoved, 1, 0));
+                Markers.Add(CreateMarker(0, 0.5f, UserCursor.SizeWE, WidthMarkerMoved, 1, 0));
             }
 
             //создаем маркер вращения
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
             {
-                var rotateMarker = new Marker
-                    {
-                        NormalizedLocalCoordinates = new PointF(1.1f, 0),
-                        GetCursor = () => CursorsBuilder.GetCursor("rotate"),
-                        Moved = MarkerMoved
-                    };
-                Markers.Add(rotateMarker);
+                Markers.Add(CreateMarker(1.1f, 0, UserCursor.Rotate, RotateMarkerMoved, 0.5f, 0.5f));
             }
             // определяем геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
@@ -257,15 +275,12 @@ namespace SimpleEditor
         /// <param name="offset">Смещение</param>
         private void WidthMarkerMoved(Marker marker, Point offset)
         {
-            var p = marker.NormalizedLocalCoordinates;
-            var bounds = _selection.Geometry.Path.GetBounds();
-            var scaleX = (bounds.Width + offset.X * ChangeSign(p.X)) / bounds.Width;
-            if (scaleX <= 0) scaleX = 1;
-            try
-            {
-                _selection.Scale(scaleX, 1, new PointF(Reverse(p.X), Reverse(p.Y)));
-            }
-            catch { }
+            var markerPoint = marker.AbsolutePosition;
+            var anchorPoint = marker.AnchorPosition;
+            var width = Math.Abs(markerPoint.X - anchorPoint.X);
+            var scaleX = (width + offset.X * Math.Sign(markerPoint.X - anchorPoint.X)) / width;
+            if (scaleX < float.Epsilon) return; // scaleX = width * float.Epsilon;
+            _selection.Scale(scaleX, 1, marker.Anchor);
         }
 
         /// <summary>
@@ -275,20 +290,23 @@ namespace SimpleEditor
         /// <param name="offset">Смещение</param>
         private void HeightMarkerMoved(Marker marker, Point offset)
         {
-            var p = marker.NormalizedLocalCoordinates;
-            var bounds = _selection.Geometry.Path.GetBounds();
-            var scaleY = (bounds.Height + offset.Y * ChangeSign(p.Y)) / bounds.Height;
-            if (scaleY <= 0) scaleY = 1;
-            try
-            {
-                _selection.Scale(1, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
-            }
-            catch { }
+            var markerPoint = marker.AbsolutePosition;
+            var anchorPoint = marker.AnchorPosition;
+            var height = Math.Abs(markerPoint.Y - anchorPoint.Y);
+            var scaleY = (height + offset.Y * Math.Sign(markerPoint.Y - anchorPoint.Y)) / height;
+            if (scaleY < float.Epsilon) return; // scaleY = height * float.Epsilon;
+            _selection.Scale(1, scaleY, marker.Anchor);
         }
 
-        private void MarkerMoved(Marker marker, Point offset)
+        private void RotateMarkerMoved(Marker marker, Point offset)
         {
-            
+            var pA = _selection.ToWorldCoordinates(marker.NormalizedLocalCoordinates);     // координаты маркера вращения
+            var pB = new PointF(offset.X, offset.Y);
+            var pO = _selection.ToWorldCoordinates(new PointF(0.5f, 0.5f));                // центр вращения в центре фигуры
+            var vecA = pA.Vector(pO);
+            var vecB = pB.Vector(pO);
+            var angle = vecA.Angle(vecB);
+            _selection.Rotate(angle, marker.Anchor);
         }
 
         /// <summary>
@@ -298,37 +316,15 @@ namespace SimpleEditor
         /// <param name="offset">Смещение</param>
         private void ScaleMarkerMoved(Marker marker, Point offset)
         {
-            var p = marker.NormalizedLocalCoordinates;
-            var bounds = _selection.Geometry.Path.GetBounds();
-            var scaleX = (bounds.Width + offset.X * ChangeSign(p.X)) / bounds.Width;
-            if (scaleX <= 0) scaleX = 1;
-            var scaleY = (bounds.Height + offset.Y * ChangeSign(p.Y)) / bounds.Height;
-            if (scaleY <= 0) scaleY = 1;
-            try
-            {
-                _selection.Scale(scaleX, scaleY, new PointF(Reverse(p.X), Reverse(p.Y)));
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Для 1 возвращает +1, для 0 возвращает -1
-        /// </summary>
-        /// <param name="coordinate"></param>
-        /// <returns></returns>
-        private static int ChangeSign(float coordinate)
-        {
-            return Math.Abs(coordinate - 1) < float.Epsilon ? 1 : -1;
-        }
-
-        /// <summary>
-        /// Меняет 0 на 1 и наоборот
-        /// </summary>
-        /// <param name="coordinate"></param>
-        /// <returns></returns>
-        private static int Reverse(float coordinate)
-        {
-            return Math.Abs(coordinate - 1) < float.Epsilon ? 0 : 1;
+            var markerPoint = marker.AbsolutePosition;
+            var anchorPoint = marker.AnchorPosition;
+            var bounds = new SizeF(Math.Abs(markerPoint.X - anchorPoint.X),
+                                   Math.Abs(markerPoint.Y - anchorPoint.Y));
+            var scaleX = (bounds.Width + offset.X * Math.Sign(markerPoint.X - anchorPoint.X)) / bounds.Width;
+            var scaleY = (bounds.Height + offset.Y * Math.Sign(markerPoint.Y - anchorPoint.Y)) / bounds.Height;
+            if (scaleX < float.Epsilon) return; // scaleX = bounds.Width * float.Epsilon;
+            if (scaleY < float.Epsilon) return; // scaleY = bounds.Height * float.Epsilon;
+            _selection.Scale(scaleX, scaleY, marker.Anchor);
         }
 
         /// <summary>
@@ -390,7 +386,7 @@ namespace SimpleEditor
             Figure fig;
             if (FindFigureAt(point, out fig))
             {
-                return Cursors.SizeAll;
+                return CursorsBuilder.GetCursor(UserCursor.MoveAll);
             }
             return Cursors.Default;
         }

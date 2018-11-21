@@ -38,7 +38,8 @@ namespace EditorModel.Figures
         {
             var path = new GraphicsPath();
             path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
+            figure.Geometry = new PrimitiveGeometry(path, 
+                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate));
         }
 
         /// <summary>

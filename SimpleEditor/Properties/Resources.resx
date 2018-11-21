@@ -157,6 +157,9 @@
   <data name="insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\insert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="MoveAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\306.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="newpage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\newpage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -181,7 +184,7 @@
   <data name="redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\redo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotate.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="rotateleft" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -195,6 +198,18 @@
   </data>
   <data name="sendtoback" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sendtoback.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SizeNESW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\134.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SizeNS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\138.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SizeNWSE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\133.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SizeWE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\137.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="square" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\square.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

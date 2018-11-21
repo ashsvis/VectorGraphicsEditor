@@ -19,7 +19,7 @@ namespace SimpleEditor.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -191,6 +191,16 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] MoveAll {
+            get {
+                object obj = ResourceManager.GetObject("MoveAll", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap newpage {
@@ -273,9 +283,9 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] rotate {
+        internal static byte[] Rotate {
             get {
-                object obj = ResourceManager.GetObject("rotate", resourceCulture);
+                object obj = ResourceManager.GetObject("Rotate", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -317,6 +327,46 @@ namespace SimpleEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("sendtoback", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SizeNESW {
+            get {
+                object obj = ResourceManager.GetObject("SizeNESW", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SizeNS {
+            get {
+                object obj = ResourceManager.GetObject("SizeNS", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SizeNWSE {
+            get {
+                object obj = ResourceManager.GetObject("SizeNWSE", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SizeWE {
+            get {
+                object obj = ResourceManager.GetObject("SizeWE", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

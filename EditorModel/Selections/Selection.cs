@@ -90,10 +90,19 @@ namespace EditorModel.Selections
         /// <summary>
         /// Переводит точку из локальных нормализированных координат (0,0)-(1,1) в мировые координаты
         /// </summary>
-        public PointF ToWorldCoordinates(PointF p)
+        public PointF ToWorldCoordinates(PointF point)
         {
             var bounds = GetTransformedPath().GetBounds();
-            return new PointF(bounds.Left + p.X * bounds.Width, bounds.Top + p.Y * bounds.Height);
+            return new PointF(bounds.Left + point.X * bounds.Width, bounds.Top + point.Y * bounds.Height);
+        }
+
+        /// <summary>
+        /// Переводит точку из мировых координат в локальные нормализированные координаты (0,0)-(1,1)
+        /// </summary>
+        public PointF ToLocalCoordinates(PointF point)
+        {
+            var bounds = GetTransformedPath().GetBounds();
+            return new PointF((point.X - bounds.Left) / bounds.Width, (point.Y - bounds.Top) / bounds.Height);
         }
 
         /// <summary>

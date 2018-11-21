@@ -1,6 +1,5 @@
 ﻿using EditorModel;
 using EditorModel.Figures;
-using EditorModel.Selections;
 using System.Windows.Forms;
 
 namespace SimpleEditor
