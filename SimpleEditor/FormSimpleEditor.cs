@@ -36,13 +36,13 @@ namespace SimpleEditor
             //создаем первую фигуру
             var fig1 = new Figure();
             fig1.Transform.Translate(150, 150);
-            fig1.Transform.Scale(130, 130);
+            fig1.Transform.Scale(100, 100);
             builder.BuildCircleGeometry(fig1);
             _layer.Figures.Add(fig1);
             //создаем вторую фигуру
             var fig2 = new Figure();
-            fig2.Transform.Translate(200, 200);
-            fig2.Transform.Scale(130, 130);
+            fig2.Transform.Translate(250, 250);
+            fig2.Transform.Scale(100, 100);
             builder.BuildRectangleGeometry(fig2);
             _layer.Figures.Add(fig2);
             pbCanvas.Invalidate();

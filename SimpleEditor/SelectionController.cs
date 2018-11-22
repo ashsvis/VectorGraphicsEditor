@@ -252,15 +252,16 @@ namespace SimpleEditor
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
             {
                 Markers.Add(CreateMarker(0.5f, 0, UserCursor.SizeNS, HeightMarkerMoved, 0, 1));
-                Markers.Add(CreateMarker(1, 0.5f, UserCursor.SizeWE, WidthMarkerMoved, 0, 1));
-                Markers.Add(CreateMarker(0.5f, 1, UserCursor.SizeNS, HeightMarkerMoved, 1, 0));
+                Markers.Add(CreateMarker(1, 0.5f, UserCursor.SizeWE, WidthMarkerMoved, 0, 0));
+                Markers.Add(CreateMarker(0.5f, 1, UserCursor.SizeNS, HeightMarkerMoved, 0, 0));
                 Markers.Add(CreateMarker(0, 0.5f, UserCursor.SizeWE, WidthMarkerMoved, 1, 0));
             }
 
             //создаем маркер вращения
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
             {
-                Markers.Add(CreateMarker(1.1f, 0, UserCursor.Rotate, RotateMarkerMoved, 0.5f, 0.5f));
+                var rotateMarker = CreateMarker(1.1f, 0, UserCursor.Rotate, RotateMarkerMoved, 0.5f, 0.5f);
+                Markers.Add(rotateMarker);
             }
             // определяем геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
@@ -277,10 +278,10 @@ namespace SimpleEditor
         {
             var markerPoint = marker.AbsolutePosition;
             var anchorPoint = marker.AnchorPosition;
-            var width = Math.Abs(markerPoint.X - anchorPoint.X);
-            var scaleX = (width + offset.X * Math.Sign(markerPoint.X - anchorPoint.X)) / width;
-            if (scaleX < float.Epsilon) return; // scaleX = width * float.Epsilon;
-            _selection.Scale(scaleX, 1, marker.Anchor);
+            var mousePoint = new PointF(markerPoint.X + offset.X, markerPoint.Y + offset.Y);
+            var scale = GetScale(markerPoint, anchorPoint, mousePoint);
+            _selection.Scale(scale, 1, marker.Anchor);
+
         }
 
         /// <summary>
@@ -292,21 +293,24 @@ namespace SimpleEditor
         {
             var markerPoint = marker.AbsolutePosition;
             var anchorPoint = marker.AnchorPosition;
-            var height = Math.Abs(markerPoint.Y - anchorPoint.Y);
-            var scaleY = (height + offset.Y * Math.Sign(markerPoint.Y - anchorPoint.Y)) / height;
-            if (scaleY < float.Epsilon) return; // scaleY = height * float.Epsilon;
-            _selection.Scale(1, scaleY, marker.Anchor);
+            var mousePoint = new PointF(markerPoint.X + offset.X, markerPoint.Y + offset.Y);
+            var scale = GetScale(markerPoint, anchorPoint, mousePoint);
+            _selection.Scale(1, scale, marker.Anchor);
         }
 
         private void RotateMarkerMoved(Marker marker, Point offset)
         {
-            var pA = _selection.ToWorldCoordinates(marker.NormalizedLocalCoordinates);     // координаты маркера вращения
-            var pB = new PointF(offset.X, offset.Y);
-            var pO = _selection.ToWorldCoordinates(new PointF(0.5f, 0.5f));                // центр вращения в центре фигуры
-            var vecA = pA.Vector(pO);
-            var vecB = pB.Vector(pO);
-            var angle = vecA.Angle(vecB);
+            var markerPoint = marker.AbsolutePosition;
+            var anchorPoint = marker.AnchorPosition;
+            var mousePoint = new PointF(markerPoint.X + offset.X, markerPoint.Y + offset.Y);
+            var a = markerPoint.Sub(anchorPoint);
+            var m = mousePoint.Sub(anchorPoint);
+            var angle = m.Angle(a);
+
+            Console.WriteLine(angle);
+
             _selection.Rotate(angle, marker.Anchor);
+
         }
 
         /// <summary>
@@ -318,13 +322,29 @@ namespace SimpleEditor
         {
             var markerPoint = marker.AbsolutePosition;
             var anchorPoint = marker.AnchorPosition;
-            var bounds = new SizeF(Math.Abs(markerPoint.X - anchorPoint.X),
-                                   Math.Abs(markerPoint.Y - anchorPoint.Y));
-            var scaleX = (bounds.Width + offset.X * Math.Sign(markerPoint.X - anchorPoint.X)) / bounds.Width;
-            var scaleY = (bounds.Height + offset.Y * Math.Sign(markerPoint.Y - anchorPoint.Y)) / bounds.Height;
-            if (scaleX < float.Epsilon) return; // scaleX = bounds.Width * float.Epsilon;
-            if (scaleY < float.Epsilon) return; // scaleY = bounds.Height * float.Epsilon;
-            _selection.Scale(scaleX, scaleY, marker.Anchor);
+            var mousePoint = new PointF(markerPoint.X + offset.X, markerPoint.Y + offset.Y);
+            var scale = GetScale(markerPoint, anchorPoint, mousePoint);
+            _selection.Scale(scale, scale, marker.Anchor);
+        }
+
+        private const float Epsilon = 0.01f;
+
+        /// <summary>
+        /// Расчёт коэффициента масштабирования
+        /// </summary>
+        /// <param name="marker">Точка маркера</param>
+        /// <param name="anchor">Точка якоря</param>
+        /// <param name="mouse">Положение мышки</param>
+        /// <returns></returns>
+        private static float GetScale(PointF marker, PointF anchor, PointF mouse)
+        {
+            var a = marker.Sub(anchor);
+            var m = mouse.Sub(anchor);
+            var lengthA = a.Length();
+            var b = m.DotScalar(a) / lengthA;
+            var scale = b / lengthA;
+            if (Math.Abs(scale) < Epsilon) scale = Epsilon;
+            return scale;            
         }
 
         /// <summary>
