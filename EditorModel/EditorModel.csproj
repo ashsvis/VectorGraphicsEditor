@@ -50,8 +50,7 @@
     <Compile Include="Figures\Geometry.cs" />
     <Compile Include="Figures\PolygoneGeometry.cs" />
     <Compile Include="Figures\PrimitiveGeometry.cs" />
-    <Compile Include="Layer.cs" />
-    <Compile Include="Figures\Marker.cs" />
+    <Compile Include="Figures\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Figures\Renderer.cs" />
     <Compile Include="Selections\Selection.cs" />

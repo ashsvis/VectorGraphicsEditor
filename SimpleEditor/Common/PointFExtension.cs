@@ -5,6 +5,11 @@ namespace SimpleEditor.Common
 {
     public static class PointFExtension
     {
+        public const float PI = (float)Math.PI;
+        public const float PI2 = 2 * PI;
+        public const float TO_DEGREES = 180 / (float)Math.PI;
+        public const float TO_RADIANS = (float)Math.PI / 180;
+
         /// <summary>
         /// Длина (модуль) вектора
         /// </summary>
@@ -13,6 +18,16 @@ namespace SimpleEditor.Common
         public static float Length(this PointF vector)
         {
             return (float) Math.Sqrt(vector.X*vector.X + vector.Y*vector.Y);
+        }
+
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns>число</returns>
+        public static float LengthSqr(this PointF vector)
+        {
+            return vector.X * vector.X + vector.Y * vector.Y;
         }
 
         /// <summary>
@@ -72,15 +87,25 @@ namespace SimpleEditor.Common
         }
 
         /// <summary>
-        /// Угол между векторами, в градусах
+        /// Минимальный угол между векторами, в рад
         /// </summary>
         /// <param name="vector1"></param>
         /// <param name="vector2"></param>
         /// <returns>число - угол</returns>
         public static float Angle(this PointF vector1, PointF vector2)
         {
-            var cos = vector1.DotScalar(vector2)/(vector1.Length()*vector2.Length());
-            return (float)(Math.Acos(cos) * (2 * Math.PI));
+            var a = vector1.Angle() - vector2.Angle();
+            a += (float)((a > PI) ? -2 * PI : (a < -PI) ? 2 * PI : 0);
+
+            return a;
+        }
+
+        /// <summary>
+        /// Angle (-PI ; PI]
+        /// </summary>
+        public static float Angle(this PointF c)
+        {
+            return (float)Math.Atan2(c.Y, c.X);
         }
 
         /// <summary>

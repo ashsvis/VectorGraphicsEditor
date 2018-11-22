@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\CursorsBuilder.cs" />
+    <Compile Include="Common\CursorFactory.cs" />
+    <Compile Include="Controllers\Marker.cs" />
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,9 +54,10 @@
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\PointFExtension.cs" />
+    <Compile Include="Common\Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectionController.cs" />
+    <Compile Include="Controllers\SelectionController.cs" />
     <EmbeddedResource Include="FormSimpleEditor.resx">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
     </EmbeddedResource>
