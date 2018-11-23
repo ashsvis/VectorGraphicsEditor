@@ -78,19 +78,19 @@ namespace UnitTestProjectForEditorModel
             selection.Add(fig2);
 
             //ресайз по X относительно левого края
-            selection.Scale(2, 1, new PointF(0, 0.5f));
+            selection.Scale(2, 1, selection.ToWorldCoordinates(new PointF(0, 0.5f)));
             selection.PushTransformToSelectedFigures();
             //рисуем
             Draw("2_2.png", fig1, fig2, selection);
 
             //ресайз по Y относительно нижнего края
-            selection.Scale(1, 2, new PointF(0.5f, 1));
+            selection.Scale(1, 2, selection.ToWorldCoordinates(new PointF(0.5f, 1)));
             selection.PushTransformToSelectedFigures();
             //рисуем
             Draw("2_3.png", fig1, fig2, selection);
 
             //вращение относительно центра
-            selection.Rotate(45, new PointF(0.5f, 0.5f));
+            selection.Rotate(45, selection.ToWorldCoordinates(new PointF(0.5f, 0.5f)));
             selection.PushTransformToSelectedFigures();
             //рисуем
             Draw("2_4.png", fig1, fig2, selection);
@@ -102,7 +102,7 @@ namespace UnitTestProjectForEditorModel
             Draw("2_5.png", fig1, fig2, selection);
 
             //skew по X относительно нижней границы
-            selection.Skew(0.5f, 0, new PointF(0.5f, 1));
+            selection.Skew(0.5f, 0, selection.ToWorldCoordinates(new PointF(0.5f, 1)));
             selection.PushTransformToSelectedFigures();
             //рисуем
             Draw("2_6.png", fig1, fig2, selection);

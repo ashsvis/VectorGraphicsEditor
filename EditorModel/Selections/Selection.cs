@@ -123,7 +123,7 @@ namespace EditorModel.Selections
         /// </summary>
         /// <param name="scaleX">Коэффициент масштабирования по горизонтали</param>
         /// <param name="scaleY">Коэффициент масштабирования по вертикали</param>
-        /// <param name="anchor">Координаты "якоря" (точки привязки)</param>
+        /// <param name="anchor">Координаты "якоря" (в мировых координатах)</param>
         public void Scale(float scaleX, float scaleY, PointF anchor)
         {
             //можем менять размер?
@@ -138,14 +138,11 @@ namespace EditorModel.Selections
                 //сохраняем аспект
                 scaleX = scaleY = Math.Max(scaleX, scaleY);
 
-            //считаем якорь в мировых координатах
-            var worldAnchor = ToWorldCoordinates(anchor);
-
             //шкалируем относительно якоря
             var m = new Matrix();
-            m.Translate(worldAnchor.X, worldAnchor.Y);    //переводим центр координат в якорь
-            m.Scale(scaleX, scaleY);                      //масштабируем
-            m.Translate(-worldAnchor.X, -worldAnchor.Y);  //возвращаем центр координат
+            m.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            m.Scale(scaleX, scaleY);            //масштабируем
+            m.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
             //
             Transform = m;
@@ -156,17 +153,14 @@ namespace EditorModel.Selections
         /// </summary>
         /// <param name="skewX">Коэффициент сдвига по горизонтали</param>
         /// <param name="skewY">Коэффициент сдвига по вертикали</param>
-        /// <param name="anchor">Координаты "якоря" (точки привязки)</param>
+        /// <param name="anchor">Координаты "якоря" (в мировых координатах)</param>
         public void Skew(float skewX, float skewY, PointF anchor)
         {
-            //считаем якорь в мировых координатах
-            var worldAnchor = ToWorldCoordinates(anchor);
-
             //сдвигаем относительно якоря
             var m = new Matrix();
-            m.Translate(worldAnchor.X, worldAnchor.Y);    //переводим центр координат в якорь
-            m.Shear(skewX, skewY);                        //сдвигаем
-            m.Translate(-worldAnchor.X, -worldAnchor.Y);  //возвращаем центр координат
+            m.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            m.Shear(skewX, skewY);              //сдвигаем
+            m.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
             //
             Transform = m;
@@ -176,7 +170,7 @@ namespace EditorModel.Selections
         /// Поворот
         /// </summary>
         /// <param name="angle">Угол поворота, в градусах</param>
-        /// <param name="center">Координаты центра вращения</param>
+        /// <param name="center">Координаты центра вращения (в мировых координатах)</param>
         public void Rotate(float angle, PointF center)
         {
             //можем вращать?
@@ -184,13 +178,10 @@ namespace EditorModel.Selections
 
             if (!allowRotate)
                 return; //не можем вращать
-
-            //считаем якорь в мировых координатах
-            var worldAnchor = ToWorldCoordinates(center);
-
+            
             //вращаем относительно якоря
             var m = new Matrix();
-            m.RotateAt(angle, worldAnchor);      //вращаем
+            m.RotateAt(angle, center);      //вращаем
 
             //
             Transform = m;

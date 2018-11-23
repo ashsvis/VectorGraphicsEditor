@@ -8,6 +8,8 @@ namespace EditorModel.Figures
     /// </summary>
     public class FigureBuilder
     {
+        private const int MARKER_SIZE = 8;
+
         /// <summary>
         /// Построение пути для квадрата
         /// </summary>
@@ -57,11 +59,11 @@ namespace EditorModel.Figures
         /// Построение пути для маркера
         /// </summary>
         /// <param name="marker"></param>
-        public void BuildMarkerGeometry(Marker marker)
+        public void BuildMarkerGeometry(Figure marker)
         {
             var path = new GraphicsPath();
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
-            path.AddRectangle(new RectangleF(-2f, -2f, 5f, 5f));
+            path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
                 (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select));         
         }
