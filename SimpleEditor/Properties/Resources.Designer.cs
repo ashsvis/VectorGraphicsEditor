@@ -121,6 +121,26 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateEllipse {
+            get {
+                object obj = ResourceManager.GetObject("CreateEllipse", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateRect {
+            get {
+                object obj = ResourceManager.GetObject("CreateRect", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap cut {
@@ -321,12 +341,32 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SelectByRibbonRect {
+            get {
+                object obj = ResourceManager.GetObject("SelectByRibbonRect", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap sendtoback {
             get {
                 object obj = ResourceManager.GetObject("sendtoback", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] ShowCursors {
+            get {
+                object obj = ResourceManager.GetObject("ShowCursors", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

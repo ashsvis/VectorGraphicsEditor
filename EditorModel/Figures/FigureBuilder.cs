@@ -8,7 +8,9 @@ namespace EditorModel.Figures
     /// </summary>
     public class FigureBuilder
     {
+// ReSharper disable InconsistentNaming
         private const int MARKER_SIZE = 8;
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Построение пути для квадрата
@@ -71,7 +73,7 @@ namespace EditorModel.Figures
         //и т.д. для всех примитивных фигур
         //todo
         // а ромб - это примитивная геометрия или нет?
-        // наверно нет, так как нет метода Path.Add..., чтобысразу его нарисовать
+        // наверно нет, так как нет метода Path.Add..., чтобы сразу его нарисовать
 
         /// <summary>
         /// Подключаем к фигуре геометрию текстовой строки

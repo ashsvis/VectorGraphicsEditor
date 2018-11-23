@@ -5,10 +5,12 @@ namespace SimpleEditor.Common
 {
     public static class PointFExtension
     {
+// ReSharper disable InconsistentNaming
         public const float PI = (float)Math.PI;
         public const float PI2 = 2 * PI;
         public const float TO_DEGREES = 180 / (float)Math.PI;
         public const float TO_RADIANS = (float)Math.PI / 180;
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Длина (модуль) вектора
@@ -95,7 +97,7 @@ namespace SimpleEditor.Common
         public static float Angle(this PointF vector1, PointF vector2)
         {
             var a = vector1.Angle() - vector2.Angle();
-            a += (float)((a > PI) ? -2 * PI : (a < -PI) ? 2 * PI : 0);
+            a += (a > PI) ? -2 * PI : (a < -PI) ? 2 * PI : 0;
 
             return a;
         }

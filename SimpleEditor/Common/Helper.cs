@@ -1,12 +1,13 @@
 using System;
 using System.Drawing;
-using SimpleEditor.Common;
 
-namespace SimpleEditor
+namespace SimpleEditor.Common
 {
     static class Helper
     {
+// ReSharper disable InconsistentNaming
         private const float EPSILON = 0.01f;
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Расчёт коэффициента масштабирования
@@ -17,9 +18,11 @@ namespace SimpleEditor
         /// <returns></returns>
         public static float GetScale(PointF marker, PointF anchor, PointF mouse)
         {
-            var a = marker.Sub(anchor);
-            var m = mouse.Sub(anchor);
+            var a = marker.Sub(anchor); // строим вектор Anchor-Marker
+            var m = mouse.Sub(anchor);  // строим вектор Anchor-Mouse(position)
+            // считаем коэффициент
             var scale = m.DotScalar(a) / a.LengthSqr();
+            // защита результата от "крайних" случаев расчёта
             if (Math.Abs(scale) < EPSILON) scale = EPSILON;
             return scale;
         }

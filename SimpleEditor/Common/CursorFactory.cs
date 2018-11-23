@@ -7,11 +7,16 @@ namespace SimpleEditor.Common
     public enum UserCursor
     {
         Rotate,
+// ReSharper disable InconsistentNaming
         SizeNWSE,
         SizeNESW,
         SizeWE,
         SizeNS,
-        MoveAll
+// ReSharper restore InconsistentNaming
+        MoveAll,
+        SelectByRibbonRect,
+        CreateRect,
+        CreateEllipse
     }
 
     public static class CursorFactory
@@ -30,6 +35,9 @@ namespace SimpleEditor.Common
             AddCursor(UserCursor.SizeWE, Properties.Resources.SizeWE);
             AddCursor(UserCursor.SizeNS, Properties.Resources.SizeNS);
             AddCursor(UserCursor.MoveAll, Properties.Resources.MoveAll);
+            AddCursor(UserCursor.SelectByRibbonRect, Properties.Resources.SelectByRibbonRect);
+            AddCursor(UserCursor.CreateRect, Properties.Resources.CreateRect);
+            AddCursor(UserCursor.CreateEllipse, Properties.Resources.CreateEllipse);
             // добавлять курсоры здесь
         }
 

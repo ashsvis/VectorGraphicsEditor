@@ -201,5 +201,26 @@
   <ItemGroup>
     <None Include="Resources\306.cur" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShowCursors.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CROP.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\109.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\296.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RECT.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELLIPSE.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELLIP.cur" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
