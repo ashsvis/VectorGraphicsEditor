@@ -1,9 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using EditorModel.Figures;
 
-namespace SimpleEditor
+namespace SimpleEditor.Controllers
 {
     public class Marker : Figure
     {

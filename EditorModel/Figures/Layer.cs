@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using EditorModel.Figures;
 
-namespace EditorModel
+namespace EditorModel.Figures
 {
     /// <summary>
     /// Слой, содержащий все фигуры

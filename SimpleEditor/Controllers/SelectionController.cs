@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using EditorModel;
 using EditorModel.Figures;
 using EditorModel.Selections;
 using SimpleEditor.Common;
 
-namespace SimpleEditor
+namespace SimpleEditor.Controllers
 {
     /// <summary>
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
@@ -136,6 +135,16 @@ namespace SimpleEditor
         }
 
         /// <summary>
+        /// Очистить список выбранных фигур
+        /// </summary>
+        public void Clear()
+        {
+            _markers.Clear();
+            _selection.Clear();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
         /// Вызываем привязынный к событию метод при выборе фигур
         /// </summary>
         private void OnSelectedFigureChanged()
@@ -206,10 +215,12 @@ namespace SimpleEditor
         /// <summary>
         /// Создание маркера
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="posX"></param>
-        /// <param name="posY"></param>
-        /// <param name="cursor"></param>
+        /// <param name="type">Тип маркера</param>
+        /// <param name="posX">Нормированная координата маркера по горизонтали</param>
+        /// <param name="posY">Нормированная координата маркера по вертикали</param>
+        /// <param name="cursor">Курсор на маркере</param>
+        /// <param name="anchorX">Нормированная координата якоря по горизонтали</param>
+        /// <param name="anchorY">Нормированная координата якоря по вертикали</param>
         /// <returns></returns>
         private Marker CreateMarker(MarkerType type, float posX, float posY, UserCursor cursor, float anchorX, float anchorY)
         {
@@ -224,10 +235,17 @@ namespace SimpleEditor
             };
         }
 
+        /// <summary>
+        /// Метод (действие) при перемещении любого маркера
+        /// </summary>
+        /// <param name="marker">Маркер, который перемещаем</param>
+        /// <param name="mousePos">Позиция мышки на новом месте</param>
         private void OnMarkerMoved(Marker marker, Point mousePos)
         {
+            // получаем коэффициент масштабирования, используя позицию маркера в мировых "координатах",
+            // позицию якоря в мировых "координатах" и позицию курсора мышки
             var scale = Helper.GetScale(marker.Position, marker.AnchorPosition, mousePos);
-
+            // в зависимости от типа маркера вызываем метод Scale с различными параметрами 
             switch (marker.MarkerType)
             {
                 case MarkerType.SizeX: _selection.Scale(scale, 1, marker.AnchorPosition); break;
@@ -235,7 +253,10 @@ namespace SimpleEditor
                 case MarkerType.Scale: _selection.Scale(scale, scale, marker.AnchorPosition); break;
                 case MarkerType.Rotate:
                 {
+                    // получаем угол вращения (в градусах), используя позицию маркера в мировых "координатах",
+                    // позицию якоря в мировых "координатах" и позицию курсора мышки
                     var angle = Helper.GetAngle(marker.Position, marker.AnchorPosition, mousePos);
+                    // поворачиваем выделенные фигуры относительно "якоря" (по умолчанию - по центру фигуры выделения)
                     _selection.Rotate(angle, marker.AnchorPosition);
                     break;
                 }

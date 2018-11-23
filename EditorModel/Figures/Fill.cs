@@ -38,7 +38,6 @@ namespace EditorModel.Figures
         public Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры
-            //TODO: А зачем нам тогда параметр Figure figure?
             return new SolidBrush(Color);
         }
     }

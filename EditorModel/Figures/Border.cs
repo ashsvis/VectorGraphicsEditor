@@ -49,7 +49,6 @@ namespace EditorModel.Figures
         public Pen GetPen(Figure figure)
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
-            //TODO: А зачем нам тогда параметр Figure figure?
             return new Pen(Color, Width) { DashStyle = DashStyle };
         }
     }
