@@ -105,6 +105,8 @@
             this.openFiguresFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelForScroll.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).BeginInit();
             this.menuStripMain.SuspendLayout();
@@ -117,6 +119,7 @@
             this.toolStripContainer1.LeftToolStripPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tsmSelectAll
@@ -361,7 +364,7 @@
             this.tsbArrow.Image = global::SimpleEditor.Properties.Resources.arrow;
             this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbArrow.Name = "tsbArrow";
-            this.tsbArrow.Size = new System.Drawing.Size(30, 20);
+            this.tsbArrow.Size = new System.Drawing.Size(22, 20);
             this.tsbArrow.Text = "Выбор фигур";
             this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -371,7 +374,7 @@
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.poliline;
             this.tsbPolyline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolyline.Name = "tsbPolyline";
-            this.tsbPolyline.Size = new System.Drawing.Size(30, 20);
+            this.tsbPolyline.Size = new System.Drawing.Size(22, 20);
             this.tsbPolyline.Text = "Линия";
             this.tsbPolyline.ToolTipText = "Линия";
             this.tsbPolyline.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -382,7 +385,7 @@
             this.tsbPolygon.Image = global::SimpleEditor.Properties.Resources.poligon;
             this.tsbPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolygon.Name = "tsbPolygon";
-            this.tsbPolygon.Size = new System.Drawing.Size(30, 20);
+            this.tsbPolygon.Size = new System.Drawing.Size(22, 20);
             this.tsbPolygon.Text = "Полигон";
             this.tsbPolygon.ToolTipText = "Полигон";
             this.tsbPolygon.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -393,7 +396,7 @@
             this.tsbRect.Image = global::SimpleEditor.Properties.Resources.rect;
             this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(30, 20);
+            this.tsbRect.Size = new System.Drawing.Size(22, 20);
             this.tsbRect.Text = "Прямоугольник";
             this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -403,7 +406,7 @@
             this.tsbSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsbSquare.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSquare.Name = "tsbSquare";
-            this.tsbSquare.Size = new System.Drawing.Size(30, 20);
+            this.tsbSquare.Size = new System.Drawing.Size(22, 20);
             this.tsbSquare.Text = "Квадрат";
             this.tsbSquare.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -413,7 +416,7 @@
             this.tsbEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.tsbEllipse.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbEllipse.Name = "tsbEllipse";
-            this.tsbEllipse.Size = new System.Drawing.Size(30, 20);
+            this.tsbEllipse.Size = new System.Drawing.Size(22, 20);
             this.tsbEllipse.Text = "Эллипс";
             this.tsbEllipse.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -423,7 +426,7 @@
             this.tsbCircle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.tsbCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCircle.Name = "tsbCircle";
-            this.tsbCircle.Size = new System.Drawing.Size(30, 20);
+            this.tsbCircle.Size = new System.Drawing.Size(22, 20);
             this.tsbCircle.Text = "Круг";
             this.tsbCircle.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -808,10 +811,25 @@
             // statusStrip1
             // 
             this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslEditorMode,
+            this.tsslRibbonRect});
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(888, 22);
             this.statusStrip1.TabIndex = 0;
+            // 
+            // tsslRibbonRect
+            // 
+            this.tsslRibbonRect.Name = "tsslRibbonRect";
+            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
+            this.tsslRibbonRect.Text = "Выбор: {}";
+            // 
+            // tsslEditorMode
+            // 
+            this.tsslEditorMode.Name = "tsslEditorMode";
+            this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
+            this.tsslEditorMode.Text = "Режим: Select";
             // 
             // FormSimpleEditor
             // 
@@ -843,6 +861,8 @@
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -924,6 +944,8 @@
         private System.Windows.Forms.OpenFileDialog openFiguresFileDialog;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tsslRibbonRect;
+        private System.Windows.Forms.ToolStripStatusLabel tsslEditorMode;
     }
 }
 
