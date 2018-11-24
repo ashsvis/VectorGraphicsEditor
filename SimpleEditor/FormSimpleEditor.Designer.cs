@@ -105,8 +105,8 @@
             this.openFiguresFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelForScroll.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).BeginInit();
             this.menuStripMain.SuspendLayout();
@@ -286,6 +286,7 @@
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.tsmUndo.Size = new System.Drawing.Size(209, 22);
             this.tsmUndo.Text = "&Отмена действия";
+            this.tsmUndo.Click += new System.EventHandler(this.tsbUndo_Click);
             // 
             // tsmRedo
             // 
@@ -295,6 +296,7 @@
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.tsmRedo.Size = new System.Drawing.Size(209, 22);
             this.tsmRedo.Text = "&Отмена отмены";
+            this.tsmRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
             // toolStripSeparator3
             // 
@@ -541,6 +543,7 @@
             this.tsbUndo.Name = "tsbUndo";
             this.tsbUndo.Size = new System.Drawing.Size(23, 22);
             this.tsbUndo.Text = "Отменить";
+            this.tsbUndo.Click += new System.EventHandler(this.tsbUndo_Click);
             // 
             // tsbRedo
             // 
@@ -551,6 +554,7 @@
             this.tsbRedo.Name = "tsbRedo";
             this.tsbRedo.Size = new System.Drawing.Size(23, 22);
             this.tsbRedo.Text = "Вернуть";
+            this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
             // tsbHelp
             // 
@@ -819,17 +823,17 @@
             this.statusStrip1.Size = new System.Drawing.Size(888, 22);
             this.statusStrip1.TabIndex = 0;
             // 
-            // tsslRibbonRect
-            // 
-            this.tsslRibbonRect.Name = "tsslRibbonRect";
-            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
-            this.tsslRibbonRect.Text = "Выбор: {}";
-            // 
             // tsslEditorMode
             // 
             this.tsslEditorMode.Name = "tsslEditorMode";
             this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
             this.tsslEditorMode.Text = "Режим: Select";
+            // 
+            // tsslRibbonRect
+            // 
+            this.tsslRibbonRect.Name = "tsslRibbonRect";
+            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
+            this.tsslRibbonRect.Text = "Выбор: {}";
             // 
             // FormSimpleEditor
             // 
@@ -842,6 +846,7 @@
             this.Name = "FormSimpleEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "FormSimpleEditor";
+            this.Load += new System.EventHandler(this.FormSimpleEditor_Load);
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
             this.menuStripMain.ResumeLayout(false);

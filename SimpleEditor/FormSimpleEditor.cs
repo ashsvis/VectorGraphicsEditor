@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using SimpleEditor.Controllers;
@@ -16,23 +15,28 @@ namespace SimpleEditor
             InitializeComponent();
             _layer = new Layer();
             _selectionController = new SelectionController(_layer);
-            
+
             // пока что эти события требуют обновить поверхность pbCanvas, когда будет время...
             _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanged += () => pbCanvas.Invalidate();
-            _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
-            _selectionController.EditorModeChanged += _selectionController_EditorModeChanged;
+            _selectionController.SelectedRangeChanging += (rect) =>
+                                        { tsslRibbonRect.Text = rect.IsEmpty ? string.Empty : string.Format("{0}", rect); };
+            _selectionController.EditorModeChanged += (mode) => { tsslEditorMode.Text = string.Format("Режим {0}:", mode); };
+            _selectionController.UndoRedoChanged += _selectionController_UndoRedoChanged;
+            _selectionController.LayerChanged += (count) => pbCanvas.Invalidate();
         }
 
-        private void _selectionController_EditorModeChanged(EditorMode mode)
+        private void _selectionController_UndoRedoChanged(Commands.UndoRedoManager manager, Commands.UndoRedoEventArgs arg)
         {
-            tsslEditorMode.Text = string.Format("Режим: {0}", mode);
+            tsmUndo.Enabled = tsbUndo.Enabled = arg.UndoCount > 0;
+            tsmRedo.Enabled = tsbRedo.Enabled = arg.RedoCount > 0;
         }
 
-        private void _selectionController_SelectedRangeChanging(Rectangle rect)
+        private void FormSimpleEditor_Load(object sender, EventArgs e)
         {
-            tsslRibbonRect.Text = string.Format("Выбор: {0}", rect);
+            tsslEditorMode.Text = string.Format("Режим {0}:", EditorMode.Select);
+            tsslRibbonRect.Text = "";
         }
 
         /// <summary>
@@ -72,6 +76,7 @@ namespace SimpleEditor
             if (e.Button == MouseButtons.Left)
             {
                 _selectionController.OnMouseUp(e.Location, ModifierKeys);
+                // возврат в режим выбора фигур
                 tsbArrow_Click(tsbArrow, new EventArgs());            
             }
         }
@@ -114,6 +119,16 @@ namespace SimpleEditor
                 _selectionController.EditorMode = EditorMode.AddCircle;
             else
                 _selectionController.EditorMode = EditorMode.Select;
+        }
+
+        private void tsbUndo_Click(object sender, EventArgs e)
+        {
+            _selectionController.Undo();
+        }
+
+        private void tsbRedo_Click(object sender, EventArgs e)
+        {
+            _selectionController.Redo();
         }
     }
 }

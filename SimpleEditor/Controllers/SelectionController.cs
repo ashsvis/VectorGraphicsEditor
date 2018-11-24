@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Figures;
 using EditorModel.Selections;
+using SimpleEditor.Commands;
 using SimpleEditor.Common;
 
 namespace SimpleEditor.Controllers
@@ -37,12 +38,26 @@ namespace SimpleEditor.Controllers
         private readonly Selection _selection;
         private readonly List<Marker> _markers;
         private readonly Layer _layer;
+        readonly UndoRedoManager _undoRedoManager;
 
         public SelectionController(Layer layer)
         {
             _selection = new Selection();
             _markers = new List<Marker>();
             _layer = layer;
+            _layer.FiguresCountChanged += () => OnLayerChanged();
+            _undoRedoManager = new UndoRedoManager();
+            _undoRedoManager.StateChanged += (sender, e) => OnUndoRedoChanged(sender, e);
+        }
+
+        public void Undo()
+        {
+            _undoRedoManager.Undo();
+        }
+
+        public void Redo()
+        {
+            _undoRedoManager.Redo();
         }
 
         /// <summary>
@@ -84,6 +99,10 @@ namespace SimpleEditor.Controllers
         /// Изменился режим работы редактора
         /// </summary>
         public event Action<EditorMode> EditorModeChanged = delegate { };
+
+        public event Action<UndoRedoManager, UndoRedoEventArgs> UndoRedoChanged = delegate { };
+
+        public event Action<int> LayerChanged = delegate { };
 
         private bool _wasMouseMoving;
         private bool _isMouseDown;
@@ -273,10 +292,6 @@ namespace SimpleEditor.Controllers
                     // вызываем метод маркера для выполения действия
                     OnMarkerMoved(_movedMarker, point);
                     OnSelectedTransformChanging();
-                    if (_movedMarker.MarkerType == MarkerType.Select)
-                    {
-                        OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().GetBounds()));
-                    }
                 }
                 else // выбрана фигура, а не маркер
                 {
@@ -285,6 +300,7 @@ namespace SimpleEditor.Controllers
                     _selection.Translate(mouseOffset.X, mouseOffset.Y);
                     OnSelectedTransformChanging();
                 }
+                OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().GetBounds()));
             }
         }
 
@@ -313,10 +329,12 @@ namespace SimpleEditor.Controllers
                     {
                         // добавляем фигуру здесь
                         _selection.PushTransformToSelectedFigures();
-                        _layer.Figures.Add(_ribbon);
+                        _undoRedoManager.Execute(new AddFigure(_layer, _ribbon));   // _layer.Figures.Add(_ribbon);
+
                     }
                     _selection.Remove(_ribbon);
                     _ribbon = null;
+                    OnSelectedRangeChanging(Rectangle.Empty);
                 }
 
                 if (_wasMouseMoving)
@@ -352,7 +370,7 @@ namespace SimpleEditor.Controllers
         #region Извещатели событий
 
         /// <summary>
-        /// Вызываем привязынный к событию метод при выборе фигур
+        /// Вызываем привязанный к событию метод при выборе фигур
         /// </summary>
         private void OnSelectedFigureChanged()
         {
@@ -360,7 +378,7 @@ namespace SimpleEditor.Controllers
         }
 
         /// <summary>
-        /// Вызываем привязынный к событию метод в процессе изменения фигур
+        /// Вызываем привязанный к событию метод в процессе изменения фигур
         /// </summary>
         private void OnSelectedTransformChanging()
         {
@@ -368,7 +386,7 @@ namespace SimpleEditor.Controllers
         }
 
         /// <summary>
-        /// Вызываем привязынный к событию метод в конце изменения фигур
+        /// Вызываем привязанный к событию метод в конце изменения фигур
         /// </summary>
         private void OnSelectedTransformChanged()
         {
@@ -376,7 +394,7 @@ namespace SimpleEditor.Controllers
         }
 
         /// <summary>
-        /// Вызываем привязынный к событию метод при изменении рамки выбора
+        /// Вызываем привязанный к событию метод при изменении рамки выбора
         /// </summary>
         /// <param name="rect"></param>
         private void OnSelectedRangeChanging(Rectangle rect)
@@ -385,12 +403,27 @@ namespace SimpleEditor.Controllers
         }
 
         /// <summary>
-        /// Вызываем привязынный к событию метод при изменении режима редактора
+        /// Вызываем привязанный к событию метод при изменении режима редактора
         /// </summary>
         /// <param name="mode"></param>
         private void OnEditorModeChanged(EditorMode mode)
         {
             EditorModeChanged(mode);
+        }
+
+        /// <summary>
+        /// Вызываем привязанный к событию метод при изменении счётчиков отмены/возврата
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnUndoRedoChanged(UndoRedoManager sender, UndoRedoEventArgs e)
+        {
+            UndoRedoChanged(sender, e);
+        }
+
+        private void OnLayerChanged()
+        {
+            LayerChanged(_layer.Figures.Count);
         }
 
         #endregion Извещатели событий
