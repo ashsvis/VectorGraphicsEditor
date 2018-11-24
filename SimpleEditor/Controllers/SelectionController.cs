@@ -13,13 +13,8 @@ namespace SimpleEditor.Controllers
     public enum EditorMode
     {
         Select,
+        ChangeGeometry,
         Drag,
-        Scale,
-        SizeX,
-        SizeY,
-        Rotate,
-        SkewX,
-        SkewY,
         AddLine,
         AddPolygon,
         AddRectangle,
@@ -114,27 +109,13 @@ namespace SimpleEditor.Controllers
             var builder = new FigureBuilder();
             switch (_editorMode)
             {
-                case EditorMode.Select:
-                    builder.BuildRectangleGeometry(_ribbon);
-                    break;
-                case EditorMode.AddLine:
-                    builder.BuildRectangleGeometry(_ribbon);   //todo Нужно придумать геометрию для линии
-                    break;
-                case EditorMode.AddPolygon:
-                    builder.BuildPolygoneGeometry(_ribbon);
-                    break;
-                case EditorMode.AddRectangle:
-                    builder.BuildRectangleGeometry(_ribbon);
-                    break;
-                case EditorMode.AddSquare:
-                    builder.BuildSquareGeometry(_ribbon);
-                    break;
-                case EditorMode.AddEllipse:
-                    builder.BuildEllipseGeometry(_ribbon);
-                    break;
-                case EditorMode.AddCircle:
-                    builder.BuildCircleGeometry(_ribbon);
-                    break;
+                case EditorMode.Select: builder.BuildRectangleGeometry(_ribbon); break;
+                case EditorMode.AddLine: builder.BuildRectangleGeometry(_ribbon); break; //todo Нужно придумать геометрию для линии
+                case EditorMode.AddPolygon: builder.BuildPolygoneGeometry(_ribbon); break;
+                case EditorMode.AddRectangle: builder.BuildRectangleGeometry(_ribbon); break;
+                case EditorMode.AddSquare: builder.BuildSquareGeometry(_ribbon); break;
+                case EditorMode.AddEllipse: builder.BuildEllipseGeometry(_ribbon); break;
+                case EditorMode.AddCircle: builder.BuildCircleGeometry(_ribbon); break;
             }
             _ribbon.Transform.Translate(point.X, point.Y);
             _ribbon.Transform.Scale(1, 1);
@@ -206,29 +187,7 @@ namespace SimpleEditor.Controllers
             }
             else
             {
-                // како-то маркер был под мышкой
-                // естанавливаем соответствующий режим
-                switch (_movedMarker.MarkerType)
-                {
-                    case MarkerType.Scale:
-                        EditorMode = EditorMode.Scale;
-                        break;
-                    case MarkerType.SizeX:
-                        EditorMode = EditorMode.SizeX;
-                        break;
-                    case MarkerType.SizeY:
-                        EditorMode = EditorMode.SizeY;
-                        break;
-                    case MarkerType.Rotate:
-                        EditorMode = EditorMode.Rotate;
-                        break;
-                    case MarkerType.SkewX:
-                        EditorMode = EditorMode.SkewX;
-                        break;
-                    case MarkerType.SkewY:
-                        EditorMode = EditorMode.SkewY;
-                        break;
-                }
+                EditorMode = EditorMode.ChangeGeometry;
             }
         }
 

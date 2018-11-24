@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using SimpleEditor.Controllers;
@@ -83,6 +84,9 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
             // отрисовка созданных фигур
             foreach (var fig in _layer.Figures)
                 fig.Renderer.Render(e.Graphics, fig);
