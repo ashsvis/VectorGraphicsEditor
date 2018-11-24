@@ -93,5 +93,10 @@ namespace EditorModel.Figures
         {
             figure.Geometry = new PolygoneGeometry();
         }
+
+        public void BuildFrameGeometry(Figure figure, Point startPoint)
+        {
+            figure.Geometry = new FrameGeometry(startPoint);
+        }
     }
 }

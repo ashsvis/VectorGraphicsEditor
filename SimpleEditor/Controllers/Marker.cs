@@ -4,12 +4,6 @@ using EditorModel.Figures;
 
 namespace SimpleEditor.Controllers
 {
-    public class SelectMarker : Marker
-    {
-        public PointF AnchorX { get; set; }
-        public PointF AnchorY { get; set; }
-    }
-
     public class Marker : Figure
     {
         public Cursor Cursor;
@@ -25,7 +19,6 @@ namespace SimpleEditor.Controllers
         SizeY,
         Rotate,
         SkewX,
-        SkewY,
-        Select
+        SkewY
     }
 }

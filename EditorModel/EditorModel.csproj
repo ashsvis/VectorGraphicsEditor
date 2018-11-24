@@ -43,21 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Figures\Border.cs" />
+    <Compile Include="Geometry\FrameGeometry.cs" />
+    <Compile Include="Style\Border.cs" />
     <Compile Include="Figures\Figure.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
-    <Compile Include="Figures\Fill.cs" />
-    <Compile Include="Figures\Geometry.cs" />
-    <Compile Include="Figures\PolygoneGeometry.cs" />
-    <Compile Include="Figures\PrimitiveGeometry.cs" />
+    <Compile Include="Style\Fill.cs" />
+    <Compile Include="Geometry\Geometry.cs" />
+    <Compile Include="Geometry\PolygoneGeometry.cs" />
+    <Compile Include="Geometry\PrimitiveGeometry.cs" />
     <Compile Include="Figures\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Figures\Renderer.cs" />
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Common\SerializableGraphicsMatrix.cs" />
     <Compile Include="Common\SerializableGraphicsPath.cs" />
-    <Compile Include="Figures\Style.cs" />
-    <Compile Include="Figures\TextGeometry.cs" />
+    <Compile Include="Style\Style.cs" />
+    <Compile Include="Geometry\TextGeometry.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

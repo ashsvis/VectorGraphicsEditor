@@ -13,16 +13,12 @@ namespace SimpleEditor.Controllers
     public enum EditorMode
     {
         Select,
+        FrameSelect,
         ChangeGeometry,
         Drag,
-        AddLine,
-        AddPolygon,
-        AddRectangle,
-        AddSquare,
-        AddEllipse,
-        AddCircle
+        CreateFigure
     }
-
+    
     /// <summary>
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
     /// выполняет преобразования над фигурами
@@ -32,6 +28,8 @@ namespace SimpleEditor.Controllers
         private readonly Selection _selection;
         private readonly List<Marker> _markers;
         private readonly Layer _layer;
+
+        public Func<Figure> CreateFigureRequest;
 
         public SelectionController(Layer layer)
         {
@@ -97,31 +95,6 @@ namespace SimpleEditor.Controllers
             }
         }
 
-        private Figure _ribbon;
-
-        /// <summary>
-        /// Создание специальной фигуры для выделения рамкой
-        /// </summary>
-        /// <param name="point"></param>
-        private void CreateRibbonFrame(Point point)
-        {
-            _ribbon = new Figure();
-            var builder = new FigureBuilder();
-            switch (_editorMode)
-            {
-                case EditorMode.Select: builder.BuildRectangleGeometry(_ribbon); break;
-                case EditorMode.AddLine: builder.BuildRectangleGeometry(_ribbon); break; //todo Нужно придумать геометрию для линии
-                case EditorMode.AddPolygon: builder.BuildPolygoneGeometry(_ribbon); break;
-                case EditorMode.AddRectangle: builder.BuildRectangleGeometry(_ribbon); break;
-                case EditorMode.AddSquare: builder.BuildSquareGeometry(_ribbon); break;
-                case EditorMode.AddEllipse: builder.BuildEllipseGeometry(_ribbon); break;
-                case EditorMode.AddCircle: builder.BuildCircleGeometry(_ribbon); break;
-            }
-            _ribbon.Transform.Translate(point.X, point.Y);
-            _ribbon.Transform.Scale(1, 1);
-            _selection.Add(_ribbon);
-        }
-
         /// <summary>
         /// Обработчик нажатия левой кнопки мышки
         /// </summary>
@@ -177,12 +150,20 @@ namespace SimpleEditor.Controllers
                 {
                     // в точке мышки нечего нет, очищаем список выделенных
                     Clear();
-                    // создаём "резиновую" рамку
-                    CreateRibbonFrame(point);
-                    // создаём спец. маркер для выделения рамкой
-                    CreateSelectMarker();
-
                     OnSelectedFigureChanged();
+
+                    if (CreateFigureRequest != null)
+                    {
+                        //создаем новую фигуру
+                        CreateFigure(point);
+                        EditorMode = EditorMode.CreateFigure;
+                    }
+                    else
+                    {
+                        // создаём "резиновую" рамку
+                        new FigureBuilder().BuildFrameGeometry(_selection, point);
+                        EditorMode = EditorMode.FrameSelect;
+                    }
                 }
             }
             else
@@ -191,30 +172,15 @@ namespace SimpleEditor.Controllers
             }
         }
 
-        /// <summary>
-        /// Создание специальнго маркера для выбора рамкой
-        /// </summary>
-        private void CreateSelectMarker()
+        private void CreateFigure(Point point)
         {
-            _movedMarker = new SelectMarker
-            {
-                MarkerType = MarkerType.Select,
-                Cursor = CursorFactory.GetCursor(UserCursor.SelectByRibbonRect),
-                Position = _selection.ToWorldCoordinates(new PointF(0f, 0f)),
-                AnchorPosition = _selection.ToWorldCoordinates(new PointF(1f, 1f)),
-                AnchorX = _selection.ToWorldCoordinates(new PointF(1f, 0f)),
-                AnchorY = _selection.ToWorldCoordinates(new PointF(0f, 1f))
-            };
-
-            //ставим маркер на его место в мировых координатах
-            var world = _movedMarker.Position;
-            var m = new Matrix();
-            m.Translate(world.X, world.Y);
-            //применяем преобразование selection
-            //чтобы маркер двигался синхронно с выделением
-            m.Multiply(Selection.Transform, MatrixOrder.Append);
-            //
-            _movedMarker.Transform = m;
+            //создаем новую фигуру
+            var newFig = CreateFigureRequest();
+            newFig.Transform.Translate(point.X + 0.5f, point.Y + 0.5f);
+            _layer.Figures.Add(newFig);
+            _selection.Add(newFig);
+            CreateFigureRequest = null;
+            OnSelectedFigureChanged();
         }
 
         /// <summary>
@@ -227,22 +193,40 @@ namespace SimpleEditor.Controllers
             if (_isMouseDown)
             {
                 _wasMouseMoving = true;
+
+                // если выбран маркер
                 if (_movedMarker != null)
                 {
                     // вызываем метод маркера для выполения действия
                     OnMarkerMoved(_movedMarker, point);
                     OnSelectedTransformChanging();
-                    if (_movedMarker.MarkerType == MarkerType.Select)
-                    {
-                        OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().GetBounds()));
-                    }
                 }
-                else // выбрана фигура, а не маркер
+                // выбран не маркер
+                else
                 {
-                    // показываем, как будет перемещаться список выбранных фигур
-                    var mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
-                    _selection.Translate(mouseOffset.X, mouseOffset.Y);
-                    OnSelectedTransformChanging();
+                    switch (EditorMode)
+                    {
+                        case EditorMode.FrameSelect:
+                            (_selection.Geometry as FrameGeometry).EndPoint = point;
+                            OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().GetBounds()));
+                            break;
+
+                        case EditorMode.CreateFigure:
+                            var startPoint = _firstMouseDown;
+                            var scale = new PointF(point.X - startPoint.X, point.Y - startPoint.Y);
+                            if (Math.Abs(scale.X) < Helper.EPSILON) scale.X = Helper.EPSILON;
+                            if (Math.Abs(scale.Y) < Helper.EPSILON) scale.Y = Helper.EPSILON;
+                            _selection.Scale(scale.X, scale.Y, startPoint);
+                            OnSelectedTransformChanging();
+                            break;
+
+                        default:
+                            // показываем, как будет перемещаться список выбранных фигур
+                            var mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
+                            _selection.Translate(mouseOffset.X, mouseOffset.Y);
+                            OnSelectedTransformChanging();
+                            break;
+                    }
                 }
             }
         }
@@ -256,26 +240,14 @@ namespace SimpleEditor.Controllers
         {
             if (_isMouseDown)
             {
-                if (_ribbon != null)
+                if (EditorMode == EditorMode.FrameSelect)
                 {
-                    if (EditorMode == EditorMode.Select)
-                    {
-                        // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
-                        // в список выбранных фигур
-                        _selection.PushTransformToSelectedFigures();
-                        var rect = _ribbon.GetTransformedPath().GetBounds();
-                        foreach (var fig in _layer.Figures.Where(fig =>
-                            rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().GetBounds()))))
-                            _selection.Add(fig);
-                    }
-                    else
-                    {
-                        // добавляем фигуру здесь
-                        _selection.PushTransformToSelectedFigures();
-                        _layer.Figures.Add(_ribbon);
-                    }
-                    _selection.Remove(_ribbon);
-                    _ribbon = null;
+                    // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
+                    // в список выбранных фигур
+                    var rect = _selection.GetTransformedPath().GetBounds();
+                    foreach (var fig in _layer.Figures.Where(fig =>
+                        rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().GetBounds()))))
+                        _selection.Add(fig);
                 }
 
                 if (_wasMouseMoving)
@@ -410,7 +382,7 @@ namespace SimpleEditor.Controllers
         /// <param name="anchorX">Нормированная координата якоря по горизонтали</param>
         /// <param name="anchorY">Нормированная координата якоря по вертикали</param>
         /// <returns></returns>
-        private Marker CreateMarker(MarkerType type, float posX, float posY, UserCursor cursor, float anchorX, float anchorY)
+        private Marker CreateMarker(MarkerType type, float posX, float posY, UserCursor cursor, float anchorX, float anchorY, float offsetX = 0, float offsetY = 0)
         {
             var normPoint = new PointF(posX, posY);
             var anchPoint = new PointF(anchorX, anchorY);
@@ -418,7 +390,7 @@ namespace SimpleEditor.Controllers
             {
                 MarkerType = type,
                 Cursor = CursorFactory.GetCursor(cursor),
-                Position = _selection.ToWorldCoordinates(normPoint),
+                Position = _selection.ToWorldCoordinates(normPoint).Add( new PointF(offsetX, offsetY)),
                 AnchorPosition = _selection.ToWorldCoordinates(anchPoint)
             };
         }
@@ -448,21 +420,6 @@ namespace SimpleEditor.Controllers
                         _selection.Rotate(angle, marker.AnchorPosition);
                         break;
                     }
-                case MarkerType.Select:
-                    var selmark = (SelectMarker)marker;
-                    var mouse = new PointF(mousePos.X, mousePos.Y);
-                    var x = marker.Position.Sub(selmark.AnchorX); // строим вектор AnchorX-Marker
-                    var y = marker.Position.Sub(selmark.AnchorY); // строим вектор AnchorY-Marker
-                    var mX = mouse.Sub(selmark.AnchorX);  // строим вектор AnchorX-Mouse(position)
-                    var scaleX = mX.DotScalar(x) / x.LengthSqr();
-                    var mY = mouse.Sub(selmark.AnchorY);  // строим вектор AnchorY-Mouse(position)
-                    var scaleY = mY.DotScalar(y) / y.LengthSqr();
-                    // защита результата от "крайних" случаев расчёта
-                    if (Math.Abs(scaleX) < 0.001f) scaleX = 0.001f;
-                    if (Math.Abs(scaleY) < 0.001f) scaleY = 0.001f;
-
-                    _selection.Scale(scaleX, scaleY, marker.AnchorPosition);
-                    break;
             }
         }
 
@@ -496,7 +453,7 @@ namespace SimpleEditor.Controllers
             //создаем маркер вращения
             if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
             {
-                var rotateMarker = CreateMarker(MarkerType.Rotate, 1.1f, 0, UserCursor.Rotate, 0.5f, 0.5f);
+                var rotateMarker = CreateMarker(MarkerType.Rotate, 1, 0, UserCursor.Rotate, 0.5f, 0.5f, 15, -15);
                 Markers.Add(rotateMarker);
             }
 
@@ -527,8 +484,6 @@ namespace SimpleEditor.Controllers
 
         #endregion Всё для работы с маркерами
 
-        private Cursor _cursor = Cursors.Default;
-
         /// <summary>
         /// Форма курсора в зависимости от контекста
         /// </summary>
@@ -542,42 +497,24 @@ namespace SimpleEditor.Controllers
                 case EditorMode.Select:
                     Marker marker;
                     if (FindMarkerAt(point, out marker))
-                    {
-                        _cursor = marker.Cursor;
-                        break;
-                    }
+                        return marker.Cursor;
                     Figure fig;
                     if (FindFigureAt(point, out fig))
                     {
-                        _cursor = CursorFactory.GetCursor(UserCursor.MoveAll);
-                        break;
+                        return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }
                     if (!modifierKeys.HasFlag(Keys.Left))
-                        _cursor = Cursors.Default;
+                        return Cursors.Default;
                     break;
                 case EditorMode.Drag:
-                    _cursor = _selection.Count > 0 
+                    return _selection.Count > 0 
                         ? Cursors.SizeAll 
                         : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
-                    break;
-                case EditorMode.AddLine:
-                    _cursor = Cursors.Default; //todo Создать курсор для линии
-                    break;
-                case EditorMode.AddPolygon:
-                case EditorMode.AddRectangle:
-                case EditorMode.AddSquare:
-                    _cursor = CursorFactory.GetCursor(UserCursor.CreateRect);
-                    break;
-                case EditorMode.AddEllipse:
-                case EditorMode.AddCircle:
-                    _cursor = CursorFactory.GetCursor(UserCursor.CreateEllipse);
-                    break;
-                default:
-                    if (_movedMarker != null)
-                        _cursor = _movedMarker.Cursor;
-                    break;
+                case EditorMode.ChangeGeometry:
+                    return _movedMarker.Cursor;
             }
-            return _cursor;
+
+            return Cursors.Default;
         }
     }
 }

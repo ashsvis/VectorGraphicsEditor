@@ -34,6 +34,7 @@ namespace SimpleEditor
         private void _selectionController_SelectedRangeChanging(Rectangle rect)
         {
             tsslRibbonRect.Text = string.Format("Выбор: {0}", rect);
+            pbCanvas.Invalidate();
         }
 
         /// <summary>
@@ -100,24 +101,62 @@ namespace SimpleEditor
 
         private void tsbArrow_Click(object sender, EventArgs e)
         {
-            foreach (ToolStripButton btn in tsFigures.Items) btn.Checked = false;
+            foreach (ToolStripButton btn in tsFigures.Items)
+                btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
-            if (!tsbArrow.Checked)
-                _selectionController.Clear();
-            if (tsbPolyline.Checked)
-                _selectionController.EditorMode = EditorMode.AddLine;
-            else if (tsbPolygon.Checked)
-                _selectionController.EditorMode = EditorMode.AddPolygon;
-            else if (tsbRect.Checked)
-                _selectionController.EditorMode = EditorMode.AddRectangle;
-            else if (tsbSquare.Checked)
-                _selectionController.EditorMode = EditorMode.AddSquare;
-            else if (tsbEllipse.Checked)
-                _selectionController.EditorMode = EditorMode.AddEllipse;
-            else if (tsbCircle.Checked)
-                _selectionController.EditorMode = EditorMode.AddCircle;
-            else
+
+            if (tsbArrow.Checked)
+            {
                 _selectionController.EditorMode = EditorMode.Select;
+                return;
+            }
+
+            Func<Figure> figureCreator = null;
+
+            if (tsbPolyline.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildPolygoneGeometry(fig);//todo
+                    return fig;
+                };
+            else if (tsbPolygon.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildPolygoneGeometry(fig);
+                    return fig;
+                };
+            else if (tsbRect.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRectangleGeometry(fig);
+                    return fig;
+                };
+            else if (tsbSquare.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildSquareGeometry(fig);
+                    return fig;
+                };
+            else if (tsbEllipse.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildEllipseGeometry(fig);
+                    return fig;
+                };
+            else if (tsbCircle.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildCircleGeometry(fig);
+                    return fig;
+                };
+
+            _selectionController.CreateFigureRequest = figureCreator;
         }
     }
 }
