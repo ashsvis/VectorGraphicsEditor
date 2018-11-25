@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AddFigure.cs" />
     <Compile Include="Commands\ChangeColorCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\UndoRedoManager.cs" />

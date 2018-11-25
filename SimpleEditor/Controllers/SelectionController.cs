@@ -189,9 +189,11 @@ namespace SimpleEditor.Controllers
                     {
                         // если не нажата управляющая клавиша Ctrl
                         if (!modifierKeys.HasFlag(Keys.Control))
+                        {
                             _selection.Clear(); // очистим список выбранных
-                                                // то добавим её в список
-                        _selection.Add(fig);
+                        }
+
+                        _selection.Add(fig);    // то добавим её в список
                         OnSelectedFigureChanged();
                     }
                     else if (modifierKeys.HasFlag(Keys.Control))
@@ -329,7 +331,7 @@ namespace SimpleEditor.Controllers
                     {
                         // добавляем фигуру здесь
                         _selection.PushTransformToSelectedFigures();
-                        _undoRedoManager.Execute(new AddFigure(_layer, _ribbon));   // _layer.Figures.Add(_ribbon);
+                        _layer.Figures.Add(_ribbon);
 
                     }
                     _selection.Remove(_ribbon);
@@ -341,6 +343,7 @@ namespace SimpleEditor.Controllers
                 {
                     _wasMouseMoving = false;
                     // фиксация перемещения фигур
+                    //_undoRedoManager.Execute(new PushTransformToSelectedFiguresCommand(_selection, OnSelectedTransformChanged));
                     _selection.PushTransformToSelectedFigures();
                     OnSelectedTransformChanged();
                 }

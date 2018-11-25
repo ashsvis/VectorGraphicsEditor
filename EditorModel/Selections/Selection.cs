@@ -72,6 +72,11 @@ namespace EditorModel.Selections
             Transform = new Matrix();
         }
 
+        public IEnumerable<Figure> GetFigures()
+        {
+            return _selected;
+        }
+
         /// <summary>
         /// Применение своего Transform к Transform выделенных фигур
         /// </summary>
@@ -79,6 +84,24 @@ namespace EditorModel.Selections
         {
             foreach (var fig in _selected)
                 fig.Transform.Multiply(Transform, MatrixOrder.Append);
+
+            GrabGeometry();
+        }
+
+        public Matrix[] GetTransformFromSelectedFigures()
+        {
+            var list = new List<Matrix>();
+            foreach (var fig in _selected)
+                list.Add(fig.Transform);
+            return list.ToArray();
+        }
+
+        public void PopTransformToSelectedFigures(Matrix[] matrices)
+        {
+            var i = 0;
+            foreach (var fig in _selected)
+                if (i < matrices.Length)
+                    fig.Transform = matrices[i++];
 
             GrabGeometry();
         }
