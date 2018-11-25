@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using SimpleEditor.Controllers;
@@ -15,33 +17,24 @@ namespace SimpleEditor
             InitializeComponent();
             _layer = new Layer();
             _selectionController = new SelectionController(_layer);
-
+            
             // пока что эти события требуют обновить поверхность pbCanvas, когда будет время...
             _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanged += () => pbCanvas.Invalidate();
-            _selectionController.SelectedRangeChanging += (rect) =>
-                                        { tsslRibbonRect.Text = rect.IsEmpty ? string.Empty : string.Format("{0}", rect); };
-            _selectionController.EditorModeChanged += (mode) => { tsslEditorMode.Text = string.Format("Режим {0}:", mode); };
-            _selectionController.SelectorModeChanged += (mode) => 
-            {
-                tsFigures.Enabled = mode == SelectorMode.Default;
-                pbCanvas.Invalidate();
-            };
-            _selectionController.UndoRedoChanged += _selectionController_UndoRedoChanged;
-            _selectionController.LayerChanged += (count) => pbCanvas.Invalidate();
+            _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
+            _selectionController.EditorModeChanged += _selectionController_EditorModeChanged;
         }
 
-        private void _selectionController_UndoRedoChanged(Commands.UndoRedoManager manager, Commands.UndoRedoEventArgs arg)
+        private void _selectionController_EditorModeChanged(EditorMode mode)
         {
-            tsmUndo.Enabled = tsbUndo.Enabled = arg.UndoCount > 0;
-            tsmRedo.Enabled = tsbRedo.Enabled = arg.RedoCount > 0;
+            tsslEditorMode.Text = string.Format("Режим: {0}", mode);
         }
 
-        private void FormSimpleEditor_Load(object sender, EventArgs e)
+        private void _selectionController_SelectedRangeChanging(Rectangle rect)
         {
-            tsslEditorMode.Text = string.Format("Режим {0}:", EditorMode.Select);
-            tsslRibbonRect.Text = "";
+            tsslRibbonRect.Text = string.Format("Выбор: {0}", rect);
+            pbCanvas.Invalidate();
         }
 
         /// <summary>
@@ -81,7 +74,6 @@ namespace SimpleEditor
             if (e.Button == MouseButtons.Left)
             {
                 _selectionController.OnMouseUp(e.Location, ModifierKeys);
-                // возврат в режим выбора фигур
                 tsbArrow_Click(tsbArrow, new EventArgs());            
             }
         }
@@ -93,6 +85,9 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
             // отрисовка созданных фигур
             foreach (var fig in _layer.Figures)
                 fig.Renderer.Render(e.Graphics, fig);
@@ -106,56 +101,62 @@ namespace SimpleEditor
 
         private void tsbArrow_Click(object sender, EventArgs e)
         {
-            foreach (ToolStripButton btn in tsFigures.Items) btn.Checked = false;
+            foreach (ToolStripButton btn in tsFigures.Items)
+                btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
-            if (!tsbArrow.Checked)
-                _selectionController.Clear();
-            if (tsbPolyline.Checked)
-                _selectionController.EditorMode = EditorMode.AddLine;
-            else if (tsbPolygon.Checked)
-                _selectionController.EditorMode = EditorMode.AddPolygon;
-            else if (tsbRect.Checked)
-                _selectionController.EditorMode = EditorMode.AddRectangle;
-            else if (tsbSquare.Checked)
-                _selectionController.EditorMode = EditorMode.AddSquare;
-            else if (tsbEllipse.Checked)
-                _selectionController.EditorMode = EditorMode.AddEllipse;
-            else if (tsbCircle.Checked)
-                _selectionController.EditorMode = EditorMode.AddCircle;
-            else
+
+            if (tsbArrow.Checked)
+            {
                 _selectionController.EditorMode = EditorMode.Select;
-        }
+                return;
+            }
 
-        private void tsbUndo_Click(object sender, EventArgs e)
-        {
-            _selectionController.Undo();
-        }
+            Func<Figure> figureCreator = null;
 
-        private void tsbRedo_Click(object sender, EventArgs e)
-        {
-            _selectionController.Redo();
-        }
+            if (tsbPolyline.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildPolygoneGeometry(fig);//todo
+                    return fig;
+                };
+            else if (tsbPolygon.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildPolygoneGeometry(fig);
+                    return fig;
+                };
+            else if (tsbRect.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRectangleGeometry(fig);
+                    return fig;
+                };
+            else if (tsbSquare.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildSquareGeometry(fig);
+                    return fig;
+                };
+            else if (tsbEllipse.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildEllipseGeometry(fig);
+                    return fig;
+                };
+            else if (tsbCircle.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildCircleGeometry(fig);
+                    return fig;
+                };
 
-        private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            tsmiSkewSelectMode.Checked = _selectionController.Mode == SelectorMode.Skew;
-            tsmiVerticiesSelectMode.Checked = _selectionController.Mode == SelectorMode.Verticies;
-            tsmiDefaultSelectMode.Checked = _selectionController.Mode == SelectorMode.Default;
-        }
-
-        private void tsmiDefaultSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.Mode = SelectorMode.Default;
-        }
-
-        private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.Mode = SelectorMode.Skew;
-        }
-
-        private void tsmiVerticiesSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.Mode = SelectorMode.Verticies;
+            _selectionController.CreateFigureRequest = figureCreator;
         }
     }
 }

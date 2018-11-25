@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -10,7 +11,7 @@ namespace EditorModel.Selections
     /// <summary>
     /// Набор выделенных фигур и операции над ними
     /// </summary>
-    public class Selection : Figure
+    public class Selection : Figure, IEnumerable<Figure>
     {
         // внутренний набор для хранения списка выделенных фигур
         private readonly HashSet<Figure> _selected = new HashSet<Figure>();
@@ -72,11 +73,6 @@ namespace EditorModel.Selections
             Transform = new Matrix();
         }
 
-        public IEnumerable<Figure> GetFigures()
-        {
-            return _selected;
-        }
-
         /// <summary>
         /// Применение своего Transform к Transform выделенных фигур
         /// </summary>
@@ -84,24 +80,6 @@ namespace EditorModel.Selections
         {
             foreach (var fig in _selected)
                 fig.Transform.Multiply(Transform, MatrixOrder.Append);
-
-            GrabGeometry();
-        }
-
-        public Matrix[] GetTransformFromSelectedFigures()
-        {
-            var list = new List<Matrix>();
-            foreach (var fig in _selected)
-                list.Add(fig.Transform);
-            return list.ToArray();
-        }
-
-        public void PopTransformToSelectedFigures(Matrix[] matrices)
-        {
-            var i = 0;
-            foreach (var fig in _selected)
-                if (i < matrices.Length)
-                    fig.Transform = matrices[i++];
 
             GrabGeometry();
         }
@@ -245,5 +223,15 @@ namespace EditorModel.Selections
         /// Количество фигур в списке
         /// </summary>
         public int Count { get { return _selected.Count; }  }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<Figure> GetEnumerator()
+        {
+            return _selected.GetEnumerator();
+        }
     }
 }

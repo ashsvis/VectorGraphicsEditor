@@ -6,7 +6,7 @@ namespace SimpleEditor.Common
     static class Helper
     {
 // ReSharper disable InconsistentNaming
-        private const float EPSILON = 0.01f;
+        public const float EPSILON = 0.01f;
 // ReSharper restore InconsistentNaming
 
         /// <summary>

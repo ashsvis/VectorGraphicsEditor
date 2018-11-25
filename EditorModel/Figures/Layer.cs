@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 
 namespace EditorModel.Figures
 {
@@ -9,27 +7,11 @@ namespace EditorModel.Figures
     /// </summary>
     public class Layer
     {
-        private readonly ObservableCollection<Figure> _figures;
+        private readonly List<Figure> _figures = new List<Figure>();
 
-        public Layer()
-        {
-            _figures = new ObservableCollection<Figure>();
-            _figures.CollectionChanged += (o, e) => OnFiguresCountChanged();
-        }
-
-        public ObservableCollection<Figure> Figures
+        public List<Figure> Figures
         {
             get { return _figures; }
-        }
- 
-        /// <summary>
-        /// Изменилось количество фигур
-        /// </summary>
-        public event Action FiguresCountChanged = delegate { };
-
-        private void OnFiguresCountChanged()
-        {
-            FiguresCountChanged();
         }
     }
 }

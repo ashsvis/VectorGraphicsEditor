@@ -34,12 +34,6 @@
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.panelForScroll = new System.Windows.Forms.Panel();
             this.pbCanvas = new System.Windows.Forms.PictureBox();
-            this.cmsCanvasPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miPasteFromBuffer = new System.Windows.Forms.ToolStripMenuItem();
-            this.miPasteFromBufferSplitter = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiDefaultSelectMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSkewSelectMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiVerticiesSelectMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.tsmFileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreate = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +77,7 @@
             this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.cmsFigurePopup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsFigPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miCutPopup = new System.Windows.Forms.ToolStripMenuItem();
             this.miCopyPopup = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiNodeSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -104,20 +98,22 @@
             this.miTurnRight90 = new System.Windows.Forms.ToolStripMenuItem();
             this.miFlipVertical = new System.Windows.Forms.ToolStripMenuItem();
             this.miFlipHorizontal = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsBkgPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miPasteFromBuffer = new System.Windows.Forms.ToolStripMenuItem();
             this.timerFormUpdate = new System.Windows.Forms.Timer(this.components);
             this.saveFiguresFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFiguresFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelForScroll.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).BeginInit();
-            this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.tsFigures.SuspendLayout();
             this.toolStripFile.SuspendLayout();
-            this.cmsFigurePopup.SuspendLayout();
+            this.cmsFigPopup.SuspendLayout();
+            this.cmsBkgPopup.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.LeftToolStripPanel.SuspendLayout();
@@ -137,7 +133,7 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
             // panelForScroll
             // 
@@ -147,13 +143,12 @@
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelForScroll.Location = new System.Drawing.Point(0, 0);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(857, 447);
+            this.panelForScroll.Size = new System.Drawing.Size(865, 444);
             this.panelForScroll.TabIndex = 7;
             // 
             // pbCanvas
             // 
             this.pbCanvas.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pbCanvas.ContextMenuStrip = this.cmsCanvasPopup;
             this.pbCanvas.Location = new System.Drawing.Point(0, 0);
             this.pbCanvas.Name = "pbCanvas";
             this.pbCanvas.Padding = new System.Windows.Forms.Padding(4);
@@ -165,65 +160,15 @@
             this.pbCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseMove);
             this.pbCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseUp);
             // 
-            // cmsCanvasPopup
-            // 
-            this.cmsCanvasPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miPasteFromBuffer,
-            this.miPasteFromBufferSplitter,
-            this.tsmiDefaultSelectMode,
-            this.tsmiSkewSelectMode,
-            this.tsmiVerticiesSelectMode});
-            this.cmsCanvasPopup.Name = "cmsBkgPopup";
-            this.cmsCanvasPopup.Size = new System.Drawing.Size(252, 98);
-            this.cmsCanvasPopup.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCanvasPopup_Opening);
-            // 
-            // miPasteFromBuffer
-            // 
-            this.miPasteFromBuffer.Image = global::SimpleEditor.Properties.Resources.insert;
-            this.miPasteFromBuffer.Name = "miPasteFromBuffer";
-            this.miPasteFromBuffer.Size = new System.Drawing.Size(251, 22);
-            this.miPasteFromBuffer.Text = "Вставить из буфера обмена";
-            this.miPasteFromBuffer.Visible = false;
-            // 
-            // miPasteFromBufferSplitter
-            // 
-            this.miPasteFromBufferSplitter.Name = "miPasteFromBufferSplitter";
-            this.miPasteFromBufferSplitter.Size = new System.Drawing.Size(248, 6);
-            this.miPasteFromBufferSplitter.Visible = false;
-            // 
-            // tsmiDefaultSelectMode
-            // 
-            this.tsmiDefaultSelectMode.Checked = true;
-            this.tsmiDefaultSelectMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsmiDefaultSelectMode.Name = "tsmiDefaultSelectMode";
-            this.tsmiDefaultSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiDefaultSelectMode.Text = "Режим выбора фигур";
-            this.tsmiDefaultSelectMode.Click += new System.EventHandler(this.tsmiDefaultSelectMode_Click);
-            // 
-            // tsmiSkewSelectMode
-            // 
-            this.tsmiSkewSelectMode.Name = "tsmiSkewSelectMode";
-            this.tsmiSkewSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiSkewSelectMode.Text = "Режим искажений";
-            this.tsmiSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
-            // 
-            // tsmiVerticiesSelectMode
-            // 
-            this.tsmiVerticiesSelectMode.Name = "tsmiVerticiesSelectMode";
-            this.tsmiVerticiesSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiVerticiesSelectMode.Text = "Режим редактирования вершин";
-            this.tsmiVerticiesSelectMode.Click += new System.EventHandler(this.tsmiVerticiesSelectMode_Click);
-            // 
             // menuStripMain
             // 
             this.menuStripMain.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmFileMenu,
             this.tsmEditMenu});
-            this.menuStripMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(888, 23);
+            this.menuStripMain.Size = new System.Drawing.Size(888, 24);
             this.menuStripMain.TabIndex = 0;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -241,7 +186,7 @@
             this.toolStripSeparator2,
             this.tsmExit});
             this.tsmFileMenu.Name = "tsmFileMenu";
-            this.tsmFileMenu.Size = new System.Drawing.Size(48, 19);
+            this.tsmFileMenu.Size = new System.Drawing.Size(48, 20);
             this.tsmFileMenu.Text = "&Файл";
             // 
             // tsmCreate
@@ -330,7 +275,7 @@
             this.toolStripSeparator4,
             this.tsmSelectAll});
             this.tsmEditMenu.Name = "tsmEditMenu";
-            this.tsmEditMenu.Size = new System.Drawing.Size(59, 19);
+            this.tsmEditMenu.Size = new System.Drawing.Size(59, 20);
             this.tsmEditMenu.Text = "&Правка";
             // 
             // tsmUndo
@@ -341,7 +286,6 @@
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.tsmUndo.Size = new System.Drawing.Size(209, 22);
             this.tsmUndo.Text = "&Отмена действия";
-            this.tsmUndo.Click += new System.EventHandler(this.tsbUndo_Click);
             // 
             // tsmRedo
             // 
@@ -351,7 +295,6 @@
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.tsmRedo.Size = new System.Drawing.Size(209, 22);
             this.tsmRedo.Text = "&Отмена отмены";
-            this.tsmRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
             // toolStripSeparator3
             // 
@@ -405,11 +348,10 @@
             this.tsbSquare,
             this.tsbEllipse,
             this.tsbCircle});
-            this.tsFigures.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.tsFigures.Location = new System.Drawing.Point(0, 0);
             this.tsFigures.Name = "tsFigures";
             this.tsFigures.Padding = new System.Windows.Forms.Padding(0);
-            this.tsFigures.Size = new System.Drawing.Size(31, 447);
+            this.tsFigures.Size = new System.Drawing.Size(23, 444);
             this.tsFigures.Stretch = true;
             this.tsFigures.TabIndex = 8;
             // 
@@ -422,7 +364,7 @@
             this.tsbArrow.Image = global::SimpleEditor.Properties.Resources.arrow;
             this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbArrow.Name = "tsbArrow";
-            this.tsbArrow.Size = new System.Drawing.Size(30, 20);
+            this.tsbArrow.Size = new System.Drawing.Size(22, 20);
             this.tsbArrow.Text = "Выбор фигур";
             this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -432,7 +374,7 @@
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.poliline;
             this.tsbPolyline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolyline.Name = "tsbPolyline";
-            this.tsbPolyline.Size = new System.Drawing.Size(30, 20);
+            this.tsbPolyline.Size = new System.Drawing.Size(22, 20);
             this.tsbPolyline.Text = "Линия";
             this.tsbPolyline.ToolTipText = "Линия";
             this.tsbPolyline.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -443,7 +385,7 @@
             this.tsbPolygon.Image = global::SimpleEditor.Properties.Resources.poligon;
             this.tsbPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolygon.Name = "tsbPolygon";
-            this.tsbPolygon.Size = new System.Drawing.Size(30, 20);
+            this.tsbPolygon.Size = new System.Drawing.Size(22, 20);
             this.tsbPolygon.Text = "Полигон";
             this.tsbPolygon.ToolTipText = "Полигон";
             this.tsbPolygon.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -454,7 +396,7 @@
             this.tsbRect.Image = global::SimpleEditor.Properties.Resources.rect;
             this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(30, 20);
+            this.tsbRect.Size = new System.Drawing.Size(22, 20);
             this.tsbRect.Text = "Прямоугольник";
             this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -464,7 +406,7 @@
             this.tsbSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsbSquare.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSquare.Name = "tsbSquare";
-            this.tsbSquare.Size = new System.Drawing.Size(30, 20);
+            this.tsbSquare.Size = new System.Drawing.Size(22, 20);
             this.tsbSquare.Text = "Квадрат";
             this.tsbSquare.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -474,7 +416,7 @@
             this.tsbEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.tsbEllipse.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbEllipse.Name = "tsbEllipse";
-            this.tsbEllipse.Size = new System.Drawing.Size(30, 20);
+            this.tsbEllipse.Size = new System.Drawing.Size(22, 20);
             this.tsbEllipse.Text = "Эллипс";
             this.tsbEllipse.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -484,7 +426,7 @@
             this.tsbCircle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.tsbCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCircle.Name = "tsbCircle";
-            this.tsbCircle.Size = new System.Drawing.Size(30, 20);
+            this.tsbCircle.Size = new System.Drawing.Size(22, 20);
             this.tsbCircle.Text = "Круг";
             this.tsbCircle.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -505,11 +447,10 @@
             this.tsbRedo,
             this.toolStripSeparator9,
             this.tsbHelp});
-            this.toolStripFile.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStripFile.Location = new System.Drawing.Point(0, 23);
+            this.toolStripFile.Location = new System.Drawing.Point(0, 24);
             this.toolStripFile.Name = "toolStripFile";
             this.toolStripFile.Padding = new System.Windows.Forms.Padding(0);
-            this.toolStripFile.Size = new System.Drawing.Size(888, 23);
+            this.toolStripFile.Size = new System.Drawing.Size(888, 25);
             this.toolStripFile.Stretch = true;
             this.toolStripFile.TabIndex = 1;
             // 
@@ -519,7 +460,7 @@
             this.tsbNew.Image = ((System.Drawing.Image)(resources.GetObject("tsbNew.Image")));
             this.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNew.Name = "tsbNew";
-            this.tsbNew.Size = new System.Drawing.Size(23, 20);
+            this.tsbNew.Size = new System.Drawing.Size(23, 22);
             this.tsbNew.Text = "&Создать";
             // 
             // tsbOpen
@@ -528,7 +469,7 @@
             this.tsbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpen.Image")));
             this.tsbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOpen.Name = "tsbOpen";
-            this.tsbOpen.Size = new System.Drawing.Size(23, 20);
+            this.tsbOpen.Size = new System.Drawing.Size(23, 22);
             this.tsbOpen.Text = "&Открыть";
             // 
             // tsbSave
@@ -538,7 +479,7 @@
             this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
             this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(23, 20);
+            this.tsbSave.Size = new System.Drawing.Size(23, 22);
             this.tsbSave.Text = "&Сохранить";
             // 
             // tsbPrint
@@ -548,13 +489,13 @@
             this.tsbPrint.Image = ((System.Drawing.Image)(resources.GetObject("tsbPrint.Image")));
             this.tsbPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPrint.Name = "tsbPrint";
-            this.tsbPrint.Size = new System.Drawing.Size(23, 20);
+            this.tsbPrint.Size = new System.Drawing.Size(23, 22);
             this.tsbPrint.Text = "&Печать";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbCut
             // 
@@ -563,7 +504,7 @@
             this.tsbCut.Image = ((System.Drawing.Image)(resources.GetObject("tsbCut.Image")));
             this.tsbCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCut.Name = "tsbCut";
-            this.tsbCut.Size = new System.Drawing.Size(23, 20);
+            this.tsbCut.Size = new System.Drawing.Size(23, 22);
             this.tsbCut.Text = "В&ырезать";
             // 
             // tsbCopy
@@ -573,7 +514,7 @@
             this.tsbCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopy.Image")));
             this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCopy.Name = "tsbCopy";
-            this.tsbCopy.Size = new System.Drawing.Size(23, 20);
+            this.tsbCopy.Size = new System.Drawing.Size(23, 22);
             this.tsbCopy.Text = "&Копировать";
             // 
             // tsbPaste
@@ -583,13 +524,13 @@
             this.tsbPaste.Image = ((System.Drawing.Image)(resources.GetObject("tsbPaste.Image")));
             this.tsbPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPaste.Name = "tsbPaste";
-            this.tsbPaste.Size = new System.Drawing.Size(23, 20);
+            this.tsbPaste.Size = new System.Drawing.Size(23, 22);
             this.tsbPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 23);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbUndo
             // 
@@ -598,9 +539,8 @@
             this.tsbUndo.Image = global::SimpleEditor.Properties.Resources.undo;
             this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbUndo.Name = "tsbUndo";
-            this.tsbUndo.Size = new System.Drawing.Size(23, 20);
+            this.tsbUndo.Size = new System.Drawing.Size(23, 22);
             this.tsbUndo.Text = "Отменить";
-            this.tsbUndo.Click += new System.EventHandler(this.tsbUndo_Click);
             // 
             // tsbRedo
             // 
@@ -609,9 +549,8 @@
             this.tsbRedo.Image = global::SimpleEditor.Properties.Resources.redo;
             this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRedo.Name = "tsbRedo";
-            this.tsbRedo.Size = new System.Drawing.Size(23, 20);
+            this.tsbRedo.Size = new System.Drawing.Size(23, 22);
             this.tsbRedo.Text = "Вернуть";
-            this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
             // tsbHelp
             // 
@@ -620,7 +559,7 @@
             this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
             this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHelp.Name = "tsbHelp";
-            this.tsbHelp.Size = new System.Drawing.Size(23, 20);
+            this.tsbHelp.Size = new System.Drawing.Size(23, 22);
             this.tsbHelp.Text = "Спр&авка";
             // 
             // toolStripMenuItem7
@@ -634,10 +573,10 @@
             this.toolStripMenuItem3.Size = new System.Drawing.Size(231, 6);
             this.toolStripMenuItem3.Visible = false;
             // 
-            // cmsFigurePopup
+            // cmsFigPopup
             // 
-            this.cmsFigurePopup.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cmsFigurePopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsFigPopup.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmsFigPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miCutPopup,
             this.miCopyPopup,
             this.tsmiNodeSeparator,
@@ -656,8 +595,8 @@
             this.miSendToBack,
             this.tsmiTransformsSeparator,
             this.tsmiTransforms});
-            this.cmsFigurePopup.Name = "cmsFigPopup";
-            this.cmsFigurePopup.Size = new System.Drawing.Size(235, 320);
+            this.cmsFigPopup.Name = "cmsFigPopup";
+            this.cmsFigPopup.Size = new System.Drawing.Size(235, 320);
             // 
             // miCutPopup
             // 
@@ -810,6 +749,21 @@
             this.miFlipHorizontal.Size = new System.Drawing.Size(212, 22);
             this.miFlipHorizontal.Text = "Отразить сверху вниз";
             // 
+            // cmsBkgPopup
+            // 
+            this.cmsBkgPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miPasteFromBuffer});
+            this.cmsBkgPopup.Name = "cmsBkgPopup";
+            this.cmsBkgPopup.Size = new System.Drawing.Size(123, 26);
+            // 
+            // miPasteFromBuffer
+            // 
+            this.miPasteFromBuffer.Enabled = false;
+            this.miPasteFromBuffer.Image = global::SimpleEditor.Properties.Resources.insert;
+            this.miPasteFromBuffer.Name = "miPasteFromBuffer";
+            this.miPasteFromBuffer.Size = new System.Drawing.Size(122, 22);
+            this.miPasteFromBuffer.Text = "Вставить";
+            // 
             // timerFormUpdate
             // 
             this.timerFormUpdate.Enabled = true;
@@ -837,7 +791,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelForScroll);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(857, 447);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(865, 444);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer1.LeftToolStripPanel
@@ -865,17 +819,17 @@
             this.statusStrip1.Size = new System.Drawing.Size(888, 22);
             this.statusStrip1.TabIndex = 0;
             // 
-            // tsslEditorMode
-            // 
-            this.tsslEditorMode.Name = "tsslEditorMode";
-            this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
-            this.tsslEditorMode.Text = "Режим: Select";
-            // 
             // tsslRibbonRect
             // 
             this.tsslRibbonRect.Name = "tsslRibbonRect";
             this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
             this.tsslRibbonRect.Text = "Выбор: {}";
+            // 
+            // tsslEditorMode
+            // 
+            this.tsslEditorMode.Name = "tsslEditorMode";
+            this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
+            this.tsslEditorMode.Text = "Режим: Select";
             // 
             // FormSimpleEditor
             // 
@@ -888,17 +842,16 @@
             this.Name = "FormSimpleEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "FormSimpleEditor";
-            this.Load += new System.EventHandler(this.FormSimpleEditor_Load);
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
-            this.cmsCanvasPopup.ResumeLayout(false);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.tsFigures.ResumeLayout(false);
             this.tsFigures.PerformLayout();
             this.toolStripFile.ResumeLayout(false);
             this.toolStripFile.PerformLayout();
-            this.cmsFigurePopup.ResumeLayout(false);
+            this.cmsFigPopup.ResumeLayout(false);
+            this.cmsBkgPopup.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
@@ -967,7 +920,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem miFill;
         private System.Windows.Forms.ToolStripMenuItem miStroke;
-        private System.Windows.Forms.ContextMenuStrip cmsFigurePopup;
+        private System.Windows.Forms.ContextMenuStrip cmsFigPopup;
         private System.Windows.Forms.ToolStripMenuItem miCutPopup;
         private System.Windows.Forms.ToolStripMenuItem miCopyPopup;
         private System.Windows.Forms.ToolStripSeparator tsmiNodeSeparator;
@@ -984,7 +937,7 @@
         private System.Windows.Forms.ToolStripMenuItem miTurnRight90;
         private System.Windows.Forms.ToolStripMenuItem miFlipVertical;
         private System.Windows.Forms.ToolStripMenuItem miFlipHorizontal;
-        private System.Windows.Forms.ContextMenuStrip cmsCanvasPopup;
+        private System.Windows.Forms.ContextMenuStrip cmsBkgPopup;
         private System.Windows.Forms.ToolStripMenuItem miPasteFromBuffer;
         private System.Windows.Forms.Timer timerFormUpdate;
         private System.Windows.Forms.SaveFileDialog saveFiguresFileDialog;
@@ -993,10 +946,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsslRibbonRect;
         private System.Windows.Forms.ToolStripStatusLabel tsslEditorMode;
-        private System.Windows.Forms.ToolStripSeparator miPasteFromBufferSplitter;
-        private System.Windows.Forms.ToolStripMenuItem tsmiDefaultSelectMode;
-        private System.Windows.Forms.ToolStripMenuItem tsmiSkewSelectMode;
-        private System.Windows.Forms.ToolStripMenuItem tsmiVerticiesSelectMode;
     }
 }
 
