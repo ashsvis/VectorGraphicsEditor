@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EditorModel.Common;
+using System;
 using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
@@ -12,7 +13,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство трансформера фигуры
         /// </summary>
-        public Matrix Transform { get; set; }
+        public SerializableGraphicsMatrix Transform { get; set; }
 
         /// <summary>
         /// Свойство источника геометрии фигуры
@@ -34,7 +35,7 @@ namespace EditorModel.Figures
         /// </summary>
         public Figure()
         {
-            Transform = new Matrix();
+            Transform = new SerializableGraphicsMatrix();
             Style = new Style();
             Renderer = new Renderer();
         }
@@ -43,10 +44,10 @@ namespace EditorModel.Figures
         /// Предоставление трансформированной геометрии для рисования
         /// </summary>
         /// <returns>Путь для рисования</returns>
-        public GraphicsPath GetTransformedPath()
+        public SerializableGraphicsPath GetTransformedPath()
         {
             // создаём копию геометрии фигуры
-            var path = (GraphicsPath)Geometry.Path.Clone();
+            var path = (GraphicsPath)Geometry.Path.Path.Clone();
             // трансформируем её при помощи Трансформера
             path.Transform(Transform);
             return path;

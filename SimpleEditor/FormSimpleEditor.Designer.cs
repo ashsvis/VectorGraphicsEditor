@@ -34,6 +34,12 @@
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.panelForScroll = new System.Windows.Forms.Panel();
             this.pbCanvas = new System.Windows.Forms.PictureBox();
+            this.cmsCanvasPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miPasteFromBufferSplitter = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDefaultSelectMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSkewSelectMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiVerticiesSelectMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.tsmFileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreate = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +60,10 @@
             this.tsmCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmDefaultSelectMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmSkewSelectMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmVerticiesSelectMode = new System.Windows.Forms.ToolStripMenuItem();
             this.tsFigures = new System.Windows.Forms.ToolStrip();
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripButton();
@@ -77,7 +87,7 @@
             this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.cmsFigPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsFigurePopup = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miCutPopup = new System.Windows.Forms.ToolStripMenuItem();
             this.miCopyPopup = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiNodeSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -98,22 +108,19 @@
             this.miTurnRight90 = new System.Windows.Forms.ToolStripMenuItem();
             this.miFlipVertical = new System.Windows.Forms.ToolStripMenuItem();
             this.miFlipHorizontal = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsBkgPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miPasteFromBuffer = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerFormUpdate = new System.Windows.Forms.Timer(this.components);
             this.saveFiguresFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFiguresFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelForScroll.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).BeginInit();
+            this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.tsFigures.SuspendLayout();
             this.toolStripFile.SuspendLayout();
-            this.cmsFigPopup.SuspendLayout();
-            this.cmsBkgPopup.SuspendLayout();
+            this.cmsFigurePopup.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.LeftToolStripPanel.SuspendLayout();
@@ -127,7 +134,7 @@
             this.tsmSelectAll.Enabled = false;
             this.tsmSelectAll.Name = "tsmSelectAll";
             this.tsmSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmSelectAll.Size = new System.Drawing.Size(209, 22);
+            this.tsmSelectAll.Size = new System.Drawing.Size(251, 22);
             this.tsmSelectAll.Text = "Выделить &все";
             // 
             // toolStripSeparator9
@@ -149,6 +156,7 @@
             // pbCanvas
             // 
             this.pbCanvas.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pbCanvas.ContextMenuStrip = this.cmsCanvasPopup;
             this.pbCanvas.Location = new System.Drawing.Point(0, 0);
             this.pbCanvas.Name = "pbCanvas";
             this.pbCanvas.Padding = new System.Windows.Forms.Padding(4);
@@ -159,6 +167,53 @@
             this.pbCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseDown);
             this.pbCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseMove);
             this.pbCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbCanvas_MouseUp);
+            // 
+            // cmsCanvasPopup
+            // 
+            this.cmsCanvasPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.miPasteFromBufferSplitter,
+            this.tsmiDefaultSelectMode,
+            this.tsmiSkewSelectMode,
+            this.tsmiVerticiesSelectMode});
+            this.cmsCanvasPopup.Name = "cmsBkgPopup";
+            this.cmsCanvasPopup.Size = new System.Drawing.Size(252, 98);
+            this.cmsCanvasPopup.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCanvasPopup_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Image = global::SimpleEditor.Properties.Resources.insert;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(251, 22);
+            this.toolStripMenuItem1.Text = "Вставить из буфера обмена";
+            this.toolStripMenuItem1.Visible = false;
+            // 
+            // miPasteFromBufferSplitter
+            // 
+            this.miPasteFromBufferSplitter.Name = "miPasteFromBufferSplitter";
+            this.miPasteFromBufferSplitter.Size = new System.Drawing.Size(248, 6);
+            this.miPasteFromBufferSplitter.Visible = false;
+            // 
+            // tsmiDefaultSelectMode
+            // 
+            this.tsmiDefaultSelectMode.Name = "tsmiDefaultSelectMode";
+            this.tsmiDefaultSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmiDefaultSelectMode.Text = "Режим выбора фигур";
+            this.tsmiDefaultSelectMode.Click += new System.EventHandler(this.tsmDefaultSelectMode_Click);
+            // 
+            // tsmiSkewSelectMode
+            // 
+            this.tsmiSkewSelectMode.Name = "tsmiSkewSelectMode";
+            this.tsmiSkewSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmiSkewSelectMode.Text = "Режим искажений";
+            this.tsmiSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
+            // 
+            // tsmiVerticiesSelectMode
+            // 
+            this.tsmiVerticiesSelectMode.Name = "tsmiVerticiesSelectMode";
+            this.tsmiVerticiesSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmiVerticiesSelectMode.Text = "Режим редактирования вершин";
+            this.tsmiVerticiesSelectMode.Click += new System.EventHandler(this.tsmVerticiesSelectMode_Click);
             // 
             // menuStripMain
             // 
@@ -273,10 +328,15 @@
             this.tsmCopy,
             this.tsmPaste,
             this.toolStripSeparator4,
-            this.tsmSelectAll});
+            this.tsmSelectAll,
+            this.toolStripMenuItem2,
+            this.tsmDefaultSelectMode,
+            this.tsmSkewSelectMode,
+            this.tsmVerticiesSelectMode});
             this.tsmEditMenu.Name = "tsmEditMenu";
             this.tsmEditMenu.Size = new System.Drawing.Size(59, 20);
             this.tsmEditMenu.Text = "&Правка";
+            this.tsmEditMenu.DropDownOpening += new System.EventHandler(this.tsmEditMenu_DropDownOpening);
             // 
             // tsmUndo
             // 
@@ -284,8 +344,9 @@
             this.tsmUndo.Image = global::SimpleEditor.Properties.Resources.undo;
             this.tsmUndo.Name = "tsmUndo";
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmUndo.Size = new System.Drawing.Size(209, 22);
+            this.tsmUndo.Size = new System.Drawing.Size(251, 22);
             this.tsmUndo.Text = "&Отмена действия";
+            this.tsmUndo.Click += new System.EventHandler(this.tsmUndo_Click);
             // 
             // tsmRedo
             // 
@@ -293,13 +354,14 @@
             this.tsmRedo.Image = global::SimpleEditor.Properties.Resources.redo;
             this.tsmRedo.Name = "tsmRedo";
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmRedo.Size = new System.Drawing.Size(209, 22);
+            this.tsmRedo.Size = new System.Drawing.Size(251, 22);
             this.tsmRedo.Text = "&Отмена отмены";
+            this.tsmRedo.Click += new System.EventHandler(this.tsmRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(248, 6);
             // 
             // tsmCut
             // 
@@ -308,7 +370,7 @@
             this.tsmCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCut.Name = "tsmCut";
             this.tsmCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmCut.Size = new System.Drawing.Size(209, 22);
+            this.tsmCut.Size = new System.Drawing.Size(251, 22);
             this.tsmCut.Text = "Вырезат&ь";
             // 
             // tsmCopy
@@ -318,7 +380,7 @@
             this.tsmCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCopy.Name = "tsmCopy";
             this.tsmCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmCopy.Size = new System.Drawing.Size(209, 22);
+            this.tsmCopy.Size = new System.Drawing.Size(251, 22);
             this.tsmCopy.Text = "&Копировать";
             // 
             // tsmPaste
@@ -328,13 +390,39 @@
             this.tsmPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPaste.Name = "tsmPaste";
             this.tsmPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmPaste.Size = new System.Drawing.Size(209, 22);
+            this.tsmPaste.Size = new System.Drawing.Size(251, 22);
             this.tsmPaste.Text = "Вст&авка";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(248, 6);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(248, 6);
+            // 
+            // tsmDefaultSelectMode
+            // 
+            this.tsmDefaultSelectMode.Name = "tsmDefaultSelectMode";
+            this.tsmDefaultSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmDefaultSelectMode.Text = "Режим выбора фигур";
+            this.tsmDefaultSelectMode.Click += new System.EventHandler(this.tsmDefaultSelectMode_Click);
+            // 
+            // tsmSkewSelectMode
+            // 
+            this.tsmSkewSelectMode.Name = "tsmSkewSelectMode";
+            this.tsmSkewSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmSkewSelectMode.Text = "Режим искажений";
+            this.tsmSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
+            // 
+            // tsmVerticiesSelectMode
+            // 
+            this.tsmVerticiesSelectMode.Name = "tsmVerticiesSelectMode";
+            this.tsmVerticiesSelectMode.Size = new System.Drawing.Size(251, 22);
+            this.tsmVerticiesSelectMode.Text = "Режим редактирования вершин";
+            this.tsmVerticiesSelectMode.Click += new System.EventHandler(this.tsmVerticiesSelectMode_Click);
             // 
             // tsFigures
             // 
@@ -541,6 +629,7 @@
             this.tsbUndo.Name = "tsbUndo";
             this.tsbUndo.Size = new System.Drawing.Size(23, 22);
             this.tsbUndo.Text = "Отменить";
+            this.tsbUndo.Click += new System.EventHandler(this.tsmUndo_Click);
             // 
             // tsbRedo
             // 
@@ -551,6 +640,7 @@
             this.tsbRedo.Name = "tsbRedo";
             this.tsbRedo.Size = new System.Drawing.Size(23, 22);
             this.tsbRedo.Text = "Вернуть";
+            this.tsbRedo.Click += new System.EventHandler(this.tsmRedo_Click);
             // 
             // tsbHelp
             // 
@@ -573,10 +663,10 @@
             this.toolStripMenuItem3.Size = new System.Drawing.Size(231, 6);
             this.toolStripMenuItem3.Visible = false;
             // 
-            // cmsFigPopup
+            // cmsFigurePopup
             // 
-            this.cmsFigPopup.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cmsFigPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsFigurePopup.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmsFigurePopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miCutPopup,
             this.miCopyPopup,
             this.tsmiNodeSeparator,
@@ -595,8 +685,8 @@
             this.miSendToBack,
             this.tsmiTransformsSeparator,
             this.tsmiTransforms});
-            this.cmsFigPopup.Name = "cmsFigPopup";
-            this.cmsFigPopup.Size = new System.Drawing.Size(235, 320);
+            this.cmsFigurePopup.Name = "cmsFigPopup";
+            this.cmsFigurePopup.Size = new System.Drawing.Size(235, 320);
             // 
             // miCutPopup
             // 
@@ -749,26 +839,6 @@
             this.miFlipHorizontal.Size = new System.Drawing.Size(212, 22);
             this.miFlipHorizontal.Text = "Отразить сверху вниз";
             // 
-            // cmsBkgPopup
-            // 
-            this.cmsBkgPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miPasteFromBuffer});
-            this.cmsBkgPopup.Name = "cmsBkgPopup";
-            this.cmsBkgPopup.Size = new System.Drawing.Size(123, 26);
-            // 
-            // miPasteFromBuffer
-            // 
-            this.miPasteFromBuffer.Enabled = false;
-            this.miPasteFromBuffer.Image = global::SimpleEditor.Properties.Resources.insert;
-            this.miPasteFromBuffer.Name = "miPasteFromBuffer";
-            this.miPasteFromBuffer.Size = new System.Drawing.Size(122, 22);
-            this.miPasteFromBuffer.Text = "Вставить";
-            // 
-            // timerFormUpdate
-            // 
-            this.timerFormUpdate.Enabled = true;
-            this.timerFormUpdate.Interval = 300;
-            // 
             // saveFiguresFileDialog
             // 
             this.saveFiguresFileDialog.DefaultExt = "pic";
@@ -819,17 +889,17 @@
             this.statusStrip1.Size = new System.Drawing.Size(888, 22);
             this.statusStrip1.TabIndex = 0;
             // 
-            // tsslRibbonRect
-            // 
-            this.tsslRibbonRect.Name = "tsslRibbonRect";
-            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
-            this.tsslRibbonRect.Text = "Выбор: {}";
-            // 
             // tsslEditorMode
             // 
             this.tsslEditorMode.Name = "tsslEditorMode";
             this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
             this.tsslEditorMode.Text = "Режим: Select";
+            // 
+            // tsslRibbonRect
+            // 
+            this.tsslRibbonRect.Name = "tsslRibbonRect";
+            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
+            this.tsslRibbonRect.Text = "Выбор: {}";
             // 
             // FormSimpleEditor
             // 
@@ -844,14 +914,14 @@
             this.Text = "FormSimpleEditor";
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
+            this.cmsCanvasPopup.ResumeLayout(false);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.tsFigures.ResumeLayout(false);
             this.tsFigures.PerformLayout();
             this.toolStripFile.ResumeLayout(false);
             this.toolStripFile.PerformLayout();
-            this.cmsFigPopup.ResumeLayout(false);
-            this.cmsBkgPopup.ResumeLayout(false);
+            this.cmsFigurePopup.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
@@ -920,7 +990,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem miFill;
         private System.Windows.Forms.ToolStripMenuItem miStroke;
-        private System.Windows.Forms.ContextMenuStrip cmsFigPopup;
+        private System.Windows.Forms.ContextMenuStrip cmsFigurePopup;
         private System.Windows.Forms.ToolStripMenuItem miCutPopup;
         private System.Windows.Forms.ToolStripMenuItem miCopyPopup;
         private System.Windows.Forms.ToolStripSeparator tsmiNodeSeparator;
@@ -937,15 +1007,22 @@
         private System.Windows.Forms.ToolStripMenuItem miTurnRight90;
         private System.Windows.Forms.ToolStripMenuItem miFlipVertical;
         private System.Windows.Forms.ToolStripMenuItem miFlipHorizontal;
-        private System.Windows.Forms.ContextMenuStrip cmsBkgPopup;
-        private System.Windows.Forms.ToolStripMenuItem miPasteFromBuffer;
-        private System.Windows.Forms.Timer timerFormUpdate;
         private System.Windows.Forms.SaveFileDialog saveFiguresFileDialog;
         private System.Windows.Forms.OpenFileDialog openFiguresFileDialog;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsslRibbonRect;
         private System.Windows.Forms.ToolStripStatusLabel tsslEditorMode;
+        private System.Windows.Forms.ContextMenuStrip cmsCanvasPopup;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator miPasteFromBufferSplitter;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDefaultSelectMode;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSkewSelectMode;
+        private System.Windows.Forms.ToolStripMenuItem tsmiVerticiesSelectMode;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmDefaultSelectMode;
+        private System.Windows.Forms.ToolStripMenuItem tsmSkewSelectMode;
+        private System.Windows.Forms.ToolStripMenuItem tsmVerticiesSelectMode;
     }
 }
 

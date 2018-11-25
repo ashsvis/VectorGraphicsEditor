@@ -19,6 +19,7 @@ namespace SimpleEditor.Controllers
         SizeY,
         Rotate,
         SkewX,
-        SkewY
+        SkewY,
+        Vertex
     }
 }

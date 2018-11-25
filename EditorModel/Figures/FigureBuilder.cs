@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using EditorModel.Common;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
@@ -18,9 +19,9 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildSquareGeometry(Figure figure)
         {
-            var path = new GraphicsPath();
-            path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Vertex));
         }
 
         /// <summary>
@@ -29,9 +30,9 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildRectangleGeometry(Figure figure)
         {
-            var path = new GraphicsPath();
-            path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
         }
 
         /// <summary>
@@ -40,10 +41,10 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildCircleGeometry(Figure figure)
         {
-            var path = new GraphicsPath();
-            path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new SerializableGraphicsPath();
+            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, 
-                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate));
+                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Vertex));
         }
 
         /// <summary>
@@ -52,9 +53,9 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура для присвоения геометрии</param>
         public void BuildEllipseGeometry(Figure figure)
         {
-            var path = new GraphicsPath();
-            path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
+            var path = new SerializableGraphicsPath();
+            path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
         }
 
         /// <summary>
@@ -63,11 +64,11 @@ namespace EditorModel.Figures
         /// <param name="marker"></param>
         public void BuildMarkerGeometry(Figure marker)
         {
-            var path = new GraphicsPath();
+            var path = new SerializableGraphicsPath();
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
-            path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
+            path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
-                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select));         
+                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | AllowedOperations.Skew | AllowedOperations.Vertex));         
         }
 
         //и т.д. для всех примитивных фигур

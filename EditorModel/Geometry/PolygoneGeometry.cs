@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EditorModel.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -14,7 +15,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly GraphicsPath _path = new GraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -32,12 +33,12 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
         /// </summary>
-        public override GraphicsPath Path
+        public override SerializableGraphicsPath Path
         {
             get
             {
                 // сброс пути. Я взял это по аналогии TextGeometry.
-                _path.Reset();
+                _path.Path.Reset();
                 var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
                 var points = new List<PointF>
                 {
@@ -47,7 +48,7 @@ namespace EditorModel.Figures
                     new PointF(rect.Left, rect.Top + rect.Height)
                 };
                 // добавляем в путь построенный по точкам единичного прямоугольника полизон
-                _path.AddPolygon(points.ToArray());
+                _path.Path.AddPolygon(points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
             }

@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using SimpleEditor.Controllers;
+using SimpleEditor.Commands;
 
 namespace SimpleEditor
 {
@@ -11,19 +12,38 @@ namespace SimpleEditor
     {
         readonly Layer _layer;
         readonly SelectionController _selectionController;
+        readonly UndoRedoManager _undoRedoManager;
 
         public FormSimpleEditor()
         {
             InitializeComponent();
             _layer = new Layer();
-            _selectionController = new SelectionController(_layer);
+            _undoRedoManager = new UndoRedoManager();
+
+            _undoRedoManager.StateChanged += _undoRedoManager_StateChanged;
+
+            _selectionController = new SelectionController(_layer, _undoRedoManager);
             
             // пока что эти события требуют обновить поверхность pbCanvas, когда будет время...
             _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanged += () => pbCanvas.Invalidate();
+            _selectionController.SelectedModeChanged += _selectionController_SelectedModeChanged;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
             _selectionController.EditorModeChanged += _selectionController_EditorModeChanged;
+        }
+
+        private void _undoRedoManager_StateChanged(UndoRedoManager sender, UndoRedoEventArgs e)
+        {
+            tsbUndo.Enabled = tsmUndo.Enabled = e.UndoCount > 0;
+            tsbRedo.Enabled = tsmRedo.Enabled = e.RedoCount > 0;
+            pbCanvas.Invalidate();
+        }
+
+        private void _selectionController_SelectedModeChanged(SelectedMode mode)
+        {
+            tsFigures.Enabled = mode == SelectedMode.Default;
+            pbCanvas.Invalidate();
         }
 
         private void _selectionController_EditorModeChanged(EditorMode mode)
@@ -97,6 +117,7 @@ namespace SimpleEditor
             // отрисовка маркеров
             foreach (var marker in _selectionController.Markers)
                 marker.Renderer.Render(e.Graphics, marker);
+
         }
 
         private void tsbArrow_Click(object sender, EventArgs e)
@@ -157,6 +178,45 @@ namespace SimpleEditor
                 };
 
             _selectionController.CreateFigureRequest = figureCreator;
+        }
+
+        private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tsmiSkewSelectMode.Checked = _selectionController.Mode == SelectedMode.Skew;
+            tsmiVerticiesSelectMode.Checked = _selectionController.Mode == SelectedMode.Verticies;
+            tsmiDefaultSelectMode.Checked = _selectionController.Mode == SelectedMode.Default;
+        }
+
+        private void tsmEditMenu_DropDownOpening(object sender, EventArgs e)
+        {
+            tsmSkewSelectMode.Checked = _selectionController.Mode == SelectedMode.Skew;
+            tsmVerticiesSelectMode.Checked = _selectionController.Mode == SelectedMode.Verticies;
+            tsmDefaultSelectMode.Checked = _selectionController.Mode == SelectedMode.Default;
+        }
+
+        private void tsmDefaultSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectedMode.Default;
+        }
+
+        private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectedMode.Skew;
+        }
+
+        private void tsmVerticiesSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectedMode.Verticies;
+        }
+
+        private void tsmUndo_Click(object sender, EventArgs e)
+        {
+            _undoRedoManager.Undo();
+        }
+
+        private void tsmRedo_Click(object sender, EventArgs e)
+        {
+            _undoRedoManager.Redo();
         }
     }
 }

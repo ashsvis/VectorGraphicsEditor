@@ -17,7 +17,7 @@ namespace EditorModel.Figures
         public virtual void Render(Graphics graphics, Figure figure)
         {
             // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = figure.GetTransformedPath())
+            using (var path = figure.GetTransformedPath().Path)
             {
                 // если разрешено использование заливки
                 if (figure.Style.FillStyle.IsVisible)

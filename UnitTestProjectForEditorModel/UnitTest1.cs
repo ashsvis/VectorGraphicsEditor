@@ -55,14 +55,14 @@ namespace UnitTestProjectForEditorModel
             //создаем первую фигуру
             var builder = new FigureBuilder();
             var fig1 = new Figure();
-            fig1.Transform.Translate(150, 150);
-            fig1.Transform.Scale(30, 30);
+            fig1.Transform.Matrix.Translate(150, 150);
+            fig1.Transform.Matrix.Scale(30, 30);
             builder.BuildEllipseGeometry(fig1);
 
             //создаем вторую фигуру
             var fig2 = new Figure();
-            fig2.Transform.Translate(200, 200);
-            fig2.Transform.Scale(30, 30);
+            fig2.Transform.Matrix.Translate(200, 200);
+            fig2.Transform.Matrix.Scale(30, 30);
             builder.BuildRectangleGeometry(fig2);
 
             //рисуем до выделения
@@ -118,14 +118,14 @@ namespace UnitTestProjectForEditorModel
             //создаем первую фигуру
             var builder = new FigureBuilder();
             var fig1 = new Figure();
-            fig1.Transform.Translate(50, 50);
-            fig1.Transform.Scale(100, 100);
+            fig1.Transform.Matrix.Translate(50, 50);
+            fig1.Transform.Matrix.Scale(100, 100);
             builder.BuildEllipseGeometry(fig1);
 
             //создаем вторую фигуру
             var fig2 = new Figure();
-            fig2.Transform.Translate(150, 150);
-            fig2.Transform.Scale(100, 100);
+            fig2.Transform.Matrix.Translate(150, 150);
+            fig2.Transform.Matrix.Scale(100, 100);
             builder.BuildRectangleGeometry(fig2);
 
             //рисуем до выделения
@@ -169,13 +169,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var textfigure = new Figure();
-            textfigure.Transform.Translate(10, 10);
+            textfigure.Transform.Matrix.Translate(10, 10);
             // настраиваем геометрию на текст
             builder.BuildTextGeometry(textfigure, 
                 "The test for text string rendering complete.");
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(textfigure);
-            //textfigure = SerializeDeserialize(textfigure);
+            textfigure = SerializeDeserialize(textfigure);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -190,13 +190,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var polygon = new Figure();
-            polygon.Transform.Translate(100, 50);
-            polygon.Transform.Scale(160, 80);
+            polygon.Transform.Matrix.Translate(100, 50);
+            polygon.Transform.Matrix.Scale(160, 80);
             // настраиваем геометрию на квадрат
             builder.BuildPolygoneGeometry(polygon);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(polygon);
-            //polygon = SerializeDeserialize(polygon);
+            polygon = SerializeDeserialize(polygon);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -211,13 +211,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var square = new Figure();
-            square.Transform.Translate(100, 50);
-            square.Transform.Scale(80, 80); 
+            square.Transform.Matrix.Translate(100, 50);
+            square.Transform.Matrix.Scale(80, 80); 
             // настраиваем геометрию на квадрат
             builder.BuildSquareGeometry(square);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(square);
-            //square = SerializeDeserialize(square);
+            square = SerializeDeserialize(square);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -232,13 +232,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var rect = new Figure();
-            rect.Transform.Translate(100, 50);
-            rect.Transform.Scale(160, 80);
+            rect.Transform.Matrix.Translate(100, 50);
+            rect.Transform.Matrix.Scale(160, 80);
             // настраиваем геометрию на квадрат
             builder.BuildRectangleGeometry(rect);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(rect);
-            //rect = SerializeDeserialize(rect);
+            rect = SerializeDeserialize(rect);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -253,13 +253,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var circle = new Figure();
-            circle.Transform.Translate(100, 50);
-            circle.Transform.Scale(80, 80);
+            circle.Transform.Matrix.Translate(100, 50);
+            circle.Transform.Matrix.Scale(80, 80);
             // настраиваем геометрию на круг
             builder.BuildCircleGeometry(circle);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(circle);
-            //circle = SerializeDeserialize(circle);
+            circle = SerializeDeserialize(circle);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {
@@ -274,13 +274,13 @@ namespace UnitTestProjectForEditorModel
         {
             var builder = new FigureBuilder();
             var oval = new Figure();
-            oval.Transform.Translate(100, 50);
-            oval.Transform.Scale(160, 80);
+            oval.Transform.Matrix.Translate(100, 50);
+            oval.Transform.Matrix.Scale(160, 80);
             // настраиваем геометрию на круг
             builder.BuildEllipseGeometry(oval);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(oval);
-            //oval = SerializeDeserialize(oval);
+            oval = SerializeDeserialize(oval);
             // пробуем отрисовывать
             using (var bmp = new Bitmap(200, 100))
             {

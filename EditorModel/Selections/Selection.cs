@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using EditorModel.Common;
 using EditorModel.Figures;
 
 namespace EditorModel.Selections
@@ -11,6 +12,7 @@ namespace EditorModel.Selections
     /// <summary>
     /// Набор выделенных фигур и операции над ними
     /// </summary>
+    [Serializable]
     public class Selection : Figure, IEnumerable<Figure>
     {
         // внутренний набор для хранения списка выделенных фигур
@@ -51,13 +53,13 @@ namespace EditorModel.Selections
         private void GrabGeometry()
         {
             // захватываем геометрию выбранных фигур
-            var path = new GraphicsPath();
+            var path = new SerializableGraphicsPath();
             foreach (var fig in _selected)
-                path.AddPath(fig.GetTransformedPath(), false);
+                path.Path.AddPath(fig.GetTransformedPath(), false);
 
             // нарисовать рамку вокруг выбранных фигур 
-            var bounds = path.GetBounds();
-            path.AddRectangle(bounds);
+            var bounds = path.Path.GetBounds();
+            path.Path.AddRectangle(bounds);
 
             // выбираем разрешённые операции
             // если выбрана только одна фигура - просто используем её AllowedOperations
@@ -70,7 +72,7 @@ namespace EditorModel.Selections
             Geometry = new PrimitiveGeometry(path, allowedOperations);
 
             // сбрасываем преобразование в единичную матрицу
-            Transform = new Matrix();
+            Transform = new SerializableGraphicsMatrix();
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace EditorModel.Selections
         public void PushTransformToSelectedFigures()
         {
             foreach (var fig in _selected)
-                fig.Transform.Multiply(Transform, MatrixOrder.Append);
+                fig.Transform.Matrix.Multiply(Transform, MatrixOrder.Append);
 
             GrabGeometry();
         }
@@ -93,7 +95,7 @@ namespace EditorModel.Selections
         /// </summary>
         public PointF ToWorldCoordinates(PointF point)
         {
-            var bounds = GetTransformedPath().GetBounds();
+            var bounds = GetTransformedPath().Path.GetBounds();
             return new PointF(bounds.Left + point.X * bounds.Width, bounds.Top + point.Y * bounds.Height);
         }
 
@@ -102,7 +104,7 @@ namespace EditorModel.Selections
         /// </summary>
         public PointF ToLocalCoordinates(PointF point)
         {
-            var bounds = GetTransformedPath().GetBounds();
+            var bounds = GetTransformedPath().Path.GetBounds();
             return new PointF((point.X - bounds.Left) / bounds.Width, (point.Y - bounds.Top) / bounds.Height);
         }
 
@@ -113,8 +115,8 @@ namespace EditorModel.Selections
         /// <param name="offsetY">Смещение по вертикали</param>
         public void Translate(float offsetX, float offsetY)
         {
-            var m = new Matrix();
-            m.Translate(offsetX, offsetY);
+            var m = new SerializableGraphicsMatrix();
+            m.Matrix.Translate(offsetX, offsetY);
             // делаем на "чистой" матрице
             Transform = m;
         }
@@ -140,10 +142,10 @@ namespace EditorModel.Selections
                 scaleX = scaleY = Math.Max(scaleX, scaleY);
 
             //шкалируем относительно якоря
-            var m = new Matrix();
-            m.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            m.Scale(scaleX, scaleY);            //масштабируем
-            m.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            var m = new SerializableGraphicsMatrix();
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            m.Matrix.Scale(scaleX, scaleY);            //масштабируем
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
             //
             Transform = m;
@@ -158,10 +160,10 @@ namespace EditorModel.Selections
         public void Skew(float skewX, float skewY, PointF anchor)
         {
             //сдвигаем относительно якоря
-            var m = new Matrix();
-            m.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            m.Shear(skewX, skewY);              //сдвигаем
-            m.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            var m = new SerializableGraphicsMatrix();
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            m.Matrix.Shear(skewX, skewY);              //сдвигаем
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
             //
             Transform = m;
@@ -181,8 +183,8 @@ namespace EditorModel.Selections
                 return; //не можем вращать
             
             //вращаем относительно якоря
-            var m = new Matrix();
-            m.RotateAt(angle, center);      //вращаем
+            var m = new SerializableGraphicsMatrix();
+            m.Matrix.RotateAt(angle, center);      //вращаем
 
             //
             Transform = m;

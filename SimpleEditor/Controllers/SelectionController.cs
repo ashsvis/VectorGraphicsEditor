@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Figures;
 using EditorModel.Selections;
+using SimpleEditor.Commands;
 using SimpleEditor.Common;
 
 namespace SimpleEditor.Controllers
@@ -18,7 +19,14 @@ namespace SimpleEditor.Controllers
         Drag,
         CreateFigure
     }
-    
+
+    public enum SelectedMode
+    {
+        Default,
+        Skew,
+        Verticies
+    }
+
     /// <summary>
     /// Обрабатывает движения мышки, строит маркеры, управляет выделением,
     /// выполняет преобразования над фигурами
@@ -28,14 +36,16 @@ namespace SimpleEditor.Controllers
         private readonly Selection _selection;
         private readonly List<Marker> _markers;
         private readonly Layer _layer;
+        private readonly UndoRedoManager _undoRedoManager;
 
         public Func<Figure> CreateFigureRequest;
 
-        public SelectionController(Layer layer)
+        public SelectionController(Layer layer, UndoRedoManager undoRedoManager)
         {
             _selection = new Selection();
             _markers = new List<Marker>();
             _layer = layer;
+            _undoRedoManager = undoRedoManager;
         }
 
         /// <summary>
@@ -78,6 +88,11 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public event Action<EditorMode> EditorModeChanged = delegate { };
 
+        /// <summary>
+        /// Изменился режим работы селектора
+        /// </summary>
+        public event Action<SelectedMode> SelectedModeChanged = delegate { };
+
         private bool _wasMouseMoving;
         private bool _isMouseDown;
         private Point _firstMouseDown;
@@ -92,6 +107,22 @@ namespace SimpleEditor.Controllers
             {
                 _editorMode = value;
                 OnEditorModeChanged(EditorMode);
+            }
+        }
+
+        private SelectedMode _selectorMode = SelectedMode.Default;
+
+        public SelectedMode Mode
+        {
+            get { return _selectorMode; }
+            set
+            {
+                _selectorMode = value;
+                //строим маркеры
+                BuildMarkers();
+                UpdateMarkerPositions();
+
+                OnSelectedModeChanged(_selectorMode);
             }
         }
 
@@ -176,7 +207,8 @@ namespace SimpleEditor.Controllers
         {
             //создаем новую фигуру
             var newFig = CreateFigureRequest();
-            newFig.Transform.Translate(point.X + 0.5f, point.Y + 0.5f);
+            newFig.Transform.Matrix.Translate(point.X + 0.5f, point.Y + 0.5f);
+            _undoRedoManager.Execute(new LayerChangingCommand(_layer, "CreateFigure"));
             _layer.Figures.Add(newFig);
             _selection.Add(newFig);
             CreateFigureRequest = null;
@@ -208,7 +240,6 @@ namespace SimpleEditor.Controllers
                     {
                         case EditorMode.FrameSelect:
                             (_selection.Geometry as FrameGeometry).EndPoint = point;
-                            OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().GetBounds()));
                             break;
 
                         case EditorMode.CreateFigure:
@@ -228,6 +259,7 @@ namespace SimpleEditor.Controllers
                             break;
                     }
                 }
+                OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds()));
             }
         }
 
@@ -244,15 +276,16 @@ namespace SimpleEditor.Controllers
                 {
                     // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
                     // в список выбранных фигур
-                    var rect = _selection.GetTransformedPath().GetBounds();
+                    var rect = _selection.GetTransformedPath().Path.GetBounds();
                     foreach (var fig in _layer.Figures.Where(fig =>
-                        rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().GetBounds()))))
+                        rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
                         _selection.Add(fig);
                 }
 
                 if (_wasMouseMoving)
                 {
                     _wasMouseMoving = false;
+                    _undoRedoManager.Execute(new LayerChangingCommand(_layer, "MovingFigure"));
                     // фиксация перемещения фигур
                     _selection.PushTransformToSelectedFigures();
                     OnSelectedTransformChanged();
@@ -324,6 +357,15 @@ namespace SimpleEditor.Controllers
             EditorModeChanged(mode);
         }
 
+        /// <summary>
+        /// Вызываем привязанный к событию метод при изменении режима выбора
+        /// </summary>
+        /// <param name="mode"></param>
+        private void OnSelectedModeChanged(SelectedMode mode)
+        {
+            SelectedModeChanged(mode);
+        }
+
         #endregion Извещатели событий
 
         /// <summary>
@@ -340,7 +382,7 @@ namespace SimpleEditor.Controllers
             {
                 var fig = _layer.Figures[i];
                 var path = fig.GetTransformedPath();
-                if (!path.IsVisible(point)) continue;
+                if (!path.Path.IsVisible(point)) continue;
                 figure = fig;
                 found = true;
                 break;
@@ -364,7 +406,7 @@ namespace SimpleEditor.Controllers
             {
                 var fig = Markers[i];
                 var path = fig.GetTransformedPath();
-                if (!path.IsVisible(point)) continue;
+                if (!path.Path.IsVisible(point)) continue;
                 marker = fig;
                 found = true;
                 break;
@@ -382,7 +424,8 @@ namespace SimpleEditor.Controllers
         /// <param name="anchorX">Нормированная координата якоря по горизонтали</param>
         /// <param name="anchorY">Нормированная координата якоря по вертикали</param>
         /// <returns></returns>
-        private Marker CreateMarker(MarkerType type, float posX, float posY, UserCursor cursor, float anchorX, float anchorY, float offsetX = 0, float offsetY = 0)
+        private Marker CreateMarker(MarkerType type, float posX, float posY, UserCursor cursor,
+                                    float anchorX, float anchorY, float offsetX = 0, float offsetY = 0)
         {
             var normPoint = new PointF(posX, posY);
             var anchPoint = new PointF(anchorX, anchorY);
@@ -410,6 +453,14 @@ namespace SimpleEditor.Controllers
             {
                 case MarkerType.SizeX: _selection.Scale(scale, 1, marker.AnchorPosition); break;
                 case MarkerType.SizeY: _selection.Scale(1, scale, marker.AnchorPosition); break;
+                case MarkerType.SkewX:
+                    var dx = (marker.Position.X - mousePos.X)/(marker.AnchorPosition.Y - marker.Position.Y);
+                    _selection.Skew(dx, 0, marker.AnchorPosition);
+                    break;
+                case MarkerType.SkewY:
+                    var dy = (marker.Position.Y - mousePos.Y) / (marker.AnchorPosition.X - marker.Position.X);
+                    _selection.Skew(0, dy, marker.AnchorPosition);
+                    break;
                 case MarkerType.Scale: _selection.Scale(scale, scale, marker.AnchorPosition); break;
                 case MarkerType.Rotate:
                     {
@@ -432,32 +483,63 @@ namespace SimpleEditor.Controllers
             Markers.Clear();
             // если ничего не выбрано, выходим
             if (Selection.Count == 0) return;
-            //создаем маркеры масштаба
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
+            switch (_selectorMode)
             {
-                Markers.Add(CreateMarker(MarkerType.Scale, 0, 0, UserCursor.SizeNWSE, 1, 1));
-                Markers.Add(CreateMarker(MarkerType.Scale, 1, 0, UserCursor.SizeNESW, 0, 1));
-                Markers.Add(CreateMarker(MarkerType.Scale, 1, 1, UserCursor.SizeNWSE, 0, 0));
-                Markers.Add(CreateMarker(MarkerType.Scale, 0, 1, UserCursor.SizeNESW, 1, 0));
-            }
+                case SelectedMode.Skew:
+                    //создаем маркер искажения по горизонтали
+                    if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Skew)) //если разрешено искажение
+                    {
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0, 0, UserCursor.SizeWE, 1, 1, -10, 5));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 0, UserCursor.SizeNS, 1, 1, 5, -10));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 1, 0, UserCursor.SizeWE, 0, 1, 10, 5));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 0, UserCursor.SizeNS, 0, 1, -5, -10));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 1, 1, UserCursor.SizeWE, 0, 0, 10, -5));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 1, UserCursor.SizeNS, 0, 0, -5, 10));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0, 1, UserCursor.SizeWE, 1, 0, -10, -5));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 1, UserCursor.SizeNS, 1, 0, 5, 10));
+                    }
+                    break;
+                case SelectedMode.Verticies:
+                    if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex)) //если разрешено редактирования вершин
+                    {
+                        var path = _selection.GetTransformedPath();
+                        var bounds = path.Path.GetBounds();
+                        foreach (var pt in path.Path.PathPoints)
+                        {
+                            var normX = (pt.X - bounds.X) / bounds.Width;
+                            var normY = (pt.Y - bounds.Y) / bounds.Height;
+                            Markers.Add(CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0));
+                        }
+                    }
+                    break;
+                default:
+                    // создаём маркеры масштаба
+                    if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Scale)) //если разрешено масштабирование
+                    {
+                        Markers.Add(CreateMarker(MarkerType.Scale, 0, 0, UserCursor.SizeNWSE, 1, 1));
+                        Markers.Add(CreateMarker(MarkerType.Scale, 1, 0, UserCursor.SizeNESW, 0, 1));
+                        Markers.Add(CreateMarker(MarkerType.Scale, 1, 1, UserCursor.SizeNWSE, 0, 0));
+                        Markers.Add(CreateMarker(MarkerType.Scale, 0, 1, UserCursor.SizeNESW, 1, 0));
+                    }
 
-            //создаем маркеры ресайза по вертикали и горизонтали
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
-            {
-                Markers.Add(CreateMarker(MarkerType.SizeY, 0.5f, 0, UserCursor.SizeNS, 0.5f, 1));
-                Markers.Add(CreateMarker(MarkerType.SizeX, 1, 0.5f, UserCursor.SizeWE, 0, 0.5f));
-                Markers.Add(CreateMarker(MarkerType.SizeY, 0.5f, 1, UserCursor.SizeNS, 0.5f, 0));
-                Markers.Add(CreateMarker(MarkerType.SizeX, 0, 0.5f, UserCursor.SizeWE, 1, 0.5f));
-            }
+                    // создаём маркеры ресайза по вертикали и горизонтали
+                    if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Size)) //если разрешено изменение размера
+                    {
+                        Markers.Add(CreateMarker(MarkerType.SizeY, 0.5f, 0, UserCursor.SizeNS, 0.5f, 1));
+                        Markers.Add(CreateMarker(MarkerType.SizeX, 1, 0.5f, UserCursor.SizeWE, 0, 0.5f));
+                        Markers.Add(CreateMarker(MarkerType.SizeY, 0.5f, 1, UserCursor.SizeNS, 0.5f, 0));
+                        Markers.Add(CreateMarker(MarkerType.SizeX, 0, 0.5f, UserCursor.SizeWE, 1, 0.5f));
+                    }
 
-            //создаем маркер вращения
-            if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
-            {
-                var rotateMarker = CreateMarker(MarkerType.Rotate, 1, 0, UserCursor.Rotate, 0.5f, 0.5f, 15, -15);
-                Markers.Add(rotateMarker);
+                    // создаём маркер вращения
+                    if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
+                    {
+                        var rotateMarker = CreateMarker(MarkerType.Rotate, 1, 0, UserCursor.Rotate, 0.5f, 0.5f, 15, -15);
+                        Markers.Add(rotateMarker);
+                    }
+                    break;
             }
-
-            //задаем геометрию маркеров по умолчанию 
+            // задаём геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
                 figureBuilder.BuildMarkerGeometry(marker);

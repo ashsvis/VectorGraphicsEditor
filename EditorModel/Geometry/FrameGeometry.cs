@@ -1,3 +1,4 @@
+using EditorModel.Common;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -13,24 +14,24 @@ namespace EditorModel.Figures
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly GraphicsPath _path = new GraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
         /// </summary>
         public override AllowedOperations AllowedOperations { get { return AllowedOperations.None; } }
 
-        public override GraphicsPath Path
+        public override SerializableGraphicsPath Path
         {
             get
             {
-                _path.Reset();
+                _path.Path.Reset();
                 var minX = Math.Min(StartPoint.X, EndPoint.X);
                 var maxX = Math.Max(StartPoint.X, EndPoint.X);
                 var minY = Math.Min(StartPoint.Y, EndPoint.Y);
                 var maxY = Math.Max(StartPoint.Y, EndPoint.Y);
                 var rect = new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
-                _path.AddRectangle(rect);
+                _path.Path.AddRectangle(rect);
                 return _path;
             }
         }

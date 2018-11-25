@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\LayerChangingCommand.cs" />
+    <Compile Include="Commands\UndoRedoManager.cs" />
     <Compile Include="Common\CursorFactory.cs" />
     <Compile Include="Controllers\Marker.cs" />
     <Compile Include="FormSimpleEditor.cs">

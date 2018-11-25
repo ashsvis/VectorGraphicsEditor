@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EditorModel.Common;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -28,7 +29,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly GraphicsPath _path = new GraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -38,14 +39,14 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
         /// </summary>
-        public override GraphicsPath Path
+        public override SerializableGraphicsPath Path
         {
             get
             {
                 // сброс пути.
-                _path.Reset();
+                _path.Path.Reset();
                 // добавляем в путь текстовую строку
-                _path.AddString(Text ?? "",
+                _path.Path.AddString(Text ?? "",
                     new FontFamily(FontName), 0, FontSize, PointF.Empty,
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EditorModel.Common;
+using System;
 using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
@@ -12,7 +13,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        private readonly GraphicsPath _path = new GraphicsPath();
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
@@ -22,7 +23,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство возвращает путь, указанный в конструкторе
         /// </summary>
-        public override GraphicsPath Path { get { return _path; } }
+        public override SerializableGraphicsPath Path { get { return _path; } }
 
         /// <summary>
         /// Свойство возвращает определённые в конструкторе ограничения для операций
@@ -35,7 +36,7 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="path">Закрепляемый путь для примитивной геометрии</param>
         /// <param name="allowed">набор прав для операций</param>
-        internal PrimitiveGeometry(GraphicsPath path, AllowedOperations allowed)
+        internal PrimitiveGeometry(SerializableGraphicsPath path, AllowedOperations allowed)
         {
             // запоминаем переданный в конструкторе путь в локальном поле
             _path = path;

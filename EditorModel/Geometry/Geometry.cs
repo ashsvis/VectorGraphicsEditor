@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EditorModel.Common;
+using System;
 using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
@@ -16,6 +17,8 @@ namespace EditorModel.Figures
         Rotate = 0x4,       // может быть повёрнут
         Select = 0x8,       // может быть выбран
         // потом мы сможем расширить список допустимых операций, если будет нужно.
+        Skew = 0x10,        // может быть искажён
+        Vertex = 0x20,      // может изменять внутренние вершины
         All = 0xffffffff,   // всё можно
     }
     
@@ -28,7 +31,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Предоставление пути для рисования фигуры
         /// </summary>
-        public abstract GraphicsPath Path { get; }
+        public abstract SerializableGraphicsPath Path { get; }
 
         /// <summary>
         /// Допустимые операции над геометрией
