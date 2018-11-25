@@ -26,6 +26,7 @@ namespace SimpleEditor.Controllers
         Rotate,
         SkewX,
         SkewY,
-        Select
+        Select,
+        Vertex
     }
 }

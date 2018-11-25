@@ -23,6 +23,11 @@ namespace SimpleEditor
             _selectionController.SelectedRangeChanging += (rect) =>
                                         { tsslRibbonRect.Text = rect.IsEmpty ? string.Empty : string.Format("{0}", rect); };
             _selectionController.EditorModeChanged += (mode) => { tsslEditorMode.Text = string.Format("Режим {0}:", mode); };
+            _selectionController.SelectorModeChanged += (mode) => 
+            {
+                tsFigures.Enabled = mode == SelectorMode.Default;
+                pbCanvas.Invalidate();
+            };
             _selectionController.UndoRedoChanged += _selectionController_UndoRedoChanged;
             _selectionController.LayerChanged += (count) => pbCanvas.Invalidate();
         }
@@ -129,6 +134,28 @@ namespace SimpleEditor
         private void tsbRedo_Click(object sender, EventArgs e)
         {
             _selectionController.Redo();
+        }
+
+        private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            tsmiSkewSelectMode.Checked = _selectionController.Mode == SelectorMode.Skew;
+            tsmiVerticiesSelectMode.Checked = _selectionController.Mode == SelectorMode.Verticies;
+            tsmiDefaultSelectMode.Checked = _selectionController.Mode == SelectorMode.Default;
+        }
+
+        private void tsmiDefaultSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectorMode.Default;
+        }
+
+        private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectorMode.Skew;
+        }
+
+        private void tsmiVerticiesSelectMode_Click(object sender, EventArgs e)
+        {
+            _selectionController.Mode = SelectorMode.Verticies;
         }
     }
 }

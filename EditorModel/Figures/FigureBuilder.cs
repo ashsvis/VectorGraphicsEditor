@@ -20,7 +20,7 @@ namespace EditorModel.Figures
         {
             var path = new GraphicsPath();
             path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Size);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Vertex));
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace EditorModel.Figures
         {
             var path = new GraphicsPath();
             path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace EditorModel.Figures
             var path = new GraphicsPath();
             path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, 
-                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate));
+                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Vertex));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace EditorModel.Figures
         {
             var path = new GraphicsPath();
             path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace EditorModel.Figures
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
             path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
-                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select));         
+                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | AllowedOperations.Skew | AllowedOperations.Vertex));         
         }
 
         //и т.д. для всех примитивных фигур

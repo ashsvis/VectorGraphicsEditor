@@ -30,13 +30,13 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
-        /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
+        /// Свойство возвращает путь, построенный по точкам фигуры
         /// </summary>
         public override GraphicsPath Path
         {
             get
             {
-                // сброс пути. Я взял это по аналогии TextGeometry.
+                // сброс пути.
                 _path.Reset();
                 var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
                 var points = new List<PointF>
@@ -46,7 +46,7 @@ namespace EditorModel.Figures
                     new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
                     new PointF(rect.Left, rect.Top + rect.Height)
                 };
-                // добавляем в путь построенный по точкам единичного прямоугольника полизон
+                // добавляем в путь построенный по точкам единичного прямоугольника полигон
                 _path.AddPolygon(points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
