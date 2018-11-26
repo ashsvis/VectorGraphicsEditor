@@ -517,10 +517,10 @@ namespace SimpleEditor.Controllers
                     //создаем маркер искажения по горизонтали
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Skew)) //если разрешено искажение
                     {
-                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 0, UserCursor.SizeWE, 1, 1, 0, -15));
-                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 0.5f, UserCursor.SizeNS, 1, 1, -15, 0));
-                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 0.5f, UserCursor.SizeNS, 0, 0, 15, 0));
-                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 1, UserCursor.SizeWE, 1, 0, 0, 15));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 0, UserCursor.SizeWE, 1, 1));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 0.5f, UserCursor.SizeNS, 1, 1));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 0.5f, UserCursor.SizeNS, 0, 0));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 1, UserCursor.SizeWE, 0, 0));
                     }
                     break;
                 case EditorMode.Verticies:

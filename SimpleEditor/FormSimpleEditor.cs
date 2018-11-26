@@ -17,7 +17,7 @@ namespace SimpleEditor
         {
             InitializeComponent();
             _layer = new Layer();
-            _undoRedoController = new UndoRedoController();
+            _undoRedoController = new UndoRedoController(_layer);
 
             _selectionController = new SelectionController(_layer);
             
@@ -37,7 +37,7 @@ namespace SimpleEditor
 
         void OnLayerStartChanging(string opName)
         {
-            _undoRedoController.OnStartOperation(_layer, opName);
+            _undoRedoController.OnStartOperation(opName);
         }
 
         private void UpdateInterface()

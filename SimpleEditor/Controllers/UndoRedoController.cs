@@ -13,9 +13,13 @@ namespace SimpleEditor.Controllers
         private Layer layer;
         private string operationName;
 
-        public void OnStartOperation(Layer layer, string operationName)
+        public UndoRedoController(Layer layer)
         {
             this.layer = layer;
+        }
+
+        public void OnStartOperation(string operationName)
+        {
             snapshot = ObjectCloner.DeepClone(layer);
             this.operationName = operationName;
         }
