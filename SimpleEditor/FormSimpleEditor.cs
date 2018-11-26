@@ -4,7 +4,6 @@ using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using SimpleEditor.Controllers;
-using SimpleEditor.Commands;
 
 namespace SimpleEditor
 {
@@ -12,55 +11,49 @@ namespace SimpleEditor
     {
         readonly Layer _layer;
         readonly SelectionController _selectionController;
-        readonly UndoRedoManager _undoRedoManager;
+        readonly UndoRedoController _undoRedoController;
 
         public FormSimpleEditor()
         {
             InitializeComponent();
             _layer = new Layer();
-            _undoRedoManager = new UndoRedoManager();
-
-            _undoRedoManager.StateChanged += _undoRedoManager_StateChanged;
+            _undoRedoController = new UndoRedoController();
 
             _selectionController = new SelectionController(_layer);
             
-            _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
-            _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
-            _selectionController.SelectedTransformChanged += () => pbCanvas.Invalidate();
+            _selectionController.SelectedFigureChanged += UpdateInterface;
+            _selectionController.SelectedTransformChanging += UpdateInterface;
+            _selectionController.SelectedTransformChanged += UpdateInterface;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
-            _selectionController.EditorModeChanged += _selectionController_EditorModeChanged;
-            _selectionController.BeforeLayerChanging += _selectionController_BeforeLayerChanging;
-            _selectionController.AfterLayerChanging += _selectionController_AfterLayerChanging;
+            _selectionController.EditorModeChanged += (_) => UpdateInterface();
+            _selectionController.LayerStartChanging += () => OnLayerStartChanging(_selectionController.EditorMode.ToString());
+            _selectionController.LayerChanged += OnLayerChanged;
         }
 
-        void _selectionController_AfterLayerChanging()
+        void OnLayerChanged()
         {
-
+            _undoRedoController.OnFinishOperation();
         }
 
-        void _selectionController_BeforeLayerChanging()
+        void OnLayerStartChanging(string opName)
         {
-            _undoRedoManager.Execute(new LayerChangingCommand(_layer, "MovingFigure"));
+            _undoRedoController.OnStartOperation(_layer, opName);
         }
 
-        private void _undoRedoManager_StateChanged(UndoRedoManager sender, UndoRedoEventArgs e)
+        private void UpdateInterface()
         {
-            tsbUndo.Enabled = tsmUndo.Enabled = e.UndoCount > 0;
-            tsbRedo.Enabled = tsmRedo.Enabled = e.RedoCount > 0;
-            pbCanvas.Invalidate();
-        }
+            tsbUndo.Enabled = tsmUndo.Enabled = UndoRedoManager.Instance.CanUndo;
+            tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
+            tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
+            tsFigures.Enabled = _selectionController.EditorMode == EditorMode.Select;
 
-        private void _selectionController_EditorModeChanged(EditorMode mode)
-        {
-            tsslEditorMode.Text = string.Format("Mode: {0}", mode);
-            tsFigures.Enabled = mode == EditorMode.Select;
             pbCanvas.Invalidate();
         }
 
         private void _selectionController_SelectedRangeChanging(Rectangle rect)
         {
             tsslRibbonRect.Text = string.Format("{0}", rect);
-            pbCanvas.Invalidate();
+            UpdateInterface();
         }
 
         /// <summary>
@@ -212,13 +205,15 @@ namespace SimpleEditor
         private void tsmUndo_Click(object sender, EventArgs e)
         {
             _selectionController.Clear();
-            _undoRedoManager.Undo();
+            UndoRedoManager.Instance.Undo();
+            UpdateInterface();
         }
 
         private void tsmRedo_Click(object sender, EventArgs e)
         {
             _selectionController.Clear();
-            _undoRedoManager.Redo();
+            UndoRedoManager.Instance.Redo();
+            UpdateInterface();
         }
     }
 }

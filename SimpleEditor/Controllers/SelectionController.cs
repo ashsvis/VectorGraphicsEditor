@@ -83,12 +83,12 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Слой будет изменён 
         /// </summary>
-        public event Action BeforeLayerChanging = delegate { };
+        public event Action LayerStartChanging = delegate { };
 
         /// <summary>
         /// Слой был изменён 
         /// </summary>
-        public event Action AfterLayerChanging = delegate { };
+        public event Action LayerChanged = delegate { };
 
         private bool _wasMouseMoving;
         private bool _isMouseDown;
@@ -186,8 +186,9 @@ namespace SimpleEditor.Controllers
                     if (CreateFigureRequest != null)
                     {
                         //создаем новую фигуру
-                        CreateFigure(point);
                         EditorMode = EditorMode.CreateFigure;
+                        OnLayerStartChanging();
+                        CreateFigure(point);
                     }
                     else
                     {
@@ -213,9 +214,7 @@ namespace SimpleEditor.Controllers
             var newFig = CreateFigureRequest();
             // сразу смещаем на половину размера, чтобы левый верхний угол был в точке мышки
             newFig.Transform.Matrix.Translate(point.X + 0.5f, point.Y + 0.5f);
-            OnBeforeLayerChanging();
             _layer.Figures.Add(newFig);
-            OnAfterLayerChanging();
             _selection.Add(newFig);
             CreateFigureRequest = null;
             OnSelectedFigureChanged();
@@ -280,27 +279,37 @@ namespace SimpleEditor.Controllers
         {
             if (_isMouseDown)
             {
-                if (EditorMode == EditorMode.FrameSelect)
+                switch (EditorMode)
                 {
-                    // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
-                    // в список выбранных фигур
-                    var rect = _selection.GetTransformedPath().Path.GetBounds();
-                    foreach (var fig in _layer.Figures.Where(fig =>
-                        rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
-                        _selection.Add(fig);
-                }
+                    case EditorMode.FrameSelect:
+                        // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
+                        // в список выбранных фигур
+                        var rect = _selection.GetTransformedPath().Path.GetBounds();
+                        foreach (var fig in _layer.Figures.Where(fig => rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
+                            _selection.Add(fig);
+                        break;
 
-                // фиксация перемещения фигур
-                OnBeforeLayerChanging();
-                _selection.PushTransformToSelectedFigures();
-                OnAfterLayerChanging();
+                    case EditorMode.CreateFigure:
+                        _selection.PushTransformToSelectedFigures();
+                        OnLayerChanged();
+                        break;
+
+                    default:
+                        // фиксация перемещения фигур
+                        if (!_selection.Transform.Matrix.IsIdentity) //если были изменения
+                        {
+                            OnLayerStartChanging();
+                            _selection.PushTransformToSelectedFigures();
+                            OnLayerChanged();
+                        }
+                        break;
+                }
 
                 if (_wasMouseMoving)
                 {
                     _wasMouseMoving = false;
                     OnSelectedTransformChanged();
                 }
-
             }
 
             //строим маркеры
@@ -370,17 +379,17 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Вызываем привязанный к событию метод перед изменением слоя
         /// </summary>
-        private void OnBeforeLayerChanging()
+        private void OnLayerStartChanging()
         {
-            BeforeLayerChanging();
+            LayerStartChanging();
         }
 
         /// <summary>
         /// Вызываем привязанный к событию метод после изменения слоя
         /// </summary>
-        private void OnAfterLayerChanging()
+        private void OnLayerChanged()
         {
-            AfterLayerChanging();
+            LayerChanged();
         }
 
         #endregion Извещатели событий
