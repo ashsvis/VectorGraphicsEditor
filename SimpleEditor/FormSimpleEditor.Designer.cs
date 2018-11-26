@@ -134,8 +134,8 @@
             this.tsmSelectAll.Enabled = false;
             this.tsmSelectAll.Name = "tsmSelectAll";
             this.tsmSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmSelectAll.Size = new System.Drawing.Size(251, 22);
-            this.tsmSelectAll.Text = "Выделить &все";
+            this.tsmSelectAll.Size = new System.Drawing.Size(162, 22);
+            this.tsmSelectAll.Text = "Select &all";
             // 
             // toolStripSeparator9
             // 
@@ -177,42 +177,43 @@
             this.tsmiSkewSelectMode,
             this.tsmiVerticiesSelectMode});
             this.cmsCanvasPopup.Name = "cmsBkgPopup";
-            this.cmsCanvasPopup.Size = new System.Drawing.Size(252, 98);
+            this.cmsCanvasPopup.Size = new System.Drawing.Size(144, 98);
             this.cmsCanvasPopup.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCanvasPopup_Opening);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Image = global::SimpleEditor.Properties.Resources.insert;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(251, 22);
-            this.toolStripMenuItem1.Text = "Вставить из буфера обмена";
+            this.toolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItem1.Text = "Paste";
             this.toolStripMenuItem1.Visible = false;
             // 
             // miPasteFromBufferSplitter
             // 
             this.miPasteFromBufferSplitter.Name = "miPasteFromBufferSplitter";
-            this.miPasteFromBufferSplitter.Size = new System.Drawing.Size(248, 6);
+            this.miPasteFromBufferSplitter.Size = new System.Drawing.Size(140, 6);
             this.miPasteFromBufferSplitter.Visible = false;
             // 
             // tsmiDefaultSelectMode
             // 
             this.tsmiDefaultSelectMode.Name = "tsmiDefaultSelectMode";
-            this.tsmiDefaultSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiDefaultSelectMode.Text = "Режим выбора фигур";
+            this.tsmiDefaultSelectMode.Size = new System.Drawing.Size(143, 22);
+            this.tsmiDefaultSelectMode.Text = "Selection";
             this.tsmiDefaultSelectMode.Click += new System.EventHandler(this.tsmDefaultSelectMode_Click);
             // 
             // tsmiSkewSelectMode
             // 
             this.tsmiSkewSelectMode.Name = "tsmiSkewSelectMode";
-            this.tsmiSkewSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiSkewSelectMode.Text = "Режим искажений";
+            this.tsmiSkewSelectMode.Size = new System.Drawing.Size(143, 22);
+            this.tsmiSkewSelectMode.Text = "Skew";
             this.tsmiSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
             // 
             // tsmiVerticiesSelectMode
             // 
             this.tsmiVerticiesSelectMode.Name = "tsmiVerticiesSelectMode";
-            this.tsmiVerticiesSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmiVerticiesSelectMode.Text = "Режим редактирования вершин";
+            this.tsmiVerticiesSelectMode.Size = new System.Drawing.Size(143, 22);
+            this.tsmiVerticiesSelectMode.Text = "Edit Verticies";
             this.tsmiVerticiesSelectMode.Click += new System.EventHandler(this.tsmVerticiesSelectMode_Click);
             // 
             // menuStripMain
@@ -241,8 +242,8 @@
             this.toolStripSeparator2,
             this.tsmExit});
             this.tsmFileMenu.Name = "tsmFileMenu";
-            this.tsmFileMenu.Size = new System.Drawing.Size(48, 20);
-            this.tsmFileMenu.Text = "&Файл";
+            this.tsmFileMenu.Size = new System.Drawing.Size(37, 20);
+            this.tsmFileMenu.Text = "&File";
             // 
             // tsmCreate
             // 
@@ -250,8 +251,8 @@
             this.tsmCreate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCreate.Name = "tsmCreate";
             this.tsmCreate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmCreate.Size = new System.Drawing.Size(233, 22);
-            this.tsmCreate.Text = "&Создать";
+            this.tsmCreate.Size = new System.Drawing.Size(146, 22);
+            this.tsmCreate.Text = "&New";
             // 
             // tsmOpen
             // 
@@ -259,13 +260,13 @@
             this.tsmOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmOpen.Name = "tsmOpen";
             this.tsmOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmOpen.Size = new System.Drawing.Size(233, 22);
-            this.tsmOpen.Text = "&Открыть";
+            this.tsmOpen.Size = new System.Drawing.Size(146, 22);
+            this.tsmOpen.Text = "&Open";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(230, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(143, 6);
             // 
             // tsmSave
             // 
@@ -274,19 +275,19 @@
             this.tsmSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmSave.Name = "tsmSave";
             this.tsmSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmSave.Size = new System.Drawing.Size(233, 22);
-            this.tsmSave.Text = "&Сохранить";
+            this.tsmSave.Size = new System.Drawing.Size(146, 22);
+            this.tsmSave.Text = "&Save";
             // 
             // tsmSaveAs
             // 
             this.tsmSaveAs.Name = "tsmSaveAs";
-            this.tsmSaveAs.Size = new System.Drawing.Size(233, 22);
-            this.tsmSaveAs.Text = "Сохранить &как";
+            this.tsmSaveAs.Size = new System.Drawing.Size(146, 22);
+            this.tsmSaveAs.Text = "Save &as...";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // tsmPrint
             // 
@@ -295,8 +296,8 @@
             this.tsmPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPrint.Name = "tsmPrint";
             this.tsmPrint.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.tsmPrint.Size = new System.Drawing.Size(233, 22);
-            this.tsmPrint.Text = "&Печать";
+            this.tsmPrint.Size = new System.Drawing.Size(146, 22);
+            this.tsmPrint.Text = "&Print";
             // 
             // tsmPreview
             // 
@@ -304,19 +305,19 @@
             this.tsmPreview.Image = ((System.Drawing.Image)(resources.GetObject("tsmPreview.Image")));
             this.tsmPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPreview.Name = "tsmPreview";
-            this.tsmPreview.Size = new System.Drawing.Size(233, 22);
-            this.tsmPreview.Text = "Предварительный про&смотр";
+            this.tsmPreview.Size = new System.Drawing.Size(146, 22);
+            this.tsmPreview.Text = "Pre&view";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(230, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(233, 22);
-            this.tsmExit.Text = "Вы&ход";
+            this.tsmExit.Size = new System.Drawing.Size(146, 22);
+            this.tsmExit.Text = "E&xit";
             // 
             // tsmEditMenu
             // 
@@ -334,8 +335,8 @@
             this.tsmSkewSelectMode,
             this.tsmVerticiesSelectMode});
             this.tsmEditMenu.Name = "tsmEditMenu";
-            this.tsmEditMenu.Size = new System.Drawing.Size(59, 20);
-            this.tsmEditMenu.Text = "&Правка";
+            this.tsmEditMenu.Size = new System.Drawing.Size(39, 20);
+            this.tsmEditMenu.Text = "&Edit";
             this.tsmEditMenu.DropDownOpening += new System.EventHandler(this.tsmEditMenu_DropDownOpening);
             // 
             // tsmUndo
@@ -344,8 +345,8 @@
             this.tsmUndo.Image = global::SimpleEditor.Properties.Resources.undo;
             this.tsmUndo.Name = "tsmUndo";
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmUndo.Size = new System.Drawing.Size(251, 22);
-            this.tsmUndo.Text = "&Отмена действия";
+            this.tsmUndo.Size = new System.Drawing.Size(162, 22);
+            this.tsmUndo.Text = "&Undo";
             this.tsmUndo.Click += new System.EventHandler(this.tsmUndo_Click);
             // 
             // tsmRedo
@@ -354,14 +355,14 @@
             this.tsmRedo.Image = global::SimpleEditor.Properties.Resources.redo;
             this.tsmRedo.Name = "tsmRedo";
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmRedo.Size = new System.Drawing.Size(251, 22);
-            this.tsmRedo.Text = "&Отмена отмены";
+            this.tsmRedo.Size = new System.Drawing.Size(162, 22);
+            this.tsmRedo.Text = "&Redo";
             this.tsmRedo.Click += new System.EventHandler(this.tsmRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(248, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(159, 6);
             // 
             // tsmCut
             // 
@@ -370,8 +371,8 @@
             this.tsmCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCut.Name = "tsmCut";
             this.tsmCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmCut.Size = new System.Drawing.Size(251, 22);
-            this.tsmCut.Text = "Вырезат&ь";
+            this.tsmCut.Size = new System.Drawing.Size(162, 22);
+            this.tsmCut.Text = "Cu&t";
             // 
             // tsmCopy
             // 
@@ -380,8 +381,8 @@
             this.tsmCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCopy.Name = "tsmCopy";
             this.tsmCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmCopy.Size = new System.Drawing.Size(251, 22);
-            this.tsmCopy.Text = "&Копировать";
+            this.tsmCopy.Size = new System.Drawing.Size(162, 22);
+            this.tsmCopy.Text = "&Copy";
             // 
             // tsmPaste
             // 
@@ -390,38 +391,38 @@
             this.tsmPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPaste.Name = "tsmPaste";
             this.tsmPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmPaste.Size = new System.Drawing.Size(251, 22);
-            this.tsmPaste.Text = "Вст&авка";
+            this.tsmPaste.Size = new System.Drawing.Size(162, 22);
+            this.tsmPaste.Text = "&Paste";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(248, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(159, 6);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(248, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(159, 6);
             // 
             // tsmDefaultSelectMode
             // 
             this.tsmDefaultSelectMode.Name = "tsmDefaultSelectMode";
-            this.tsmDefaultSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmDefaultSelectMode.Text = "Режим выбора фигур";
+            this.tsmDefaultSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmDefaultSelectMode.Text = "Selection";
             this.tsmDefaultSelectMode.Click += new System.EventHandler(this.tsmDefaultSelectMode_Click);
             // 
             // tsmSkewSelectMode
             // 
             this.tsmSkewSelectMode.Name = "tsmSkewSelectMode";
-            this.tsmSkewSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmSkewSelectMode.Text = "Режим искажений";
+            this.tsmSkewSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmSkewSelectMode.Text = "Skew";
             this.tsmSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
             // 
             // tsmVerticiesSelectMode
             // 
             this.tsmVerticiesSelectMode.Name = "tsmVerticiesSelectMode";
-            this.tsmVerticiesSelectMode.Size = new System.Drawing.Size(251, 22);
-            this.tsmVerticiesSelectMode.Text = "Режим редактирования вершин";
+            this.tsmVerticiesSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmVerticiesSelectMode.Text = "Edit Verticies";
             this.tsmVerticiesSelectMode.Click += new System.EventHandler(this.tsmVerticiesSelectMode_Click);
             // 
             // tsFigures
@@ -452,7 +453,7 @@
             this.tsbArrow.Image = global::SimpleEditor.Properties.Resources.arrow;
             this.tsbArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbArrow.Name = "tsbArrow";
-            this.tsbArrow.Size = new System.Drawing.Size(22, 20);
+            this.tsbArrow.Size = new System.Drawing.Size(30, 20);
             this.tsbArrow.Text = "Выбор фигур";
             this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -462,7 +463,7 @@
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.poliline;
             this.tsbPolyline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolyline.Name = "tsbPolyline";
-            this.tsbPolyline.Size = new System.Drawing.Size(22, 20);
+            this.tsbPolyline.Size = new System.Drawing.Size(30, 20);
             this.tsbPolyline.Text = "Линия";
             this.tsbPolyline.ToolTipText = "Линия";
             this.tsbPolyline.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -473,7 +474,7 @@
             this.tsbPolygon.Image = global::SimpleEditor.Properties.Resources.poligon;
             this.tsbPolygon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPolygon.Name = "tsbPolygon";
-            this.tsbPolygon.Size = new System.Drawing.Size(22, 20);
+            this.tsbPolygon.Size = new System.Drawing.Size(30, 20);
             this.tsbPolygon.Text = "Полигон";
             this.tsbPolygon.ToolTipText = "Полигон";
             this.tsbPolygon.Click += new System.EventHandler(this.tsbArrow_Click);
@@ -484,7 +485,7 @@
             this.tsbRect.Image = global::SimpleEditor.Properties.Resources.rect;
             this.tsbRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRect.Name = "tsbRect";
-            this.tsbRect.Size = new System.Drawing.Size(22, 20);
+            this.tsbRect.Size = new System.Drawing.Size(30, 20);
             this.tsbRect.Text = "Прямоугольник";
             this.tsbRect.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -494,7 +495,7 @@
             this.tsbSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsbSquare.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSquare.Name = "tsbSquare";
-            this.tsbSquare.Size = new System.Drawing.Size(22, 20);
+            this.tsbSquare.Size = new System.Drawing.Size(30, 20);
             this.tsbSquare.Text = "Квадрат";
             this.tsbSquare.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -504,7 +505,7 @@
             this.tsbEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.tsbEllipse.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbEllipse.Name = "tsbEllipse";
-            this.tsbEllipse.Size = new System.Drawing.Size(22, 20);
+            this.tsbEllipse.Size = new System.Drawing.Size(30, 20);
             this.tsbEllipse.Text = "Эллипс";
             this.tsbEllipse.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -514,7 +515,7 @@
             this.tsbCircle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.tsbCircle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCircle.Name = "tsbCircle";
-            this.tsbCircle.Size = new System.Drawing.Size(22, 20);
+            this.tsbCircle.Size = new System.Drawing.Size(30, 20);
             this.tsbCircle.Text = "Круг";
             this.tsbCircle.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
@@ -892,14 +893,14 @@
             // tsslEditorMode
             // 
             this.tsslEditorMode.Name = "tsslEditorMode";
-            this.tsslEditorMode.Size = new System.Drawing.Size(82, 17);
-            this.tsslEditorMode.Text = "Режим: Select";
+            this.tsslEditorMode.Size = new System.Drawing.Size(75, 17);
+            this.tsslEditorMode.Text = "Mode: Select";
             // 
             // tsslRibbonRect
             // 
             this.tsslRibbonRect.Name = "tsslRibbonRect";
-            this.tsslRibbonRect.Size = new System.Drawing.Size(58, 17);
-            this.tsslRibbonRect.Text = "Выбор: {}";
+            this.tsslRibbonRect.Size = new System.Drawing.Size(15, 17);
+            this.tsslRibbonRect.Text = "{}";
             // 
             // FormSimpleEditor
             // 

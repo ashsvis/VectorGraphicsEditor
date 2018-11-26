@@ -22,15 +22,25 @@ namespace SimpleEditor
 
             _undoRedoManager.StateChanged += _undoRedoManager_StateChanged;
 
-            _selectionController = new SelectionController(_layer, _undoRedoManager);
+            _selectionController = new SelectionController(_layer);
             
-            // пока что эти события требуют обновить поверхность pbCanvas, когда будет время...
             _selectionController.SelectedFigureChanged += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanging += () => pbCanvas.Invalidate();
             _selectionController.SelectedTransformChanged += () => pbCanvas.Invalidate();
-            _selectionController.SelectedModeChanged += _selectionController_SelectedModeChanged;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
             _selectionController.EditorModeChanged += _selectionController_EditorModeChanged;
+            _selectionController.BeforeLayerChanging += _selectionController_BeforeLayerChanging;
+            _selectionController.AfterLayerChanging += _selectionController_AfterLayerChanging;
+        }
+
+        void _selectionController_AfterLayerChanging()
+        {
+
+        }
+
+        void _selectionController_BeforeLayerChanging()
+        {
+            _undoRedoManager.Execute(new LayerChangingCommand(_layer, "MovingFigure"));
         }
 
         private void _undoRedoManager_StateChanged(UndoRedoManager sender, UndoRedoEventArgs e)
@@ -40,20 +50,16 @@ namespace SimpleEditor
             pbCanvas.Invalidate();
         }
 
-        private void _selectionController_SelectedModeChanged(SelectedMode mode)
-        {
-            tsFigures.Enabled = mode == SelectedMode.Default;
-            pbCanvas.Invalidate();
-        }
-
         private void _selectionController_EditorModeChanged(EditorMode mode)
         {
-            tsslEditorMode.Text = string.Format("Режим: {0}", mode);
+            tsslEditorMode.Text = string.Format("Mode: {0}", mode);
+            tsFigures.Enabled = mode == EditorMode.Select;
+            pbCanvas.Invalidate();
         }
 
         private void _selectionController_SelectedRangeChanging(Rectangle rect)
         {
-            tsslRibbonRect.Text = string.Format("Выбор: {0}", rect);
+            tsslRibbonRect.Text = string.Format("{0}", rect);
             pbCanvas.Invalidate();
         }
 
@@ -126,12 +132,6 @@ namespace SimpleEditor
                 btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
 
-            if (tsbArrow.Checked)
-            {
-                _selectionController.EditorMode = EditorMode.Select;
-                return;
-            }
-
             Func<Figure> figureCreator = null;
 
             if (tsbPolyline.Checked)
@@ -182,40 +182,42 @@ namespace SimpleEditor
 
         private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            tsmiSkewSelectMode.Checked = _selectionController.Mode == SelectedMode.Skew;
-            tsmiVerticiesSelectMode.Checked = _selectionController.Mode == SelectedMode.Verticies;
-            tsmiDefaultSelectMode.Checked = _selectionController.Mode == SelectedMode.Default;
+            tsmiSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
+            tsmiVerticiesSelectMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
+            tsmiDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
         }
 
         private void tsmEditMenu_DropDownOpening(object sender, EventArgs e)
         {
-            tsmSkewSelectMode.Checked = _selectionController.Mode == SelectedMode.Skew;
-            tsmVerticiesSelectMode.Checked = _selectionController.Mode == SelectedMode.Verticies;
-            tsmDefaultSelectMode.Checked = _selectionController.Mode == SelectedMode.Default;
+            tsmSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
+            tsmVerticiesSelectMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
+            tsmDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
         }
 
         private void tsmDefaultSelectMode_Click(object sender, EventArgs e)
         {
-            _selectionController.Mode = SelectedMode.Default;
+            _selectionController.EditorMode = EditorMode.Select;
         }
 
         private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
         {
-            _selectionController.Mode = SelectedMode.Skew;
+            _selectionController.EditorMode = EditorMode.Skew;
         }
 
         private void tsmVerticiesSelectMode_Click(object sender, EventArgs e)
         {
-            _selectionController.Mode = SelectedMode.Verticies;
+            _selectionController.EditorMode = EditorMode.Verticies;
         }
 
         private void tsmUndo_Click(object sender, EventArgs e)
         {
+            _selectionController.Clear();
             _undoRedoManager.Undo();
         }
 
         private void tsmRedo_Click(object sender, EventArgs e)
         {
+            _selectionController.Clear();
             _undoRedoManager.Redo();
         }
     }

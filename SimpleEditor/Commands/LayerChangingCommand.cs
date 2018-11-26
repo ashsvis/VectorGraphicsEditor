@@ -1,5 +1,6 @@
-﻿using EditorModel.Figures;
-using EditorModel.Selections;
+﻿using System;
+using System.Collections.Generic;
+using EditorModel.Figures;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -7,9 +8,9 @@ namespace SimpleEditor.Commands
 {
     public class LayerChangingCommand : ICommand
     {
-        private Layer _layer;
+        private readonly Layer _layer;
         private readonly string _commandName;
-        private byte[] _buff;
+        private List<Figure> _saved;
 
         public LayerChangingCommand(Layer layer, string commandName)
         {
@@ -24,17 +25,26 @@ namespace SimpleEditor.Commands
 
         public void Execute()
         {
+            _saved = CopyFigures(_layer.Figures);
+            Console.WriteLine("Execute");
+        }
+
+        private static List<Figure> CopyFigures(List<Figure> list)
+        {
+            byte[] buff;
             using (var ms = new MemoryStream())
             {
-                new BinaryFormatter().Serialize(ms, _layer);
-                _buff = ms.GetBuffer();
+                new BinaryFormatter().Serialize(ms, list);
+                buff = ms.GetBuffer();
             }
+            using (var fs = new MemoryStream(buff, false))
+                return (List<Figure>)new BinaryFormatter().Deserialize(fs);
         }
 
         public void UnExecute()
         {
-            using (var fs = new MemoryStream(_buff, false))
-                _layer = (Layer)new BinaryFormatter().Deserialize(fs);
+            _layer.Figures = CopyFigures(_saved);
+            Console.WriteLine("UnExecute");
         }
     }
 }
