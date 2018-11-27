@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EditorModel.Figures
+namespace EditorModel.Style
 {
     /// <summary>
     /// Класс стилей фигуры

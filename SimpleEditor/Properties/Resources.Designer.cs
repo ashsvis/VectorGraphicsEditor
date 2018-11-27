@@ -83,9 +83,9 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap brush {
+        internal static System.Drawing.Bitmap brushprops {
             get {
-                object obj = ResourceManager.GetObject("brush", resourceCulture);
+                object obj = ResourceManager.GetObject("brushprops", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +243,9 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pen {
+        internal static System.Drawing.Bitmap penprops {
             get {
-                object obj = ResourceManager.GetObject("pen", resourceCulture);
+                object obj = ResourceManager.GetObject("penprops", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -436,6 +436,16 @@ namespace SimpleEditor.Properties {
         internal static System.Drawing.Bitmap text {
             get {
                 object obj = ResourceManager.GetObject("text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap textprops {
+            get {
+                object obj = ResourceManager.GetObject("textprops", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

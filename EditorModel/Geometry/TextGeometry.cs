@@ -1,15 +1,14 @@
 ﻿using EditorModel.Common;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
-namespace EditorModel.Figures
+namespace EditorModel.Geometry
 {
     /// <summary>
     /// Содержит геометрию текстовой строки
     /// </summary>
     [Serializable]
-    internal class TextGeometry : Geometry
+    public class TextGeometry : Geometry
     {
         /// <summary>
         /// Текст для построения пути
@@ -46,8 +45,9 @@ namespace EditorModel.Figures
                 // сброс пути.
                 _path.Path.Reset();
                 // добавляем в путь текстовую строку
+                
                 _path.Path.AddString(Text ?? "",
-                    new FontFamily(FontName), 0, FontSize, PointF.Empty,
+                    new FontFamily(FontName), 0, FontSize, PointF.Empty, 
                                     StringFormat.GenericTypographic);
                 // возвращаем настроенный путь
                 return _path;

@@ -1,6 +1,6 @@
 ﻿using EditorModel.Common;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using EditorModel.Geometry;
 
 namespace EditorModel.Figures
 {
@@ -95,6 +95,20 @@ namespace EditorModel.Figures
             figure.Geometry = new PolygoneGeometry();
         }
 
+        /// <summary>
+        /// Подключаем к фигуре геометрию ломаной линии
+        /// </summary>
+        /// <param name="figure"></param>
+        public void BuildPolylineGeometry(Figure figure)
+        {
+            figure.Geometry = new PolylineGeometry();
+        }
+
+        /// <summary>
+        /// Определение вида рамки выбора
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <param name="startPoint"></param>
         public void BuildFrameGeometry(Figure figure, Point startPoint)
         {
             figure.Geometry = new FrameGeometry(startPoint);
