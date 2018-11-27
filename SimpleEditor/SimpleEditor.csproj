@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\LayerChangingCommand.cs" />
-    <Compile Include="Commands\UndoRedoManager.cs" />
     <Compile Include="Common\CursorFactory.cs" />
+    <Compile Include="Common\ObjectCloner.cs" />
+    <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\Marker.cs" />
+    <Compile Include="Controllers\UndoRedoController.cs" />
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
