@@ -1,9 +1,8 @@
 using EditorModel.Common;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
-namespace EditorModel.Figures
+namespace EditorModel.Geometry
 {
     /// <summary>
     /// —одержит геометрию рамки, измен€ющей свои размеры
@@ -26,6 +25,7 @@ namespace EditorModel.Figures
             get
             {
                 _path.Path.Reset();
+                // коррекци€ координат углов рамки выбора, вне зависимости от направлени€ выделени€
                 var minX = Math.Min(StartPoint.X, EndPoint.X);
                 var maxX = Math.Max(StartPoint.X, EndPoint.X);
                 var minY = Math.Min(StartPoint.Y, EndPoint.Y);

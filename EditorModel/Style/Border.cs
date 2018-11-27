@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using EditorModel.Figures;
 
-namespace EditorModel.Figures
+namespace EditorModel.Style
 {
     /// <summary>
     /// Класс хранения данных контура фигуры

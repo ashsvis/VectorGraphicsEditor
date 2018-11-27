@@ -1,45 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EditorModel.Figures;
+using SimpleEditor.Common;
 
 namespace SimpleEditor.Controllers
 {
+    /// <summary>
+    /// Управление операциями отмены/возврата действий
+    /// </summary>
     class UndoRedoController
     {
-        private Layer snapshot;
-        private Layer layer;
-        private string operationName;
+        private Layer _snapshot;
+        private readonly Layer _layer;
+        private string _operationName;
 
+        /// <summary>
+        /// Конструктор запоминает рабочий слой, с которым будет работать undo/redo
+        /// </summary>
+        /// <param name="layer"></param>
         public UndoRedoController(Layer layer)
         {
-            this.layer = layer;
+            _layer = layer;
         }
 
+        /// <summary>
+        /// Выполняем перед началом операций изменения контента
+        /// </summary>
+        /// <param name="operationName"></param>
         public void OnStartOperation(string operationName)
         {
-            snapshot = ObjectCloner.DeepClone(layer);
-            this.operationName = operationName;
+            // сначала запоминаем копию по значению рабочего слоя в локальной переменной
+            _snapshot = _layer.DeepClone();
+            // запоминаем также наименование операции
+            _operationName = operationName;
         }
 
+        /// <summary>
+        /// Выполняем после окончания операций изменения контента
+        /// </summary>
         public void OnFinishOperation()
         {
-            var afterOperationSnapshot = ObjectCloner.DeepClone(layer);
-            var beforeOperationSnapshot = snapshot;//capture variable
+            var afterOperationSnapshot = _layer.DeepClone();
+            var beforeOperationSnapshot = _snapshot; // захват переменной при выполнении тела акций
 
             Action undo = () =>
-            {
-                layer.Figures = ObjectCloner.DeepClone(beforeOperationSnapshot).Figures;
-            };
+                {
+                    _layer.Figures = beforeOperationSnapshot.DeepClone().Figures;
+                };
 
             Action redo = () =>
-            {
-                layer.Figures = ObjectCloner.DeepClone(afterOperationSnapshot).Figures;
-            };
+                {
+                    _layer.Figures = afterOperationSnapshot.DeepClone().Figures;
+                };
 
-            UndoRedoManager.Instance.Add(new ActionCommand(undo, redo){Name = operationName});
+            UndoRedoManager.Instance.Add(new ActionCommand(undo, redo) {Name = _operationName});
         }
     }
 }

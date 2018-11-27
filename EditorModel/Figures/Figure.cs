@@ -18,12 +18,12 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство источника геометрии фигуры
         /// </summary>
-        public Geometry Geometry { get; set; }
+        public Geometry.Geometry Geometry { get; set; }
 
         /// <summary>
         /// Свойство стиля рисования фигуры
         /// </summary>
-        public Style Style { get; private set; }
+        public Style.Style Style { get; private set; }
 
         /// <summary>
         /// Свойство рисовальщика фигуры
@@ -36,7 +36,7 @@ namespace EditorModel.Figures
         public Figure()
         {
             Transform = new SerializableGraphicsMatrix();
-            Style = new Style();
+            Style = new Style.Style();
             Renderer = new Renderer();
         }
 

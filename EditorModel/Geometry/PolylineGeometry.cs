@@ -1,15 +1,15 @@
-﻿using EditorModel.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using EditorModel.Common;
 
 namespace EditorModel.Geometry
 {
     /// <summary>
-    /// Содержит геометрию полигона
+    /// Содержит геометрию ломаной линии
     /// </summary>
     [Serializable]
-    internal class PolygoneGeometry : Geometry
+    internal class PolylineGeometry : Geometry
     {
         /// <summary>
         /// Локальное поле для хранения пути
@@ -24,7 +24,7 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
-        internal PolygoneGeometry()
+        internal PolylineGeometry()
         {
             _allowedOperations = AllowedOperations.All;
         }
@@ -40,14 +40,12 @@ namespace EditorModel.Geometry
                 _path.Path.Reset();
                 var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
                 var points = new List<PointF>
-                {
-                    new PointF(rect.Left, rect.Top),
-                    new PointF(rect.Left + rect.Width, rect.Top),
-                    new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                    new PointF(rect.Left, rect.Top + rect.Height)
-                };
-                // добавляем в путь построенный по точкам единичного прямоугольника полигон
-                _path.Path.AddPolygon(points.ToArray());
+                    {
+                        new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
+                    };
+                // добавляем в путь построенную по точкам единичного прямоугольника отрезок линии
+                _path.Path.AddLines(points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
             }

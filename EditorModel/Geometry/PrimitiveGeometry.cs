@@ -1,8 +1,7 @@
 ﻿using EditorModel.Common;
 using System;
-using System.Drawing.Drawing2D;
 
-namespace EditorModel.Figures
+namespace EditorModel.Geometry
 {
     /// <summary>
     /// Содержит геометрию фиксированной формы

@@ -124,7 +124,7 @@
   <data name="bringtofront" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bringtofront.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="brush" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="brushprops" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\brush.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="build" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -166,7 +166,7 @@
   <data name="openfolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openfolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="penprops" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="poligon" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -217,7 +217,7 @@
   <data name="startnodechanging" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\startnodechanging.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="text" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="textprops" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\text.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -240,5 +240,8 @@
   </data>
   <data name="CreateEllipse" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ELLIPSE.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="text" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CreateText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1,8 +1,7 @@
 ﻿using EditorModel.Common;
 using System;
-using System.Drawing.Drawing2D;
 
-namespace EditorModel.Figures
+namespace EditorModel.Geometry
 {
     /// <summary>
     /// Допустимые операции над геометрией
@@ -16,9 +15,10 @@ namespace EditorModel.Figures
         Size = 0x2,         // может изменять размер по горизонтали и вертикали
         Rotate = 0x4,       // может быть повёрнут
         Select = 0x8,       // может быть выбран
-        // потом мы сможем расширить список допустимых операций, если будет нужно.
         Skew = 0x10,        // может быть искажён
         Vertex = 0x20,      // может изменять внутренние вершины
+        // новые режимы добавлять здесь
+
         All = 0xffffffff,   // всё можно
     }
     

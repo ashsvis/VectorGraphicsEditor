@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using EditorModel.Figures;
 
-namespace EditorModel.Figures
+namespace EditorModel.Style
 {
     /// <summary>
     /// Класс хранения данных заливки фигуры

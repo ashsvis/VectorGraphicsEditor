@@ -1,186 +1,134 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// Undo/Redo manager
-/// </summary>
-public class UndoRedoManager
+namespace SimpleEditor.Common
 {
-    LinkedList<UndoableCommand> history;
-    Stack<UndoableCommand> redoStack = new Stack<UndoableCommand>();
-    int maxHistoryLength;
-    int updating = 0;
-
-    public static int DefaultMaxHistoryLength = 20;
-
-    public static UndoRedoManager Instance
+    /// <summary>
+    /// Undo/Redo manager
+    /// </summary>
+    public class UndoRedoManager
     {
-        get
+        readonly LinkedList<UndoableCommand> _history;
+        readonly Stack<UndoableCommand> _redoStack = new Stack<UndoableCommand>();
+        readonly int _maxHistoryLength;
+        int _updating;
+
+        public static int DefaultMaxHistoryLength = 20;
+
+        public static UndoRedoManager Instance
         {
-            if (sessions.Count == 0)
-                CreateNewSession();
-            return sessions.Peek();
+            get
+            {
+                if (Sessions.Count == 0)
+                    CreateNewSession();
+                return Sessions.Peek();
+            }
         }
-    }
 
-    private static Stack<UndoRedoManager> sessions = new Stack<UndoRedoManager>();
+        private static readonly Stack<UndoRedoManager> Sessions = new Stack<UndoRedoManager>();
 
-    public static int SessionsCount
-    {
-        get { return sessions.Count; }
-    }
-
-    public static void CreateNewSession(int maxHistoryLength = -1)
-    {
-        sessions.Push(new UndoRedoManager(maxHistoryLength));
-    }
-
-    public static void ReturnToPrevSession()
-    {
-        sessions.Pop();
-    }
-
-    public UndoRedoManager(int maxHistoryLength = -1)
-    {
-        this.maxHistoryLength = maxHistoryLength;
-        if (maxHistoryLength == -1)
-            this.maxHistoryLength = DefaultMaxHistoryLength;
-        history = new LinkedList<UndoableCommand>();
-    }
-
-    public virtual void Add(UndoableCommand cmd)
-    {
-        if (updating > 0)
-            return;
-
-        history.AddLast(cmd);
-        if (history.Count > maxHistoryLength)
-            history.RemoveFirst();
-
-        redoStack.Clear();
-    }
-
-    public virtual void Add(Action undo, Action redo)
-    {
-        Add(new ActionCommand(undo, redo));
-    }
-
-    public void Undo()
-    {
-        if (history.Count > 0)
+        public static int SessionsCount
         {
-            var cmd = history.Last.Value;
-            history.RemoveLast();
+            get { return Sessions.Count; }
+        }
+
+        public static void CreateNewSession(int maxHistoryLength = -1)
+        {
+            Sessions.Push(new UndoRedoManager(maxHistoryLength));
+        }
+
+        public static void ReturnToPrevSession()
+        {
+            Sessions.Pop();
+        }
+
+        public UndoRedoManager(int maxHistoryLength = -1)
+        {
+            _maxHistoryLength = maxHistoryLength;
+            if (maxHistoryLength == -1)
+                _maxHistoryLength = DefaultMaxHistoryLength;
+            _history = new LinkedList<UndoableCommand>();
+        }
+
+        public virtual void Add(UndoableCommand cmd)
+        {
+            if (_updating > 0)
+                return;
+
+            _history.AddLast(cmd);
+            if (_history.Count > _maxHistoryLength)
+                _history.RemoveFirst();
+
+            _redoStack.Clear();
+        }
+
+        public virtual void Add(Action undo, Action redo)
+        {
+            Add(new ActionCommand(undo, redo));
+        }
+
+        public void Undo()
+        {
+            if (_history.Count <= 0) return;
+            var cmd = _history.Last.Value;
+            _history.RemoveLast();
             //
-            updating++;//prevent text changing into handlers
+            _updating++; // prevent text changing into handlers
             try
             {
                 cmd.Undo();
             }
             finally
             {
-                updating--;
+                _updating--;
             }
             //
-            redoStack.Push(cmd);
+            _redoStack.Push(cmd);
         }
-    }
 
 
-    public void ClearHistory()
-    {
-        history.Clear();
-        redoStack.Clear();
-    }
-
-    public void Redo()
-    {
-        if (redoStack.Count == 0)
-            return;
-
-        updating++;//prevent text changing into handlers
-        try
+        public void ClearHistory()
         {
-            var cmd = redoStack.Pop();
-            cmd.Redo();
-
-            history.AddLast(cmd);
-            if (history.Count > maxHistoryLength)
-                history.RemoveFirst();
+            _history.Clear();
+            _redoStack.Clear();
         }
-        finally
+
+        public void Redo()
         {
-            updating--;
+            if (_redoStack.Count == 0)
+                return;
+
+            _updating++; // prevent text changing into handlers
+            try
+            {
+                var cmd = _redoStack.Pop();
+                cmd.Redo();
+
+                _history.AddLast(cmd);
+                if (_history.Count > _maxHistoryLength)
+                    _history.RemoveFirst();
+            }
+            finally
+            {
+                _updating--;
+            }
+
         }
 
-    }
-
-    public bool CanUndo
-    {
-        get
+        public bool CanUndo
         {
-            return history.Count > 0;
+            get
+            {
+                return _history.Count > 0;
+            }
         }
-    }
 
-    public bool CanRedo
-    {
-        get
+        public bool CanRedo
         {
-            return redoStack.Count > 0;
+            get
+            {
+                return _redoStack.Count > 0;
+            }
         }
-    }
-}
-
-public abstract class UndoableCommand
-{
-    public string Name { get; set; }
-    public abstract void Undo();
-    public abstract void Redo();
-}
-
-public class ActionCommand : UndoableCommand
-{
-    Action redo;
-    Action undo;
-
-    public ActionCommand(Action undo, Action redo)
-    {
-        this.redo = redo;
-        this.undo = undo;
-    }
-
-    public override void Undo()
-    {
-        if (undo != null)
-            undo();
-    }
-
-    public override void Redo()
-    {
-        if (redo != null)
-            redo();
-    }
-}
-
-public class MultipleCommand : UndoableCommand
-{
-    UndoableCommand[] commands;
-
-    public MultipleCommand(params UndoableCommand[] commands)
-    {
-        this.commands = commands;
-    }
-
-    public override void Undo()
-    {
-        for(int i = commands.Length - 1; i>=0; i--)
-            commands[i].Undo();
-    }
-
-    public override void Redo()
-    {
-        foreach (var cmd in commands)
-            cmd.Redo();
     }
 }

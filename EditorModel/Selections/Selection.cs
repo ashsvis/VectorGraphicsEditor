@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using EditorModel.Common;
 using EditorModel.Figures;
+using EditorModel.Geometry;
 
 namespace EditorModel.Selections
 {
@@ -165,6 +166,81 @@ namespace EditorModel.Selections
             m.Matrix.Shear(skewX, skewY);              //сдвигаем
             m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Отражение по горизонтали
+        /// </summary>
+        public void FlipX()
+        {
+            var m = new SerializableGraphicsMatrix();
+            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            //отражаем по горизонтали относительно якоря
+            m.Matrix.Multiply(new Matrix(-1, 0, 0, 1, 0, 0));
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Отражение по вертикали
+        /// </summary>
+        public void FlipY()
+        {
+            var m = new SerializableGraphicsMatrix();
+            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            //отражаем по вертикали относительно якоря
+            m.Matrix.Multiply(new Matrix(1, 0, 0, -1, 0, 0));
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Поворот на четверть по часовой стрелке
+        /// </summary>
+        public void Rotate90Cw()
+        {
+            var m = new SerializableGraphicsMatrix();
+            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            //отражаем по вертикали относительно якоря
+            m.Matrix.Multiply(new Matrix(0, 1, -1, 0, 0, 0));
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Поворот на четверть против часовой стрелки
+        /// </summary>
+        public void Rotate90Ccw()
+        {
+            var m = new SerializableGraphicsMatrix();
+            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            //отражаем по вертикали относительно якоря
+            m.Matrix.Multiply(new Matrix(0, -1, 1, 0, 0, 0));
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
+            //
+            Transform = m;
+        }
+
+        /// <summary>
+        /// Поворот на 180 градусов
+        /// </summary>
+        public void Rotate180()
+        {
+            var m = new SerializableGraphicsMatrix();
+            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
+            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
+            //отражаем по вертикали относительно якоря
+            m.Matrix.Multiply(new Matrix(-1, 0, 0, -1, 0, 0));
+            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
             //
             Transform = m;
         }

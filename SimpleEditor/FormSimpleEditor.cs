@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using EditorModel.Figures;
 using System.Windows.Forms;
+using SimpleEditor.Common;
 using SimpleEditor.Controllers;
 
 namespace SimpleEditor
@@ -21,11 +23,12 @@ namespace SimpleEditor
 
             _selectionController = new SelectionController(_layer);
             
+            // подключение обработчиков событий для контроллера выбора
             _selectionController.SelectedFigureChanged += UpdateInterface;
             _selectionController.SelectedTransformChanging += UpdateInterface;
             _selectionController.SelectedTransformChanged += UpdateInterface;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
-            _selectionController.EditorModeChanged += (_) => UpdateInterface();
+            _selectionController.EditorModeChanged += _ => UpdateInterface();
             _selectionController.LayerStartChanging += () => OnLayerStartChanging(_selectionController.EditorMode.ToString());
             _selectionController.LayerChanged += OnLayerChanged;
         }
@@ -65,7 +68,10 @@ namespace SimpleEditor
         {
             if (e.Button == MouseButtons.Left)
             {
-                _selectionController.OnMouseDown(e.Location, ModifierKeys);
+                if (e.Clicks == 2)
+                    _selectionController.OnDblClick(e.Location, ModifierKeys);
+                else
+                    _selectionController.OnMouseDown(e.Location, ModifierKeys);
             }
         }
 
@@ -76,6 +82,7 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            // состояние курсора обрабатывается вне зависимости от нажатых клавиш мышки
             Cursor = _selectionController.GetCursor(e.Location, ModifierKeys);
             if (e.Button == MouseButtons.Left)
             {
@@ -119,9 +126,14 @@ namespace SimpleEditor
 
         }
 
+        /// <summary>
+        /// Этот обработчик также подключен ко всем кнопкам выбора фигур
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbArrow_Click(object sender, EventArgs e)
         {
-            foreach (ToolStripButton btn in tsFigures.Items)
+            foreach (var btn in tsFigures.Items.OfType<ToolStripButton>())
                 btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
 
@@ -131,7 +143,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildPolygoneGeometry(fig);//todo
+                    new FigureBuilder().BuildPolylineGeometry(fig);
                     return fig;
                 };
             else if (tsbPolygon.Checked)
@@ -169,10 +181,30 @@ namespace SimpleEditor
                     new FigureBuilder().BuildCircleGeometry(fig);
                     return fig;
                 };
-
+            else if (tsbText.Checked)
+            {
+                var frm = new FormTextEditor();
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    var text = frm.GetText;
+                    if (string.IsNullOrWhiteSpace(text)) text = "Sample";
+                    figureCreator = () =>
+                        {
+                            var fig = new Figure();
+                            new FigureBuilder().BuildTextGeometry(fig, text);
+                            fig.Style.FillStyle.Color = Color.Black;
+                            return fig;
+                        };
+                }
+            }
             _selectionController.CreateFigureRequest = figureCreator;
         }
 
+        /// <summary>
+        /// Происходит перед показом контекстного меню, отмечается текщий базовый режим 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             tsmiSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
@@ -180,6 +212,11 @@ namespace SimpleEditor
             tsmiDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
         }
 
+        /// <summary>
+        /// Происходит перед показом главного меню, отмечается текщий базовый режим 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmEditMenu_DropDownOpening(object sender, EventArgs e)
         {
             tsmSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
@@ -187,21 +224,41 @@ namespace SimpleEditor
             tsmDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
         }
 
+        /// <summary>
+        /// Переключение в базовый режим для создания, перетаскивания, изменения размеров и поворота
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmDefaultSelectMode_Click(object sender, EventArgs e)
         {
             _selectionController.EditorMode = EditorMode.Select;
         }
 
+        /// <summary>
+        /// Переключение в режим искажений (второй из базовых режимов)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
         {
             _selectionController.EditorMode = EditorMode.Skew;
         }
 
+        /// <summary>
+        /// Переключение в режим изменения вершин (третий из базовых режимов)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmVerticiesSelectMode_Click(object sender, EventArgs e)
         {
             _selectionController.EditorMode = EditorMode.Verticies;
         }
 
+        /// <summary>
+        /// Сюда подключены пункты для отмены действия из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmUndo_Click(object sender, EventArgs e)
         {
             _selectionController.Clear();
@@ -209,10 +266,70 @@ namespace SimpleEditor
             UpdateInterface();
         }
 
+        /// <summary>
+        /// Сюда подключены пункты для возврата действия из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmRedo_Click(object sender, EventArgs e)
         {
             _selectionController.Clear();
             UndoRedoManager.Instance.Redo();
+            UpdateInterface();
+        }
+
+        /// <summary>
+        /// Сюда подключены пункты для отражения по горизонтали из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiFlipX_Click(object sender, EventArgs e)
+        {
+            _selectionController.FlipX();
+            UpdateInterface();
+        }
+
+        /// <summary>
+        /// Сюда подключены пункты для отражения по вертикали из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiFlipY_Click(object sender, EventArgs e)
+        {
+            _selectionController.FlipY();
+            UpdateInterface();
+        }
+
+        /// <summary>
+        /// Сюда подключены пункты для поворота на четверть по часовой стрелке из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiRotate90Cw_Click(object sender, EventArgs e)
+        {
+            _selectionController.Rotate90Cw();
+            UpdateInterface();
+        }
+
+        /// <summary>
+        /// Сюда подключены пункты для поворота на четверть против часовой стрелки из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiRotate90Ccw_Click(object sender, EventArgs e)
+        {
+            _selectionController.Rotate90Ccw();
+            UpdateInterface();
+        }
+
+        /// <summary>
+        /// Сюда подключены пункты для поворота на 180° из главного и контекстного меню
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiRotate180_Click(object sender, EventArgs e)
+        {
+            _selectionController.Rotate180();
             UpdateInterface();
         }
     }
