@@ -9,8 +9,10 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    internal class PolygoneGeometry : Geometry
+    public class PolygoneGeometry : Geometry, IPolyGeometry
     {
+        public List<PointF> Points { get; set; }
+
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
@@ -27,6 +29,14 @@ namespace EditorModel.Geometry
         internal PolygoneGeometry()
         {
             _allowedOperations = AllowedOperations.All;
+            var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
+            Points = new List<PointF>
+                {
+                    new PointF(rect.Left, rect.Top),
+                    new PointF(rect.Left + rect.Width, rect.Top),
+                    new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
+                    new PointF(rect.Left, rect.Top + rect.Height)
+                };
         }
 
         /// <summary>
@@ -38,16 +48,8 @@ namespace EditorModel.Geometry
             {
                 // сброс пути
                 _path.Path.Reset();
-                var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-                var points = new List<PointF>
-                {
-                    new PointF(rect.Left, rect.Top),
-                    new PointF(rect.Left + rect.Width, rect.Top),
-                    new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                    new PointF(rect.Left, rect.Top + rect.Height)
-                };
                 // добавляем в путь построенный по точкам единичного прямоугольника полигон
-                _path.Path.AddPolygon(points.ToArray());
+                _path.Path.AddPolygon(Points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
             }

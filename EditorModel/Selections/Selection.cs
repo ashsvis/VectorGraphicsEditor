@@ -18,6 +18,7 @@ namespace EditorModel.Selections
     {
         // внутренний набор для хранения списка выделенных фигур
         private readonly HashSet<Figure> _selected = new HashSet<Figure>();
+        private bool _aroundFrameDisable;
 
         /// <summary>
         /// Очистка списка выделенных фигур
@@ -49,6 +50,20 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
+        /// Запрет рисовать рамку вокруг выбранных фигур
+        /// </summary>
+        public bool AroundFrameDisable
+        {
+            get { return _aroundFrameDisable; }
+            set
+            {
+                if (_aroundFrameDisable == value) return;
+                _aroundFrameDisable = value;
+                GrabGeometry();
+            }
+        }
+
+        /// <summary>
         /// Копирование геометрий выделенных фигур в свою геометрию
         /// </summary>
         private void GrabGeometry()
@@ -56,12 +71,17 @@ namespace EditorModel.Selections
             // захватываем геометрию выбранных фигур
             var path = new SerializableGraphicsPath();
             foreach (var fig in _selected)
+            {
+                path.Path.SetMarkers();
                 path.Path.AddPath(fig.GetTransformedPath(), false);
+            }
 
             // нарисовать рамку вокруг выбранных фигур 
-            var bounds = path.Path.GetBounds();
-            path.Path.AddRectangle(bounds);
-
+            if (!AroundFrameDisable)
+            {
+                var bounds = path.Path.GetBounds();
+                path.Path.AddRectangle(bounds);
+            }
             // выбираем разрешённые операции
             // если выбрана только одна фигура - просто используем её AllowedOperations
             // иначе - разрешаем все операции
@@ -74,6 +94,7 @@ namespace EditorModel.Selections
 
             // сбрасываем преобразование в единичную матрицу
             Transform = new SerializableGraphicsMatrix();
+            PathDataModified = false;
         }
 
         /// <summary>
@@ -87,10 +108,6 @@ namespace EditorModel.Selections
             GrabGeometry();
         }
 
-        /*
-         *  Добавлено 19.11.2018 от Storm23
-         */
-
         /// <summary>
         /// Переводит точку из локальных нормализированных координат (0,0)-(1,1) в мировые координаты
         /// </summary>
@@ -98,15 +115,6 @@ namespace EditorModel.Selections
         {
             var bounds = GetTransformedPath().Path.GetBounds();
             return new PointF(bounds.Left + point.X * bounds.Width, bounds.Top + point.Y * bounds.Height);
-        }
-
-        /// <summary>
-        /// Переводит точку из мировых координат в локальные нормализированные координаты (0,0)-(1,1)
-        /// </summary>
-        public PointF ToLocalCoordinates(PointF point)
-        {
-            var bounds = GetTransformedPath().Path.GetBounds();
-            return new PointF((point.X - bounds.Left) / bounds.Width, (point.Y - bounds.Top) / bounds.Height);
         }
 
         /// <summary>
@@ -266,10 +274,6 @@ namespace EditorModel.Selections
             Transform = m;
         }
 
-        /*
-         *  Добавлено 19.11.2018 от ashsvis
-         */
-
         /// <summary>
         /// Наличие фигуры в списке выбранных
         /// </summary>
@@ -279,10 +283,6 @@ namespace EditorModel.Selections
         {
             return _selected.Contains(figure);
         }
-
-        /*
-         *  Добавлено 20.11.2018 от ashsvis
-         */
 
         /// <summary>
         /// Конструктор с инициализацией по умолчанию
@@ -310,6 +310,62 @@ namespace EditorModel.Selections
         public IEnumerator<Figure> GetEnumerator()
         {
             return _selected.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Состояние внутренних вершин фигур изменилось
+        /// </summary>
+        public bool PathDataModified { get; private set; }
+
+        /// <summary>
+        /// Перемещение маркера вершины
+        /// </summary>
+        /// <param name="owner">Фигура, владелец маркера</param>
+        /// <param name="index">Индекс вершины</param>
+        /// <param name="marker">Координаты маркера вершины</param>
+        /// <param name="mouse">Координаты мышки</param>
+        /// <returns>Новые координаты маркера вершины</returns>
+        public PointF MoveVertex(Figure owner, int index, PointF marker, PointF mouse)
+        {
+            var points = Geometry.Path.Path.PathPoints;
+            var types = Geometry.Path.Path.PathTypes;
+            var offset = new SizeF(mouse.X - marker.X, mouse.Y - marker.Y);
+            PathDataModified = !offset.IsEmpty;
+            points[index] = PointF.Add(points[index], offset);
+            Geometry = new PrimitiveGeometry(
+                new SerializableGraphicsPath {Path = new GraphicsPath(points, types)},
+                Geometry.AllowedOperations);
+            return PointF.Add(marker, offset);
+        }
+
+        /// <summary>
+        /// Переводит точку из мировых координат в локальные нормализированные координаты (0,0)-(1,1)
+        /// </summary>
+        private PointF ToLocalCoordinates(RectangleF bounds, PointF point)
+        {
+            return new PointF((point.X - bounds.Left) / bounds.Width, (point.Y - bounds.Top) / bounds.Height);
+        }
+
+        /// <summary>
+        /// Применение своего Path к Path выделенной фигуры
+        /// </summary>
+        public void PushPathDataToSelectedFigures()
+        {
+            var fig = _selected.FirstOrDefault();
+            if (fig != null)
+            {
+                var bounds = Geometry.Path.Path.GetBounds();
+                var types = Geometry.Path.Path.PathTypes;
+                var points = Geometry.Path.Path.PathPoints;
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i] = ToLocalCoordinates(bounds, points[i]);
+                }
+                fig.Geometry = new PrimitiveGeometry(
+                    new SerializableGraphicsPath { Path = new GraphicsPath(points, types) }, 
+                    fig.Geometry.AllowedOperations);
+            }
+            GrabGeometry();
         }
     }
 }

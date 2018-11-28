@@ -7,7 +7,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию фиксированной формы
     /// </summary>
     [Serializable]
-    internal class PrimitiveGeometry : Geometry
+    public class PrimitiveGeometry : Geometry
     {
         /// <summary>
         /// Локальное поле для хранения пути
@@ -35,7 +35,7 @@ namespace EditorModel.Geometry
         /// </summary>
         /// <param name="path">Закрепляемый путь для примитивной геометрии</param>
         /// <param name="allowed">набор прав для операций</param>
-        internal PrimitiveGeometry(SerializableGraphicsPath path, AllowedOperations allowed)
+        public PrimitiveGeometry(SerializableGraphicsPath path, AllowedOperations allowed)
         {
             // запоминаем переданный в конструкторе путь в локальном поле
             _path = path;

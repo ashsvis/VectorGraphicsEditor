@@ -10,6 +10,8 @@ namespace SimpleEditor.Controllers
         public PointF Position { get; set; }
         public PointF AnchorPosition { get; set; }
         public MarkerType MarkerType { get; set; }
+        public int Index { get; set; }
+        public Figure Owner { get; set; }
     }
 
     public enum MarkerType

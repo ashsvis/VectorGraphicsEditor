@@ -46,6 +46,7 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiRotate90Cw = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRotate90Ccw = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRotate180 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.tsmFileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreate = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +77,7 @@
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmRotate90Cw = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmRotate90Ccw = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmRotate180 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsFigures = new System.Windows.Forms.ToolStrip();
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripButton();
@@ -128,8 +130,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslRibbonRect = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsmiRotate180 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmRotate180 = new System.Windows.Forms.ToolStripMenuItem();
             this.panelForScroll.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).BeginInit();
             this.cmsCanvasPopup.SuspendLayout();
@@ -150,7 +150,7 @@
             this.tsmSelectAll.Enabled = false;
             this.tsmSelectAll.Name = "tsmSelectAll";
             this.tsmSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmSelectAll.Size = new System.Drawing.Size(162, 22);
+            this.tsmSelectAll.Size = new System.Drawing.Size(180, 22);
             this.tsmSelectAll.Text = "Select &all";
             // 
             // toolStripSeparator9
@@ -196,8 +196,8 @@
             this.tsmiFlipX,
             this.tsmiFlipY,
             this.toolStripMenuItem5,
-            this.tsmiRotate90Cw,
             this.tsmiRotate90Ccw,
+            this.tsmiRotate90Cw,
             this.tsmiRotate180});
             this.cmsCanvasPopup.Name = "cmsBkgPopup";
             this.cmsCanvasPopup.Size = new System.Drawing.Size(159, 220);
@@ -281,6 +281,13 @@
             this.tsmiRotate90Ccw.Size = new System.Drawing.Size(158, 22);
             this.tsmiRotate90Ccw.Text = "Rotate 90° CCW";
             this.tsmiRotate90Ccw.Click += new System.EventHandler(this.tsmiRotate90Ccw_Click);
+            // 
+            // tsmiRotate180
+            // 
+            this.tsmiRotate180.Name = "tsmiRotate180";
+            this.tsmiRotate180.Size = new System.Drawing.Size(158, 22);
+            this.tsmiRotate180.Text = "Rotate at 180°";
+            this.tsmiRotate180.Click += new System.EventHandler(this.tsmiRotate180_Click);
             // 
             // menuStripMain
             // 
@@ -404,8 +411,8 @@
             this.tsmFlipX,
             this.tsmFlipY,
             this.toolStripMenuItem9,
-            this.tsmRotate90Cw,
             this.tsmRotate90Ccw,
+            this.tsmRotate90Cw,
             this.tsmRotate180});
             this.tsmEditMenu.Name = "tsmEditMenu";
             this.tsmEditMenu.Size = new System.Drawing.Size(39, 20);
@@ -418,7 +425,7 @@
             this.tsmUndo.Image = global::SimpleEditor.Properties.Resources.undo;
             this.tsmUndo.Name = "tsmUndo";
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmUndo.Size = new System.Drawing.Size(162, 22);
+            this.tsmUndo.Size = new System.Drawing.Size(180, 22);
             this.tsmUndo.Text = "&Undo";
             this.tsmUndo.Click += new System.EventHandler(this.tsmUndo_Click);
             // 
@@ -428,14 +435,14 @@
             this.tsmRedo.Image = global::SimpleEditor.Properties.Resources.redo;
             this.tsmRedo.Name = "tsmRedo";
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmRedo.Size = new System.Drawing.Size(162, 22);
+            this.tsmRedo.Size = new System.Drawing.Size(180, 22);
             this.tsmRedo.Text = "&Redo";
             this.tsmRedo.Click += new System.EventHandler(this.tsmRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmCut
             // 
@@ -444,7 +451,7 @@
             this.tsmCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCut.Name = "tsmCut";
             this.tsmCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmCut.Size = new System.Drawing.Size(162, 22);
+            this.tsmCut.Size = new System.Drawing.Size(180, 22);
             this.tsmCut.Text = "Cu&t";
             // 
             // tsmCopy
@@ -454,7 +461,7 @@
             this.tsmCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCopy.Name = "tsmCopy";
             this.tsmCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmCopy.Size = new System.Drawing.Size(162, 22);
+            this.tsmCopy.Size = new System.Drawing.Size(180, 22);
             this.tsmCopy.Text = "&Copy";
             // 
             // tsmPaste
@@ -464,30 +471,30 @@
             this.tsmPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPaste.Name = "tsmPaste";
             this.tsmPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmPaste.Size = new System.Drawing.Size(162, 22);
+            this.tsmPaste.Size = new System.Drawing.Size(180, 22);
             this.tsmPaste.Text = "&Paste";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmDefaultSelectMode
             // 
             this.tsmDefaultSelectMode.Name = "tsmDefaultSelectMode";
-            this.tsmDefaultSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmDefaultSelectMode.Size = new System.Drawing.Size(180, 22);
             this.tsmDefaultSelectMode.Text = "Selection";
             this.tsmDefaultSelectMode.Click += new System.EventHandler(this.tsmDefaultSelectMode_Click);
             // 
             // tsmSkewSelectMode
             // 
             this.tsmSkewSelectMode.Name = "tsmSkewSelectMode";
-            this.tsmSkewSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmSkewSelectMode.Size = new System.Drawing.Size(180, 22);
             this.tsmSkewSelectMode.Text = "Skew";
             this.tsmSkewSelectMode.Click += new System.EventHandler(this.tsmiSkewSelectMode_Click);
             // 
@@ -495,20 +502,20 @@
             // 
             this.tsmVerticiesSelectMode.Image = global::SimpleEditor.Properties.Resources.startnodechanging;
             this.tsmVerticiesSelectMode.Name = "tsmVerticiesSelectMode";
-            this.tsmVerticiesSelectMode.Size = new System.Drawing.Size(162, 22);
+            this.tsmVerticiesSelectMode.Size = new System.Drawing.Size(180, 22);
             this.tsmVerticiesSelectMode.Text = "Edit Verticies";
             this.tsmVerticiesSelectMode.Click += new System.EventHandler(this.tsmVerticiesSelectMode_Click);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmFlipX
             // 
             this.tsmFlipX.Image = global::SimpleEditor.Properties.Resources.flipleftright;
             this.tsmFlipX.Name = "tsmFlipX";
-            this.tsmFlipX.Size = new System.Drawing.Size(162, 22);
+            this.tsmFlipX.Size = new System.Drawing.Size(180, 22);
             this.tsmFlipX.Text = "FlipX";
             this.tsmFlipX.Click += new System.EventHandler(this.tsmiFlipX_Click);
             // 
@@ -516,20 +523,20 @@
             // 
             this.tsmFlipY.Image = global::SimpleEditor.Properties.Resources.flipupdown;
             this.tsmFlipY.Name = "tsmFlipY";
-            this.tsmFlipY.Size = new System.Drawing.Size(162, 22);
+            this.tsmFlipY.Size = new System.Drawing.Size(180, 22);
             this.tsmFlipY.Text = "FlipY";
             this.tsmFlipY.Click += new System.EventHandler(this.tsmiFlipY_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmRotate90Cw
             // 
             this.tsmRotate90Cw.Image = global::SimpleEditor.Properties.Resources.rotateright;
             this.tsmRotate90Cw.Name = "tsmRotate90Cw";
-            this.tsmRotate90Cw.Size = new System.Drawing.Size(162, 22);
+            this.tsmRotate90Cw.Size = new System.Drawing.Size(180, 22);
             this.tsmRotate90Cw.Text = "Rotate  90° CW";
             this.tsmRotate90Cw.Click += new System.EventHandler(this.tsmiRotate90Cw_Click);
             // 
@@ -537,9 +544,16 @@
             // 
             this.tsmRotate90Ccw.Image = global::SimpleEditor.Properties.Resources.rotateleft;
             this.tsmRotate90Ccw.Name = "tsmRotate90Ccw";
-            this.tsmRotate90Ccw.Size = new System.Drawing.Size(162, 22);
+            this.tsmRotate90Ccw.Size = new System.Drawing.Size(180, 22);
             this.tsmRotate90Ccw.Text = "Rotate 90° CCW";
             this.tsmRotate90Ccw.Click += new System.EventHandler(this.tsmiRotate90Ccw_Click);
+            // 
+            // tsmRotate180
+            // 
+            this.tsmRotate180.Name = "tsmRotate180";
+            this.tsmRotate180.Size = new System.Drawing.Size(180, 22);
+            this.tsmRotate180.Text = "Rotate at 180°";
+            this.tsmRotate180.Click += new System.EventHandler(this.tsmiRotate180_Click);
             // 
             // tsFigures
             // 
@@ -1034,20 +1048,6 @@
             this.tsslRibbonRect.Name = "tsslRibbonRect";
             this.tsslRibbonRect.Size = new System.Drawing.Size(15, 17);
             this.tsslRibbonRect.Text = "{}";
-            // 
-            // tsmiRotate180
-            // 
-            this.tsmiRotate180.Name = "tsmiRotate180";
-            this.tsmiRotate180.Size = new System.Drawing.Size(158, 22);
-            this.tsmiRotate180.Text = "Rotate at 180°";
-            this.tsmiRotate180.Click += new System.EventHandler(this.tsmiRotate180_Click);
-            // 
-            // tsmRotate180
-            // 
-            this.tsmRotate180.Name = "tsmRotate180";
-            this.tsmRotate180.Size = new System.Drawing.Size(162, 22);
-            this.tsmRotate180.Text = "Rotate at 180°";
-            this.tsmRotate180.Click += new System.EventHandler(this.tsmiRotate180_Click);
             // 
             // FormSimpleEditor
             // 

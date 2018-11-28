@@ -9,8 +9,10 @@ namespace EditorModel.Geometry
     /// Содержит геометрию ломаной линии
     /// </summary>
     [Serializable]
-    internal class PolylineGeometry : Geometry
+    internal class PolylineGeometry : Geometry, IPolyGeometry
     {
+        public List<PointF> Points { get; set; }
+
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
@@ -27,6 +29,12 @@ namespace EditorModel.Geometry
         internal PolylineGeometry()
         {
             _allowedOperations = AllowedOperations.All;
+            var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
+            Points = new List<PointF>
+                    {
+                        new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
+                    };
         }
 
         /// <summary>
@@ -38,14 +46,8 @@ namespace EditorModel.Geometry
             {
                 // сброс пути
                 _path.Path.Reset();
-                var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-                var points = new List<PointF>
-                    {
-                        new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
-                    };
                 // добавляем в путь построенную по точкам единичного прямоугольника отрезок линии
-                _path.Path.AddLines(points.ToArray());
+                _path.Path.AddLines(Points.ToArray());
                 // возвращаем настроенный путь
                 return _path;
             }
