@@ -339,14 +339,6 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Переводит точку из мировых координат в локальные нормализированные координаты (0,0)-(1,1)
-        /// </summary>
-        private PointF ToLocalCoordinates(RectangleF bounds, PointF point)
-        {
-            return new PointF((point.X - bounds.Left) / bounds.Width, (point.Y - bounds.Top) / bounds.Height);
-        }
-
-        /// <summary>
         /// Применение своего Path к Path выделенной фигуры
         /// </summary>
         public void PushPathDataToSelectedFigures()
@@ -354,16 +346,12 @@ namespace EditorModel.Selections
             var fig = _selected.FirstOrDefault();
             if (fig != null)
             {
-                var bounds = Geometry.Path.Path.GetBounds();
                 var types = Geometry.Path.Path.PathTypes;
                 var points = Geometry.Path.Path.PathPoints;
-                for (int i = 0; i < points.Length; i++)
-                {
-                    points[i] = ToLocalCoordinates(bounds, points[i]);
-                }
                 fig.Geometry = new PrimitiveGeometry(
                     new SerializableGraphicsPath { Path = new GraphicsPath(points, types) }, 
                     fig.Geometry.AllowedOperations);
+                fig.Transform = new SerializableGraphicsMatrix();
             }
             GrabGeometry();
         }

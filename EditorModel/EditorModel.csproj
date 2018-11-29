@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Geometry\FrameGeometry.cs" />
-    <Compile Include="Geometry\IPolyGeometry.cs" />
     <Compile Include="Geometry\PolylineGeometry.cs" />
     <Compile Include="Style\Border.cs" />
     <Compile Include="Figures\Figure.cs" />
