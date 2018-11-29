@@ -877,18 +877,9 @@ namespace SimpleEditor.Controllers
         {
             if (_selection.Count < 2) return;
             LayerStartChanging();
-            var groupPath = new SerializableGraphicsPath();
+            var group = _selection.Group();
             foreach (var fig in _selection)
-            {
-                groupPath.Path.AddPath(fig.GetTransformedPath().Path, false);
-                if (_selection.Last() != fig)
-                    groupPath.Path.SetMarkers();
                 _layer.Figures.Remove(fig);
-            }
-            var group = new Figure
-                {
-                    Geometry = new PrimitiveGeometry(groupPath, AllowedOperations.All)
-                };
             _layer.Figures.Add(group);
             LayerChanged();
             _selection.Add(group);
@@ -902,26 +893,10 @@ namespace SimpleEditor.Controllers
         {
             if (_selection.Count == 0) return;
             LayerStartChanging();
-            var list = new List<Figure>();
             foreach (var fig in _selection)
-            {
                 _layer.Figures.Remove(fig);
-                var pathIterator = new GraphicsPathIterator(fig.GetTransformedPath().Path);
-                pathIterator.Rewind();
-                var pathSection = new SerializableGraphicsPath();
-                bool closed;
-                while (pathIterator.NextSubpath(pathSection.Path, out closed) > 0)
-                {
-                    var figure = new Figure
-                        {
-                            Solid = closed,
-                            Geometry = new PrimitiveGeometry(pathSection, AllowedOperations.All)
-                        };
-                    pathSection = new SerializableGraphicsPath();
-                    _layer.Figures.Add(figure);
-                    list.Add(figure);
-                }                
-            }
+            var list = _selection.Ungroup();
+            _layer.Figures.AddRange(list);
             LayerChanged();
             _selection.Clear();
             foreach (var fig in list)
