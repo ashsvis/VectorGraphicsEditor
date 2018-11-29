@@ -240,5 +240,23 @@
   <ItemGroup>
     <None Include="Resources\CreateText.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\105.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\106.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\139.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\231.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\232.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\266.cur" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

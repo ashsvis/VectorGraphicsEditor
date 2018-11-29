@@ -83,7 +83,7 @@ namespace SimpleEditor
         private void pbCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             // состояние курсора обрабатывается вне зависимости от нажатых клавиш мышки
-            Cursor = _selectionController.GetCursor(e.Location, ModifierKeys);
+            Cursor = _selectionController.GetCursor(e.Location, ModifierKeys, e.Button);
             if (e.Button == MouseButtons.Left)
             {
                 _selectionController.OnMouseMove(e.Location, ModifierKeys);
@@ -330,6 +330,30 @@ namespace SimpleEditor
         private void tsmiRotate180_Click(object sender, EventArgs e)
         {
             _selectionController.Rotate180();
+            UpdateInterface();
+        }
+
+        private void tsmiBringToFront_Click(object sender, EventArgs e)
+        {
+            _selectionController.BringToFront();
+            UpdateInterface();
+        }
+
+        private void tsmiSendToBack_Click(object sender, EventArgs e)
+        {
+            _selectionController.SendToBack();
+            UpdateInterface();
+        }
+
+        private void tsmiGroup_Click(object sender, EventArgs e)
+        {
+            _selectionController.Group();
+            UpdateInterface();
+        }
+
+        private void tsmiUngroup_Click(object sender, EventArgs e)
+        {
+            _selectionController.Ungroup();
             UpdateInterface();
         }
     }

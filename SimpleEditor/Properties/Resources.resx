@@ -244,4 +244,22 @@
   <data name="text" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CreateText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AddVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\231.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MoveVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\266.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="RemoveVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\232.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SizeAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\139.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SkewHorizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\106.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SkewVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\105.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
