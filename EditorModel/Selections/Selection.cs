@@ -415,5 +415,53 @@ namespace EditorModel.Selections
             }
             GrabGeometry();
         }
+
+        /// <summary>
+        /// Группировка выбранных фигур в одну
+        /// </summary>
+        /// <returns></returns>
+        public Figure Group()
+        {
+            var groupPath = new SerializableGraphicsPath();
+            foreach (var fig in _selected)
+            {
+                groupPath.Path.AddPath(fig.GetTransformedPath().Path, false);
+                if (_selected.Last() != fig)
+                    groupPath.Path.SetMarkers();
+            }
+            var group = new Figure
+            {
+                Geometry = new PrimitiveGeometry(groupPath, AllowedOperations.All)
+            };
+            return group;
+        }
+
+        /// <summary>
+        /// Разгруппировка списка фигур в ещё больший список, но по отдельности
+        /// todo: Настройки AllowedOperations для примитивных фигур теряются!
+        /// </summary>
+        /// <returns></returns>
+        public List<Figure> Ungroup()
+        {
+            var list = new List<Figure>();
+            foreach (var pathIterator in _selected.Select(fig => 
+                new GraphicsPathIterator(fig.GetTransformedPath().Path)))
+            {
+                pathIterator.Rewind();
+                var pathSection = new SerializableGraphicsPath();
+                bool closed;
+                while (pathIterator.NextSubpath(pathSection.Path, out closed) > 0)
+                {
+                    var figure = new Figure
+                        {
+                            Solid = closed,
+                            Geometry = new PrimitiveGeometry(pathSection, AllowedOperations.All)
+                        };
+                    pathSection = new SerializableGraphicsPath();
+                    list.Add(figure);
+                }
+            }
+            return list;
+        }
     }
 }
