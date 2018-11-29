@@ -332,10 +332,70 @@ namespace EditorModel.Selections
             var offset = new SizeF(mouse.X - marker.X, mouse.Y - marker.Y);
             PathDataModified = !offset.IsEmpty;
             points[index] = PointF.Add(points[index], offset);
-            Geometry = new PrimitiveGeometry(
-                new SerializableGraphicsPath {Path = new GraphicsPath(points, types)},
-                Geometry.AllowedOperations);
+            var newPath = new SerializableGraphicsPath {Path = new GraphicsPath(points, types)};
+            Geometry = new PrimitiveGeometry(newPath, Geometry.AllowedOperations);
             return PointF.Add(marker, offset);
+        }
+
+        /// <summary>
+        /// Удаление выбранной вершины фигуры
+        /// </summary>
+        /// <param name="owner">Фигура</param>
+        /// <param name="index">Индекс вершины</param>
+        public void RemoveVertex(Figure owner, int index)
+        {
+            var points = new List<PointF>(Geometry.Path.Path.PathPoints);
+            if (owner.Solid && points.Count < 4) return;
+            if (!owner.Solid && points.Count < 3) return;
+            points.RemoveAt(index);
+            var types = new List<byte>(Geometry.Path.Path.PathTypes);
+            types.RemoveAt(index);
+            var newPath = new SerializableGraphicsPath
+                {
+                    Path = new GraphicsPath(points.ToArray(), types.ToArray())
+                };
+            if (owner.Solid) newPath.Path.CloseAllFigures();
+            Geometry = new PrimitiveGeometry(newPath, Geometry.AllowedOperations);
+            PathDataModified = true;
+        }
+
+        /// <summary>
+        /// Вставка новой вершины в контур фигуры
+        /// </summary>
+        /// <param name="owner">Фигура</param>
+        /// <param name="point">Положение указателя мышки</param>
+        public void InsertVertex(Figure owner, PointF point)
+        {
+            var points = new List<PointF>(owner.GetTransformedPath().Path.PathPoints);
+            var types = new List<byte>(owner.GetTransformedPath().Path.PathTypes);
+            using (var pen = new Pen(Color.Black, 5))
+            {
+                // поищем, на какой стороне фигуры добавлять новую вершину
+                var k = owner.Solid ? 0 : 1;
+                for (var i = k; i < points.Count(); i++)
+                {
+                    // замыкаем контур отрезком, соединяющим начало и конец фигуры
+                    var pt1 = i == 0 ? points[points.Count-1] : points[i - 1];
+                    var pt2 = points[i];
+                    using (var path = new GraphicsPath())
+                    {
+                        path.AddLine(pt1, pt2);
+                        if (!path.IsOutlineVisible(point, pen)) continue;
+                        // вставляем новую точку
+                        points.Insert(i, point);
+                        // вставляем тип узла (если индекс вставки нулевой, то вставляем перед конечным
+                        // тип вставляемого узла - 1
+                        types.Insert(i == 0 ? types.Count - 1 : i, 1);
+                        var newPath = new SerializableGraphicsPath
+                            {
+                                Path = new GraphicsPath(points.ToArray(), types.ToArray())
+                            };
+                        owner.Geometry = new PrimitiveGeometry(newPath, owner.Geometry.AllowedOperations);
+                        owner.Transform = new SerializableGraphicsMatrix();
+                        break;
+                    }
+                }
+            }            
         }
 
         /// <summary>

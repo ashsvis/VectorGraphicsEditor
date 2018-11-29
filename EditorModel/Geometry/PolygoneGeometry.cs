@@ -1,6 +1,5 @@
 ﻿using EditorModel.Common;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace EditorModel.Geometry
@@ -11,7 +10,7 @@ namespace EditorModel.Geometry
     [Serializable]
     internal class PolygoneGeometry : Geometry
     {
-        private readonly List<PointF> _points;
+        private readonly PointF[] _points;
 
         /// <summary>
         /// Локальное поле для хранения пути
@@ -30,7 +29,7 @@ namespace EditorModel.Geometry
         {
             _allowedOperations = AllowedOperations.All;
             var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-            _points = new List<PointF>
+            _points = new[]
                 {
                     new PointF(rect.Left, rect.Top),
                     new PointF(rect.Left + rect.Width, rect.Top),
@@ -49,7 +48,7 @@ namespace EditorModel.Geometry
                 // сброс пути
                 _path.Path.Reset();
                 // добавляем в путь построенный по точкам единичного прямоугольника полигон
-                _path.Path.AddPolygon(_points.ToArray());
+                _path.Path.AddPolygon(_points);
                 // возвращаем настроенный путь
                 return _path;
             }

@@ -38,6 +38,7 @@ namespace EditorModel.Figures
             Transform = new SerializableGraphicsMatrix();
             Style = new Style.Style();
             Renderer = new Renderer();
+            Solid = true; // большинство фигур - замкнутый контур
         }
 
         /// <summary>
@@ -53,6 +54,10 @@ namespace EditorModel.Figures
             return path;
         }
 
+        /// <summary>
+        /// Признак замкнутого контура фигуры
+        /// </summary>
+        public bool Solid { get; set; }
     }
 
 }
