@@ -1,6 +1,7 @@
-﻿using EditorModel.Common;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using EditorModel.Common;
 
 namespace EditorModel.Geometry
 {
@@ -8,7 +9,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    internal class PolygoneGeometry : Geometry
+    internal class RegularGeometry : Geometry
     {
         private readonly PointF[] _points;
 
@@ -25,25 +26,24 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
-        internal PolygoneGeometry(bool isClosed = true)
+        public RegularGeometry(int vertexCount)
         {
-            base.IsClosed = isClosed;
-            _allowedOperations = AllowedOperations.All;
-            var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-            if (isClosed)
-                _points = new[]
-                    {
-                        new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                        new PointF(rect.Left, rect.Top + rect.Height)
-                    };
-            else
-                _points = new[]
-                    {
-                        new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
-                    };
+            if (vertexCount < 3) throw 
+                new ArgumentOutOfRangeException("vertexCount", 
+                    "Количество вершин должно быть три и более.");
+            _allowedOperations = AllowedOperations.All ^
+                (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew);
+            var rect = new RectangleF(0f, 0f, 1, 1);
+            var radius = rect.Width/2;
+            var points = new List<PointF>();
+            var stepAngle = Math.PI*2/vertexCount;
+            var angle = 0.0;
+            for (var i = 0; i < vertexCount; i++)
+            {
+                points.Add(new PointF((float) (radius*Math.Cos(angle)), (float) (radius*Math.Sin(angle))));
+                angle += stepAngle;
+            }
+            _points = points.ToArray();
         }
 
         /// <summary>
@@ -56,10 +56,7 @@ namespace EditorModel.Geometry
                 // сброс пути
                 _path.Path.Reset();
                 // добавляем в путь построенный по точкам единичного прямоугольника полигон
-                if (base.IsClosed)
-                    _path.Path.AddPolygon(_points);
-                else
-                    _path.Path.AddLines(_points);
+                _path.Path.AddPolygon(_points);
                 // возвращаем настроенный путь
                 return _path;
             }

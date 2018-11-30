@@ -73,11 +73,6 @@ namespace EditorModel.Figures
                  AllowedOperations.Skew | AllowedOperations.Vertex));         
         }
 
-        //и т.д. для всех примитивных фигур
-        //todo
-        // а ромб - это примитивная геометрия или нет?
-        // наверно нет, так как нет метода Path.Add..., чтобы сразу его нарисовать
-
         /// <summary>
         /// Подключаем к фигуре геометрию текстовой строки
         /// </summary>
@@ -86,6 +81,21 @@ namespace EditorModel.Figures
         public void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text };
+        }
+
+        /// <summary>
+        /// Подключаем к фигуре геометрию текстового блока
+        /// </summary>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        /// <param name="text">Текстовая строка</param>
+        public void BuildTextRenderGeometry(Figure figure, string text)
+        {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
+                (AllowedOperations.Skew | AllowedOperations.Rotate | AllowedOperations.Vertex));
+            figure.Style.FillStyle.Color = Color.Black;
+            figure.Renderer = new TextRenderer(text);
         }
 
         /// <summary>
@@ -98,13 +108,22 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
+        /// Подключаем к фигуре геометрию полигона
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <param name="vertexCount">Количество вершин</param>
+        public void BuildRegularGeometry(Figure figure, int vertexCount)
+        {
+            figure.Geometry = new RegularGeometry(vertexCount);
+        }
+
+        /// <summary>
         /// Подключаем к фигуре геометрию ломаной линии
         /// </summary>
         /// <param name="figure"></param>
         public void BuildPolylineGeometry(Figure figure)
         {
-            figure.Solid = false;
-            figure.Geometry = new PolylineGeometry();
+            figure.Geometry = new PolygoneGeometry(isClosed: false);
         }
 
         /// <summary>

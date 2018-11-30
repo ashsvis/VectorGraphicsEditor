@@ -10,6 +10,10 @@ namespace SimpleEditor.Controllers
         public PointF Position { get; set; }
         public PointF AnchorPosition { get; set; }
         public MarkerType MarkerType { get; set; }
+    }
+
+    public class VertexMarker : Marker
+    {
         public int Index { get; set; }
         public Figure Owner { get; set; }
     }
