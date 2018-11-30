@@ -37,5 +37,6 @@ namespace EditorModel.Geometry
         /// Допустимые операции над геометрией
         /// </summary>
         public abstract AllowedOperations AllowedOperations { get; }
+
     }
 }

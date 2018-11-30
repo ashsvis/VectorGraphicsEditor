@@ -1,13 +1,14 @@
-﻿using System;
+﻿using EditorModel.Common;
+using EditorModel.Figures;
+using EditorModel.Geometry;
+using EditorModel.Selections;
+using SimpleEditor.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using EditorModel.Figures;
-using EditorModel.Geometry;
-using EditorModel.Selections;
-using SimpleEditor.Common;
 
 namespace SimpleEditor.Controllers
 {
@@ -115,11 +116,23 @@ namespace SimpleEditor.Controllers
                     _lastMode = _editorMode;
                 }
                 _editorMode = value;
+                // запрещаем рисовать рамку вокруг фигур, когда изменяем вершины
+                _selection.AroundFrameDisable = _editorMode == EditorMode.Verticies ||
+                        _editorMode == EditorMode.ChangeGeometry && _lastMode == EditorMode.Verticies;
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
                     _editorMode == EditorMode.Verticies)
                 {
+                    if (_editorMode == EditorMode.Verticies)
+                    {
+                        // оставляем только одну фигуру в этом режиме
+                        var fig = _selection.LastOrDefault(figure =>
+                                     figure.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex));
+                        _selection.Clear();
+                        if (fig != null)
+                            _selection.Add(fig);
+                    }
                     // то строим маркеры
                     BuildMarkers();
                     UpdateMarkerPositions();                    
@@ -128,6 +141,12 @@ namespace SimpleEditor.Controllers
             }
         }
 
+        /// <summary>
+        /// Действия по двойному клику на фигурах
+        /// Обычно, это действие по умолчанию
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="modifierKeys"></param>
         public void OnDblClick(Point location, Keys modifierKeys)
         {
             Figure fig;
@@ -177,7 +196,9 @@ namespace SimpleEditor.Controllers
                     if (!_selection.Contains(fig))
                     {
                         // если не нажата управляющая клавиша Ctrl
-                        if (!modifierKeys.HasFlag(Keys.Control))
+                        // в режиме изменения вершим может быть выбрана только одна фигура
+                        if (!modifierKeys.HasFlag(Keys.Control) || 
+                            EditorMode == EditorMode.Verticies)
                             _selection.Clear(); // очистим список выбранных
                                                 // то добавим её в список
                         _selection.Add(fig);
@@ -185,9 +206,16 @@ namespace SimpleEditor.Controllers
                     }
                     else if (modifierKeys.HasFlag(Keys.Control))
                     {
+                        if (EditorMode == EditorMode.Verticies)
+                        {
+                            OnLayerStartChanging();
+                            // вставка новой вершины при нажатом Ctrl
+                            _selection.InsertVertex(fig, point);
+                            OnLayerChanged();
+                        }
                         // при нажатой клавише Ctrl удаляем эту фигуру из списка
                         // если она не последняя
-                        if (_selection.Count > 1)
+                        else if (_selection.Count > 1)
                         {
                             _selection.Remove(fig);
                             OnSelectedFigureChanged();
@@ -223,6 +251,12 @@ namespace SimpleEditor.Controllers
             }
             else
             {
+                if (EditorMode == EditorMode.Verticies && modifierKeys.HasFlag(Keys.Control))
+                {
+                    OnLayerStartChanging();
+                    _selection.RemoveVertex(_movedMarker.Owner, _movedMarker.Index);
+                    OnLayerChanged();
+                }
                 EditorMode = EditorMode.ChangeGeometry;
             }
         }
@@ -247,7 +281,7 @@ namespace SimpleEditor.Controllers
         }
 
         /// <summary>
-        /// Обработчик перемещения мышки при нажатой левой кнопки мышки 
+        /// Обработчик перемещения мышки при нажатой левой кнопке мышки 
         /// </summary>
         /// <param name="point">Координаты курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
@@ -310,7 +344,8 @@ namespace SimpleEditor.Controllers
                         // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
                         // в список выбранных фигур
                         var rect = _selection.GetTransformedPath().Path.GetBounds();
-                        foreach (var fig in _layer.Figures.Where(fig => rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
+                        foreach (var fig in _layer.Figures.Where(fig => 
+                            rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
                             _selection.Add(fig);
                         // если ничего не выбралось, то вызываем метод PushTransformToSelectedFigures(),
                         // чтобы убрать остающуюся рамку выбора
@@ -330,6 +365,13 @@ namespace SimpleEditor.Controllers
                             OnLayerStartChanging();
                             _selection.PushTransformToSelectedFigures();
                             OnLayerChanged();
+                        }
+                        // фиксация перемещения вершин
+                        if (_selection.PathDataModified)
+                        {
+                            OnLayerStartChanging();
+                            _selection.PushPathDataToSelectedFigures();
+                            OnLayerChanged();                            
                         }
                         break;
                 }
@@ -531,6 +573,30 @@ namespace SimpleEditor.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Ищем попадание в контур фигуры
+        /// </summary>
+        /// <param name="point">Положение курсора</param>
+        /// <returns>Контур фигуры найден</returns>
+        public bool FindOutline(Point point)
+        {
+            var found = false;
+            using (var pen = new Pen(Color.Black, 5))
+            {
+                // просмотр начинаем с конца списка - там самые "верхние" фигуры
+                for (var i = _layer.Figures.Count - 1; i >= 0; i--)
+                {
+                    var fig = _layer.Figures[i];
+                    var path = fig.GetTransformedPath();
+                    // проверяем также попадание на контур фигуры
+                    if (!path.Path.IsOutlineVisible(point, pen)) continue;
+                    found = true;
+                    break;
+                }
+            }
+            return found;
+        }
+
         #region Все методы для работы с маркерами
 
         /// <summary>
@@ -577,7 +643,7 @@ namespace SimpleEditor.Controllers
             {
                 MarkerType = type,
                 Cursor = CursorFactory.GetCursor(cursor),
-                Position = _selection.ToWorldCoordinates(normPoint).Add( new PointF(offsetX, offsetY)),
+                Position = _selection.ToWorldCoordinates(normPoint).Add(new PointF(offsetX, offsetY)),
                 AnchorPosition = _selection.ToWorldCoordinates(anchPoint)
             };
         }
@@ -595,26 +661,34 @@ namespace SimpleEditor.Controllers
             // в зависимости от типа маркера вызываем метод Scale с различными параметрами 
             switch (marker.MarkerType)
             {
-                case MarkerType.SizeX: _selection.Scale(scale, 1, marker.AnchorPosition); break;
-                case MarkerType.SizeY: _selection.Scale(1, scale, marker.AnchorPosition); break;
+                case MarkerType.SizeX:
+                    _selection.Scale(scale, 1, marker.AnchorPosition);
+                    break;
+                case MarkerType.SizeY:
+                    _selection.Scale(1, scale, marker.AnchorPosition);
+                    break;
                 case MarkerType.SkewX:
                     var dx = (marker.Position.X - mousePos.X)/(marker.AnchorPosition.Y - marker.Position.Y);
                     _selection.Skew(dx, 0, marker.AnchorPosition);
                     break;
                 case MarkerType.SkewY:
-                    var dy = (marker.Position.Y - mousePos.Y) / (marker.AnchorPosition.X - marker.Position.X);
+                    var dy = (marker.Position.Y - mousePos.Y)/(marker.AnchorPosition.X - marker.Position.X);
                     _selection.Skew(0, dy, marker.AnchorPosition);
                     break;
-                case MarkerType.Scale: _selection.Scale(scale, scale, marker.AnchorPosition); break;
+                case MarkerType.Scale:
+                    _selection.Scale(scale, scale, marker.AnchorPosition);
+                    break;
                 case MarkerType.Rotate:
-                    {
-                        // получаем угол вращения (в градусах), используя позицию маркера в мировых "координатах",
-                        // позицию якоря в мировых "координатах" и позицию курсора мышки
-                        var angle = Helper.GetAngle(marker.Position, marker.AnchorPosition, mousePos);
-                        // поворачиваем выделенные фигуры относительно "якоря" (по умолчанию - по центру фигуры выделения)
-                        _selection.Rotate(angle, marker.AnchorPosition);
-                        break;
-                    }
+                    // получаем угол вращения (в градусах), используя позицию маркера в мировых "координатах",
+                    // позицию якоря в мировых "координатах" и позицию курсора мышки
+                    var angle = Helper.GetAngle(marker.Position, marker.AnchorPosition, mousePos);
+                    // поворачиваем выделенные фигуры относительно "якоря" (по умолчанию - по центру фигуры выделения)
+                    _selection.Rotate(angle, marker.AnchorPosition);
+                    break;
+                case MarkerType.Vertex:
+                    // двигаем маркер вершины
+                    marker.Position = _selection.MoveVertex(marker.Owner, marker.Index, marker.Position, mousePos);
+                    break;
             }
         }
 
@@ -633,24 +707,32 @@ namespace SimpleEditor.Controllers
                     //создаём маркеры скоса по горизонтали и по вертикали
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Skew)) //если разрешён скос
                     {
-                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 0, UserCursor.SizeWE, 1, 1));
-                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 0.5f, UserCursor.SizeNS, 1, 1));
-                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 0.5f, UserCursor.SizeNS, 0, 0));
-                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 1, UserCursor.SizeWE, 0, 0));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 0, UserCursor.SkewHorizontal, 1, 1));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 0, 0.5f, UserCursor.SkewVertical, 1, 1));
+                        Markers.Add(CreateMarker(MarkerType.SkewY, 1, 0.5f, UserCursor.SkewVertical, 0, 0));
+                        Markers.Add(CreateMarker(MarkerType.SkewX, 0.5f, 1, UserCursor.SkewHorizontal, 0, 0));
                     }
                     break;
                 case EditorMode.Verticies:
                     // создаём маркеры на вершинах фигур
-                    // todo: маркеры также создаются на вершинах рамки выбора, а это не правильно. 
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex)) //если разрешено редактирование вершин
                     {
-                        var path = _selection.GetTransformedPath();
-                        var bounds = path.Path.GetBounds();
-                        foreach (var pt in path.Path.PathPoints)
+                        var fig = _selection.LastOrDefault(figure => 
+                                       figure.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex));
+                        if (fig != null)
                         {
-                            var normX = (pt.X - bounds.X) / bounds.Width;
-                            var normY = (pt.Y - bounds.Y) / bounds.Height;
-                            Markers.Add(CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0));
+                            var path = fig.GetTransformedPath();
+                            var bounds = path.Path.GetBounds();
+                            var n = 0;
+                            foreach (var vertexMarker in from pt in path.Path.PathPoints 
+                                        let normX = (pt.X - bounds.X) / bounds.Width 
+                                        let normY = (pt.Y - bounds.Y) / bounds.Height 
+                                        select CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0))
+                            {
+                                vertexMarker.Index = n++;
+                                vertexMarker.Owner = fig;
+                                Markers.Add(vertexMarker);
+                            }
                         }
                     }
                     break;
@@ -713,21 +795,31 @@ namespace SimpleEditor.Controllers
         /// </summary>
         /// <param name="point">Позиция курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
-        /// <returns></returns>
-        public Cursor GetCursor(Point point, Keys modifierKeys)
+        /// <param name="button">Нажатая кнопка мышки</param>
+        /// <returns>Настроенный курсор</returns>
+        public Cursor GetCursor(Point point, Keys modifierKeys, MouseButtons button)
         {
             switch (EditorMode)
             {
-                // для базовых режимов настраиваем выд курсора на маркерах
+                // для базовых режимов настраиваем вид курсора на маркерах
                 case EditorMode.Select:
                 case EditorMode.Skew:
                 case EditorMode.Verticies:
                     Marker marker;
                     if (FindMarkerAt(point, out marker))
-                        return marker.Cursor;
+                    {
+                        return modifierKeys.HasFlag(Keys.Control) 
+                            ? CursorFactory.GetCursor(UserCursor.RemoveVertex) 
+                            : marker.Cursor;
+                    }
                     Figure fig;
                     if (FindFigureAt(point, out fig))
                     {
+                        if (EditorMode == EditorMode.Verticies &&
+                            modifierKeys.HasFlag(Keys.Control) &&
+                            _selection.Contains(fig) &&
+                            FindOutline(point))
+                            return CursorFactory.GetCursor(UserCursor.AddVertex);
                         return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }
                     if (!modifierKeys.HasFlag(Keys.Left))
@@ -735,15 +827,81 @@ namespace SimpleEditor.Controllers
                     break;
                 // когда тащим фигуры
                 case EditorMode.Drag:
-                    return _selection.Count > 0 
-                        ? Cursors.SizeAll 
-                        : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                    return _selection.Count > 0
+                               ? CursorFactory.GetCursor(UserCursor.SizeAll)
+                               : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
                 // когда изменяем масштабируем, меняем ширину/высоту, вращаем или искажаем
                 case EditorMode.ChangeGeometry:
+                    if (button == MouseButtons.Left && _lastMode == EditorMode.Verticies)
+                        return CursorFactory.GetCursor(UserCursor.MoveVertex);
                     return _movedMarker.Cursor;
             }
 
             return Cursors.Default;
+        }
+
+        /// <summary>
+        /// Переместить выбранные фигуры наверх по оси z
+        /// </summary>
+        public void BringToFront()
+        {
+            LayerStartChanging();
+            foreach (var fig in _selection)
+            {
+                _layer.Figures.Remove(fig);
+                _layer.Figures.Add(fig);
+            }
+            LayerChanged();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Переместить выбранные фигуры вниз по оси z
+        /// </summary>
+        public void SendToBack()
+        {
+            LayerStartChanging();
+            foreach (var fig in _selection)
+            {
+                _layer.Figures.Remove(fig);
+                _layer.Figures.Insert(0, fig);
+            }
+            LayerChanged();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Группировка фигур в одну фигуру
+        /// </summary>
+        public void Group()
+        {
+            if (_selection.Count < 2) return;
+            LayerStartChanging();
+            var group = _selection.Group();
+            foreach (var fig in _selection)
+                _layer.Figures.Remove(fig);
+            _layer.Figures.Add(group);
+            LayerChanged();
+            _selection.Add(group);
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Разгруппировка фигуры на несколько вложенных
+        /// </summary>
+        public void Ungroup()
+        {
+            if (_selection.Count == 0) return;
+            LayerStartChanging();
+            foreach (var fig in _selection)
+                _layer.Figures.Remove(fig);
+            var list = _selection.Ungroup();
+            _layer.Figures.AddRange(list);
+            LayerChanged();
+            _selection.Clear();
+            foreach (var fig in list)
+                _selection.Add(fig);
+            OnSelectedFigureChanged();
         }
     }
 }

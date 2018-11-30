@@ -12,11 +12,17 @@ namespace SimpleEditor.Common
         SizeNESW,
         SizeWE,
         SizeNS,
+        SizeAll,
 // ReSharper restore InconsistentNaming
         MoveAll,
         SelectByRibbonRect,
         CreateRect,
-        CreateEllipse
+        CreateEllipse,
+        SkewHorizontal,
+        SkewVertical,
+        AddVertex,
+        RemoveVertex,
+        MoveVertex
     }
 
     public static class CursorFactory
@@ -34,10 +40,16 @@ namespace SimpleEditor.Common
             AddCursor(UserCursor.SizeNESW, Properties.Resources.SizeNESW);
             AddCursor(UserCursor.SizeWE, Properties.Resources.SizeWE);
             AddCursor(UserCursor.SizeNS, Properties.Resources.SizeNS);
+            AddCursor(UserCursor.SizeAll, Properties.Resources.SizeAll);
             AddCursor(UserCursor.MoveAll, Properties.Resources.MoveAll);
             AddCursor(UserCursor.SelectByRibbonRect, Properties.Resources.SelectByRibbonRect);
             AddCursor(UserCursor.CreateRect, Properties.Resources.CreateRect);
             AddCursor(UserCursor.CreateEllipse, Properties.Resources.CreateEllipse);
+            AddCursor(UserCursor.SkewHorizontal, Properties.Resources.SkewHorizontal);
+            AddCursor(UserCursor.SkewVertical, Properties.Resources.SkewVertical);
+            AddCursor(UserCursor.AddVertex, Properties.Resources.AddVertex);
+            AddCursor(UserCursor.RemoveVertex, Properties.Resources.RemoveVertex);
+            AddCursor(UserCursor.MoveVertex, Properties.Resources.MoveVertex);
             // добавлять курсоры здесь
         }
 
