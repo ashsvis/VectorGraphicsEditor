@@ -181,22 +181,49 @@ namespace SimpleEditor
                     new FigureBuilder().BuildCircleGeometry(fig);
                     return fig;
                 };
-            else if (tsbText.Checked)
-            {
-                var frm = new FormTextEditor();
-                if (frm.ShowDialog(this) == DialogResult.OK)
+            else if (tsbRegular4.Checked)
+                figureCreator = () =>
                 {
-                    var text = frm.GetText;
-                    if (string.IsNullOrWhiteSpace(text)) text = "Sample";
-                    figureCreator = () =>
-                        {
-                            var fig = new Figure();
-                            new FigureBuilder().BuildTextGeometry(fig, text);
-                            fig.Style.FillStyle.Color = Color.Black;
-                            return fig;
-                        };
-                }
-            }
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRegularGeometry(fig, 4);
+                    return fig;
+                };
+            else if (tsbRegular8.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRegularGeometry(fig, 8);
+                    return fig;
+                };
+            else if (tsbRegular16.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRegularGeometry(fig, 16);
+                    return fig;
+                };
+            else if (tsbRegular24.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRegularGeometry(fig, 24);
+                    return fig;
+                };
+            else if (tsbRegular32.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    new FigureBuilder().BuildRegularGeometry(fig, 32);
+                    return fig;
+                };
+            else if (tsbText.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    //new FigureBuilder().BuildTextGeometry(fig, "Текст");
+                    new FigureBuilder().BuildTextRenderGeometry(fig, "Текст");
+                    return fig;
+                };
             _selectionController.CreateFigureRequest = figureCreator;
         }
 

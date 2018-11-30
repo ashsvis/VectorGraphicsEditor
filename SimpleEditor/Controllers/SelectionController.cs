@@ -1,5 +1,4 @@
-﻿using EditorModel.Common;
-using EditorModel.Figures;
+﻿using EditorModel.Figures;
 using EditorModel.Geometry;
 using EditorModel.Selections;
 using SimpleEditor.Common;
@@ -38,6 +37,8 @@ namespace SimpleEditor.Controllers
         public SelectionController(Layer layer)
         {
             _selection = new Selection();
+            _selection.PathDataModified += _selection_PathDataModified;
+
             _markers = new List<Marker>();
             _layer = layer;
         }
@@ -93,6 +94,7 @@ namespace SimpleEditor.Controllers
         public event Action LayerChanged = delegate { };
 
         private bool _wasMouseMoving;
+        private bool _wasVertexMoving;
         private bool _isMouseDown;
         private Point _firstMouseDown;
         private Marker _movedMarker;
@@ -117,8 +119,8 @@ namespace SimpleEditor.Controllers
                 }
                 _editorMode = value;
                 // запрещаем рисовать рамку вокруг фигур, когда изменяем вершины
-                _selection.AroundFrameDisable = _editorMode == EditorMode.Verticies ||
-                        _editorMode == EditorMode.ChangeGeometry && _lastMode == EditorMode.Verticies;
+                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies &&
+                                            (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
@@ -150,17 +152,15 @@ namespace SimpleEditor.Controllers
         public void OnDblClick(Point location, Keys modifierKeys)
         {
             Figure fig;
-            if ((EditorMode == EditorMode.Select ||
-                 EditorMode == EditorMode.Skew ||
-                 EditorMode == EditorMode.Verticies) &&
-                FindFigureAt(location, out fig)) // попробуем найти фигуру...
+            if ((EditorMode != EditorMode.Select && 
+                 EditorMode != EditorMode.Skew && 
+                 EditorMode != EditorMode.Verticies) ||
+                !_selection.FindFigureAt(_layer, location, out fig)) return;
+            // фигура найдена.
+            var textGeometry = fig.Geometry as TextGeometry;
+            if (textGeometry != null)
             {
-                // фигура найдена.
-                var textGeometry = fig.Geometry as TextGeometry;
-                if (textGeometry != null)
-                {
                     
-                }
             }
         }
 
@@ -172,6 +172,7 @@ namespace SimpleEditor.Controllers
         public void OnMouseDown(Point point, Keys modifierKeys)
         {
             _wasMouseMoving = false;
+            _wasVertexMoving = false;
             _isMouseDown = true;
             // запоминаем точку нажатия мышкой
             _firstMouseDown = point;
@@ -188,8 +189,8 @@ namespace SimpleEditor.Controllers
                 Figure fig;
                 if ((EditorMode == EditorMode.Select ||
                      EditorMode == EditorMode.Skew || 
-                     EditorMode == EditorMode.Verticies) && 
-                    FindFigureAt(point, out fig)) // попробуем найти фигуру...
+                     EditorMode == EditorMode.Verticies) &&
+                    _selection.FindFigureAt(_layer, point, out fig)) // попробуем найти фигуру...
                 {
                     // фигура найдена.
                     // если этой фигуры не было в списке
@@ -204,7 +205,7 @@ namespace SimpleEditor.Controllers
                         _selection.Add(fig);
                         OnSelectedFigureChanged();
                     }
-                    else if (modifierKeys.HasFlag(Keys.Control))
+                    else 
                     {
                         if (EditorMode == EditorMode.Verticies)
                         {
@@ -254,7 +255,7 @@ namespace SimpleEditor.Controllers
                 if (EditorMode == EditorMode.Verticies && modifierKeys.HasFlag(Keys.Control))
                 {
                     OnLayerStartChanging();
-                    _selection.RemoveVertex(_movedMarker.Owner, _movedMarker.Index);
+                    _selection.RemoveVertex(((VertexMarker)_movedMarker).Owner, ((VertexMarker)_movedMarker).Index);
                     OnLayerChanged();
                 }
                 EditorMode = EditorMode.ChangeGeometry;
@@ -357,21 +358,13 @@ namespace SimpleEditor.Controllers
                         _selection.PushTransformToSelectedFigures();
                         OnLayerChanged();
                         break;
-
                     default:
                         // фиксация перемещения фигур
-                        if (!_selection.Transform.Matrix.IsIdentity) // если были изменения
+                        if (!_selection.Transform.Matrix.IsIdentity)
                         {
                             OnLayerStartChanging();
                             _selection.PushTransformToSelectedFigures();
                             OnLayerChanged();
-                        }
-                        // фиксация перемещения вершин
-                        if (_selection.PathDataModified)
-                        {
-                            OnLayerStartChanging();
-                            _selection.PushPathDataToSelectedFigures();
-                            OnLayerChanged();                            
                         }
                         break;
                 }
@@ -381,6 +374,13 @@ namespace SimpleEditor.Controllers
                     _wasMouseMoving = false;
                     OnSelectedTransformChanged();
                 }
+
+                if (_wasVertexMoving)
+                {
+                    _wasVertexMoving = false;
+                    _selection_PathDataModified();
+                }
+
             }
 
             //строим маркеры
@@ -391,6 +391,14 @@ namespace SimpleEditor.Controllers
             EditorMode = _lastMode;
 
             _isMouseDown = false;
+        }
+
+        
+        private void _selection_PathDataModified()
+        {
+            OnLayerStartChanging();
+            _selection.PushPathDataToSelectedFigures();
+            OnLayerChanged();
         }
 
         /// <summary>
@@ -540,63 +548,6 @@ namespace SimpleEditor.Controllers
 
         #endregion Извещатели событий
 
-        /// <summary>
-        /// Ищем фигуру в данной точке
-        /// </summary>
-        /// <param name="point">Положение курсора</param>
-        /// <param name="figure">Найденная фигура или null</param>
-        /// <returns></returns>
-        private bool FindFigureAt(Point point, out Figure figure)
-        {
-            figure = null;
-            var found = false;
-            using (var pen = new Pen(Color.Black, 5))
-            {
-                // просмотр начинаем с конца списка - там самые "верхние" фигуры
-                for (var i = _layer.Figures.Count - 1; i >= 0; i--)
-                {
-                    var fig = _layer.Figures[i];
-                    var path = fig.GetTransformedPath();
-                    if (path.Path.IsVisible(point))
-                    {
-                        figure = fig;
-                        found = true;
-                        break;
-                    }
-                    // проверяем также попадание на контур фигуры
-                    if (!path.Path.IsOutlineVisible(point, pen)) continue;
-                    figure = fig;
-                    found = true;
-                    break;
-                }
-            }
-            return found;
-        }
-
-        /// <summary>
-        /// Ищем попадание в контур фигуры
-        /// </summary>
-        /// <param name="point">Положение курсора</param>
-        /// <returns>Контур фигуры найден</returns>
-        public bool FindOutline(Point point)
-        {
-            var found = false;
-            using (var pen = new Pen(Color.Black, 5))
-            {
-                // просмотр начинаем с конца списка - там самые "верхние" фигуры
-                for (var i = _layer.Figures.Count - 1; i >= 0; i--)
-                {
-                    var fig = _layer.Figures[i];
-                    var path = fig.GetTransformedPath();
-                    // проверяем также попадание на контур фигуры
-                    if (!path.Path.IsOutlineVisible(point, pen)) continue;
-                    found = true;
-                    break;
-                }
-            }
-            return found;
-        }
-
         #region Все методы для работы с маркерами
 
         /// <summary>
@@ -648,6 +599,25 @@ namespace SimpleEditor.Controllers
             };
         }
 
+        //private VertexMarker CreateVertexMarker(float posX, float posY)
+        //{
+        //    return new VertexMarker
+        //    {
+        //        MarkerType = MarkerType.Vertex,
+        //        Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
+        //        Position = _selection.ToWorldCoordinates(new PointF(posX, posY))
+        //    };
+        //}
+/*
+                            foreach (var vertexMarker in from pt in path.Path.PathPoints 
+                                        let normX = (pt.X - bounds.X) / bounds.Width 
+                                        let normY = (pt.Y - bounds.Y) / bounds.Height 
+                                        select CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0))
+                            {
+                                vertexMarker.Index = n++;
+                                vertexMarker.Owner = fig;
+ */
+
         /// <summary>
         /// Метод (действие) при перемещении любого маркера
         /// </summary>
@@ -686,8 +656,12 @@ namespace SimpleEditor.Controllers
                     _selection.Rotate(angle, marker.AnchorPosition);
                     break;
                 case MarkerType.Vertex:
+                    var offset = new SizeF(mousePos.X - marker.Position.X, mousePos.Y - marker.Position.Y);
+                    if (offset.IsEmpty) break;
                     // двигаем маркер вершины
-                    marker.Position = _selection.MoveVertex(marker.Owner, marker.Index, marker.Position, mousePos);
+                    marker.Position = PointF.Add(marker.Position, _selection.MoveVertex(((VertexMarker)marker).Index, offset));
+                    UpdateMarkerPositions();
+                    _wasVertexMoving = true;
                     break;
             }
         }
@@ -727,10 +701,15 @@ namespace SimpleEditor.Controllers
                             foreach (var vertexMarker in from pt in path.Path.PathPoints 
                                         let normX = (pt.X - bounds.X) / bounds.Width 
                                         let normY = (pt.Y - bounds.Y) / bounds.Height 
-                                        select CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0))
+                                        select new VertexMarker
+                                        {
+                                            MarkerType = MarkerType.Vertex,
+                                            Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
+                                            Position = _selection.ToWorldCoordinates(new PointF(normX, normY)),
+                                            Index = n++,
+                                            Owner = fig
+                                        })
                             {
-                                vertexMarker.Index = n++;
-                                vertexMarker.Owner = fig;
                                 Markers.Add(vertexMarker);
                             }
                         }
@@ -813,12 +792,10 @@ namespace SimpleEditor.Controllers
                             : marker.Cursor;
                     }
                     Figure fig;
-                    if (FindFigureAt(point, out fig))
+                    if (_selection.FindFigureAt(_layer, point, out fig))
                     {
                         if (EditorMode == EditorMode.Verticies &&
-                            modifierKeys.HasFlag(Keys.Control) &&
-                            _selection.Contains(fig) &&
-                            FindOutline(point))
+                            _selection.Contains(fig) && _selection.IsHit(_layer, point))
                             return CursorFactory.GetCursor(UserCursor.AddVertex);
                         return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }
@@ -876,12 +853,13 @@ namespace SimpleEditor.Controllers
         public void Group()
         {
             if (_selection.Count < 2) return;
-            LayerStartChanging();
             var group = _selection.Group();
+            LayerStartChanging();
             foreach (var fig in _selection)
                 _layer.Figures.Remove(fig);
             _layer.Figures.Add(group);
             LayerChanged();
+            _selection.Clear();
             _selection.Add(group);
             OnSelectedFigureChanged();
         }
@@ -893,7 +871,7 @@ namespace SimpleEditor.Controllers
         {
             if (_selection.Count == 0) return;
             LayerStartChanging();
-            foreach (var fig in _selection)
+            foreach (var fig in _selection.OfType<FigureGroup>())
                 _layer.Figures.Remove(fig);
             var list = _selection.Ungroup();
             _layer.Figures.AddRange(list);
@@ -901,6 +879,8 @@ namespace SimpleEditor.Controllers
             _selection.Clear();
             foreach (var fig in list)
                 _selection.Add(fig);
+            BuildMarkers();
+            UpdateMarkerPositions();
             OnSelectedFigureChanged();
         }
     }
