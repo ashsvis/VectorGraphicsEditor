@@ -21,7 +21,8 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Vertex));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
+                (AllowedOperations.Size | AllowedOperations.Vertex));
         }
 
         /// <summary>
@@ -68,7 +69,8 @@ namespace EditorModel.Figures
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
             path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
-                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | AllowedOperations.Skew | AllowedOperations.Vertex));         
+                (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | 
+                 AllowedOperations.Skew | AllowedOperations.Vertex));         
         }
 
         //и т.д. для всех примитивных фигур
@@ -101,6 +103,7 @@ namespace EditorModel.Figures
         /// <param name="figure"></param>
         public void BuildPolylineGeometry(Figure figure)
         {
+            figure.Solid = false;
             figure.Geometry = new PolylineGeometry();
         }
 

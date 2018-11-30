@@ -61,6 +61,16 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] AddVertex {
+            get {
+                object obj = ResourceManager.GetObject("AddVertex", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap arrow {
@@ -221,6 +231,16 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] MoveVertex {
+            get {
+                object obj = ResourceManager.GetObject("MoveVertex", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap newpage {
@@ -303,6 +323,16 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] RemoveVertex {
+            get {
+                object obj = ResourceManager.GetObject("RemoveVertex", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] Rotate {
             get {
                 object obj = ResourceManager.GetObject("Rotate", resourceCulture);
@@ -373,6 +403,16 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] SizeAll {
+            get {
+                object obj = ResourceManager.GetObject("SizeAll", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] SizeNESW {
             get {
                 object obj = ResourceManager.GetObject("SizeNESW", resourceCulture);
@@ -406,6 +446,26 @@ namespace SimpleEditor.Properties {
         internal static byte[] SizeWE {
             get {
                 object obj = ResourceManager.GetObject("SizeWE", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SkewHorizontal {
+            get {
+                object obj = ResourceManager.GetObject("SkewHorizontal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] SkewVertical {
+            get {
+                object obj = ResourceManager.GetObject("SkewVertical", resourceCulture);
                 return ((byte[])(obj));
             }
         }

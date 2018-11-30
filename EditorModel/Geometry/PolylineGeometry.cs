@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using EditorModel.Common;
 
@@ -11,6 +10,8 @@ namespace EditorModel.Geometry
     [Serializable]
     internal class PolylineGeometry : Geometry
     {
+        private readonly PointF[] _points;
+
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
@@ -27,6 +28,12 @@ namespace EditorModel.Geometry
         internal PolylineGeometry()
         {
             _allowedOperations = AllowedOperations.All;
+            var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
+            _points = new[]
+                    {
+                        new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
+                    };
         }
 
         /// <summary>
@@ -38,14 +45,8 @@ namespace EditorModel.Geometry
             {
                 // сброс пути
                 _path.Path.Reset();
-                var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-                var points = new List<PointF>
-                    {
-                        new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
-                    };
                 // добавляем в путь построенную по точкам единичного прямоугольника отрезок линии
-                _path.Path.AddLines(points.ToArray());
+                _path.Path.AddLines(_points);
                 // возвращаем настроенный путь
                 return _path;
             }
