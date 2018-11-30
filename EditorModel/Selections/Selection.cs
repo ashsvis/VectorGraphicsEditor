@@ -18,7 +18,7 @@ namespace EditorModel.Selections
     {
         // внутренний набор для хранения списка выделенных фигур
         private readonly HashSet<Figure> _selected = new HashSet<Figure>();
-        private bool _aroundFrameDisable;
+        private bool _isFrameVisible = true;
 
         /// <summary>
         /// Очистка списка выделенных фигур
@@ -52,15 +52,74 @@ namespace EditorModel.Selections
         /// <summary>
         /// Запрет рисовать рамку вокруг выбранных фигур
         /// </summary>
-        public bool AroundFrameDisable
+        public bool IsFrameVisible
         {
-            get { return _aroundFrameDisable; }
+            get { return _isFrameVisible; }
             set
             {
-                if (_aroundFrameDisable == value) return;
-                _aroundFrameDisable = value;
+                if (_isFrameVisible == value) return;
+                _isFrameVisible = value;
                 GrabGeometry();
             }
+        }
+
+        /// <summary>
+        /// Ищем попадание в контур фигуры
+        /// </summary>
+        /// <param name="point">Положение курсора</param>
+        /// <param name="layer">Ссылка на слой</param>
+        /// <returns>Контур фигуры найден</returns>
+        public bool IsHit(Layer layer, Point point)
+        {
+            var found = false;
+            using (var pen = new Pen(Color.Black, 5))
+            {
+                // просмотр начинаем с конца списка - там самые "верхние" фигуры
+                for (var i = layer.Figures.Count - 1; i >= 0; i--)
+                {
+                    var fig = layer.Figures[i];
+                    var path = fig.GetTransformedPath();
+                    // проверяем также попадание на контур фигуры
+                    if (!path.Path.IsOutlineVisible(point, pen)) continue;
+                    found = true;
+                    break;
+                }
+            }
+            return found;
+        }
+
+        /// <summary>
+        /// Ищем фигуру в данной точке
+        /// </summary>
+        /// <param name="layer">Ссылка на слой</param>
+        /// <param name="point">Положение курсора</param>
+        /// <param name="figure">Найденная фигура или null</param>
+        /// <returns>True - фигура найдена</returns>
+        public bool FindFigureAt(Layer layer, Point point, out Figure figure)
+        {
+            figure = null;
+            var found = false;
+            using (var pen = new Pen(Color.Black, 5))
+            {
+                // просмотр начинаем с конца списка - там самые "верхние" фигуры
+                for (var i = layer.Figures.Count - 1; i >= 0; i--)
+                {
+                    var fig = layer.Figures[i];
+                    var path = fig.GetTransformedPath();
+                    if (path.Path.IsVisible(point))
+                    {
+                        figure = fig;
+                        found = true;
+                        break;
+                    }
+                    // проверяем также попадание на контур фигуры
+                    if (!path.Path.IsOutlineVisible(point, pen)) continue;
+                    figure = fig;
+                    found = true;
+                    break;
+                }
+            }
+            return found;
         }
 
         /// <summary>
@@ -77,7 +136,7 @@ namespace EditorModel.Selections
             }
 
             // нарисовать рамку вокруг выбранных фигур 
-            if (!AroundFrameDisable)
+            if (IsFrameVisible)
             {
                 var bounds = path.Path.GetBounds();
                 path.Path.AddRectangle(bounds);
@@ -85,8 +144,8 @@ namespace EditorModel.Selections
             // выбираем разрешённые операции
             // если выбрана только одна фигура - просто используем её AllowedOperations
             // иначе - разрешаем все операции
-            var allowedOperations = _selected.Count == 1 
-                ? _selected.First().Geometry.AllowedOperations 
+            var allowedOperations = _selected.Count == 1
+                ? _selected.First().Geometry.AllowedOperations
                 : AllowedOperations.All;
 
             // присваиваем геометрию
@@ -94,7 +153,6 @@ namespace EditorModel.Selections
 
             // сбрасываем преобразование в единичную матрицу
             Transform = new SerializableGraphicsMatrix();
-            PathDataModified = false;
         }
 
         /// <summary>
@@ -109,12 +167,21 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Переводит точку из локальных нормализированных координат (0,0)-(1,1) в мировые координаты
+        /// Применение своего изменения пути к выделенным фигурам
         /// </summary>
-        public PointF ToWorldCoordinates(PointF point)
+        public void PushPathDataToSelectedFigures()
         {
-            var bounds = GetTransformedPath().Path.GetBounds();
-            return new PointF(bounds.Left + point.X * bounds.Width, bounds.Top + point.Y * bounds.Height);
+            var fig = _selected.FirstOrDefault();
+            if (fig != null)
+            {
+                var types = Geometry.Path.Path.PathTypes;
+                var points = Geometry.Path.Path.PathPoints;
+                fig.Geometry = new PrimitiveGeometry(
+                    new SerializableGraphicsPath { Path = new GraphicsPath(points, types) },
+                    fig.Geometry.AllowedOperations);
+                fig.Transform = new SerializableGraphicsMatrix();
+            }
+            GrabGeometry();
         }
 
         /// <summary>
@@ -168,87 +235,17 @@ namespace EditorModel.Selections
         /// <param name="anchor">Координаты "якоря" (в мировых координатах)</param>
         public void Skew(float skewX, float skewY, PointF anchor)
         {
+            //можем искажать?
+            var allowSkew = Geometry.AllowedOperations.HasFlag(AllowedOperations.Skew);
+            if (!allowSkew)
+                return; //не можем искажать
+
             //сдвигаем относительно якоря
             var m = new SerializableGraphicsMatrix();
             m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
             m.Matrix.Shear(skewX, skewY);              //сдвигаем
             m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
 
-            //
-            Transform = m;
-        }
-
-        /// <summary>
-        /// Отражение по горизонтали
-        /// </summary>
-        public void FlipX()
-        {
-            var m = new SerializableGraphicsMatrix();
-            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
-            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            //отражаем по горизонтали относительно якоря
-            m.Matrix.Multiply(new Matrix(-1, 0, 0, 1, 0, 0));
-            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
-            //
-            Transform = m;
-        }
-
-        /// <summary>
-        /// Отражение по вертикали
-        /// </summary>
-        public void FlipY()
-        {
-            var m = new SerializableGraphicsMatrix();
-            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
-            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            //отражаем по вертикали относительно якоря
-            m.Matrix.Multiply(new Matrix(1, 0, 0, -1, 0, 0));
-            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
-            //
-            Transform = m;
-        }
-
-        /// <summary>
-        /// Поворот на четверть по часовой стрелке
-        /// </summary>
-        public void Rotate90Cw()
-        {
-            var m = new SerializableGraphicsMatrix();
-            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
-            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            //отражаем по вертикали относительно якоря
-            m.Matrix.Multiply(new Matrix(0, 1, -1, 0, 0, 0));
-            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
-            //
-            Transform = m;
-        }
-
-        /// <summary>
-        /// Поворот на четверть против часовой стрелки
-        /// </summary>
-        public void Rotate90Ccw()
-        {
-            var m = new SerializableGraphicsMatrix();
-            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
-            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            //отражаем по вертикали относительно якоря
-            m.Matrix.Multiply(new Matrix(0, -1, 1, 0, 0, 0));
-            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
-            //
-            Transform = m;
-        }
-
-        /// <summary>
-        /// Поворот на 180 градусов
-        /// </summary>
-        public void Rotate180()
-        {
-            var m = new SerializableGraphicsMatrix();
-            var anchor = ToWorldCoordinates(new PointF(0.5f, 0.5f));
-            m.Matrix.Translate(anchor.X, anchor.Y);    //переводим центр координат в якорь
-            //отражаем по вертикали относительно якоря
-            m.Matrix.Multiply(new Matrix(-1, 0, 0, -1, 0, 0));
-            m.Matrix.Translate(-anchor.X, -anchor.Y);  //возвращаем центр координат
             //
             Transform = m;
         }
@@ -265,7 +262,7 @@ namespace EditorModel.Selections
 
             if (!allowRotate)
                 return; //не можем вращать
-            
+
             //вращаем относительно якоря
             var m = new SerializableGraphicsMatrix();
             m.Matrix.RotateAt(angle, center);      //вращаем
@@ -300,7 +297,7 @@ namespace EditorModel.Selections
         /// <summary>
         /// Количество фигур в списке
         /// </summary>
-        public int Count { get { return _selected.Count; }  }
+        public int Count { get { return _selected.Count; } }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -315,26 +312,33 @@ namespace EditorModel.Selections
         /// <summary>
         /// Состояние внутренних вершин фигур изменилось
         /// </summary>
-        public bool PathDataModified { get; private set; }
+        public event Action PathDataModified;
+
+        public void OnPathDataModified()
+        {
+            PathDataModified();
+        }
 
         /// <summary>
         /// Перемещение маркера вершины
         /// </summary>
-        /// <param name="owner">Фигура, владелец маркера</param>
         /// <param name="index">Индекс вершины</param>
-        /// <param name="marker">Координаты маркера вершины</param>
-        /// <param name="mouse">Координаты мышки</param>
-        /// <returns>Новые координаты маркера вершины</returns>
-        public PointF MoveVertex(Figure owner, int index, PointF marker, PointF mouse)
+        /// <param name="offset">Смещение маркера</param>
+        /// <returns>Смещение для маркера вершины</returns>
+        public SizeF MoveVertex(int index, SizeF offset)
         {
+            //можем менять положение вершин?
+            var allowVertex = Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex);
+
+            if (!allowVertex)
+                return SizeF.Empty; //не можем менять положение вершин
+
             var points = Geometry.Path.Path.PathPoints;
             var types = Geometry.Path.Path.PathTypes;
-            var offset = new SizeF(mouse.X - marker.X, mouse.Y - marker.Y);
-            PathDataModified = !offset.IsEmpty;
             points[index] = PointF.Add(points[index], offset);
-            var newPath = new SerializableGraphicsPath {Path = new GraphicsPath(points, types)};
+            var newPath = new SerializableGraphicsPath { Path = new GraphicsPath(points, types) };
             Geometry = new PrimitiveGeometry(newPath, Geometry.AllowedOperations);
-            return PointF.Add(marker, offset);
+            return offset;
         }
 
         /// <summary>
@@ -344,19 +348,25 @@ namespace EditorModel.Selections
         /// <param name="index">Индекс вершины</param>
         public void RemoveVertex(Figure owner, int index)
         {
+            //можем менять положение вершин?
+            var allowVertex = Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex);
+
+            if (!allowVertex)
+                return; //не можем менять положение вершин
+
             var points = new List<PointF>(Geometry.Path.Path.PathPoints);
-            if (owner.Solid && points.Count < 4) return;
-            if (!owner.Solid && points.Count < 3) return;
+            if (owner.Geometry.IsClosed && points.Count < 4) return;
+            if (!owner.Geometry.IsClosed && points.Count < 3) return;
             points.RemoveAt(index);
             var types = new List<byte>(Geometry.Path.Path.PathTypes);
             types.RemoveAt(index);
             var newPath = new SerializableGraphicsPath
-                {
-                    Path = new GraphicsPath(points.ToArray(), types.ToArray())
-                };
-            if (owner.Solid) newPath.Path.CloseAllFigures();
-            Geometry = new PrimitiveGeometry(newPath, Geometry.AllowedOperations);
-            PathDataModified = true;
+            {
+                Path = new GraphicsPath(points.ToArray(), types.ToArray())
+            };
+            if (owner.Geometry.IsClosed) newPath.Path.CloseAllFigures();
+            owner.Geometry = new PrimitiveGeometry(newPath, owner.Geometry.AllowedOperations);
+            owner.Transform = new SerializableGraphicsMatrix();
         }
 
         /// <summary>
@@ -366,16 +376,22 @@ namespace EditorModel.Selections
         /// <param name="point">Положение указателя мышки</param>
         public void InsertVertex(Figure owner, PointF point)
         {
+            //можем менять положение вершин?
+            var allowVertex = Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex);
+
+            if (!allowVertex)
+                return; //не можем менять положение вершин
+
             var points = new List<PointF>(owner.GetTransformedPath().Path.PathPoints);
             var types = new List<byte>(owner.GetTransformedPath().Path.PathTypes);
             using (var pen = new Pen(Color.Black, 5))
             {
                 // поищем, на какой стороне фигуры добавлять новую вершину
-                var k = owner.Solid ? 0 : 1;
+                var k = owner.Geometry.IsClosed ? 0 : 1;
                 for (var i = k; i < points.Count(); i++)
                 {
                     // замыкаем контур отрезком, соединяющим начало и конец фигуры
-                    var pt1 = i == 0 ? points[points.Count-1] : points[i - 1];
+                    var pt1 = i == 0 ? points[points.Count - 1] : points[i - 1];
                     var pt2 = points[i];
                     using (var path = new GraphicsPath())
                     {
@@ -387,40 +403,52 @@ namespace EditorModel.Selections
                         // тип вставляемого узла - 1
                         types.Insert(i == 0 ? types.Count - 1 : i, 1);
                         var newPath = new SerializableGraphicsPath
-                            {
-                                Path = new GraphicsPath(points.ToArray(), types.ToArray())
-                            };
+                        {
+                            Path = new GraphicsPath(points.ToArray(), types.ToArray())
+                        };
                         owner.Geometry = new PrimitiveGeometry(newPath, owner.Geometry.AllowedOperations);
                         owner.Transform = new SerializableGraphicsMatrix();
                         break;
                     }
                 }
-            }            
-        }
-
-        /// <summary>
-        /// Применение своего Path к Path выделенной фигуры
-        /// </summary>
-        public void PushPathDataToSelectedFigures()
-        {
-            var fig = _selected.FirstOrDefault();
-            if (fig != null)
-            {
-                var types = Geometry.Path.Path.PathTypes;
-                var points = Geometry.Path.Path.PathPoints;
-                fig.Geometry = new PrimitiveGeometry(
-                    new SerializableGraphicsPath { Path = new GraphicsPath(points, types) }, 
-                    fig.Geometry.AllowedOperations);
-                fig.Transform = new SerializableGraphicsMatrix();
             }
-            GrabGeometry();
         }
 
         /// <summary>
-        /// Группировка выбранных фигур в одну
+        /// Объединение выбранных фигур в группу
         /// </summary>
         /// <returns></returns>
         public Figure Group()
+        {
+            return new FigureGroup(_selected.ToList())
+            {
+                Geometry = new PolygoneGeometry()
+            };
+        }
+
+        /// <summary>
+        /// Извлечение фигур из группы
+        /// </summary>
+        /// <returns>Список извлеченных фигур</returns>
+        public List<Figure> Ungroup()
+        {
+            var list = new List<Figure>();
+            foreach (var grp in _selected.OfType<FigureGroup>())
+            {
+                foreach (var figure in grp.Figures)
+                {
+                    figure.Transform.Matrix.Multiply(grp.Transform, MatrixOrder.Append);
+                    list.Add(figure);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Объединение выбранных фигур в одну
+        /// </summary>
+        /// <returns>Новая фигура, содержащая фигуры группы</returns>
+        public Figure Join()
         {
             var groupPath = new SerializableGraphicsPath();
             foreach (var fig in _selected)
@@ -437,14 +465,14 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Разгруппировка списка фигур в ещё больший список, но по отдельности
+        /// Разъединение фигур в список
         /// todo: Настройки AllowedOperations для примитивных фигур теряются!
         /// </summary>
-        /// <returns></returns>
-        public List<Figure> Ungroup()
+        /// <returns>Список фигур, содержавшихся внутри группы</returns>
+        public List<Figure> Unjoin()
         {
             var list = new List<Figure>();
-            foreach (var pathIterator in _selected.Select(fig => 
+            foreach (var pathIterator in _selected.Select(fig =>
                 new GraphicsPathIterator(fig.GetTransformedPath().Path)))
             {
                 pathIterator.Rewind();
@@ -453,10 +481,9 @@ namespace EditorModel.Selections
                 while (pathIterator.NextSubpath(pathSection.Path, out closed) > 0)
                 {
                     var figure = new Figure
-                        {
-                            Solid = closed,
-                            Geometry = new PrimitiveGeometry(pathSection, AllowedOperations.All)
-                        };
+                    {
+                        Geometry = new PrimitiveGeometry(pathSection, AllowedOperations.All)
+                    };
                     pathSection = new SerializableGraphicsPath();
                     list.Add(figure);
                 }
