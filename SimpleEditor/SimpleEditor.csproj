@@ -53,6 +53,14 @@
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\Marker.cs" />
     <Compile Include="Controllers\UndoRedoController.cs" />
+    <Compile Include="Controls\FillStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FillStyleEditor.Designer.cs">
+      <DependentUpon>FillStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Helper.cs" />
+    <Compile Include="Controls\IEditor.cs" />
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +78,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
+    <EmbeddedResource Include="Controls\FillStyleEditor.resx">
+      <DependentUpon>FillStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormSimpleEditor.resx">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
     </EmbeddedResource>

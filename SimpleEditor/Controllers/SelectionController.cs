@@ -37,8 +37,6 @@ namespace SimpleEditor.Controllers
         public SelectionController(Layer layer)
         {
             _selection = new Selection();
-            _selection.PathDataModified += _selection_PathDataModified;
-
             _markers = new List<Marker>();
             _layer = layer;
         }
@@ -119,22 +117,12 @@ namespace SimpleEditor.Controllers
                 }
                 _editorMode = value;
                 // запрещаем рисовать рамку вокруг фигур, когда изменяем вершины
-                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies &&
-                                            (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
+                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies && (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
                     _editorMode == EditorMode.Verticies)
                 {
-                    if (_editorMode == EditorMode.Verticies)
-                    {
-                        // оставляем только одну фигуру в этом режиме
-                        var fig = _selection.LastOrDefault(figure =>
-                                     figure.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex));
-                        _selection.Clear();
-                        if (fig != null)
-                            _selection.Add(fig);
-                    }
                     // то строим маркеры
                     BuildMarkers();
                     UpdateMarkerPositions();                    
@@ -198,8 +186,7 @@ namespace SimpleEditor.Controllers
                     {
                         // если не нажата управляющая клавиша Ctrl
                         // в режиме изменения вершим может быть выбрана только одна фигура
-                        if (!modifierKeys.HasFlag(Keys.Control) || 
-                            EditorMode == EditorMode.Verticies)
+                        if (!modifierKeys.HasFlag(Keys.Control))
                             _selection.Clear(); // очистим список выбранных
                                                 // то добавим её в список
                         _selection.Add(fig);
@@ -216,7 +203,8 @@ namespace SimpleEditor.Controllers
                         }
                         // при нажатой клавише Ctrl удаляем эту фигуру из списка
                         // если она не последняя
-                        else if (_selection.Count > 1)
+                        else 
+                        if (_selection.Count > 1 && modifierKeys.HasFlag(Keys.Control))
                         {
                             _selection.Remove(fig);
                             OnSelectedFigureChanged();
@@ -252,13 +240,17 @@ namespace SimpleEditor.Controllers
             }
             else
             {
-                if (EditorMode == EditorMode.Verticies && modifierKeys.HasFlag(Keys.Control))
+                if (EditorMode == EditorMode.Verticies)
                 {
-                    OnLayerStartChanging();
-                    _selection.RemoveVertex(((VertexMarker)_movedMarker).Owner, ((VertexMarker)_movedMarker).Index);
-                    OnLayerChanged();
+                    if (modifierKeys.HasFlag(Keys.Control))
+                    {
+                        OnLayerStartChanging();
+                        _selection.RemoveVertex(((VertexMarker) _movedMarker).Owner, ((VertexMarker) _movedMarker).Index);
+                        OnLayerChanged();
+                    }
                 }
-                EditorMode = EditorMode.ChangeGeometry;
+                else
+                    EditorMode = EditorMode.ChangeGeometry;
             }
         }
 
@@ -298,7 +290,7 @@ namespace SimpleEditor.Controllers
                 OnMarkerMoved(_movedMarker, point);
                 OnSelectedTransformChanging();
             }
-                // выбран не маркер
+            // выбран не маркер
             else
             {
                 switch (EditorMode)
@@ -352,11 +344,22 @@ namespace SimpleEditor.Controllers
                         // чтобы убрать остающуюся рамку выбора
                         if (_selection.Count == 0)
                             _selection.PushTransformToSelectedFigures();
+                        //
+                        OnSelectedFigureChanged();
                         break;
                     // создание предопределённых фигур
                     case EditorMode.CreateFigure:
                         _selection.PushTransformToSelectedFigures();
                         OnLayerChanged();
+                        break;
+                    case EditorMode.Verticies:
+                        if (_wasVertexMoving)
+                        {
+                            OnLayerChanged();
+                            _wasVertexMoving = false;
+                        }
+                        _isMouseDown = false;
+                        return;
                         break;
                     default:
                         // фиксация перемещения фигур
@@ -374,13 +377,6 @@ namespace SimpleEditor.Controllers
                     _wasMouseMoving = false;
                     OnSelectedTransformChanged();
                 }
-
-                if (_wasVertexMoving)
-                {
-                    _wasVertexMoving = false;
-                    _selection_PathDataModified();
-                }
-
             }
 
             //строим маркеры
@@ -391,14 +387,6 @@ namespace SimpleEditor.Controllers
             EditorMode = _lastMode;
 
             _isMouseDown = false;
-        }
-
-        
-        private void _selection_PathDataModified()
-        {
-            OnLayerStartChanging();
-            _selection.PushPathDataToSelectedFigures();
-            OnLayerChanged();
         }
 
         /// <summary>
@@ -656,11 +644,17 @@ namespace SimpleEditor.Controllers
                     _selection.Rotate(angle, marker.AnchorPosition);
                     break;
                 case MarkerType.Vertex:
-                    var offset = new SizeF(mousePos.X - marker.Position.X, mousePos.Y - marker.Position.Y);
-                    if (offset.IsEmpty) break;
-                    // двигаем маркер вершины
-                    marker.Position = PointF.Add(marker.Position, _selection.MoveVertex(((VertexMarker)marker).Index, offset));
+                    if (!_wasVertexMoving)
+                        OnLayerStartChanging();
+                    
+                    // двигаем вершину
+                    var vm = (VertexMarker) marker;
+                    _selection.MoveVertex(vm.Owner, vm.Index, mousePos);
+
+                    //обновляем позицию маркера
+                    vm.Position = mousePos;
                     UpdateMarkerPositions();
+
                     _wasVertexMoving = true;
                     break;
             }
@@ -691,27 +685,13 @@ namespace SimpleEditor.Controllers
                     // создаём маркеры на вершинах фигур
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex)) //если разрешено редактирование вершин
                     {
-                        var fig = _selection.LastOrDefault(figure => 
-                                       figure.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex));
-                        if (fig != null)
+                        foreach (var fig in _selection.Where(figure => figure.Geometry is PolygoneGeometry))
                         {
-                            var path = fig.GetTransformedPath();
-                            var bounds = path.Path.GetBounds();
-                            var n = 0;
-                            foreach (var vertexMarker in from pt in path.Path.PathPoints 
-                                        let normX = (pt.X - bounds.X) / bounds.Width 
-                                        let normY = (pt.Y - bounds.Y) / bounds.Height 
-                                        select new VertexMarker
-                                        {
-                                            MarkerType = MarkerType.Vertex,
-                                            Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
-                                            Position = _selection.ToWorldCoordinates(new PointF(normX, normY)),
-                                            Index = n++,
-                                            Owner = fig
-                                        })
-                            {
-                                Markers.Add(vertexMarker);
-                            }
+                            var polygone = fig.Geometry as PolygoneGeometry;
+                            //get transformed points
+                            var points = polygone.GetTransformedPoints(fig);
+                            for (int i = 0; i < points.Length; i++)
+                                Markers.Add(CreateVertexMarker(points[i], i, fig));
                         }
                     }
                     break;
@@ -748,23 +728,26 @@ namespace SimpleEditor.Controllers
                 figureBuilder.BuildMarkerGeometry(marker);
         }
 
+        private VertexMarker CreateVertexMarker(PointF point, int index, Figure fig)
+        {
+            var marker = new VertexMarker
+            {
+                MarkerType = MarkerType.Vertex,
+                Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
+                Position = point,
+                Index = index,
+                Owner = fig
+            };
+            return marker;
+        }
+
         /// <summary>
         /// Вызываем этот метод, чтобы маркеры двигались синхронно с выделением
         /// </summary>
         private void UpdateMarkerPositions()
         {
             foreach (var marker in Markers)
-            {
-                //ставим маркер на его место в мировых координатах
-                var world = marker.Position;
-                var m = new Matrix();
-                m.Translate(world.X, world.Y);
-                //применяем преобразование selection
-                //чтобы маркеры двигались синхронно с выделением
-                m.Multiply(Selection.Transform, MatrixOrder.Append);
-                //
-                marker.Transform = m;
-            }
+                marker.PushPositionToTransform();
         }
 
         #endregion Всё для работы с маркерами

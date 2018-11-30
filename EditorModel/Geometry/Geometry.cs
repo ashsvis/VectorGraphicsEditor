@@ -29,11 +29,6 @@ namespace EditorModel.Geometry
     public abstract class Geometry
     {
         /// <summary>
-        /// Большинство геометрий - замкнутые контуры
-        /// </summary>
-        private bool _isClosed = true; // поэтому оставлю это здесь
-
-        /// <summary>
         /// Предоставление пути для рисования фигуры
         /// </summary>
         public abstract SerializableGraphicsPath Path { get; }
@@ -42,14 +37,5 @@ namespace EditorModel.Geometry
         /// Допустимые операции над геометрией
         /// </summary>
         public abstract AllowedOperations AllowedOperations { get; }
-
-        /// <summary>
-        /// Признак замкнутого контура фигуры
-        /// </summary>
-        public bool IsClosed
-        {
-            get { return _isClosed; }
-            set { _isClosed = value; }
-        }
     }
 }

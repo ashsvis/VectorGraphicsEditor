@@ -4,8 +4,10 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using EditorModel.Figures;
 using System.Windows.Forms;
+using EditorModel.Selections;
 using SimpleEditor.Common;
 using SimpleEditor.Controllers;
+using SimpleEditor.Controls;
 
 namespace SimpleEditor
 {
@@ -24,13 +26,19 @@ namespace SimpleEditor
             _selectionController = new SelectionController(_layer);
             
             // подключение обработчиков событий для контроллера выбора
-            _selectionController.SelectedFigureChanged += UpdateInterface;
+            _selectionController.SelectedFigureChanged += BuildInterface;
             _selectionController.SelectedTransformChanging += UpdateInterface;
             _selectionController.SelectedTransformChanged += UpdateInterface;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
             _selectionController.EditorModeChanged += _ => UpdateInterface();
             _selectionController.LayerStartChanging += () => OnLayerStartChanging(_selectionController.EditorMode.ToString());
             _selectionController.LayerChanged += OnLayerChanged;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            BuildInterface();
         }
 
         void OnLayerChanged()
@@ -41,6 +49,16 @@ namespace SimpleEditor
         void OnLayerStartChanging(string opName)
         {
             _undoRedoController.OnStartOperation(opName);
+        }
+
+        void BuildInterface()
+        {
+            //build tools
+            foreach (var editor in pnTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
+                editor.Build(_selectionController.Selection);
+
+            //
+            UpdateInterface();
         }
 
         private void UpdateInterface()
@@ -123,7 +141,6 @@ namespace SimpleEditor
             // отрисовка маркеров
             foreach (var marker in _selectionController.Markers)
                 marker.Renderer.Render(e.Graphics, marker);
-
         }
 
         /// <summary>
@@ -381,6 +398,17 @@ namespace SimpleEditor
         private void tsmiUngroup_Click(object sender, EventArgs e)
         {
             _selectionController.Ungroup();
+            UpdateInterface();
+        }
+
+        private void pnStyle_StartChanging(object sender, ChangingEventArgs e)
+        {
+            OnLayerStartChanging(e.ChangingName);
+        }
+
+        private void pnStyle_Changed(object sender, EventArgs e)
+        {
+            OnLayerChanged();
             UpdateInterface();
         }
     }

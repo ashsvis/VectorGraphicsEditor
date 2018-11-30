@@ -310,35 +310,33 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Состояние внутренних вершин фигур изменилось
+        /// Перемещение вершины
         /// </summary>
-        public event Action PathDataModified;
-
-        public void OnPathDataModified()
-        {
-            PathDataModified();
-        }
-
-        /// <summary>
-        /// Перемещение маркера вершины
-        /// </summary>
+        /// <param name="owner">Фигура</param>
         /// <param name="index">Индекс вершины</param>
-        /// <param name="offset">Смещение маркера</param>
-        /// <returns>Смещение для маркера вершины</returns>
-        public SizeF MoveVertex(int index, SizeF offset)
+        /// <param name="offset">смещение</param>
+        public void MoveVertex(Figure owner, int index, PointF newPosition)
         {
             //можем менять положение вершин?
-            var allowVertex = Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex);
+            var allowVertex = owner.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex);
 
             if (!allowVertex)
-                return SizeF.Empty; //не можем менять положение вершин
+                return; //не можем менять положение вершин
 
-            var points = Geometry.Path.Path.PathPoints;
-            var types = Geometry.Path.Path.PathTypes;
-            points[index] = PointF.Add(points[index], offset);
-            var newPath = new SerializableGraphicsPath { Path = new GraphicsPath(points, types) };
-            Geometry = new PrimitiveGeometry(newPath, Geometry.AllowedOperations);
-            return offset;
+            var polygone = owner.Geometry as PolygoneGeometry;
+            if (polygone == null)
+                return; //работаем только с полигонами
+
+            //get points in world coordinates
+            var points = polygone.GetTransformedPoints(owner);
+
+            //move point
+            points[index] = newPosition;
+
+            //push
+            polygone.SetTransformedPoints(owner, points);
+            //
+            GrabGeometry();
         }
 
         /// <summary>
@@ -354,19 +352,21 @@ namespace EditorModel.Selections
             if (!allowVertex)
                 return; //не можем менять положение вершин
 
-            var points = new List<PointF>(Geometry.Path.Path.PathPoints);
-            if (owner.Geometry.IsClosed && points.Count < 4) return;
-            if (!owner.Geometry.IsClosed && points.Count < 3) return;
+            var polygone = owner.Geometry as PolygoneGeometry;
+            if (polygone == null)
+                return; //работаем только с полигонами
+
+            var points = new List<PointF>(polygone.Points);
+
+            if (polygone.IsClosed && points.Count < 4) return;
+            if (!polygone.IsClosed && points.Count < 3) return;
+
+            //удаляем вершину
             points.RemoveAt(index);
-            var types = new List<byte>(Geometry.Path.Path.PathTypes);
-            types.RemoveAt(index);
-            var newPath = new SerializableGraphicsPath
-            {
-                Path = new GraphicsPath(points.ToArray(), types.ToArray())
-            };
-            if (owner.Geometry.IsClosed) newPath.Path.CloseAllFigures();
-            owner.Geometry = new PrimitiveGeometry(newPath, owner.Geometry.AllowedOperations);
-            owner.Transform = new SerializableGraphicsMatrix();
+            //push
+            polygone.Points = points.ToArray();
+            //
+            GrabGeometry();
         }
 
         /// <summary>
@@ -382,13 +382,18 @@ namespace EditorModel.Selections
             if (!allowVertex)
                 return; //не можем менять положение вершин
 
-            var points = new List<PointF>(owner.GetTransformedPath().Path.PathPoints);
-            var types = new List<byte>(owner.GetTransformedPath().Path.PathTypes);
+            var polygone = owner.Geometry as PolygoneGeometry;
+            if (polygone == null)
+                return; //работаем только с полигонами
+
+            //get points in world coordinates
+            var points = polygone.GetTransformedPoints(owner).ToList();
+
             using (var pen = new Pen(Color.Black, 5))
             {
                 // поищем, на какой стороне фигуры добавлять новую вершину
-                var k = owner.Geometry.IsClosed ? 0 : 1;
-                for (var i = k; i < points.Count(); i++)
+                var k = polygone.IsClosed ? 0 : 1;
+                for (var i = k; i < points.Count; i++)
                 {
                     // замыкаем контур отрезком, соединяющим начало и конец фигуры
                     var pt1 = i == 0 ? points[points.Count - 1] : points[i - 1];
@@ -399,19 +404,15 @@ namespace EditorModel.Selections
                         if (!path.IsOutlineVisible(point, pen)) continue;
                         // вставляем новую точку
                         points.Insert(i, point);
-                        // вставляем тип узла (если индекс вставки нулевой, то вставляем перед конечным
-                        // тип вставляемого узла - 1
-                        types.Insert(i == 0 ? types.Count - 1 : i, 1);
-                        var newPath = new SerializableGraphicsPath
-                        {
-                            Path = new GraphicsPath(points.ToArray(), types.ToArray())
-                        };
-                        owner.Geometry = new PrimitiveGeometry(newPath, owner.Geometry.AllowedOperations);
-                        owner.Transform = new SerializableGraphicsMatrix();
+                        //push
+                        polygone.SetTransformedPoints(owner, points.ToArray());
                         break;
                     }
                 }
             }
+
+            //
+            GrabGeometry();
         }
 
         /// <summary>

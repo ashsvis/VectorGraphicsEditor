@@ -1,6 +1,8 @@
 ﻿using EditorModel.Common;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using EditorModel.Figures;
 
 namespace EditorModel.Geometry
 {
@@ -8,9 +10,10 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    internal class PolygoneGeometry : Geometry
+    public class PolygoneGeometry : Geometry
     {
-        private readonly PointF[] _points;
+        private PointF[] _points;
+        private bool _isClosed = true;
 
         /// <summary>
         /// Локальное поле для хранения пути
@@ -23,11 +26,55 @@ namespace EditorModel.Geometry
         private readonly AllowedOperations _allowedOperations;
 
         /// <summary>
+        /// Признак замкнутого контура фигуры
+        /// </summary>
+        public bool IsClosed
+        {
+            get { return _isClosed; }
+            set { _isClosed = value; }
+        }
+
+        /// <summary>
+        /// Признак замкнутого контура фигуры
+        /// </summary>
+        public PointF[] Points
+        {
+            get { return _points; }
+            set { _points = value; }
+        }
+
+        /// <summary>
+        /// Get Transformed Points
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <returns></returns>
+        public PointF[] GetTransformedPoints(Figure owner)
+        {
+            var points = (PointF[])Points.Clone();
+            owner.Transform.Matrix.TransformPoints(points);
+            return points;
+        }
+
+        /// <summary>
+        /// Set Transformed Points
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="points"></param>
+        public void SetTransformedPoints(Figure owner, PointF[] points)
+        {
+            points = (PointF[])points.Clone();
+            var m = owner.Transform.Matrix.Clone();
+            m.Invert();
+            m.TransformPoints(points);
+            Points = points;
+        }
+
+        /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
         internal PolygoneGeometry(bool isClosed = true)
         {
-            base.IsClosed = isClosed;
+            IsClosed = isClosed;
             _allowedOperations = AllowedOperations.All;
             var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
             if (isClosed)
@@ -56,7 +103,7 @@ namespace EditorModel.Geometry
                 // сброс пути
                 _path.Path.Reset();
                 // добавляем в путь построенный по точкам единичного прямоугольника полигон
-                if (base.IsClosed)
+                if (IsClosed)
                     _path.Path.AddPolygon(_points);
                 else
                     _path.Path.AddLines(_points);

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using EditorModel.Figures;
 
@@ -10,6 +11,12 @@ namespace SimpleEditor.Controllers
         public PointF Position { get; set; }
         public PointF AnchorPosition { get; set; }
         public MarkerType MarkerType { get; set; }
+
+        public void PushPositionToTransform()
+        {
+            Transform = new Matrix();
+            Transform.Matrix.Translate(Position.X, Position.Y);
+        }
     }
 
     public class VertexMarker : Marker
