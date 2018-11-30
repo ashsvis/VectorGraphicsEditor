@@ -258,5 +258,38 @@
   <ItemGroup>
     <None Include="Resources\266.cur" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\converttopath.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\join.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exclusiveor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\intersection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\difference.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\union.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular4.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,7 +28,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство рисовальщика фигуры
         /// </summary>
-        public Renderer Renderer { get; private set; }
+        public Renderer Renderer { get; set; }
 
         /// <summary>
         /// Конструктор фигуры для задания свойств по умолчанию
@@ -38,14 +38,13 @@ namespace EditorModel.Figures
             Transform = new SerializableGraphicsMatrix();
             Style = new Style.Style();
             Renderer = new Renderer();
-            Solid = true; // большинство фигур - замкнутый контур
         }
 
         /// <summary>
         /// Предоставление трансформированной геометрии для рисования
         /// </summary>
         /// <returns>Путь для рисования</returns>
-        public SerializableGraphicsPath GetTransformedPath()
+        public virtual SerializableGraphicsPath GetTransformedPath()
         {
             // создаём копию геометрии фигуры
             var path = (GraphicsPath)Geometry.Path.Path.Clone();
@@ -53,11 +52,6 @@ namespace EditorModel.Figures
             path.Transform(Transform);
             return path;
         }
-
-        /// <summary>
-        /// Признак замкнутого контура фигуры
-        /// </summary>
-        public bool Solid { get; set; }
     }
 
 }
