@@ -35,7 +35,7 @@ namespace EditorModel.Geometry
         }
 
         /// <summary>
-        /// Признак замкнутого контура фигуры
+        /// Точки контура фигуры
         /// </summary>
         public PointF[] Points
         {

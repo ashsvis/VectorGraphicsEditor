@@ -5,7 +5,6 @@ using SimpleEditor.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -360,7 +359,6 @@ namespace SimpleEditor.Controllers
                         }
                         _isMouseDown = false;
                         return;
-                        break;
                     default:
                         // фиксация перемещения фигур
                         if (!_selection.Transform.Matrix.IsIdentity)
