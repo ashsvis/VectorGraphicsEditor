@@ -1,4 +1,6 @@
-﻿using EditorModel.Common;
+﻿using System;
+using System.Collections.Generic;
+using EditorModel.Common;
 using System.Drawing;
 using EditorModel.Geometry;
 
@@ -114,7 +116,22 @@ namespace EditorModel.Figures
         /// <param name="vertexCount">Количество вершин</param>
         public void BuildRegularGeometry(Figure figure, int vertexCount)
         {
-            figure.Geometry = new RegularGeometry(vertexCount);
+            if (vertexCount < 3) throw new ArgumentOutOfRangeException("vertexCount", "Количество вершин должно быть три и более.");
+
+            var radius = 0.5f;
+            var points = new List<PointF>();
+            var stepAngle = Math.PI * 2 / vertexCount;
+            var angle = - Math.PI * 2;
+            for (var i = 0; i < vertexCount; i++)
+            {
+                points.Add(new PointF((float)(radius * Math.Cos(angle)), (float)(radius * Math.Sin(angle))));
+                angle += stepAngle;
+            }
+
+            var path = new SerializableGraphicsPath();
+            path.Path.AddPolygon(points.ToArray());
+
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew));
         }
 
         /// <summary>

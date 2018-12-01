@@ -47,7 +47,6 @@
     <Compile Include="Figures\FigureGroup.cs" />
     <Compile Include="Figures\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
-    <Compile Include="Geometry\RegularGeometry.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />
     <Compile Include="Style\Border.cs" />
     <Compile Include="Figures\Figure.cs" />
