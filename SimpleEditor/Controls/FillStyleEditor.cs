@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using EditorModel.Figures;
 using EditorModel.Selections;
-using EditorModel.Style;
 
 namespace SimpleEditor.Controls
 {
@@ -23,17 +20,17 @@ namespace SimpleEditor.Controls
 
         public void Build(Selection selection)
         {
-            //check visibility
-            Visible = selection.ForAll( f => f.Style.FillStyle != null);//show the editor only if all figures contain FillStyle
-            if (!Visible) return;//do not build anything
+            // check visibility
+            Visible = selection.ForAll( f => f.Style.FillStyle != null); // show the editor only if all figures contain FillStyle
+            if (!Visible) return; // do not build anything
 
-            //remember editing object
+            // remember editing object
             this.selection = selection;
 
-            //get list of objects
+            // get list of objects
             var fillStyles = selection.Select(f => f.Style.FillStyle).ToList();
 
-            //copy properties of object to GUI
+            // copy properties of object to GUI
             updating++;
 
             lbColor.BackColor = fillStyles.GetProperty(f => f.Color);
@@ -44,19 +41,19 @@ namespace SimpleEditor.Controls
 
         private void UpdateObject()
         {
-            if (updating > 0) return;//we are in updating mode
+            if (updating > 0) return; // we are in updating mode
 
-            //fire event
+            // fire event
             StartChanging(this, new ChangingEventArgs("Fill Style"));
 
-            //get list of objects
+            // get list of objects
             var fillStyles = selection.Select(f => f.Style.FillStyle).ToList();
 
-            //send values back from GUI to object
+            // send values back from GUI to object
             fillStyles.SetProperty(f => f.Color = lbColor.BackColor);
             fillStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
 
-            //fire event
+            // fire event
             Changed(this, EventArgs.Empty);
         }
 

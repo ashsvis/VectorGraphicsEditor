@@ -35,9 +35,10 @@
             // cbVisible
             // 
             this.cbVisible.AutoSize = true;
-            this.cbVisible.Location = new System.Drawing.Point(0, 1);
+            this.cbVisible.Location = new System.Drawing.Point(2, 4);
+            this.cbVisible.Margin = new System.Windows.Forms.Padding(2);
             this.cbVisible.Name = "cbVisible";
-            this.cbVisible.Size = new System.Drawing.Size(47, 21);
+            this.cbVisible.Size = new System.Drawing.Size(38, 17);
             this.cbVisible.TabIndex = 0;
             this.cbVisible.Text = "Fill";
             this.cbVisible.UseVisualStyleBackColor = true;
@@ -47,21 +48,24 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(53, 1);
+            this.lbColor.Location = new System.Drawing.Point(44, 4);
+            this.lbColor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbColor.Name = "lbColor";
-            this.lbColor.Size = new System.Drawing.Size(51, 21);
+            this.lbColor.Size = new System.Drawing.Size(39, 17);
             this.lbColor.TabIndex = 1;
             this.lbColor.BackColorChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             this.lbColor.Click += new System.EventHandler(this.lbColor_Click);
             // 
             // FillStyleEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.lbColor);
             this.Controls.Add(this.cbVisible);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
-            this.Size = new System.Drawing.Size(107, 23);
+            this.Size = new System.Drawing.Size(87, 23);
             this.ResumeLayout(false);
             this.PerformLayout();
 
