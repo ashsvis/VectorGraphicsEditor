@@ -411,5 +411,10 @@ namespace SimpleEditor
             OnLayerChanged();
             UpdateInterface();
         }
+
+        private void tsArrange_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

@@ -360,6 +360,7 @@ namespace SimpleEditor.Controllers
                         _isMouseDown = false;
                         return;
                     default:
+                        if (_firstMouseDown == point) break;
                         // фиксация перемещения фигур
                         if (!_selection.Transform.Matrix.IsIdentity)
                         {
@@ -584,25 +585,6 @@ namespace SimpleEditor.Controllers
                 AnchorPosition = _selection.ToWorldCoordinates(anchPoint)
             };
         }
-
-        //private VertexMarker CreateVertexMarker(float posX, float posY)
-        //{
-        //    return new VertexMarker
-        //    {
-        //        MarkerType = MarkerType.Vertex,
-        //        Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
-        //        Position = _selection.ToWorldCoordinates(new PointF(posX, posY))
-        //    };
-        //}
-/*
-                            foreach (var vertexMarker in from pt in path.Path.PathPoints 
-                                        let normX = (pt.X - bounds.X) / bounds.Width 
-                                        let normY = (pt.Y - bounds.Y) / bounds.Height 
-                                        select CreateMarker(MarkerType.Vertex, normX, normY, UserCursor.MoveAll, 0, 0))
-                            {
-                                vertexMarker.Index = n++;
-                                vertexMarker.Owner = fig;
- */
 
         /// <summary>
         /// Метод (действие) при перемещении любого маркера
