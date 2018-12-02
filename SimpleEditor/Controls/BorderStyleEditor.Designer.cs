@@ -113,7 +113,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.Controls.Add(this.cbPattern);
             this.Controls.Add(this.nudWidth);
             this.Controls.Add(this.lbDash);

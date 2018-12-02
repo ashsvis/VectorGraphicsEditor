@@ -100,25 +100,13 @@ namespace SimpleEditor.Controls
             e.DrawBackground();
             var rect = new Rectangle(e.Bounds.X, e.Bounds.Top, e.Bounds.Width - 1, e.Bounds.Height - 1);
             rect.Inflate(-4, 0);
-            //if (e.Index == 0)
-            //{
-            //    using (var textColor = new SolidBrush(e.ForeColor))
-            //    {
-            //        string showing = cb.Items[e.Index].ToString();
-            //        g.DrawString(showing, cb.Font, textColor, rect);
-            //    }
-            //}
-            //else
-            //{
-                using (var p = new Pen(e.ForeColor))
-                {
-                    p.Width = 2;
-                    p.DashStyle = (DashStyle)(e.Index /* - 1*/);
-                    g.DrawLine(p, new Point(rect.Left, rect.Top + rect.Height / 2),
-                                  new Point(rect.Right, rect.Top + rect.Height / 2));
-                }
-            //}
-            // Draw the focus rectangle if the mouse hovers over an item.
+            using (var p = new Pen(e.ForeColor))
+            {
+                p.Width = 2;
+                p.DashStyle = (DashStyle)(e.Index /* - 1*/);
+                g.DrawLine(p, new Point(rect.Left, rect.Top + rect.Height / 2),
+                                new Point(rect.Right, rect.Top + rect.Height / 2));
+            }
             e.DrawFocusRectangle();
         }
     }
