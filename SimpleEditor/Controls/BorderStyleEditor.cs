@@ -53,7 +53,7 @@ namespace SimpleEditor.Controls
             updating++;
 
             cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
-            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width);
+            nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
             lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
             cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
 
