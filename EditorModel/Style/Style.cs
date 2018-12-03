@@ -25,12 +25,8 @@ namespace EditorModel.Style
         {
             BorderStyle = new Border();
 
-            #region На согласовании
-
-            //FillStyle = new Fill();
-            FillStyle = new GradientFill();
-
-            #endregion На согласовании
+            FillStyle = new Fill();
+            //FillStyle = new GradientFill();
         }
     }
 }
