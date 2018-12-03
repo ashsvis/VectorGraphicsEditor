@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using EditorModel.Figures;
 using System.Windows.Forms;
+using EditorModel.Geometry;
 using EditorModel.Selections;
 using SimpleEditor.Common;
 using SimpleEditor.Controllers;
@@ -67,6 +68,8 @@ namespace SimpleEditor
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
             tsFigures.Enabled = _selectionController.EditorMode == EditorMode.Select;
+            var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
+            tsddbGeometySwitcher.Enabled = exists;
 
             pbCanvas.Invalidate();
         }
@@ -210,27 +213,6 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     new FigureBuilder().BuildRegularGeometry(fig, 8);
-                    return fig;
-                };
-            else if (tsbRegular16.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    new FigureBuilder().BuildRegularGeometry(fig, 16);
-                    return fig;
-                };
-            else if (tsbRegular24.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    new FigureBuilder().BuildRegularGeometry(fig, 24);
-                    return fig;
-                };
-            else if (tsbRegular32.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    new FigureBuilder().BuildRegularGeometry(fig, 32);
                     return fig;
                 };
             else if (tsbText.Checked)
@@ -412,9 +394,53 @@ namespace SimpleEditor
             UpdateInterface();
         }
 
-        private void tsArrange_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void tsmiRegularGeometry_Click(object sender, EventArgs e)
         {
+            var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
+            if (!exists) return;
+            tsddbGeometySwitcher.Text = @"Geometry: " + ((ToolStripMenuItem)sender).Text;
+            var mitem = (ToolStripMenuItem)sender;
+            var vertexCount = int.Parse(mitem.Tag.ToString());
+            var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
+            var builder = new FigureBuilder();
+            OnLayerStartChanging("Change Primitive Geometry");
+            foreach (var figure in primitives)
+                builder.BuildRegularGeometry(figure, vertexCount);
+            OnLayerChanged();
+            _selectionController.Clear();
+            UpdateInterface();
+        }
 
+        private void tsmiPrimitiveGeometry_Click(object sender, EventArgs e)
+        {
+            var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
+            if (!exists) return;
+            tsddbGeometySwitcher.Text = @"Geometry: " + ((ToolStripMenuItem)sender).Text;
+            var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
+            var builder = new FigureBuilder();
+            if (sender == tsmiCyrcle)
+            {
+                OnLayerStartChanging("Change Primitive Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildCircleGeometry(figure);
+                OnLayerChanged();
+            }
+            else if (sender == tsmiRectangle)
+            {
+                OnLayerStartChanging("Change Primitive Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildRectangleGeometry(figure);
+                OnLayerChanged();
+            }
+            else  if (sender == tsmiSquare)
+            {
+                OnLayerStartChanging("Change Primitive Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildSquareGeometry(figure);
+                OnLayerChanged();
+            }
+            _selectionController.Clear();
+            UpdateInterface();
         }
     }
 }

@@ -193,7 +193,7 @@ namespace SimpleEditor.Controllers
                     }
                     else 
                     {
-                        if (EditorMode == EditorMode.Verticies)
+                        if (EditorMode == EditorMode.Verticies && modifierKeys.HasFlag(Keys.Control))
                         {
                             OnLayerStartChanging();
                             // вставка новой вершины при нажатом Ctrl
@@ -244,8 +244,13 @@ namespace SimpleEditor.Controllers
                     if (modifierKeys.HasFlag(Keys.Control))
                     {
                         OnLayerStartChanging();
-                        _selection.RemoveVertex(((VertexMarker) _movedMarker).Owner, ((VertexMarker) _movedMarker).Index);
+                        _selection.RemoveVertex(((VertexMarker) _movedMarker).Owner, 
+                                                ((VertexMarker) _movedMarker).Index);
                         OnLayerChanged();
+                        //строим маркеры
+                        BuildMarkers();
+                        UpdateMarkerPositions();
+                        OnSelectedFigureChanged();
                     }
                 }
                 else
@@ -261,15 +266,13 @@ namespace SimpleEditor.Controllers
         {
             //создаем новую фигуру
             var newFig = CreateFigureRequest();
-            if (newFig != null)
-            {
-                // сразу смещаем на половину размера, чтобы левый верхний угол был в точке мышки
-                newFig.Transform.Matrix.Translate(point.X + 0.5f, point.Y + 0.5f);
-                _layer.Figures.Add(newFig);
-                _selection.Add(newFig);
-                CreateFigureRequest = null;
-                OnSelectedFigureChanged();
-            }
+            if (newFig == null) return;
+            // сразу смещаем на половину размера, чтобы левый верхний угол был в точке мышки
+            newFig.Transform.Matrix.Translate(point.X + 0.5f, point.Y + 0.5f);
+            _layer.Figures.Add(newFig);
+            _selection.Add(newFig);
+            CreateFigureRequest = null;
+            OnSelectedFigureChanged();
         }
 
         /// <summary>
@@ -669,8 +672,9 @@ namespace SimpleEditor.Controllers
                         {
                             var polygone = fig.Geometry as PolygoneGeometry;
                             //get transformed points
+                            if (polygone == null) continue;
                             var points = polygone.GetTransformedPoints(fig);
-                            for (int i = 0; i < points.Length; i++)
+                            for (var i = 0; i < points.Length; i++)
                                 Markers.Add(CreateVertexMarker(points[i], i, fig));
                         }
                     }
@@ -758,7 +762,8 @@ namespace SimpleEditor.Controllers
                     if (_selection.FindFigureAt(_layer, point, out fig))
                     {
                         if (EditorMode == EditorMode.Verticies &&
-                            _selection.Contains(fig) && _selection.IsHit(_layer, point))
+                            _selection.Contains(fig) && _selection.IsHit(_layer, point) && 
+                            modifierKeys.HasFlag(Keys.Control))
                             return CursorFactory.GetCursor(UserCursor.AddVertex);
                         return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }

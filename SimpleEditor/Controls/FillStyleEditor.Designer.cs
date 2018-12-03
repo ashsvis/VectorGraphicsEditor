@@ -48,7 +48,7 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(44, 4);
+            this.lbColor.Location = new System.Drawing.Point(35, 4);
             this.lbColor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbColor.Name = "lbColor";
             this.lbColor.Size = new System.Drawing.Size(39, 17);
@@ -64,7 +64,7 @@
             this.Controls.Add(this.cbVisible);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
-            this.Size = new System.Drawing.Size(87, 26);
+            this.Size = new System.Drawing.Size(85, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 
