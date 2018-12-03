@@ -67,6 +67,18 @@
     </Compile>
     <Compile Include="Controls\Helper.cs" />
     <Compile Include="Controls\IEditor.cs" />
+    <Compile Include="Controls\IsClosedEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\IsClosedEditor.Designer.cs">
+      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TextDialog.Designer.cs">
+      <DependentUpon>TextDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,6 +101,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FillStyleEditor.resx">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\IsClosedEditor.resx">
+      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextDialog.resx">
+      <DependentUpon>TextDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextStyleEditor.resx">
       <DependentUpon>TextStyleEditor.cs</DependentUpon>
@@ -367,6 +385,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\romb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular81.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

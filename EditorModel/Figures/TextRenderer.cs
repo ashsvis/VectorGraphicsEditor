@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using EditorModel.Common;
 
 namespace EditorModel.Figures
 {
@@ -24,11 +25,18 @@ namespace EditorModel.Figures
         /// </summary>
         public float FontSize { get; set; }
 
+        /// <summary>
+        /// Выравнивание текста
+        /// </summary>
+        public ContentAlignment TextAlign { get; set; }
+
+
         public TextRenderer(string text)
         {
             Text = text;
             FontName = "Arial";
             FontSize = 14f;
+            TextAlign = ContentAlignment.MiddleCenter;
         }
 
         /// <summary>
@@ -42,25 +50,16 @@ namespace EditorModel.Figures
             using (var path = figure.GetTransformedPath().Path)
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
-                sf.Alignment = StringAlignment.Center;
-                sf.LineAlignment = StringAlignment.Center;
+                AlignHelper.UpdateStringFormat(sf, TextAlign);
                 var bounds = path.GetBounds();
-                path.Reset();
-                // добавляем в путь текстовую строку
-                path.AddString(Text ?? "",
-                    new FontFamily(FontName), 0, FontSize, bounds, sf);
-                
-                // если разрешено использование заливки
-                if (figure.Style.FillStyle.IsVisible)
-                    // то получаем кисть из стиля рисования фигуры
-                    using (var brush = figure.Style.FillStyle.GetBrush(figure))
-                        graphics.FillPath(brush, path);
-                // если разрешено рисование контура
-                if (figure.Style.BorderStyle.IsVisible)
-                    // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = figure.Style.BorderStyle.GetPen(figure))
-                        graphics.DrawPath(pen, path);
-                path.Transform(figure.Transform);
+                if (!figure.Style.FillStyle.IsVisible) return;
+                var rendered = figure.Renderer as TextRenderer;
+                if (rendered == null) return;
+                using (var font = new Font(rendered.FontName, rendered.FontSize))
+                using (var brush = figure.Style.FillStyle.GetBrush(figure))
+                {
+                    graphics.DrawString(rendered.Text, font, brush, bounds, sf);
+                }
             }
         }
     }

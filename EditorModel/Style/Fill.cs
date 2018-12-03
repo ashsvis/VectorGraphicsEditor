@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 
 namespace EditorModel.Style
@@ -36,11 +37,39 @@ namespace EditorModel.Style
         /// </summary>
         /// <param name="figure">Ссылка на фигуру</param>
         /// <returns>Возвращаем настроенную кисть</returns>
-        public Brush GetBrush(Figure figure)
+        public virtual Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры
             return new SolidBrush(Color);
         }
     }
+
+    #region На согласовании
+
+    [Serializable]
+    public class GradientFill : Fill
+    {
+        public GradientFill()
+        {
+            GradientColor = Color.Gray;
+            Mode = LinearGradientMode.Vertical;
+        }
+
+        /// <summary>
+        /// Второй цвет для заполнения фона (цвет градиента)
+        /// </summary>
+        public Color GradientColor { get; set; }
+
+        public LinearGradientMode Mode { get; set; }
+
+        public override Brush GetBrush(Figure figure)
+        {
+            // возвращаем созданную и настроенную кисть для фигуры
+            return new LinearGradientBrush(figure.GetTransformedPath().Path.GetBounds(), Color, GradientColor, Mode);
+        }
+
+    }
+
+    #endregion На согласовании
 
 }

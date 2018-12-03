@@ -7,8 +7,8 @@ namespace SimpleEditor.Controls
 {
     public partial class FillStyleEditor : UserControl, IEditor<Selection>
     {
-        private Selection selection;
-        private int updating;
+        private Selection _selection;
+        private int _updating;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -25,29 +25,29 @@ namespace SimpleEditor.Controls
             if (!Visible) return; // do not build anything
 
             // remember editing object
-            this.selection = selection;
+            _selection = selection;
 
             // get list of objects
             var fillStyles = selection.Select(f => f.Style.FillStyle).ToList();
 
             // copy properties of object to GUI
-            updating++;
+            _updating++;
 
             lbColor.BackColor = fillStyles.GetProperty(f => f.Color);
             cbVisible.Checked = fillStyles.GetProperty(f => f.IsVisible);
 
-            updating--;
+            _updating--;
         }
 
         private void UpdateObject()
         {
-            if (updating > 0) return; // we are in updating mode
+            if (_updating > 0) return; // we are in updating mode
 
             // fire event
             StartChanging(this, new ChangingEventArgs("Fill Style"));
 
             // get list of objects
-            var fillStyles = selection.Select(f => f.Style.FillStyle).ToList();
+            var fillStyles = _selection.Select(f => f.Style.FillStyle).ToList();
 
             // send values back from GUI to object
             fillStyles.SetProperty(f => f.Color = lbColor.BackColor);
@@ -59,12 +59,13 @@ namespace SimpleEditor.Controls
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
+            lbColor.Enabled = cbVisible.Checked;
             UpdateObject();
         }
 
         private void lbColor_Click(object sender, EventArgs e)
         {
-            var dlg = new ColorDialog() {Color = lbColor.BackColor};
+            var dlg = new ColorDialog {Color = lbColor.BackColor};
             if (dlg.ShowDialog() == DialogResult.OK)
                 lbColor.BackColor = dlg.Color;
         }

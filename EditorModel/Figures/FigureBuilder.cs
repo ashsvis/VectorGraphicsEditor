@@ -83,6 +83,7 @@ namespace EditorModel.Figures
         public void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text };
+            figure.Style.BorderStyle.IsVisible = false; // рамка по умолчанию выключена
         }
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace EditorModel.Figures
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
                 (AllowedOperations.Skew | AllowedOperations.Rotate | AllowedOperations.Vertex));
+            figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle.Color = Color.Black;
             figure.Renderer = new TextRenderer(text);
         }
@@ -116,9 +118,10 @@ namespace EditorModel.Figures
         /// <param name="vertexCount">Количество вершин</param>
         public void BuildRegularGeometry(Figure figure, int vertexCount)
         {
-            if (vertexCount < 3) throw new ArgumentOutOfRangeException("vertexCount", "Количество вершин должно быть три и более.");
+            if (vertexCount < 3) throw new ArgumentOutOfRangeException("vertexCount", 
+                "Количество вершин должно быть три и более.");
 
-            var radius = 0.5f;
+            const float radius = 0.5f;
             var points = new List<PointF>();
             var stepAngle = Math.PI * 2 / vertexCount;
             var angle = - Math.PI * 2;
@@ -131,7 +134,8 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddPolygon(points.ToArray());
 
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
+                (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew));
         }
 
         /// <summary>

@@ -11,12 +11,12 @@ namespace EditorModel.Style
         /// <summary>
         /// Свойство для хранения данных для карандаша
         /// </summary>
-        public Border BorderStyle { get; private set; }
+        public Border BorderStyle { get; set; }
 
         /// <summary>
         /// Свойство для хранения данных кисти
         /// </summary>
-        public Fill FillStyle { get; private set; }
+        public Fill FillStyle { get; set; }
 
         /// <summary>
         /// Конструктор стилей, для задания свойств по умолчанию
@@ -24,7 +24,9 @@ namespace EditorModel.Style
         public Style()
         {
             BorderStyle = new Border();
+
             FillStyle = new Fill();
+            //FillStyle = new GradientFill();
         }
     }
 }

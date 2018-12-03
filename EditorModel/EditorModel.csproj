@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AlignHelper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Figures\FigureGroup.cs" />
     <Compile Include="Figures\TextRenderer.cs" />
