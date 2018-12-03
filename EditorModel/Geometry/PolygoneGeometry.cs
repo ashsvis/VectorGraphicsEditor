@@ -1,7 +1,6 @@
 ﻿using EditorModel.Common;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 
 namespace EditorModel.Geometry
@@ -34,6 +33,8 @@ namespace EditorModel.Geometry
             set { _isClosed = value; }
         }
 
+        public bool IsSmoothed { get; set; }
+
         /// <summary>
         /// Точки контура фигуры
         /// </summary>
@@ -46,7 +47,7 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Get Transformed Points
         /// </summary>
-        /// <param name="transform"></param>
+        /// <param name="owner"></param>
         /// <returns></returns>
         public PointF[] GetTransformedPoints(Figure owner)
         {
@@ -58,7 +59,7 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Set Transformed Points
         /// </summary>
-        /// <param name="transform"></param>
+        /// <param name="owner"></param>
         /// <param name="points"></param>
         public void SetTransformedPoints(Figure owner, PointF[] points)
         {
@@ -104,9 +105,19 @@ namespace EditorModel.Geometry
                 _path.Path.Reset();
                 // добавляем в путь построенный по точкам единичного прямоугольника полигон
                 if (IsClosed)
-                    _path.Path.AddPolygon(_points);
+                {
+                    if (IsSmoothed)
+                        _path.Path.AddClosedCurve(_points);
+                    else
+                        _path.Path.AddPolygon(_points);
+                }
                 else
-                    _path.Path.AddLines(_points);
+                {
+                    if (IsSmoothed)
+                        _path.Path.AddCurve(_points);
+                    else
+                        _path.Path.AddLines(_points);
+                }
                 // возвращаем настроенный путь
                 return _path;
             }
