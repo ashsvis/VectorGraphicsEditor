@@ -123,8 +123,7 @@ namespace SimpleEditor.Controllers
                     _editorMode == EditorMode.Verticies)
                 {
                     // то строим маркеры
-                    BuildMarkers();
-                    UpdateMarkerPositions();                    
+                    UpdateMarekrs();                    
                 }
                 OnEditorModeChanged(EditorMode);
             }
@@ -210,8 +209,7 @@ namespace SimpleEditor.Controllers
                         }
                     }
                     //строим маркеры
-                    BuildMarkers();
-                    UpdateMarkerPositions();
+                    UpdateMarekrs();
                     // что-то выбрано, тогда "тянем"
                     if (_selection.Count > 0)
                         EditorMode = EditorMode.Drag;
@@ -248,8 +246,7 @@ namespace SimpleEditor.Controllers
                                                 ((VertexMarker) _movedMarker).Index);
                         OnLayerChanged();
                         //строим маркеры
-                        BuildMarkers();
-                        UpdateMarkerPositions();
+                        UpdateMarekrs();
                         OnSelectedFigureChanged();
                     }
                 }
@@ -382,8 +379,7 @@ namespace SimpleEditor.Controllers
             }
 
             //строим маркеры
-            BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarekrs();
 
             // возврат в текущий режим
             EditorMode = _lastMode;
@@ -402,8 +398,7 @@ namespace SimpleEditor.Controllers
             OnLayerChanged();
 
             //строим маркеры
-            BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarekrs();
         }
 
         /// <summary>
@@ -417,8 +412,7 @@ namespace SimpleEditor.Controllers
             OnLayerChanged();
 
             //строим маркеры
-            BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarekrs();
         }
 
         /// <summary>
@@ -432,8 +426,7 @@ namespace SimpleEditor.Controllers
             OnLayerChanged();
 
             //строим маркеры
-            BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarekrs();
         }
 
         /// <summary>
@@ -447,8 +440,7 @@ namespace SimpleEditor.Controllers
             OnLayerChanged();
 
             //строим маркеры
-            BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarekrs();
         }
 
         /// <summary>
@@ -462,8 +454,14 @@ namespace SimpleEditor.Controllers
             OnLayerChanged();
 
             //строим маркеры
+            UpdateMarekrs();
+        }
+
+        public void UpdateMarekrs()
+        {
+            //строим маркеры
             BuildMarkers();
-            UpdateMarkerPositions();
+            UpdateMarkerPositions();            
         }
 
         /// <summary>

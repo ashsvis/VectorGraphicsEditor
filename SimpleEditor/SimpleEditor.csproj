@@ -73,6 +73,12 @@
     <Compile Include="Controls\IsClosedEditor.Designer.cs">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LineGradientFillStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
+      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\IsClosedEditor.resx">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
+      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>

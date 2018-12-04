@@ -143,7 +143,7 @@ namespace SimpleEditor.Controls
                 e.Graphics.FillRectangle(brush, rect);
             using (var sf = new StringFormat())
             {
-                AlignHelper.UpdateStringFormat(sf, lbText.TextAlign);
+                EditorModel.Common.Helper.UpdateStringFormat(sf, lbText.TextAlign);
                 e.Graphics.DrawString(text, lbText.Font, Brushes.Black, rect, sf);
             }
         }

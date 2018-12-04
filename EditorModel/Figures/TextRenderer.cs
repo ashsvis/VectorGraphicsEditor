@@ -50,7 +50,7 @@ namespace EditorModel.Figures
             using (var path = figure.GetTransformedPath().Path)
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
-                AlignHelper.UpdateStringFormat(sf, TextAlign);
+                Helper.UpdateStringFormat(sf, TextAlign);
                 var bounds = path.GetBounds();
                 if (!figure.Style.FillStyle.IsVisible) return;
                 var rendered = figure.Renderer as TextRenderer;

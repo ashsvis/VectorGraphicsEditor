@@ -47,12 +47,12 @@ namespace EditorModel.Style
     #region На согласовании
 
     [Serializable]
-    public class GradientFill : Fill
+    public class LineGradientFill : Fill
     {
-        public GradientFill()
+        public LineGradientFill()
         {
-            GradientColor = Color.Gray;
-            Mode = LinearGradientMode.Vertical;
+            GradientColor = Color.White;
+            Angle = 0;
         }
 
         /// <summary>
@@ -60,12 +60,14 @@ namespace EditorModel.Style
         /// </summary>
         public Color GradientColor { get; set; }
 
-        public LinearGradientMode Mode { get; set; }
+        public float Angle { get; set; }
 
         public override Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры
-            return new LinearGradientBrush(figure.GetTransformedPath().Path.GetBounds(), Color, GradientColor, Mode);
+            var bounds = figure.GetTransformedPath().Path.GetBounds();
+            var angle = /* figure.Transform.Angle + */ Angle;
+            return new LinearGradientBrush(bounds, Color, GradientColor, angle);
         }
 
     }
