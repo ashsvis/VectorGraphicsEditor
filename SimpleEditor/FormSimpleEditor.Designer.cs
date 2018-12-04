@@ -92,15 +92,18 @@
             this.tsmUngroup = new System.Windows.Forms.ToolStripMenuItem();
             this.tsFigures = new System.Windows.Forms.ToolStrip();
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
-            this.tsbText = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripButton();
             this.tsbPolygon = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRect = new System.Windows.Forms.ToolStripButton();
             this.tsbSquare = new System.Windows.Forms.ToolStripButton();
             this.tsbEllipse = new System.Windows.Forms.ToolStripButton();
             this.tsbCircle = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRegular4 = new System.Windows.Forms.ToolStripButton();
             this.tsbRegular8 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbText = new System.Windows.Forms.ToolStripButton();
             this.toolStripFile = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
@@ -222,18 +225,19 @@
             // panelForScroll
             // 
             this.panelForScroll.AutoScroll = true;
+            this.panelForScroll.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panelForScroll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelForScroll.Controls.Add(this.pbCanvas);
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelForScroll.Location = new System.Drawing.Point(0, 72);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(909, 432);
+            this.panelForScroll.Size = new System.Drawing.Size(918, 321);
             this.panelForScroll.TabIndex = 7;
             this.panelForScroll.SizeChanged += new System.EventHandler(this.panelForScroll_SizeChanged);
             // 
             // pbCanvas
             // 
-            this.pbCanvas.BackColor = System.Drawing.Color.White;
+            this.pbCanvas.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pbCanvas.ContextMenuStrip = this.cmsCanvasPopup;
             this.pbCanvas.Location = new System.Drawing.Point(0, 0);
             this.pbCanvas.Name = "pbCanvas";
@@ -409,7 +413,7 @@
             this.tsmEditMenu});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(932, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(941, 24);
             this.menuStripMain.TabIndex = 0;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -720,22 +724,26 @@
             // tsFigures
             // 
             this.tsFigures.Dock = System.Windows.Forms.DockStyle.None;
+            this.tsFigures.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsFigures.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbArrow,
-            this.tsbText,
             this.tsbPolyline,
             this.tsbPolygon,
+            this.toolStripSeparator8,
             this.tsbRect,
             this.tsbSquare,
             this.tsbEllipse,
             this.tsbCircle,
+            this.toolStripSeparator17,
             this.tsbRegular4,
-            this.tsbRegular8});
-            this.tsFigures.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
-            this.tsFigures.Location = new System.Drawing.Point(0, 3);
+            this.tsbRegular8,
+            this.toolStripSeparator18,
+            this.tsbText});
+            this.tsFigures.Location = new System.Drawing.Point(0, 0);
             this.tsFigures.Name = "tsFigures";
             this.tsFigures.Padding = new System.Windows.Forms.Padding(0);
-            this.tsFigures.Size = new System.Drawing.Size(23, 241);
+            this.tsFigures.Size = new System.Drawing.Size(23, 393);
+            this.tsFigures.Stretch = true;
             this.tsFigures.TabIndex = 8;
             // 
             // tsbArrow
@@ -750,16 +758,6 @@
             this.tsbArrow.Size = new System.Drawing.Size(22, 20);
             this.tsbArrow.Text = "Выбор фигур";
             this.tsbArrow.Click += new System.EventHandler(this.tsbArrow_Click);
-            // 
-            // tsbText
-            // 
-            this.tsbText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbText.Image = global::SimpleEditor.Properties.Resources.text;
-            this.tsbText.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbText.Name = "tsbText";
-            this.tsbText.Size = new System.Drawing.Size(22, 20);
-            this.tsbText.Text = "Текст";
-            this.tsbText.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
             // tsbPolyline
             // 
@@ -782,6 +780,11 @@
             this.tsbPolygon.Text = "Полигон";
             this.tsbPolygon.ToolTipText = "Полигон";
             this.tsbPolygon.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(22, 6);
             // 
             // tsbRect
             // 
@@ -823,6 +826,11 @@
             this.tsbCircle.Text = "Круг";
             this.tsbCircle.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
+            // toolStripSeparator17
+            // 
+            this.toolStripSeparator17.Name = "toolStripSeparator17";
+            this.toolStripSeparator17.Size = new System.Drawing.Size(22, 6);
+            // 
             // tsbRegular4
             // 
             this.tsbRegular4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -843,9 +851,25 @@
             this.tsbRegular8.Text = "Regular 8";
             this.tsbRegular8.Click += new System.EventHandler(this.tsbArrow_Click);
             // 
+            // toolStripSeparator18
+            // 
+            this.toolStripSeparator18.Name = "toolStripSeparator18";
+            this.toolStripSeparator18.Size = new System.Drawing.Size(22, 6);
+            // 
+            // tsbText
+            // 
+            this.tsbText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbText.Image = global::SimpleEditor.Properties.Resources.text;
+            this.tsbText.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbText.Name = "tsbText";
+            this.tsbText.Size = new System.Drawing.Size(22, 20);
+            this.tsbText.Text = "Текст";
+            this.tsbText.Click += new System.EventHandler(this.tsbArrow_Click);
+            // 
             // toolStripFile
             // 
             this.toolStripFile.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripFile.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbNew,
             this.tsbOpen,
@@ -863,7 +887,7 @@
             this.toolStripFile.Location = new System.Drawing.Point(3, 24);
             this.toolStripFile.Name = "toolStripFile";
             this.toolStripFile.Padding = new System.Windows.Forms.Padding(0);
-            this.toolStripFile.Size = new System.Drawing.Size(259, 25);
+            this.toolStripFile.Size = new System.Drawing.Size(250, 25);
             this.toolStripFile.TabIndex = 1;
             // 
             // tsbNew
@@ -1186,7 +1210,7 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelForScroll);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.pnTools);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(909, 504);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(918, 393);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer1.LeftToolStripPanel
@@ -1194,7 +1218,8 @@
             this.toolStripContainer1.LeftToolStripPanel.Controls.Add(this.tsFigures);
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(932, 600);
+            this.toolStripContainer1.RightToolStripPanelVisible = false;
+            this.toolStripContainer1.Size = new System.Drawing.Size(941, 489);
             this.toolStripContainer1.TabIndex = 5;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -1212,7 +1237,7 @@
             this.tsslRibbonRect});
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(932, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(941, 22);
             this.statusStrip1.TabIndex = 0;
             // 
             // tsslEditorMode
@@ -1239,7 +1264,7 @@
             this.pnTools.Location = new System.Drawing.Point(0, 0);
             this.pnTools.MinimumSize = new System.Drawing.Size(0, 45);
             this.pnTools.Name = "pnTools";
-            this.pnTools.Size = new System.Drawing.Size(909, 72);
+            this.pnTools.Size = new System.Drawing.Size(918, 72);
             this.pnTools.TabIndex = 7;
             // 
             // pnFillStyle
@@ -1298,6 +1323,7 @@
             // tsArrange
             // 
             this.tsArrange.Dock = System.Windows.Forms.DockStyle.None;
+            this.tsArrange.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsArrange.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsddbGeometySwitcher,
             this.toolStripSeparator5,
@@ -1327,7 +1353,7 @@
             this.tsbLock});
             this.tsArrange.Location = new System.Drawing.Point(3, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(646, 25);
+            this.tsArrange.Size = new System.Drawing.Size(606, 25);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1355,21 +1381,21 @@
             // tsmiCyrcle
             // 
             this.tsmiCyrcle.Name = "tsmiCyrcle";
-            this.tsmiCyrcle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiCyrcle.Size = new System.Drawing.Size(159, 22);
             this.tsmiCyrcle.Text = "Cyrcle";
             this.tsmiCyrcle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRectangle
             // 
             this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRectangle.Size = new System.Drawing.Size(159, 22);
             this.tsmiRectangle.Text = "Rectangle";
             this.tsmiRectangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRegularTriangle
             // 
             this.tsmiRegularTriangle.Name = "tsmiRegularTriangle";
-            this.tsmiRegularTriangle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegularTriangle.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegularTriangle.Tag = "3";
             this.tsmiRegularTriangle.Text = "Regular Triangle";
             this.tsmiRegularTriangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1377,14 +1403,14 @@
             // tsmiSquare
             // 
             this.tsmiSquare.Name = "tsmiSquare";
-            this.tsmiSquare.Size = new System.Drawing.Size(160, 22);
+            this.tsmiSquare.Size = new System.Drawing.Size(159, 22);
             this.tsmiSquare.Text = "Square";
             this.tsmiSquare.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRomb
             // 
             this.tsmiRomb.Name = "tsmiRomb";
-            this.tsmiRomb.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRomb.Size = new System.Drawing.Size(159, 22);
             this.tsmiRomb.Tag = "4";
             this.tsmiRomb.Text = "Romb";
             this.tsmiRomb.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1392,7 +1418,7 @@
             // tsmiRegular5gon
             // 
             this.tsmiRegular5gon.Name = "tsmiRegular5gon";
-            this.tsmiRegular5gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular5gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular5gon.Tag = "5";
             this.tsmiRegular5gon.Text = "Regular 5-gon";
             this.tsmiRegular5gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1400,7 +1426,7 @@
             // tsmiRegular6gon
             // 
             this.tsmiRegular6gon.Name = "tsmiRegular6gon";
-            this.tsmiRegular6gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular6gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular6gon.Tag = "6";
             this.tsmiRegular6gon.Text = "Regular 6-gon";
             this.tsmiRegular6gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1408,7 +1434,7 @@
             // tsmiRegular7gon
             // 
             this.tsmiRegular7gon.Name = "tsmiRegular7gon";
-            this.tsmiRegular7gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular7gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular7gon.Tag = "7";
             this.tsmiRegular7gon.Text = "Regular 7-gon";
             this.tsmiRegular7gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1416,7 +1442,7 @@
             // tsmiRegular8gon
             // 
             this.tsmiRegular8gon.Name = "tsmiRegular8gon";
-            this.tsmiRegular8gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular8gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular8gon.Tag = "8";
             this.tsmiRegular8gon.Text = "Regular 8-gon";
             this.tsmiRegular8gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1424,7 +1450,7 @@
             // tsmiRegular9gon
             // 
             this.tsmiRegular9gon.Name = "tsmiRegular9gon";
-            this.tsmiRegular9gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular9gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular9gon.Tag = "9";
             this.tsmiRegular9gon.Text = "Regular 9-gon";
             this.tsmiRegular9gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1432,7 +1458,7 @@
             // tsmiRegular10gon
             // 
             this.tsmiRegular10gon.Name = "tsmiRegular10gon";
-            this.tsmiRegular10gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular10gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular10gon.Tag = "10";
             this.tsmiRegular10gon.Text = "Regular 10-gon";
             this.tsmiRegular10gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1670,7 +1696,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(932, 600);
+            this.ClientSize = new System.Drawing.Size(941, 489);
             this.Controls.Add(this.toolStripContainer1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.KeyPreview = true;
@@ -1868,6 +1894,9 @@
         private System.Windows.Forms.ToolStripSplitButton tsddbFillBrushSwitcher;
         private System.Windows.Forms.ToolStripMenuItem tsmiSolidBrush;
         private System.Windows.Forms.ToolStripMenuItem tsmiLinearGradientBrush;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
     }
 }
 

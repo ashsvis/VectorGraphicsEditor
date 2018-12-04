@@ -60,6 +60,18 @@ namespace EditorModel.Figures
                 {
                     graphics.DrawString(rendered.Text, font, brush, bounds, sf);
                 }
+                //path.Reset();
+                //// добавляем в путь текстовую строку
+
+                //path.AddString(rendered.Text ?? "",
+                //    new FontFamily(FontName), 0, FontSize, PointF.Empty,
+                //                    StringFormat.GenericTypographic);
+                //path.Transform(figure.Transform);
+                //using (var brush = figure.Style.FillStyle.GetBrush(figure))
+                //{
+                //    graphics.FillPath(brush, path);
+                //}
+
             }
         }
     }

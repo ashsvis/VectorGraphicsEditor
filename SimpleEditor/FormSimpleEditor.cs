@@ -23,6 +23,7 @@ namespace SimpleEditor
         public FormSimpleEditor()
         {
             InitializeComponent();
+
             _layer = new Layer();
             _undoRedoController = new UndoRedoController(_layer);
 
@@ -136,18 +137,24 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            var bmp = new Bitmap(pbCanvas.Width, pbCanvas.Height);
+            using (var graphics = Graphics.FromImage(bmp))
+            {
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            // отрисовка созданных фигур
-            foreach (var fig in _layer.Figures)
-                fig.Renderer.Render(e.Graphics, fig);
-            // отрисовка выделения
-            _selectionController.Selection.Renderer.Render(e.Graphics,
-                                                           _selectionController.Selection);
-            // отрисовка маркеров
-            foreach (var marker in _selectionController.Markers)
-                marker.Renderer.Render(e.Graphics, marker);
+                graphics.Clear(Color.WhiteSmoke);
+                // отрисовка созданных фигур
+                foreach (var fig in _layer.Figures)
+                    fig.Renderer.Render(graphics, fig);
+                // отрисовка выделения
+                _selectionController.Selection.Renderer.Render(graphics,
+                                                               _selectionController.Selection);
+                // отрисовка маркеров
+                foreach (var marker in _selectionController.Markers)
+                    marker.Renderer.Render(graphics, marker);
+            }
+            e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
         /// <summary>
@@ -424,28 +431,28 @@ namespace SimpleEditor
             if (sender.Tag != null)
             {
                 var vertexCount = int.Parse(sender.Tag.ToString());
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Regular Geometry");
                 foreach (var figure in primitives)
                     builder.BuildRegularGeometry(figure, vertexCount);
                 OnLayerChanged();
             }
             else if (sender == tsmiCyrcle)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Cyrcle Geometry");
                 foreach (var figure in primitives)
                     builder.BuildCircleGeometry(figure);
                 OnLayerChanged();
             }
             else if (sender == tsmiRectangle)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Rectangle Geometry");
                 foreach (var figure in primitives)
                     builder.BuildRectangleGeometry(figure);
                 OnLayerChanged();
             }
             else if (sender == tsmiSquare)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Square Geometry");
                 foreach (var figure in primitives)
                     builder.BuildSquareGeometry(figure);
                 OnLayerChanged();
@@ -506,7 +513,7 @@ namespace SimpleEditor
             var figures = _selectionController.Selection.ToList();
             if (sender == tsmiSolidBrush)
             {
-                OnLayerStartChanging("Change Fill Brush");
+                OnLayerStartChanging("Change Solid Fill Brush");
                 foreach (var figure in figures)
                 {
                     var fillStyle = figure.Style.FillStyle.DeepClone();
@@ -517,7 +524,7 @@ namespace SimpleEditor
             }
             else if (sender == tsmiLinearGradientBrush)
             {
-                OnLayerStartChanging("Change Fill Brush");
+                OnLayerStartChanging("Change Line Gradient Fill Brush");
                 foreach (var figure in figures)
                 {
                     var fillStyle = figure.Style.FillStyle.DeepClone();

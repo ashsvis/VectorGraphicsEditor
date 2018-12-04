@@ -62,6 +62,7 @@
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Common\SerializableGraphicsMatrix.cs" />
     <Compile Include="Common\SerializableGraphicsPath.cs" />
+    <Compile Include="Style\LineGradientFill.cs" />
     <Compile Include="Style\Style.cs" />
     <Compile Include="Geometry\TextGeometry.cs" />
   </ItemGroup>
