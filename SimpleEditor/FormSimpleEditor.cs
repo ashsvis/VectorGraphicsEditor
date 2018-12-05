@@ -443,6 +443,13 @@ namespace SimpleEditor
                     builder.BuildCircleGeometry(figure);
                 OnLayerChanged();
             }
+            else if (sender == tsmiEllipse)
+            {
+                OnLayerStartChanging("Change to Ellipse Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildEllipseGeometry(figure);
+                OnLayerChanged();
+            }
             else if (sender == tsmiRectangle)
             {
                 OnLayerStartChanging("Change to Rectangle Geometry");
@@ -457,8 +464,8 @@ namespace SimpleEditor
                     builder.BuildSquareGeometry(figure);
                 OnLayerChanged();
             }
-            _selectionController.Clear();
-            UpdateInterface();
+            _selectionController.UpdateMarkers();
+            BuildInterface();
         }
 
         private void UpdateCanvasSize()
@@ -539,8 +546,8 @@ namespace SimpleEditor
                 }
                 OnLayerChanged();
             }
-            _selectionController.Clear();
-            UpdateInterface();
+            _selectionController.UpdateMarkers();
+            BuildInterface();
         }
     }
 }

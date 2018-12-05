@@ -459,6 +459,9 @@ namespace SimpleEditor.Controllers
 
         public void UpdateMarkers()
         {
+            var list = new List<Figure>(_selection);
+            _selection.Clear();
+            foreach (var figure in list) _selection.Add(figure);
             //строим маркеры
             BuildMarkers();
             UpdateMarkerPositions();            

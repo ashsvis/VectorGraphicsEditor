@@ -26,7 +26,7 @@ namespace SimpleEditor.Controls
                 while (ie.MoveNext())
                 {
                     var fontFamily = ie.Current.ToString();
-                    //[FontFamily: Name=Algerian]
+                    //вид возвращаемой строки: [FontFamily: Name=Algerian]
                     var fontName = fontFamily.Substring(18, fontFamily.Length - 19);
                     if (!string.IsNullOrWhiteSpace(fontName))
                         cbFontName.Items.Add(fontName);

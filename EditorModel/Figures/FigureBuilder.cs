@@ -95,8 +95,9 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
-                (AllowedOperations.Skew | AllowedOperations.Rotate | AllowedOperations.Vertex));
+                (AllowedOperations.Vertex | AllowedOperations.Skew));
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle.Color = Color.Black;
             figure.Renderer = new TextRenderer(text);
