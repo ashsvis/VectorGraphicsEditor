@@ -231,7 +231,7 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     //new FigureBuilder().BuildTextGeometry(fig, "Текст");
-                    new FigureBuilder().BuildTextRenderGeometry(fig, "Текст");
+                    new FigureBuilder().BuildTextRenderGeometry(fig, "Это длинный предлинный текст");
                     return fig;
                 };
             _selectionController.CreateFigureRequest = figureCreator;
