@@ -46,7 +46,8 @@
   <ItemGroup>
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
-    <Compile Include="Figures\FigureGroup.cs" />
+    <Compile Include="Figures\GroupFigure.cs" />
+    <Compile Include="Figures\GroupRenderer.cs" />
     <Compile Include="Figures\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />

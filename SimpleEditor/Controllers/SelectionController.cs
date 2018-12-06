@@ -840,7 +840,7 @@ namespace SimpleEditor.Controllers
         {
             if (_selection.Count == 0) return;
             LayerStartChanging();
-            foreach (var fig in _selection.OfType<FigureGroup>())
+            foreach (var fig in _selection.OfType<GroupFigure>())
                 _layer.Figures.Remove(fig);
             var list = _selection.Ungroup();
             _layer.Figures.AddRange(list);

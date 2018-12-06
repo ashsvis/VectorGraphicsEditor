@@ -23,7 +23,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство стиля рисования фигуры
         /// </summary>
-        public Style.Style Style { get; private set; }
+        public Style.Style Style { get; set; }
 
         /// <summary>
         /// Свойство рисовальщика фигуры

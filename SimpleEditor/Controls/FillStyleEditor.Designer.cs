@@ -35,7 +35,7 @@
             // cbVisible
             // 
             this.cbVisible.AutoSize = true;
-            this.cbVisible.Location = new System.Drawing.Point(2, 5);
+            this.cbVisible.Location = new System.Drawing.Point(2, 4);
             this.cbVisible.Margin = new System.Windows.Forms.Padding(2);
             this.cbVisible.Name = "cbVisible";
             this.cbVisible.Size = new System.Drawing.Size(38, 17);
@@ -48,7 +48,7 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(35, 5);
+            this.lbColor.Location = new System.Drawing.Point(35, 4);
             this.lbColor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbColor.Name = "lbColor";
             this.lbColor.Size = new System.Drawing.Size(39, 17);
@@ -60,11 +60,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.lbColor);
             this.Controls.Add(this.cbVisible);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
-            this.Size = new System.Drawing.Size(85, 26);
+            this.Size = new System.Drawing.Size(87, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 

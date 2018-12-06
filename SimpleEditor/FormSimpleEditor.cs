@@ -59,6 +59,14 @@ namespace SimpleEditor
         void BuildInterface()
         {
             //build tools
+
+            #region Предлагаю
+
+            foreach (var editor in pnTools.Controls.OfType <IEditor<LayerSelectionHelper>>()) //get editors of layer
+                editor.Build(new LayerSelectionHelper { Layer = _layer, Selection = _selectionController.Selection });
+
+            #endregion
+
             foreach (var editor in pnTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
                 editor.Build(_selectionController.Selection);
 
@@ -143,7 +151,19 @@ namespace SimpleEditor
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                graphics.Clear(Color.WhiteSmoke);
+                #region Предлагаю
+
+                if (_layer.FillStyle.IsVisible)
+                {
+                    using (var brush = _layer.FillStyle.GetBrush(null))
+                    {
+                        graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
+                    }  
+                }
+                //graphics.Clear(Color.WhiteSmoke);
+
+                #endregion
+
                 // отрисовка созданных фигур
                 foreach (var fig in _layer.Figures)
                     fig.Renderer.Render(graphics, fig);
@@ -231,7 +251,7 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     //new FigureBuilder().BuildTextGeometry(fig, "Текст");
-                    new FigureBuilder().BuildTextRenderGeometry(fig, "Это длинный предлинный текст");
+                    new FigureBuilder().BuildTextRenderGeometry(fig, "Текст");
                     return fig;
                 };
             _selectionController.CreateFigureRequest = figureCreator;
@@ -471,17 +491,16 @@ namespace SimpleEditor
         private void UpdateCanvasSize()
         {
             if (_layer == null) return;
-            var size = new SizeF();
+            var size = new Size();
             foreach (var figrect in _layer.Figures.Select(figure => 
                 figure.GetTransformedPath().Path.GetBounds()))
             {
-                if (size.Width < figrect.Right) size.Width = figrect.Right;
-                if (size.Height < figrect.Bottom) size.Height = figrect.Bottom;
+                if (size.Width < figrect.Right) size.Width = (int)figrect.Right;
+                if (size.Height < figrect.Bottom) size.Height = (int)figrect.Bottom;
             }
-            pbCanvas.Size = Size.Ceiling(size);
-            var panelSize = panelForScroll.ClientSize;
-            if (pbCanvas.Width < panelSize.Width) pbCanvas.Width = panelSize.Width;
-            if (pbCanvas.Height < panelSize.Height) pbCanvas.Height = panelSize.Height;
+            var pnlSize = panelForScroll.ClientSize;
+            pbCanvas.Size = new Size(size.Width < pnlSize.Width ? pnlSize.Width : size.Width,
+                                     size.Height < pnlSize.Height ? pnlSize.Height : size.Height);
         }
 
         private void panelForScroll_SizeChanged(object sender, EventArgs e)

@@ -17,6 +17,17 @@ namespace EditorModel.Common
             return (float)angleBetween;
         }
 
+        public static SizeF GetSize(Matrix matrix)
+        {
+            var x = new Vector(1, 0);
+            var y = new Vector(0, 1);
+            var matr = new System.Windows.Media.Matrix(matrix.Elements[0], matrix.Elements[1], matrix.Elements[2],
+                                                       matrix.Elements[3], matrix.Elements[4], matrix.Elements[5]);
+            var scaledX = Vector.Multiply(x, matr);
+            var scaledY = Vector.Multiply(y, matr);
+            return new SizeF((float)scaledX.Length, (float)scaledY.Length);
+        }
+
         /// <summary>
         /// Преобразование ContentAlignment в StringFormat.Alignment и StringFormat.LineAlignment
         /// </summary>
