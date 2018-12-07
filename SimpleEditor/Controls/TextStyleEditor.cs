@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing.Text;
 using EditorModel.Selections;
-using TextRenderer = EditorModel.Renders.TextRenderer;
+using TextRenderer = EditorModel.Renderers.TextRenderer;
 
 namespace SimpleEditor.Controls
 {

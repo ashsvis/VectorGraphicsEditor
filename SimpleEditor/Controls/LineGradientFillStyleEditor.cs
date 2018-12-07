@@ -24,14 +24,14 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f.Style.FillStyle is LineGradientFill); // show the editor only if all figures contain FillStyle
+            Visible = selection.ForAll(f => f.Style.FillStyle is LinearGradientFill); // show the editor only if all figures contain FillStyle
             if (!Visible) return; // do not build anything
 
             // remember editing object
             _selection = selection;
 
             // get list of objects
-            var fillStyles = selection.Select(f => f.Style.FillStyle as LineGradientFill).ToList();
+            var fillStyles = selection.Select(f => f.Style.FillStyle as LinearGradientFill).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -50,7 +50,7 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Line Gradient Fill Style"));
 
             // get list of objects
-            var fillStyles = _selection.Select(f => f.Style.FillStyle as LineGradientFill).ToList();
+            var fillStyles = _selection.Select(f => f.Style.FillStyle as LinearGradientFill).ToList();
 
             // send values back from GUI to object
             fillStyles.SetProperty(f => f.GradientColor = lbGradientColor.BackColor);

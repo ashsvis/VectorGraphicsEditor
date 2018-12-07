@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using EditorModel.Figures;
 
-namespace EditorModel.Renders
+namespace EditorModel.Renderers
 {
     /// <summary>
     /// Класс рисовальщика группы фигур

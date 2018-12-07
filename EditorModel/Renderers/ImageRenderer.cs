@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using EditorModel.Figures;
 
-namespace EditorModel.Renders
+namespace EditorModel.Renderers
 {
     /// <summary>
     /// Класс рисовальщика картинки

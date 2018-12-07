@@ -52,7 +52,6 @@ namespace UnitTestProjectForEditorModel
         public void SelectionTest2()
         {
             //создаем первую фигуру
-            var builder = new FigureBuilder();
             var fig1 = new Figure();
             fig1.Transform.Matrix.Translate(150, 150);
             fig1.Transform.Matrix.Scale(30, 30);
@@ -115,7 +114,6 @@ namespace UnitTestProjectForEditorModel
         public void SelectionFigureTestMethod()
         {
             //создаем первую фигуру
-            var builder = new FigureBuilder();
             var fig1 = new Figure();
             fig1.Transform.Matrix.Translate(50, 50);
             fig1.Transform.Matrix.Scale(100, 100);
@@ -166,7 +164,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void TextFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var textfigure = new Figure();
             textfigure.Transform.Matrix.Translate(10, 10);
             // настраиваем геометрию на текст
@@ -187,7 +184,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void PolygonFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var polygon = new Figure();
             polygon.Transform.Matrix.Translate(100, 50);
             polygon.Transform.Matrix.Scale(160, 80);
@@ -208,7 +204,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void SquareFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var square = new Figure();
             square.Transform.Matrix.Translate(100, 50);
             square.Transform.Matrix.Scale(80, 80); 
@@ -229,7 +224,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void RectangleFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var rect = new Figure();
             rect.Transform.Matrix.Translate(100, 50);
             rect.Transform.Matrix.Scale(160, 80);
@@ -250,7 +244,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void CircleFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var circle = new Figure();
             circle.Transform.Matrix.Translate(100, 50);
             circle.Transform.Matrix.Scale(80, 80);
@@ -271,7 +264,6 @@ namespace UnitTestProjectForEditorModel
         [TestMethod]
         public void EllipseFigureTestMethod()
         {
-            var builder = new FigureBuilder();
             var oval = new Figure();
             oval.Transform.Matrix.Translate(100, 50);
             oval.Transform.Matrix.Scale(160, 80);

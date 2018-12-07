@@ -15,10 +15,12 @@ namespace EditorModel.Figures
         public List<Figure> Figures 
         {   
             get { return _figures; }
-            set { _figures.Clear(); _figures.AddRange(value); }
+            set
+            {
+                _figures.Clear();
+                _figures.AddRange(value);
+            }
         }
-
-        #region Предлагаю:
 
         /// <summary>
         /// Свойство для хранения данных кисти
@@ -29,8 +31,6 @@ namespace EditorModel.Figures
         {
             FillStyle = new Fill { IsVisible = false };
         }
-
-        #endregion
 
     }
 }

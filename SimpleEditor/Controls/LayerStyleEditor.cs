@@ -4,7 +4,7 @@ using EditorModel.Figures;
 
 namespace SimpleEditor.Controls
 {
-    public partial class LayerStyleEditor : UserControl, IEditor<LayerSelectionHelper>
+    public partial class LayerStyleEditor : UserControl, IEditor<LayerSelectionInfo>
     {
         private Layer _layer;
         private int _updating;
@@ -17,7 +17,7 @@ namespace SimpleEditor.Controls
             InitializeComponent();
         }
 
-        public void Build(LayerSelectionHelper item)
+        public void Build(LayerSelectionInfo item)
         {
             // check visibility
             Visible = item.Selection.Count == 0 && item.Layer.FillStyle != null;

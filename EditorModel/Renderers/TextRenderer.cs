@@ -3,7 +3,7 @@ using System.Drawing;
 using EditorModel.Common;
 using EditorModel.Figures;
 
-namespace EditorModel.Renders
+namespace EditorModel.Renderers
 {
     /// <summary>
     /// Класс рисовальщика текстового блока

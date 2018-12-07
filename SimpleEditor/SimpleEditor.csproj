@@ -79,7 +79,7 @@
     <Compile Include="Controls\IsClosedEditor.Designer.cs">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LayerSelectionHelper.cs" />
+    <Compile Include="Controls\LayerSelectionInfo.cs" />
     <Compile Include="Controls\LayerStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

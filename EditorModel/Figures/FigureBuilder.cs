@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using EditorModel.Common;
 using System.Drawing;
 using EditorModel.Geometry;
-using EditorModel.Renders;
+using EditorModel.Renderers;
 
 namespace EditorModel.Figures
 {

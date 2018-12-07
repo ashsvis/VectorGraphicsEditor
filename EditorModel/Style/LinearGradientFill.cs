@@ -7,9 +7,9 @@ using EditorModel.Figures;
 namespace EditorModel.Style
 {
     [Serializable]
-    public class LineGradientFill : Fill
+    public class LinearGradientFill : Fill
     {
-        public LineGradientFill()
+        public LinearGradientFill()
         {
             GradientColor = Color.White;
             Angle = 0;

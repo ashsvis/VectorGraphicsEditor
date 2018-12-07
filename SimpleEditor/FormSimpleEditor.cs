@@ -6,7 +6,7 @@ using System.Linq;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using EditorModel.Geometry;
-using EditorModel.Renders;
+using EditorModel.Renderers;
 using EditorModel.Selections;
 using EditorModel.Style;
 using SimpleEditor.Common;
@@ -60,13 +60,8 @@ namespace SimpleEditor
         void BuildInterface()
         {
             //build tools
-
-            #region Предлагаю
-
-            foreach (var editor in pnTools.Controls.OfType <IEditor<LayerSelectionHelper>>()) //get editors of layer
-                editor.Build(new LayerSelectionHelper { Layer = _layer, Selection = _selectionController.Selection });
-
-            #endregion
+            foreach (var editor in pnTools.Controls.OfType <IEditor<LayerSelectionInfo>>()) //get editors of layer
+                editor.Build(new LayerSelectionInfo { Layer = _layer, Selection = _selectionController.Selection });
 
             foreach (var editor in pnTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
                 editor.Build(_selectionController.Selection);
@@ -194,13 +189,6 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildPolylineGeometry(fig);
-                    return fig;
-                };
-            else if (tsbPolygon.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    FigureBuilder.BuildPolygoneGeometry(fig);
                     return fig;
                 };
             else if (tsbRect.Checked)
@@ -561,8 +549,8 @@ namespace SimpleEditor
                 foreach (var figure in figures)
                 {
                     var fillStyle = figure.Style.FillStyle.DeepClone();
-                    if (fillStyle.GetType() != typeof(LineGradientFill))
-                    figure.Style.FillStyle = new LineGradientFill
+                    if (fillStyle.GetType() != typeof(LinearGradientFill))
+                    figure.Style.FillStyle = new LinearGradientFill
                         {
                             Color = fillStyle.Color, 
                             IsVisible = fillStyle.IsVisible,

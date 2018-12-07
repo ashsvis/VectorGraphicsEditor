@@ -7,7 +7,7 @@ using System.Linq;
 using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Geometry;
-using EditorModel.Renders;
+using EditorModel.Renderers;
 
 namespace EditorModel.Selections
 {

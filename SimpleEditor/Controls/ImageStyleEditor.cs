@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using EditorModel.Renders;
+using EditorModel.Renderers;
 using EditorModel.Selections;
 
 namespace SimpleEditor.Controls

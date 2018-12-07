@@ -3,7 +3,7 @@ using System.Drawing;
 using EditorModel.Figures;
 using EditorModel.Geometry;
 
-namespace EditorModel.Renders
+namespace EditorModel.Renderers
 {
     /// <summary>
     /// Класс рисовальщика фигуры с тенью
