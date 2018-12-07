@@ -28,7 +28,8 @@ namespace EditorModel.Style
             var bounds = figure.GetTransformedPath().Path.GetBounds();
             var matrixAngle = Helper.GetAngle(figure.Transform);
             var angle = matrixAngle + Angle;
-            return new LinearGradientBrush(bounds, Color, GradientColor, angle);
+            Angle = Helper.GetAngle(figure.Transform);
+            return new LinearGradientBrush(bounds, Color, GradientColor, Angle);
         }
 
     }
