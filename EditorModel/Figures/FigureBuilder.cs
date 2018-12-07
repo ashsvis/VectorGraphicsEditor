@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EditorModel.Common;
 using System.Drawing;
 using EditorModel.Geometry;
+using EditorModel.Renders;
 
 namespace EditorModel.Figures
 {
@@ -19,7 +20,7 @@ namespace EditorModel.Figures
         /// Построение пути для квадрата
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        public void BuildSquareGeometry(Figure figure)
+        public static void BuildSquareGeometry(Figure figure)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
@@ -31,7 +32,7 @@ namespace EditorModel.Figures
         /// Построение пути для прямоугольника
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        public void BuildRectangleGeometry(Figure figure)
+        public static void BuildRectangleGeometry(Figure figure)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
@@ -42,7 +43,7 @@ namespace EditorModel.Figures
         /// Построение пути для круга
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        public void BuildCircleGeometry(Figure figure)
+        public static void BuildCircleGeometry(Figure figure)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
@@ -54,7 +55,7 @@ namespace EditorModel.Figures
         /// Построение пути для эллипса
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
-        public void BuildEllipseGeometry(Figure figure)
+        public static void BuildEllipseGeometry(Figure figure)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
@@ -65,7 +66,7 @@ namespace EditorModel.Figures
         /// Построение пути для маркера
         /// </summary>
         /// <param name="marker"></param>
-        public void BuildMarkerGeometry(Figure marker)
+        public static void BuildMarkerGeometry(Figure marker)
         {
             var path = new SerializableGraphicsPath();
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
@@ -80,7 +81,7 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
         /// <param name="text">Текстовая строка</param>
-        public void BuildTextGeometry(Figure figure, string text)
+        public static void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text };
             figure.Style.BorderStyle.IsVisible = false; // рамка по умолчанию выключена
@@ -91,7 +92,7 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>
         /// <param name="text">Текстовая строка</param>
-        public void BuildTextRenderGeometry(Figure figure, string text)
+        public static void BuildTextRenderGeometry(Figure figure, string text)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
@@ -103,11 +104,24 @@ namespace EditorModel.Figures
             figure.Renderer = new TextRenderer(text);
         }
 
+        public static void BuildImageRenderGeometry(Figure figure, Image image)
+        {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
+                (AllowedOperations.Vertex | AllowedOperations.Skew));
+            figure.Style.BorderStyle = null; // отключение рамки для рендера
+            figure.Style.FillStyle = null; // отключение заливки для рендера
+            figure.Renderer = new ImageRenderer(image);
+      
+        }
+
         /// <summary>
         /// Подключаем к фигуре геометрию полигона
         /// </summary>
         /// <param name="figure"></param>
-        public void BuildPolygoneGeometry(Figure figure)
+        public static void BuildPolygoneGeometry(Figure figure)
         {
             figure.Geometry = new PolygoneGeometry();
         }
@@ -117,7 +131,7 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="figure"></param>
         /// <param name="vertexCount">Количество вершин</param>
-        public void BuildRegularGeometry(Figure figure, int vertexCount)
+        public static void BuildRegularGeometry(Figure figure, int vertexCount)
         {
             if (vertexCount < 3) throw new ArgumentOutOfRangeException("vertexCount", 
                 "Количество вершин должно быть три и более.");
@@ -143,7 +157,7 @@ namespace EditorModel.Figures
         /// Подключаем к фигуре геометрию ломаной линии
         /// </summary>
         /// <param name="figure"></param>
-        public void BuildPolylineGeometry(Figure figure)
+        public static void BuildPolylineGeometry(Figure figure)
         {
             figure.Geometry = new PolygoneGeometry(isClosed: false);
         }
@@ -153,7 +167,7 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="figure"></param>
         /// <param name="startPoint"></param>
-        public void BuildFrameGeometry(Figure figure, Point startPoint)
+        public static void BuildFrameGeometry(Figure figure, Point startPoint)
         {
             figure.Geometry = new FrameGeometry(startPoint);
         }

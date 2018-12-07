@@ -3,8 +3,8 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing.Text;
-using EditorModel.Common;
 using EditorModel.Selections;
+using TextRenderer = EditorModel.Renders.TextRenderer;
 
 namespace SimpleEditor.Controls
 {
@@ -37,14 +37,14 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f.Renderer as EditorModel.Figures.TextRenderer != null); // show the editor only if all figures contain BorderStyle
+            Visible = selection.ForAll(f => f.Renderer as TextRenderer != null); // show the editor only if all figures contain BorderStyle
             if (!Visible) return; // do not build anything
 
             // remember editing object
             _selection = selection;
 
             // get list of objects
-            var fontStyles = selection.Select(f => f.Renderer as EditorModel.Figures.TextRenderer).ToList();
+            var fontStyles = selection.Select(f => f.Renderer as TextRenderer).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -65,7 +65,7 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Text Style"));
 
             // get list of objects
-            var fontStyles = _selection.Select(f => f.Renderer as EditorModel.Figures.TextRenderer).ToList();
+            var fontStyles = _selection.Select(f => f.Renderer as TextRenderer).ToList();
 
             // send values back from GUI to object
             fontStyles.SetProperty(f => f.FontName = cbFontName.Text);

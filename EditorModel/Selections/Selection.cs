@@ -7,6 +7,7 @@ using System.Linq;
 using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Geometry;
+using EditorModel.Renders;
 
 namespace EditorModel.Selections
 {
@@ -54,7 +55,7 @@ namespace EditorModel.Selections
         /// </summary>
         public bool IsFrameVisible
         {
-            get { return _isFrameVisible; }
+            private get { return _isFrameVisible; }
             set
             {
                 if (_isFrameVisible == value) return;
@@ -316,7 +317,7 @@ namespace EditorModel.Selections
         /// </summary>
         /// <param name="owner">Фигура</param>
         /// <param name="index">Индекс вершины</param>
-        /// <param name="offset">смещение</param>
+        /// <param name="newPosition">смещение</param>
         public void MoveVertex(Figure owner, int index, PointF newPosition)
         {
             //можем менять положение вершин?
@@ -333,7 +334,7 @@ namespace EditorModel.Selections
             var points = polygone.GetTransformedPoints(owner);
 
             //move point
-            points[index] = newPosition;
+            points[index] = newPosition; // todo: после удаления вершины здесь иногда возникает ошибка индекса 
 
             //push
             polygone.SetTransformedPoints(owner, points);
@@ -425,7 +426,6 @@ namespace EditorModel.Selections
         {
             return new GroupFigure(_selected.ToList())
             {
-                Geometry = new PolygoneGeometry(),
                 Renderer = new GroupRenderer()
             };
         }

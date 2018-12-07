@@ -67,6 +67,12 @@
     </Compile>
     <Compile Include="Controls\Helper.cs" />
     <Compile Include="Controls\IEditor.cs" />
+    <Compile Include="Controls\ImageStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ImageStyleEditor.Designer.cs">
+      <DependentUpon>ImageStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IsClosedEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +91,12 @@
     </Compile>
     <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShadowStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ShadowStyleEditor.Designer.cs">
+      <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextDialog.cs">
       <SubType>Form</SubType>
@@ -115,6 +127,9 @@
     <EmbeddedResource Include="Controls\FillStyleEditor.resx">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ImageStyleEditor.resx">
+      <DependentUpon>ImageStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\IsClosedEditor.resx">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ShadowStyleEditor.resx">
+      <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>
@@ -413,6 +431,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\transparent1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

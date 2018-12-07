@@ -47,9 +47,10 @@
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
-    <Compile Include="Figures\GroupRenderer.cs" />
-    <Compile Include="Figures\ImageRenderer.cs" />
-    <Compile Include="Figures\TextRenderer.cs" />
+    <Compile Include="Renders\GroupRenderer.cs" />
+    <Compile Include="Renders\ImageRenderer.cs" />
+    <Compile Include="Renders\ShadowRenderer.cs" />
+    <Compile Include="Renders\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />
     <Compile Include="Style\Border.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Geometry\PrimitiveGeometry.cs" />
     <Compile Include="Figures\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Figures\Renderer.cs" />
+    <Compile Include="Renders\Renderer.cs" />
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Common\SerializableGraphicsMatrix.cs" />
     <Compile Include="Common\SerializableGraphicsPath.cs" />

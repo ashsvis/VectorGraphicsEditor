@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using EditorModel.Common;
+using EditorModel.Geometry;
 
 namespace EditorModel.Figures
 {
@@ -13,12 +15,15 @@ namespace EditorModel.Figures
     {
         private readonly List<Figure> _figures = new List<Figure>();
 
-        public Figure[] Figures { get { return _figures.ToArray(); } }
+        public IEnumerable<Figure> Figures { get { return _figures.ToArray(); } }
 
         public GroupFigure(IEnumerable<Figure> figures)
         {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             foreach (var figure in figures)
                 _figures.Add(figure.DeepClone());
+            Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
         }
 
         /// <summary>

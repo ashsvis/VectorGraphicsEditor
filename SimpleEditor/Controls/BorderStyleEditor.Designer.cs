@@ -64,7 +64,7 @@
             // lbWidth
             // 
             this.lbWidth.AutoSize = true;
-            this.lbWidth.Location = new System.Drawing.Point(96, 6);
+            this.lbWidth.Location = new System.Drawing.Point(98, 6);
             this.lbWidth.Name = "lbWidth";
             this.lbWidth.Size = new System.Drawing.Size(35, 13);
             this.lbWidth.TabIndex = 4;
@@ -72,7 +72,7 @@
             // 
             // nudWidth
             // 
-            this.nudWidth.Location = new System.Drawing.Point(132, 3);
+            this.nudWidth.Location = new System.Drawing.Point(130, 4);
             this.nudWidth.Minimum = new decimal(new int[] {
             1,
             0,
@@ -102,9 +102,9 @@
             this.cbPattern.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbPattern.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPattern.FormattingEnabled = true;
-            this.cbPattern.Location = new System.Drawing.Point(215, 2);
+            this.cbPattern.Location = new System.Drawing.Point(215, 3);
             this.cbPattern.Name = "cbPattern";
-            this.cbPattern.Size = new System.Drawing.Size(63, 21);
+            this.cbPattern.Size = new System.Drawing.Size(55, 21);
             this.cbPattern.TabIndex = 6;
             this.cbPattern.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbPattern_DrawItem);
             this.cbPattern.SelectionChangeCommitted += new System.EventHandler(this.cbVisible_CheckedChanged);
@@ -113,6 +113,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.cbPattern);
             this.Controls.Add(this.nudWidth);
             this.Controls.Add(this.lbPattern);
@@ -120,7 +121,7 @@
             this.Controls.Add(this.lbColor);
             this.Controls.Add(this.cbVisible);
             this.Name = "BorderStyleEditor";
-            this.Size = new System.Drawing.Size(282, 26);
+            this.Size = new System.Drawing.Size(276, 27);
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -6,6 +6,7 @@ using System.Linq;
 using EditorModel.Figures;
 using System.Windows.Forms;
 using EditorModel.Geometry;
+using EditorModel.Renders;
 using EditorModel.Selections;
 using EditorModel.Style;
 using SimpleEditor.Common;
@@ -79,10 +80,10 @@ namespace SimpleEditor
             tsbUndo.Enabled = tsmUndo.Enabled = UndoRedoManager.Instance.CanUndo;
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
-            tsFigures.Enabled = _selectionController.EditorMode == EditorMode.Select;
+            tsbImage.Enabled = _selectionController.EditorMode == EditorMode.Select;
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = _selectionController.Selection.Count > 0;
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = _selectionController.Selection.Count > 0;
 
             pbCanvas.Invalidate();
         }
@@ -100,13 +101,11 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (e.Clicks == 2)
-                    _selectionController.OnDblClick(e.Location, ModifierKeys);
-                else
-                    _selectionController.OnMouseDown(e.Location, ModifierKeys);
-            }
+            if (e.Button != MouseButtons.Left) return;
+            if (e.Clicks == 2)
+                _selectionController.OnDblClick(e.Location, ModifierKeys);
+            else
+                _selectionController.OnMouseDown(e.Location, ModifierKeys);
         }
 
         /// <summary>
@@ -184,7 +183,7 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void tsbArrow_Click(object sender, EventArgs e)
         {
-            foreach (var btn in tsFigures.Items.OfType<ToolStripButton>())
+            foreach (var btn in tsbImage.Items.OfType<ToolStripButton>())
                 btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
 
@@ -194,56 +193,56 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildPolylineGeometry(fig);
+                    FigureBuilder.BuildPolylineGeometry(fig);
                     return fig;
                 };
             else if (tsbPolygon.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildPolygoneGeometry(fig);
+                    FigureBuilder.BuildPolygoneGeometry(fig);
                     return fig;
                 };
             else if (tsbRect.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildRectangleGeometry(fig);
+                    FigureBuilder.BuildRectangleGeometry(fig);
                     return fig;
                 };
             else if (tsbSquare.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildSquareGeometry(fig);
+                    FigureBuilder.BuildSquareGeometry(fig);
                     return fig;
                 };
             else if (tsbEllipse.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildEllipseGeometry(fig);
+                    FigureBuilder.BuildEllipseGeometry(fig);
                     return fig;
                 };
             else if (tsbCircle.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildCircleGeometry(fig);
+                    FigureBuilder.BuildCircleGeometry(fig);
                     return fig;
                 };
             else if (tsbRegular4.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildRegularGeometry(fig, 4);
+                    FigureBuilder.BuildRegularGeometry(fig, 4);
                     return fig;
                 };
             else if (tsbRegular8.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    new FigureBuilder().BuildRegularGeometry(fig, 8);
+                    FigureBuilder.BuildRegularGeometry(fig, 8);
                     return fig;
                 };
             else if (tsbText.Checked)
@@ -251,9 +250,17 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     //new FigureBuilder().BuildTextGeometry(fig, "Текст");
-                    new FigureBuilder().BuildTextRenderGeometry(fig, "Текст");
+                    FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
                     return fig;
                 };
+            else if (tsbPicture.Checked)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildImageRenderGeometry(fig, null);
+                    return fig;
+                };
+
             _selectionController.CreateFigureRequest = figureCreator;
         }
 
@@ -267,6 +274,7 @@ namespace SimpleEditor
             tsmiSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
             tsmiVerticiesSelectMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
             tsmiDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
+
         }
 
         /// <summary>
@@ -447,41 +455,40 @@ namespace SimpleEditor
             if (!exists) return;
             tsddbGeometySwitcher.Text = @"Geometry: " + sender.Text;
             var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
-            var builder = new FigureBuilder();
             if (sender.Tag != null)
             {
                 var vertexCount = int.Parse(sender.Tag.ToString());
                 OnLayerStartChanging("Change to Regular Geometry");
                 foreach (var figure in primitives)
-                    builder.BuildRegularGeometry(figure, vertexCount);
+                    FigureBuilder.BuildRegularGeometry(figure, vertexCount);
                 OnLayerChanged();
             }
             else if (sender == tsmiCyrcle)
             {
                 OnLayerStartChanging("Change to Cyrcle Geometry");
                 foreach (var figure in primitives)
-                    builder.BuildCircleGeometry(figure);
+                    FigureBuilder.BuildCircleGeometry(figure);
                 OnLayerChanged();
             }
             else if (sender == tsmiEllipse)
             {
                 OnLayerStartChanging("Change to Ellipse Geometry");
                 foreach (var figure in primitives)
-                    builder.BuildEllipseGeometry(figure);
+                    FigureBuilder.BuildEllipseGeometry(figure);
                 OnLayerChanged();
             }
             else if (sender == tsmiRectangle)
             {
                 OnLayerStartChanging("Change to Rectangle Geometry");
                 foreach (var figure in primitives)
-                    builder.BuildRectangleGeometry(figure);
+                    FigureBuilder.BuildRectangleGeometry(figure);
                 OnLayerChanged();
             }
             else if (sender == tsmiSquare)
             {
                 OnLayerStartChanging("Change to Square Geometry");
                 foreach (var figure in primitives)
-                    builder.BuildSquareGeometry(figure);
+                    FigureBuilder.BuildSquareGeometry(figure);
                 OnLayerChanged();
             }
             _selectionController.UpdateMarkers();
@@ -568,5 +575,74 @@ namespace SimpleEditor
             _selectionController.UpdateMarkers();
             BuildInterface();
         }
+
+        private ToolStripMenuItem _effectRenderer;
+
+        private void tsmiNoneEffects_Click(object sender, EventArgs e)
+        {
+            _effectRenderer = (ToolStripMenuItem)sender;
+            ChangeEffects(_effectRenderer);
+        }
+
+        private void tsmiShadow_Click(object sender, EventArgs e)
+        {
+            _effectRenderer = (ToolStripMenuItem)sender;
+            ChangeEffects(_effectRenderer);
+        }
+
+        private void ChangeEffects(ToolStripItem sender)
+        {
+            var exists = _selectionController.Selection.Count > 0;
+            if (!exists) return;
+            var list = new List<Figure>();
+            tsddbEffectSwitcher.Text = @"Effect: " + sender.Text;
+            var figures = _selectionController.Selection.ToList();
+            if (sender == tsmiNoneEffects)
+            {
+                OnLayerStartChanging("Reset Figure Effect");
+                foreach (var figure in figures.Where(f => 
+                    f.Renderer.GetType() == typeof(ShadowRenderer)))
+                {
+                    figure.Renderer = new Renderer();
+                    list.Add(figure);
+                }
+                OnLayerChanged();
+            }
+            else if (sender == tsmiShadow)
+            {
+                OnLayerStartChanging("Shadow Figure Effect");
+                foreach (var figure in figures.Where(f => 
+                    f.Renderer.GetType() == typeof(Renderer)))
+                {
+                    figure.Renderer = new ShadowRenderer();
+                    list.Add(figure);
+                }
+                OnLayerChanged();
+            }
+            _selectionController.UpdateMarkers();
+            BuildInterface();
+        }
+
+        private void tsddbEffectSwitcher_ButtonClick(object sender, EventArgs e)
+        {
+            if (_effectRenderer == null)
+                tsddbEffectSwitcher.ShowDropDown();
+            else
+                ChangeEffects(_effectRenderer);
+
+        }
+
+        private void tsmDelete_Click(object sender, EventArgs e)
+        {
+            var exists = _selectionController.Selection.Count > 0;
+            if (!exists) return;
+            OnLayerStartChanging("Shadow Figure Effect");
+            foreach (var figure in _selectionController.Selection)
+                _layer.Figures.Remove(figure);
+            OnLayerChanged();
+            _selectionController.Clear();
+            BuildInterface();
+        }
+
     }
 }

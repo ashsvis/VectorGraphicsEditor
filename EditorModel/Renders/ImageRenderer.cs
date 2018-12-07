@@ -1,24 +1,47 @@
-﻿using EditorModel.Common;
+﻿using System.Drawing.Drawing2D;
+using EditorModel.Common;
 using System;
 using System.Drawing;
+using EditorModel.Figures;
 
-namespace EditorModel.Figures
+namespace EditorModel.Renders
 {
     /// <summary>
     /// Класс рисовальщика картинки
     /// </summary>
     [Serializable]
-    public class ImageRenderer : Renderer
+    public class ImageRenderer : Renderer, IDisposable
     {
-        private readonly Image _image;
+        private Image _image;
 
-        public bool Stretch { get; set; }
+        public Image Image
+        {
+            get { return _image; }
+            set
+            {
+                if (_image != null) _image.Dispose();
+                _image = value;
+            }
+        }
 
-        public bool Tile { get; set; }
+        public bool IsStretch { get; set; }
+
+        public bool IsTile { get; set; }
 
         public ImageRenderer(Image image)
         {
             _image = image;
+        }
+
+        ~ImageRenderer()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_image == null) return;
+            _image.Dispose();
         }
 
         /// <summary>
@@ -28,7 +51,6 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public override void Render(Graphics graphics, Figure figure)
         {
-            if (_image == null) return;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = figure.GetTransformedPath().Path)
             {
@@ -40,9 +62,17 @@ namespace EditorModel.Figures
                 var size = Helper.GetSize(figure.Transform);
                 graphics.RotateTransform(angle);
                 var clientRect = new RectangleF(-size.Width / 2, -size.Height / 2, size.Width, size.Height);
-                if (Stretch)
+                if (_image == null)
+                {
+                    using (var pen = new Pen(Color.Black, 1f))
+                    {
+                        pen.DashStyle = DashStyle.DashDot;
+                        graphics.DrawRectangles(pen, new[] {clientRect});
+                    }
+                }
+                else if (IsStretch)
                     graphics.DrawImage(_image, clientRect);
-                else if (Tile)
+                else if (IsTile)
                 {
                     var rsize = new Size(_image.Width, _image.Height);
                     var rowcount = (int)Math.Ceiling(clientRect.Height / rsize.Height);
@@ -61,7 +91,7 @@ namespace EditorModel.Figures
                     }
                 }
                 else
-                    graphics.DrawImage(_image, Point.Empty);
+                    graphics.DrawImage(_image, clientRect.Location);
                 graphics.ResetTransform();
             }
         }

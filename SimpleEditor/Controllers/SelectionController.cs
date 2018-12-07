@@ -230,7 +230,7 @@ namespace SimpleEditor.Controllers
                     else
                     {
                         // создаём "резиновую" рамку
-                        new FigureBuilder().BuildFrameGeometry(_selection, point);
+                        FigureBuilder.BuildFrameGeometry(_selection, point);
                         EditorMode = EditorMode.FrameSelect;
                     }
                 }
@@ -710,7 +710,7 @@ namespace SimpleEditor.Controllers
             // задаём геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
-                figureBuilder.BuildMarkerGeometry(marker);
+                FigureBuilder.BuildMarkerGeometry(marker);
         }
 
         private VertexMarker CreateVertexMarker(PointF point, int index, Figure fig)

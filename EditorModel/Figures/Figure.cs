@@ -1,6 +1,7 @@
 ﻿using EditorModel.Common;
 using System;
 using System.Drawing.Drawing2D;
+using EditorModel.Renders;
 
 namespace EditorModel.Figures
 {

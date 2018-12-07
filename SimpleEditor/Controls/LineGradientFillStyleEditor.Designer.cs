@@ -67,7 +67,7 @@
             // 
             // nudAngle
             // 
-            this.nudAngle.Location = new System.Drawing.Point(128, 1);
+            this.nudAngle.Location = new System.Drawing.Point(125, 2);
             this.nudAngle.Name = "nudAngle";
             this.nudAngle.Size = new System.Drawing.Size(40, 20);
             this.nudAngle.TabIndex = 6;
@@ -84,7 +84,7 @@
             this.Controls.Add(this.lbGradientColor);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LineGradientFillStyleEditor";
-            this.Size = new System.Drawing.Size(191, 26);
+            this.Size = new System.Drawing.Size(178, 26);
             ((System.ComponentModel.ISupportInitialize)(this.nudAngle)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
