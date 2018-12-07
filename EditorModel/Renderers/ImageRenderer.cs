@@ -10,7 +10,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика картинки
     /// </summary>
     [Serializable]
-    public class ImageRenderer : Renderer, IDisposable
+    public sealed class ImageRenderer : Renderer, IDisposable
     {
         private Image _image;
 

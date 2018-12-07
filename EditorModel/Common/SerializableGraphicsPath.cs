@@ -12,7 +12,7 @@ namespace EditorModel.Common
     ///   Copyright (c) 2010 Pavel Torgashov.
     /// </summary>
     [Serializable]
-    public class SerializableGraphicsPath : ISerializable
+    public sealed class SerializableGraphicsPath : ISerializable, IDisposable
     {
         public GraphicsPath Path = new GraphicsPath();
 
@@ -28,6 +28,16 @@ namespace EditorModel.Common
             }
             else
                 Path = new GraphicsPath();
+        }
+
+        ~SerializableGraphicsPath()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (Path != null) Path.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

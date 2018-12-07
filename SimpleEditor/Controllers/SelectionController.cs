@@ -90,9 +90,15 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public event Action LayerChanged = delegate { };
 
+        /// <summary>
+        /// Требуется сбросить выбор фигуры для создания
+        /// </summary>
+        public event Action ResetFigureCreator = delegate { };
+
         private bool _wasMouseMoving;
         private bool _wasVertexMoving;
         private bool _isMouseDown;
+        private bool _isFigureCreated;
         private Point _firstMouseDown;
         private Marker _movedMarker;
 
@@ -163,6 +169,16 @@ namespace SimpleEditor.Controllers
             // запоминаем точку нажатия мышкой
             _firstMouseDown = point;
 
+            if (CreateFigureRequest != null)
+            {
+                //создаем новую фигуру
+                EditorMode = EditorMode.CreateFigure;
+                OnLayerStartChanging();
+                CreateFigure(point);
+                _isFigureCreated = true;
+                return;
+            }
+
             if (EditorMode != EditorMode.Select &&
                 EditorMode != EditorMode.Skew &&
                 EditorMode != EditorMode.Verticies)
@@ -220,14 +236,7 @@ namespace SimpleEditor.Controllers
                     Clear(); // очищаем список выбранных
                     OnSelectedFigureChanged();
 
-                    if (CreateFigureRequest != null)
-                    {
-                        //создаем новую фигуру
-                        EditorMode = EditorMode.CreateFigure;
-                        OnLayerStartChanging();
-                        CreateFigure(point);
-                    }
-                    else
+                    if (CreateFigureRequest == null)
                     {
                         // создаём "резиновую" рамку
                         FigureBuilder.BuildFrameGeometry(_selection, point);
@@ -384,6 +393,12 @@ namespace SimpleEditor.Controllers
             // возврат в текущий режим
             EditorMode = _lastMode;
 
+            if (_isFigureCreated)
+            {
+                _isFigureCreated = false;
+                OnResetFigureCreator();
+            }
+
             _isMouseDown = false;
         }
 
@@ -535,6 +550,14 @@ namespace SimpleEditor.Controllers
         private void OnLayerChanged()
         {
             LayerChanged();
+        }
+
+        /// <summary>
+        /// Вызывает сброс выбора создания фигур
+        /// </summary>
+        private void OnResetFigureCreator()
+        {
+            ResetFigureCreator();
         }
 
         #endregion Извещатели событий

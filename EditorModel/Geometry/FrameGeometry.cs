@@ -8,7 +8,7 @@ namespace EditorModel.Geometry
     /// —одержит геометрию рамки, измен€ющей свои размеры
     /// </summary>
     [Serializable]
-    public class FrameGeometry : Geometry
+    public sealed class FrameGeometry : Geometry, IDisposable
     {
         /// <summary>
         /// Ћокальное поле дл€ хранени€ пути
@@ -46,6 +46,16 @@ namespace EditorModel.Geometry
         internal FrameGeometry(Point startPoint)
         {
             EndPoint = StartPoint = startPoint;
+        }
+
+        ~FrameGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
         }
     }
 }

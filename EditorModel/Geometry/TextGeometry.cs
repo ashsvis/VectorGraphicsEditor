@@ -8,7 +8,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию текстовой строки
     /// </summary>
     [Serializable]
-    public class TextGeometry : Geometry
+    public sealed class TextGeometry : Geometry, IDisposable
     {
         /// <summary>
         /// Текст для построения пути
@@ -69,6 +69,16 @@ namespace EditorModel.Geometry
             Text = String.Empty;
             FontName = "Arial";
             FontSize = 14f;
+        }
+
+        ~TextGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
         }
     }
 }

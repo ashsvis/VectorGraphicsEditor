@@ -9,7 +9,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    public class PolygoneGeometry : Geometry
+    public sealed class PolygoneGeometry : Geometry, IDisposable
     {
         private PointF[] _points;
         private bool _isClosed = true;
@@ -68,6 +68,16 @@ namespace EditorModel.Geometry
             m.Invert();
             m.TransformPoints(points);
             Points = points;
+        }
+
+        ~PolygoneGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
         }
 
         /// <summary>

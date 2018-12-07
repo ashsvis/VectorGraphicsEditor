@@ -38,6 +38,12 @@ namespace SimpleEditor
             _selectionController.EditorModeChanged += _ => UpdateInterface();
             _selectionController.LayerStartChanging += () => OnLayerStartChanging(_selectionController.EditorMode.ToString());
             _selectionController.LayerChanged += OnLayerChanged;
+            _selectionController.ResetFigureCreator += _selectionController_ResetCreateFigureSelector;
+        }
+
+        private void _selectionController_ResetCreateFigureSelector()
+        {
+            tsbArrow_Click(tsbArrow, new EventArgs());            
         }
 
         protected override void OnLoad(EventArgs e)
@@ -126,10 +132,7 @@ namespace SimpleEditor
         private void pbCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 _selectionController.OnMouseUp(e.Location, ModifierKeys);
-                tsbArrow_Click(tsbArrow, new EventArgs());            
-            }
         }
 
         /// <summary>
@@ -182,6 +185,9 @@ namespace SimpleEditor
                 btn.Checked = false;
             ((ToolStripButton)sender).Checked = true;
 
+            if (!tsbArrow.Checked)
+                _selectionController.Clear();
+
             Func<Figure> figureCreator = null;
 
             if (tsbPolyline.Checked)
@@ -195,28 +201,20 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildRectangleGeometry(fig);
-                    return fig;
-                };
-            else if (tsbSquare.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    FigureBuilder.BuildSquareGeometry(fig);
+                    if (ModifierKeys.HasFlag(Keys.Shift))
+                        FigureBuilder.BuildSquareGeometry(fig);
+                    else
+                        FigureBuilder.BuildRectangleGeometry(fig);
                     return fig;
                 };
             else if (tsbEllipse.Checked)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildEllipseGeometry(fig);
-                    return fig;
-                };
-            else if (tsbCircle.Checked)
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    FigureBuilder.BuildCircleGeometry(fig);
+                    if (ModifierKeys.HasFlag(Keys.Shift))
+                        FigureBuilder.BuildCircleGeometry(fig);
+                    else
+                        FigureBuilder.BuildEllipseGeometry(fig);
                     return fig;
                 };
             else if (tsbRegular4.Checked)
@@ -483,6 +481,9 @@ namespace SimpleEditor
             BuildInterface();
         }
 
+        /// <summary>
+        /// Действия по корректировке размера холста по размеру содержимого слоя
+        /// </summary>
         private void UpdateCanvasSize()
         {
             if (_layer == null) return;
@@ -493,6 +494,11 @@ namespace SimpleEditor
                 if (size.Width < figrect.Right) size.Width = (int)figrect.Right;
                 if (size.Height < figrect.Bottom) size.Height = (int)figrect.Bottom;
             }
+
+            // запас для скролирования. Что бы можно было тянуть маркеры.
+            size.Width += 50;
+            size.Height += 50;
+
             var pnlSize = panelForScroll.ClientSize;
             pbCanvas.Size = new Size(size.Width < pnlSize.Width ? pnlSize.Width : size.Width,
                                      size.Height < pnlSize.Height ? pnlSize.Height : size.Height);
