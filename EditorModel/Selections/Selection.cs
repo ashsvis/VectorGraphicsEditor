@@ -161,7 +161,9 @@ namespace EditorModel.Selections
         public void PushTransformToSelectedFigures()
         {
             foreach (var fig in _selected)
+            {
                 fig.Transform.Matrix.Multiply(Transform, MatrixOrder.Append);
+            }
 
             GrabGeometry();
         }
@@ -421,9 +423,10 @@ namespace EditorModel.Selections
         /// <returns></returns>
         public Figure Group()
         {
-            return new FigureGroup(_selected.ToList())
+            return new GroupFigure(_selected.ToList())
             {
-                Geometry = new PolygoneGeometry()
+                Geometry = new PolygoneGeometry(),
+                Renderer = new GroupRenderer()
             };
         }
 
@@ -434,7 +437,7 @@ namespace EditorModel.Selections
         public List<Figure> Ungroup()
         {
             var list = new List<Figure>();
-            foreach (var grp in _selected.OfType<FigureGroup>())
+            foreach (var grp in _selected.OfType<GroupFigure>())
             {
                 foreach (var figure in grp.Figures)
                 {

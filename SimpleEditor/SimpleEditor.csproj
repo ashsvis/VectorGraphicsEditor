@@ -73,6 +73,19 @@
     <Compile Include="Controls\IsClosedEditor.Designer.cs">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LayerSelectionHelper.cs" />
+    <Compile Include="Controls\LayerStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayerStyleEditor.Designer.cs">
+      <DependentUpon>LayerStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LineGradientFillStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
+      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +117,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\IsClosedEditor.resx">
       <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayerStyleEditor.resx">
+      <DependentUpon>LayerStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
+      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>
@@ -391,6 +410,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\regular81.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\transparent1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -60,11 +60,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.lbColor);
             this.Controls.Add(this.cbVisible);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
-            this.Size = new System.Drawing.Size(85, 26);
+            this.Size = new System.Drawing.Size(87, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 

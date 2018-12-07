@@ -44,18 +44,6 @@ namespace SimpleEditor.Common
         }
 
         /// <summary>
-        /// Поворот вектора на угол
-        /// </summary>
-        /// <param name="vector"></param>
-        /// <param name="angle">угол поворота</param>
-        /// <returns></returns>
-        public static PointF Rotate(this PointF vector, float angle)
-        {
-            return new PointF((float) (vector.X*Math.Cos(angle) - vector.Y*Math.Sin(angle)),
-                              (float) (vector.X*Math.Sin(angle) + vector.Y*Math.Cos(angle)));
-        }
-
-        /// <summary>
         /// Сложение двух векторов
         /// </summary>
         /// <param name="vector1"></param>
@@ -75,17 +63,6 @@ namespace SimpleEditor.Common
         public static PointF Sub(this PointF vector1, PointF vector2)
         {
             return new PointF(vector1.X - vector2.X, vector1.Y - vector2.Y);
-        }
-
-        /// <summary>
-        /// Строим вектор на координатах двух точек
-        /// </summary>
-        /// <param name="point2"></param>
-        /// <param name="point1"></param>
-        /// <returns>Вектор</returns>
-        public static PointF Vector(this PointF point2, PointF point1)
-        {
-            return new PointF(point2.X - point1.X, point2.Y - point1.Y);
         }
 
         /// <summary>
@@ -110,6 +87,30 @@ namespace SimpleEditor.Common
             return (float)Math.Atan2(c.Y, c.X);
         }
 
+/* not used
+        /// <summary>
+        /// Поворот вектора на угол
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="angle">угол поворота</param>
+        /// <returns></returns>
+        public static PointF Rotate(this PointF vector, float angle)
+        {
+            return new PointF((float) (vector.X*Math.Cos(angle) - vector.Y*Math.Sin(angle)),
+                              (float) (vector.X*Math.Sin(angle) + vector.Y*Math.Cos(angle)));
+        }
+
+        /// <summary>
+        /// Строим вектор на координатах двух точек
+        /// </summary>
+        /// <param name="point2"></param>
+        /// <param name="point1"></param>
+        /// <returns>Вектор</returns>
+        public static PointF Vector(this PointF point2, PointF point1)
+        {
+            return new PointF(point2.X - point1.X, point2.Y - point1.Y);
+        }
+ * 
         /// <summary>
         /// Ортогональная проекция Вектора 1 на Вектор 2
         /// </summary>
@@ -172,5 +173,6 @@ namespace SimpleEditor.Common
         {
             return new PointF(vector.X, vector.Y);
         }
+ */
     }
 }

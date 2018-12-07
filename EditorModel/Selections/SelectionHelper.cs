@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using EditorModel.Common;
+﻿using EditorModel.Common;
 using EditorModel.Geometry;
 using System.Drawing;
 using System.Drawing.Drawing2D;

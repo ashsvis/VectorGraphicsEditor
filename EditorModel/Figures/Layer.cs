@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EditorModel.Style;
 
 namespace EditorModel.Figures
 {
@@ -16,6 +17,20 @@ namespace EditorModel.Figures
             get { return _figures; }
             set { _figures.Clear(); _figures.AddRange(value); }
         }
+
+        #region Предлагаю:
+
+        /// <summary>
+        /// Свойство для хранения данных кисти
+        /// </summary>
+        public Fill FillStyle { get; set; }
+
+        public Layer()
+        {
+            FillStyle = new Fill { IsVisible = false };
+        }
+
+        #endregion
 
     }
 }

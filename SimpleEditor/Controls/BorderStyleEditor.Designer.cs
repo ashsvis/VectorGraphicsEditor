@@ -41,7 +41,7 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(55, 3);
+            this.lbColor.Location = new System.Drawing.Point(55, 5);
             this.lbColor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbColor.Name = "lbColor";
             this.lbColor.Size = new System.Drawing.Size(39, 17);
@@ -52,7 +52,7 @@
             // cbVisible
             // 
             this.cbVisible.AutoSize = true;
-            this.cbVisible.Location = new System.Drawing.Point(2, 4);
+            this.cbVisible.Location = new System.Drawing.Point(2, 5);
             this.cbVisible.Margin = new System.Windows.Forms.Padding(2);
             this.cbVisible.Name = "cbVisible";
             this.cbVisible.Size = new System.Drawing.Size(57, 17);
@@ -64,7 +64,7 @@
             // lbWidth
             // 
             this.lbWidth.AutoSize = true;
-            this.lbWidth.Location = new System.Drawing.Point(96, 5);
+            this.lbWidth.Location = new System.Drawing.Point(96, 6);
             this.lbWidth.Name = "lbWidth";
             this.lbWidth.Size = new System.Drawing.Size(35, 13);
             this.lbWidth.TabIndex = 4;
@@ -91,7 +91,7 @@
             // lbPattern
             // 
             this.lbPattern.AutoSize = true;
-            this.lbPattern.Location = new System.Drawing.Point(174, 5);
+            this.lbPattern.Location = new System.Drawing.Point(174, 6);
             this.lbPattern.Name = "lbPattern";
             this.lbPattern.Size = new System.Drawing.Size(41, 13);
             this.lbPattern.TabIndex = 4;

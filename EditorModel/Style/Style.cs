@@ -24,9 +24,7 @@ namespace EditorModel.Style
         public Style()
         {
             BorderStyle = new Border();
-
             FillStyle = new Fill();
-            //FillStyle = new GradientFill();
         }
     }
 }

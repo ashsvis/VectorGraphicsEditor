@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -6,6 +7,7 @@ using EditorModel.Figures;
 using System.Windows.Forms;
 using EditorModel.Geometry;
 using EditorModel.Selections;
+using EditorModel.Style;
 using SimpleEditor.Common;
 using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
@@ -21,6 +23,7 @@ namespace SimpleEditor
         public FormSimpleEditor()
         {
             InitializeComponent();
+
             _layer = new Layer();
             _undoRedoController = new UndoRedoController(_layer);
 
@@ -45,6 +48,7 @@ namespace SimpleEditor
         void OnLayerChanged()
         {
             _undoRedoController.OnFinishOperation();
+            UpdateCanvasSize();
         }
 
         void OnLayerStartChanging(string opName)
@@ -55,6 +59,14 @@ namespace SimpleEditor
         void BuildInterface()
         {
             //build tools
+
+            #region Предлагаю
+
+            foreach (var editor in pnTools.Controls.OfType <IEditor<LayerSelectionHelper>>()) //get editors of layer
+                editor.Build(new LayerSelectionHelper { Layer = _layer, Selection = _selectionController.Selection });
+
+            #endregion
+
             foreach (var editor in pnTools.Controls.OfType<IEditor<Selection>>()) //get editors of figure
                 editor.Build(_selectionController.Selection);
 
@@ -70,6 +82,7 @@ namespace SimpleEditor
             tsFigures.Enabled = _selectionController.EditorMode == EditorMode.Select;
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             tsddbGeometySwitcher.Enabled = exists;
+            tsddbFillBrushSwitcher.Enabled = _selectionController.Selection.Count > 0;
 
             pbCanvas.Invalidate();
         }
@@ -132,18 +145,36 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            var bmp = new Bitmap(pbCanvas.Width, pbCanvas.Height);
+            using (var graphics = Graphics.FromImage(bmp))
+            {
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            // отрисовка созданных фигур
-            foreach (var fig in _layer.Figures)
-                fig.Renderer.Render(e.Graphics, fig);
-            // отрисовка выделения
-            _selectionController.Selection.Renderer.Render(e.Graphics,
-                                                           _selectionController.Selection);
-            // отрисовка маркеров
-            foreach (var marker in _selectionController.Markers)
-                marker.Renderer.Render(e.Graphics, marker);
+                #region Предлагаю
+
+                if (_layer.FillStyle.IsVisible)
+                {
+                    using (var brush = _layer.FillStyle.GetBrush(null))
+                    {
+                        graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
+                    }  
+                }
+                //graphics.Clear(Color.WhiteSmoke);
+
+                #endregion
+
+                // отрисовка созданных фигур
+                foreach (var fig in _layer.Figures)
+                    fig.Renderer.Render(graphics, fig);
+                // отрисовка выделения
+                _selectionController.Selection.Renderer.Render(graphics,
+                                                               _selectionController.Selection);
+                // отрисовка маркеров
+                foreach (var marker in _selectionController.Markers)
+                    marker.Renderer.Render(graphics, marker);
+            }
+            e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
         /// <summary>
@@ -394,53 +425,148 @@ namespace SimpleEditor
             UpdateInterface();
         }
 
-        private void tsmiRegularGeometry_Click(object sender, EventArgs e)
+        private ToolStripMenuItem _switchGeometry;
+
+        private void tsddbGeometySwitcher_ButtonClick(object sender, EventArgs e)
         {
-            var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
-            if (!exists) return;
-            tsddbGeometySwitcher.Text = @"Geometry: " + ((ToolStripMenuItem)sender).Text;
-            var mitem = (ToolStripMenuItem)sender;
-            var vertexCount = int.Parse(mitem.Tag.ToString());
-            var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
-            var builder = new FigureBuilder();
-            OnLayerStartChanging("Change Primitive Geometry");
-            foreach (var figure in primitives)
-                builder.BuildRegularGeometry(figure, vertexCount);
-            OnLayerChanged();
-            _selectionController.Clear();
-            UpdateInterface();
+            if (_switchGeometry == null)
+                tsddbGeometySwitcher.ShowDropDown();
+            else
+                ChangePrimitiveGeometry(_switchGeometry);
         }
 
         private void tsmiPrimitiveGeometry_Click(object sender, EventArgs e)
         {
+            _switchGeometry = (ToolStripMenuItem) sender;
+            ChangePrimitiveGeometry(_switchGeometry);
+        }
+
+        private void ChangePrimitiveGeometry(ToolStripItem sender)
+        {
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             if (!exists) return;
-            tsddbGeometySwitcher.Text = @"Geometry: " + ((ToolStripMenuItem)sender).Text;
+            tsddbGeometySwitcher.Text = @"Geometry: " + sender.Text;
             var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
             var builder = new FigureBuilder();
-            if (sender == tsmiCyrcle)
+            if (sender.Tag != null)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                var vertexCount = int.Parse(sender.Tag.ToString());
+                OnLayerStartChanging("Change to Regular Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildRegularGeometry(figure, vertexCount);
+                OnLayerChanged();
+            }
+            else if (sender == tsmiCyrcle)
+            {
+                OnLayerStartChanging("Change to Cyrcle Geometry");
                 foreach (var figure in primitives)
                     builder.BuildCircleGeometry(figure);
                 OnLayerChanged();
             }
+            else if (sender == tsmiEllipse)
+            {
+                OnLayerStartChanging("Change to Ellipse Geometry");
+                foreach (var figure in primitives)
+                    builder.BuildEllipseGeometry(figure);
+                OnLayerChanged();
+            }
             else if (sender == tsmiRectangle)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Rectangle Geometry");
                 foreach (var figure in primitives)
                     builder.BuildRectangleGeometry(figure);
                 OnLayerChanged();
             }
-            else  if (sender == tsmiSquare)
+            else if (sender == tsmiSquare)
             {
-                OnLayerStartChanging("Change Primitive Geometry");
+                OnLayerStartChanging("Change to Square Geometry");
                 foreach (var figure in primitives)
                     builder.BuildSquareGeometry(figure);
                 OnLayerChanged();
             }
-            _selectionController.Clear();
-            UpdateInterface();
+            _selectionController.UpdateMarkers();
+            BuildInterface();
+        }
+
+        private void UpdateCanvasSize()
+        {
+            if (_layer == null) return;
+            var size = new Size();
+            foreach (var figrect in _layer.Figures.Select(figure => 
+                figure.GetTransformedPath().Path.GetBounds()))
+            {
+                if (size.Width < figrect.Right) size.Width = (int)figrect.Right;
+                if (size.Height < figrect.Bottom) size.Height = (int)figrect.Bottom;
+            }
+            var pnlSize = panelForScroll.ClientSize;
+            pbCanvas.Size = new Size(size.Width < pnlSize.Width ? pnlSize.Width : size.Width,
+                                     size.Height < pnlSize.Height ? pnlSize.Height : size.Height);
+        }
+
+        private void panelForScroll_SizeChanged(object sender, EventArgs e)
+        {
+            UpdateCanvasSize();
+        }
+
+        private ToolStripMenuItem _switchBrush;
+
+        private void tsmiSolidBrush_Click(object sender, EventArgs e)
+        {
+            _switchBrush = (ToolStripMenuItem)sender;
+            ChangeFillBrush(_switchBrush);
+        }
+
+        private void tsmiLinearGradientBrush_Click(object sender, EventArgs e)
+        {
+            _switchBrush = (ToolStripMenuItem)sender;
+            ChangeFillBrush(_switchBrush);
+        }
+
+        private void tsddbFillBrushSwitcher_Click(object sender, EventArgs e)
+        {
+            if (_switchBrush == null)
+                tsddbFillBrushSwitcher.ShowDropDown();
+            else
+                ChangeFillBrush(_switchBrush);
+        }
+
+        private void ChangeFillBrush(ToolStripItem sender)
+        {
+            var exists = _selectionController.Selection.Count > 0;
+            if (!exists) return;
+            var list = new List<Figure>();
+            tsddbFillBrushSwitcher.Text = @"Fill: " + sender.Text;
+            var figures = _selectionController.Selection.ToList();
+            if (sender == tsmiSolidBrush)
+            {
+                OnLayerStartChanging("Change Solid Fill Brush");
+                foreach (var figure in figures)
+                {
+                    var fillStyle = figure.Style.FillStyle.DeepClone();
+                    figure.Style.FillStyle = new Fill { Color = fillStyle.Color, IsVisible = fillStyle.IsVisible };
+                    list.Add(figure);
+                }
+                OnLayerChanged();
+            }
+            else if (sender == tsmiLinearGradientBrush)
+            {
+                OnLayerStartChanging("Change Line Gradient Fill Brush");
+                foreach (var figure in figures)
+                {
+                    var fillStyle = figure.Style.FillStyle.DeepClone();
+                    if (fillStyle.GetType() != typeof(LineGradientFill))
+                    figure.Style.FillStyle = new LineGradientFill
+                        {
+                            Color = fillStyle.Color, 
+                            IsVisible = fillStyle.IsVisible,
+                            GradientColor = fillStyle.Color
+                        };
+                    list.Add(figure);
+                }
+                OnLayerChanged();
+            }
+            _selectionController.UpdateMarkers();
+            BuildInterface();
         }
     }
 }
