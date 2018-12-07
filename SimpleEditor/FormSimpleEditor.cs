@@ -623,14 +623,18 @@ namespace SimpleEditor
                 tsddbEffectSwitcher.ShowDropDown();
             else
                 ChangeEffects(_effectRenderer);
-
         }
 
+        /// <summary>
+        /// Удаление выделенных фигур
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsmDelete_Click(object sender, EventArgs e)
         {
             var exists = _selectionController.Selection.Count > 0;
             if (!exists) return;
-            OnLayerStartChanging("Shadow Figure Effect");
+            OnLayerStartChanging("Delete Selected Figures");
             foreach (var figure in _selectionController.Selection)
                 _layer.Figures.Remove(figure);
             OnLayerChanged();
@@ -638,5 +642,30 @@ namespace SimpleEditor
             BuildInterface();
         }
 
+        /// <summary>
+        /// Клонирование выделенных фигур
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmCloneFigure_Click(object sender, EventArgs e)
+        {
+            var exists = _selectionController.Selection.Count > 0;
+            if (!exists) return;
+            OnLayerStartChanging("Clone Selected Figures");
+            var list = new List<Figure>();
+            foreach (var figure in _selectionController.Selection)
+            {
+                var fig = figure.DeepClone();
+                fig.Transform.Matrix.Translate(10, 10, MatrixOrder.Append);
+                list.Add(fig);
+                _layer.Figures.Add(fig);
+            }
+            OnLayerChanged();
+            _selectionController.Clear();
+            foreach (var fig in list)
+                _selectionController.Selection.Add(fig);
+            _selectionController.UpdateMarkers();
+            BuildInterface();
+        }
     }
 }
