@@ -543,6 +543,7 @@ namespace SimpleEditor
                 OnLayerStartChanging("Change Solid Fill Brush");
                 foreach (var figure in figures)
                 {
+                    if (figure.Style.FillStyle == null) continue;
                     var fillStyle = figure.Style.FillStyle.DeepClone();
                     figure.Style.FillStyle = new Fill { Color = fillStyle.Color, IsVisible = fillStyle.IsVisible };
                     list.Add(figure);
@@ -554,6 +555,7 @@ namespace SimpleEditor
                 OnLayerStartChanging("Change Line Gradient Fill Brush");
                 foreach (var figure in figures)
                 {
+                    if (figure.Style.FillStyle == null) continue;
                     var fillStyle = figure.Style.FillStyle.DeepClone();
                     if (fillStyle.GetType() != typeof(LinearGradientFill))
                     figure.Style.FillStyle = new LinearGradientFill

@@ -47,12 +47,12 @@ namespace EditorModel.Renderers
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public override void Render(Graphics graphics, Figure figure)
         {
+            if (figure.Style.FillStyle == null || !figure.Style.FillStyle.IsVisible) return;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = figure.GetTransformedPath().Path)
             using (var sf = new StringFormat(StringFormatFlags.DisplayFormatControl))
             {
                 var bounds = path.GetBounds();
-                if (!figure.Style.FillStyle.IsVisible) return;
                 var rendered = figure.Renderer as TextRenderer;
                 if (rendered == null) return;
                 Helper.UpdateStringFormat(sf, rendered.TextAlign);

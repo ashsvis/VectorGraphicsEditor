@@ -31,8 +31,7 @@
             this.lbGradient = new System.Windows.Forms.Label();
             this.lbGradientColor = new System.Windows.Forms.Label();
             this.lbAngle = new System.Windows.Forms.Label();
-            this.nudAngle = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAngle)).BeginInit();
+            this.cbDirection = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbGradient
@@ -61,31 +60,38 @@
             this.lbAngle.AutoSize = true;
             this.lbAngle.Location = new System.Drawing.Point(94, 4);
             this.lbAngle.Name = "lbAngle";
-            this.lbAngle.Size = new System.Drawing.Size(34, 13);
+            this.lbAngle.Size = new System.Drawing.Size(49, 13);
             this.lbAngle.TabIndex = 5;
-            this.lbAngle.Text = "Angle";
+            this.lbAngle.Text = "Direction";
             // 
-            // nudAngle
+            // cbDirection
             // 
-            this.nudAngle.Location = new System.Drawing.Point(125, 2);
-            this.nudAngle.Name = "nudAngle";
-            this.nudAngle.Size = new System.Drawing.Size(40, 20);
-            this.nudAngle.TabIndex = 6;
-            this.nudAngle.ValueChanged += new System.EventHandler(this.nudAngle_ValueChanged);
+            this.cbDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDirection.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cbDirection.FormattingEnabled = true;
+            this.cbDirection.Items.AddRange(new object[] {
+            "Horizontal",
+            "Vertical",
+            "ForwardDiagonal",
+            "BackwardDiagonal"});
+            this.cbDirection.Location = new System.Drawing.Point(149, 0);
+            this.cbDirection.Name = "cbDirection";
+            this.cbDirection.Size = new System.Drawing.Size(125, 21);
+            this.cbDirection.TabIndex = 8;
+            this.cbDirection.SelectionChangeCommitted += new System.EventHandler(this.cbDirection_SelectionChangeCommitted);
             // 
             // LineGradientFillStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.nudAngle);
+            this.Controls.Add(this.cbDirection);
             this.Controls.Add(this.lbAngle);
             this.Controls.Add(this.lbGradient);
             this.Controls.Add(this.lbGradientColor);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LineGradientFillStyleEditor";
-            this.Size = new System.Drawing.Size(178, 26);
-            ((System.ComponentModel.ISupportInitialize)(this.nudAngle)).EndInit();
+            this.Size = new System.Drawing.Size(277, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,6 +102,6 @@
         private System.Windows.Forms.Label lbGradient;
         private System.Windows.Forms.Label lbGradientColor;
         private System.Windows.Forms.Label lbAngle;
-        private System.Windows.Forms.NumericUpDown nudAngle;
+        private System.Windows.Forms.ComboBox cbDirection;
     }
 }

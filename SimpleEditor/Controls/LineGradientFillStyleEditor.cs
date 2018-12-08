@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Selections;
@@ -17,8 +18,6 @@ namespace SimpleEditor.Controls
         public LineGradientFillStyleEditor()
         {
             InitializeComponent();
-            nudAngle.Maximum = decimal.MaxValue;
-            nudAngle.Minimum = decimal.MinValue;
         }
 
         public void Build(Selection selection)
@@ -37,7 +36,7 @@ namespace SimpleEditor.Controls
             _updating++;
 
             lbGradientColor.BackColor = fillStyles.GetProperty(f => f.GradientColor);
-            nudAngle.Value = fillStyles.GetProperty(f => (decimal)f.Angle);
+            cbDirection.SelectedIndex = fillStyles.GetProperty(f => (int)f.GradientMode);
 
             _updating--;
         }
@@ -54,7 +53,7 @@ namespace SimpleEditor.Controls
 
             // send values back from GUI to object
             fillStyles.SetProperty(f => f.GradientColor = lbGradientColor.BackColor);
-            fillStyles.SetProperty(f => f.Angle = (float)nudAngle.Value);
+            fillStyles.SetProperty(f => f.GradientMode = (LinearGradientMode)cbDirection.SelectedIndex);
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -72,7 +71,7 @@ namespace SimpleEditor.Controls
                 lbGradientColor.BackColor = dlg.Color;
         }
 
-        private void nudAngle_ValueChanged(object sender, EventArgs e)
+        private void cbDirection_SelectionChangeCommitted(object sender, EventArgs e)
         {
             UpdateObject();
         }

@@ -22,12 +22,26 @@ namespace EditorModel.Style
 
         public float Angle { get; set; }
 
+        public LinearGradientMode GradientMode { get; set; }
+
         public override Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры
-            var bounds = figure.GetTransformedPath().Path.GetBounds();
-            var angle = Helper.GetAngle(figure.Transform) + Angle;
-            return new LinearGradientBrush(bounds, Color, GradientColor, angle);
+            var pts = new[] { new PointF(-0.5f, 0.5f), new PointF(0.5f, 0.5f) };
+            switch (GradientMode)
+            {
+                case LinearGradientMode.Vertical:
+                    pts = new[] { new PointF(0.5f, -0.5f), new PointF(0.5f, 0.5f) };
+                    break;
+                case LinearGradientMode.ForwardDiagonal:
+                    pts = new[] { new PointF(-0.5f, -0.5f), new PointF(0.5f, 0.5f) };
+                    break;
+                case LinearGradientMode.BackwardDiagonal:
+                    pts = new[] { new PointF(0.5f, 0.5f), new PointF(-0.5f, -0.5f) };
+                    break;
+            }
+            figure.Transform.Matrix.TransformPoints(pts);
+            return new LinearGradientBrush(pts[0], pts[1], Color, GradientColor);
         }
 
     }
