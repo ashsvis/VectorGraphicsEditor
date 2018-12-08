@@ -65,7 +65,7 @@
     <Compile Include="Controls\FillStyleEditor.Designer.cs">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Helper.cs" />
+    <Compile Include="Controls\ControlsHelper.cs" />
     <Compile Include="Controls\IEditor.cs" />
     <Compile Include="Controls\ImageStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -121,6 +121,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
+    <Compile Include="Common\VersionInfo.cs" />
     <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
       <DependentUpon>BorderStyleEditor.cs</DependentUpon>
     </EmbeddedResource>

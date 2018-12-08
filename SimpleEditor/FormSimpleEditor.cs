@@ -12,12 +12,13 @@ using EditorModel.Style;
 using SimpleEditor.Common;
 using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
+using System.IO;
 
 namespace SimpleEditor
 {
     public partial class FormSimpleEditor : Form
     {
-        readonly Layer _layer;
+        Layer _layer;
         readonly SelectionController _selectionController;
         readonly UndoRedoController _undoRedoController;
 
@@ -684,6 +685,65 @@ namespace SimpleEditor
             foreach (var fig in list)
                 _selectionController.Selection.Add(fig);
             _selectionController.UpdateMarkers();
+            BuildInterface();
+        }
+
+        /// <summary>
+        /// Метод записи фигур в файл
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void SaveToFile(string fileName)
+        {
+            using (var stream = new MemoryStream())
+            {
+                Helper.SaveToStream(stream, new VersionInfo { Version = 1 });
+                Helper.SaveToStream(stream, _layer.FillStyle);
+                Helper.SaveToStream(stream, _layer.Figures);
+                stream.Position = 0;
+                Helper.Compress(stream, fileName);
+            }
+            //_fileName = fileName;
+            //FileChanged = false;
+        }
+
+        private void tsmSaveAs_Click(object sender, EventArgs e)
+        {
+            if (saveEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
+            SaveToFile(saveEditorFileDialog.FileName);
+        }
+
+        private void LoadFromFile(string fileName)
+        {
+            using (var stream = new MemoryStream())
+            {
+                Helper.Decompress(fileName, stream);
+                stream.Position = 0;
+                var info = (VersionInfo)Helper.LoadFromStream(stream);
+                _layer.FillStyle = (Fill)Helper.LoadFromStream(stream);
+                var figures = (List<Figure>)Helper.LoadFromStream(stream);
+                _layer.Figures = figures;
+            }
+        }
+
+        private void tsmOpen_Click(object sender, EventArgs e)
+        {
+            if (openEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
+            CreateNew();
+            LoadFromFile(openEditorFileDialog.FileName);
+            BuildInterface();
+        }
+
+        private void tsmCreate_Click(object sender, EventArgs e)
+        {
+            CreateNew();
+        }
+
+        private void CreateNew()
+        {
+            _selectionController.Clear();
+            UndoRedoManager.Instance.ClearHistory();
+            _layer.FillStyle = new Fill { IsVisible = false };
+            _layer.Figures.Clear();
             BuildInterface();
         }
     }

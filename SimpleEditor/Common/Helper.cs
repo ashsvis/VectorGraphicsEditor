@@ -1,5 +1,10 @@
+using EditorModel.Figures;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleEditor.Common
 {
@@ -39,6 +44,61 @@ namespace SimpleEditor.Common
             var a = marker.Sub(anchor);
             var m = mouse.Sub(anchor);
             return m.Angle(a) * PointFExtension.TO_DEGREES;
+        }
+
+        public static void Compress(Stream sourceStream, string compressedFile)
+        {
+            // поток дл€ записи сжатого файла
+            using (FileStream targetStream = File.Create(compressedFile))
+            {
+                // поток архивации
+                using (GZipStream compressionStream = new GZipStream(targetStream, CompressionMode.Compress))
+                {
+                    sourceStream.CopyTo(compressionStream); // копируем байты из одного потока в другой
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="compressedFile"></param>
+        /// <param name="targetStream">поток дл€ записи восстановленного файла</param>
+        public static void Decompress(string compressedFile, Stream targetStream)
+        {
+            // поток дл€ чтени€ из сжатого файла
+            using (FileStream sourceStream = new FileStream(compressedFile, FileMode.OpenOrCreate))
+            {
+                // поток разархивации
+                using (GZipStream decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                {
+                    decompressionStream.CopyTo(targetStream);
+                }
+            }
+        }
+
+        /// <summary>
+        /// —охранить все фигуры в поток
+        /// </summary>
+        /// <param name="stream">поток в пам€ти</param>
+        /// <param name="listToSave">список дл€ сохранени€</param>
+        public static void SaveToStream(Stream stream, object obj)
+        {
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(stream, obj);
+            //stream.Position = 0;
+        }
+
+        /// <summary>
+        /// ¬осстановить фигуры из потока в пам€ти
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static object LoadFromStream(Stream stream)
+        {
+            var formatter = new BinaryFormatter();
+            //stream.Position = 0;
+            return formatter.Deserialize(stream);
         }
     }
 }

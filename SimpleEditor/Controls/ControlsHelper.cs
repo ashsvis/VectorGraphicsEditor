@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SimpleEditor.Controls
 {
-    public static class Helper
+    public static class ControlsHelper
     {
         /// <summary>
         /// Returns property value for multiple objects.

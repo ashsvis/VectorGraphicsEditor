@@ -105,8 +105,8 @@
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.tsbHelp = new System.Windows.Forms.ToolStripButton();
-            this.saveFiguresFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.openFiguresFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveEditorFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openEditorFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslEditorMode = new System.Windows.Forms.ToolStripStatusLabel();
@@ -156,6 +156,7 @@
             this.tsddbEffectSwitcher = new System.Windows.Forms.ToolStripSplitButton();
             this.tsmiNoneEffects = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiShadow = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiGlow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbBringToFront = new System.Windows.Forms.ToolStripButton();
             this.tsbSendToBack = new System.Windows.Forms.ToolStripButton();
@@ -179,7 +180,6 @@
             this.tsbEvenVerticalSpaces = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbLock = new System.Windows.Forms.ToolStripButton();
-            this.tsmiGlow = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -415,8 +415,9 @@
             this.tsmCreate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCreate.Name = "tsmCreate";
             this.tsmCreate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmCreate.Size = new System.Drawing.Size(146, 22);
+            this.tsmCreate.Size = new System.Drawing.Size(180, 22);
             this.tsmCreate.Text = "&New";
+            this.tsmCreate.Click += new System.EventHandler(this.tsmCreate_Click);
             // 
             // tsmOpen
             // 
@@ -424,13 +425,14 @@
             this.tsmOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmOpen.Name = "tsmOpen";
             this.tsmOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmOpen.Size = new System.Drawing.Size(146, 22);
+            this.tsmOpen.Size = new System.Drawing.Size(180, 22);
             this.tsmOpen.Text = "&Open";
+            this.tsmOpen.Click += new System.EventHandler(this.tsmOpen_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmSave
             // 
@@ -439,19 +441,20 @@
             this.tsmSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmSave.Name = "tsmSave";
             this.tsmSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmSave.Size = new System.Drawing.Size(146, 22);
+            this.tsmSave.Size = new System.Drawing.Size(180, 22);
             this.tsmSave.Text = "&Save";
             // 
             // tsmSaveAs
             // 
             this.tsmSaveAs.Name = "tsmSaveAs";
-            this.tsmSaveAs.Size = new System.Drawing.Size(146, 22);
+            this.tsmSaveAs.Size = new System.Drawing.Size(180, 22);
             this.tsmSaveAs.Text = "Save &as...";
+            this.tsmSaveAs.Click += new System.EventHandler(this.tsmSaveAs_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmPrint
             // 
@@ -460,7 +463,7 @@
             this.tsmPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPrint.Name = "tsmPrint";
             this.tsmPrint.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.tsmPrint.Size = new System.Drawing.Size(146, 22);
+            this.tsmPrint.Size = new System.Drawing.Size(180, 22);
             this.tsmPrint.Text = "&Print";
             // 
             // tsmPreview
@@ -469,18 +472,18 @@
             this.tsmPreview.Image = ((System.Drawing.Image)(resources.GetObject("tsmPreview.Image")));
             this.tsmPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPreview.Name = "tsmPreview";
-            this.tsmPreview.Size = new System.Drawing.Size(146, 22);
+            this.tsmPreview.Size = new System.Drawing.Size(180, 22);
             this.tsmPreview.Text = "Pre&view";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmExit
             // 
             this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(146, 22);
+            this.tsmExit.Size = new System.Drawing.Size(180, 22);
             this.tsmExit.Text = "E&xit";
             // 
             // tsmEditMenu
@@ -734,7 +737,7 @@
             this.toolStripFile.Location = new System.Drawing.Point(3, 24);
             this.toolStripFile.Name = "toolStripFile";
             this.toolStripFile.Padding = new System.Windows.Forms.Padding(0);
-            this.toolStripFile.Size = new System.Drawing.Size(250, 25);
+            this.toolStripFile.Size = new System.Drawing.Size(281, 25);
             this.toolStripFile.TabIndex = 1;
             // 
             // tsbNew
@@ -745,6 +748,7 @@
             this.tsbNew.Name = "tsbNew";
             this.tsbNew.Size = new System.Drawing.Size(23, 22);
             this.tsbNew.Text = "&Создать";
+            this.tsbNew.Click += new System.EventHandler(this.tsmCreate_Click);
             // 
             // tsbOpen
             // 
@@ -754,6 +758,7 @@
             this.tsbOpen.Name = "tsbOpen";
             this.tsbOpen.Size = new System.Drawing.Size(23, 22);
             this.tsbOpen.Text = "&Открыть";
+            this.tsbOpen.Click += new System.EventHandler(this.tsmOpen_Click);
             // 
             // tsbSave
             // 
@@ -847,17 +852,17 @@
             this.tsbHelp.Size = new System.Drawing.Size(23, 22);
             this.tsbHelp.Text = "Спр&авка";
             // 
-            // saveFiguresFileDialog
+            // saveEditorFileDialog
             // 
-            this.saveFiguresFileDialog.DefaultExt = "pic";
-            this.saveFiguresFileDialog.FileName = "example";
-            this.saveFiguresFileDialog.Filter = "*.pic|*.pic";
+            this.saveEditorFileDialog.DefaultExt = "pic";
+            this.saveEditorFileDialog.FileName = "example";
+            this.saveEditorFileDialog.Filter = "*.pic|*.pic";
             // 
-            // openFiguresFileDialog
+            // openEditorFileDialog
             // 
-            this.openFiguresFileDialog.DefaultExt = "pic";
-            this.openFiguresFileDialog.FileName = "example";
-            this.openFiguresFileDialog.Filter = "*.pic|*.pic";
+            this.openEditorFileDialog.DefaultExt = "pic";
+            this.openEditorFileDialog.FileName = "example";
+            this.openEditorFileDialog.Filter = "*.pic|*.pic";
             // 
             // toolStripContainer1
             // 
@@ -1201,7 +1206,7 @@
             this.tsbLock});
             this.tsArrange.Location = new System.Drawing.Point(3, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(731, 25);
+            this.tsArrange.Size = new System.Drawing.Size(700, 25);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1373,16 +1378,23 @@
             // tsmiNoneEffects
             // 
             this.tsmiNoneEffects.Name = "tsmiNoneEffects";
-            this.tsmiNoneEffects.Size = new System.Drawing.Size(180, 22);
+            this.tsmiNoneEffects.Size = new System.Drawing.Size(116, 22);
             this.tsmiNoneEffects.Text = "None";
             this.tsmiNoneEffects.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // tsmiShadow
             // 
             this.tsmiShadow.Name = "tsmiShadow";
-            this.tsmiShadow.Size = new System.Drawing.Size(180, 22);
+            this.tsmiShadow.Size = new System.Drawing.Size(116, 22);
             this.tsmiShadow.Text = "Shadow";
             this.tsmiShadow.Click += new System.EventHandler(this.tsmiShadow_Click);
+            // 
+            // tsmiGlow
+            // 
+            this.tsmiGlow.Name = "tsmiGlow";
+            this.tsmiGlow.Size = new System.Drawing.Size(116, 22);
+            this.tsmiGlow.Text = "Glow";
+            this.tsmiGlow.Click += new System.EventHandler(this.tsmiGlow_Click);
             // 
             // toolStripSeparator19
             // 
@@ -1579,13 +1591,6 @@
             this.tsbLock.Size = new System.Drawing.Size(23, 22);
             this.tsbLock.Text = "Блокировать (разблокировать) перемещение элемента";
             // 
-            // tsmiGlow
-            // 
-            this.tsmiGlow.Name = "tsmiGlow";
-            this.tsmiGlow.Size = new System.Drawing.Size(180, 22);
-            this.tsmiGlow.Text = "Glow";
-            this.tsmiGlow.Click += new System.EventHandler(this.tsmiGlow_Click);
-            // 
             // FormSimpleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1665,8 +1670,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmCopy;
         private System.Windows.Forms.ToolStripMenuItem tsmPaste;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.SaveFileDialog saveFiguresFileDialog;
-        private System.Windows.Forms.OpenFileDialog openFiguresFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveEditorFileDialog;
+        private System.Windows.Forms.OpenFileDialog openEditorFileDialog;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsslRibbonRect;
