@@ -586,6 +586,12 @@ namespace SimpleEditor
             ChangeEffects(_effectRenderer);
         }
 
+        private void tsmiGlow_Click(object sender, EventArgs e)
+        {
+            _effectRenderer = (ToolStripMenuItem)sender;
+            ChangeEffects(_effectRenderer);
+        }
+
         private void ChangeEffects(ToolStripItem sender)
         {
             var exists = _selectionController.Selection.Count > 0;
@@ -597,7 +603,7 @@ namespace SimpleEditor
             {
                 OnLayerStartChanging("Reset Figure Effect");
                 foreach (var figure in figures.Where(f => 
-                    f.Renderer.GetType() == typeof(ShadowRenderer)))
+                    f.Renderer.GetType() != typeof(Renderer)))
                 {
                     figure.Renderer = new Renderer();
                     list.Add(figure);
@@ -608,9 +614,20 @@ namespace SimpleEditor
             {
                 OnLayerStartChanging("Shadow Figure Effect");
                 foreach (var figure in figures.Where(f => 
-                    f.Renderer.GetType() == typeof(Renderer)))
+                    f.Renderer.GetType() != typeof(ShadowRenderer)))
                 {
                     figure.Renderer = new ShadowRenderer();
+                    list.Add(figure);
+                }
+                OnLayerChanged();
+            }
+            else if (sender == tsmiGlow)
+            {
+                OnLayerStartChanging("Glow Figure Effect");
+                foreach (var figure in figures.Where(f =>
+                    f.Renderer.GetType() != typeof(GlowRenderer)))
+                {
+                    figure.Renderer = new GlowRenderer();
                     list.Add(figure);
                 }
                 OnLayerChanged();

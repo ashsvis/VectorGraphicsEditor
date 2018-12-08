@@ -47,6 +47,7 @@
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
+    <Compile Include="Renderers\GlowRenderer.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />
     <Compile Include="Renderers\ImageRenderer.cs" />
     <Compile Include="Renderers\ShadowRenderer.cs" />
