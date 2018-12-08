@@ -26,10 +26,8 @@ namespace EditorModel.Style
         {
             // возвращаем созданную и настроенную кисть для фигуры
             var bounds = figure.GetTransformedPath().Path.GetBounds();
-            var matrixAngle = Helper.GetAngle(figure.Transform);
-            var angle = matrixAngle + Angle;
-            Angle = Helper.GetAngle(figure.Transform);
-            return new LinearGradientBrush(bounds, Color, GradientColor, Angle);
+            var angle = Helper.GetAngle(figure.Transform) + Angle;
+            return new LinearGradientBrush(bounds, Color, GradientColor, angle);
         }
 
     }
