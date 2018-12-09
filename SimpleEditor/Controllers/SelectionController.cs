@@ -73,7 +73,7 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Изменилась рамка выделения
         /// </summary>
-        public event Action<Rectangle> SelectedRangeChanging = delegate { };
+        public event Action<Rectangle, float> SelectedRangeChanging = delegate { };
 
         /// <summary>
         /// Изменился режим работы редактора
@@ -122,7 +122,8 @@ namespace SimpleEditor.Controllers
                 }
                 _editorMode = value;
                 // запрещаем рисовать рамку вокруг фигур, когда изменяем вершины
-                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies && (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
+                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies && 
+                    (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
@@ -326,7 +327,11 @@ namespace SimpleEditor.Controllers
                         break;
                 }
             }
-            OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds()));
+            var selrect = Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds());
+            var angle = EditorModel.Common.Helper.GetAngle(_selection.Transform);
+            var size = Size.Ceiling(EditorModel.Common.Helper.GetSize(_selection.Transform));
+
+            OnSelectedRangeChanging(selrect, angle);
         }
 
         /// <summary>
@@ -522,9 +527,9 @@ namespace SimpleEditor.Controllers
         /// Вызываем привязанный к событию метод при изменении рамки выбора
         /// </summary>
         /// <param name="rect"></param>
-        private void OnSelectedRangeChanging(Rectangle rect)
+        private void OnSelectedRangeChanging(Rectangle rect, float angle)
         {
-            SelectedRangeChanging(rect);
+            SelectedRangeChanging(rect, angle);
         }
 
         /// <summary>

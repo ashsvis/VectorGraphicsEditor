@@ -13,6 +13,7 @@ using SimpleEditor.Common;
 using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
 using System.IO;
+using System.Text;
 
 namespace SimpleEditor
 {
@@ -102,9 +103,22 @@ namespace SimpleEditor
             pbCanvas.Invalidate();
         }
 
-        private void _selectionController_SelectedRangeChanging(Rectangle rect)
+        private void _selectionController_SelectedRangeChanging(Rectangle rect, float angle)
         {
-            tsslRibbonRect.Text = string.Format("{0}", rect);
+            var sb = new StringBuilder();
+            sb.AppendFormat("Area: {0}", rect);
+            if (angle != 0)
+                sb.AppendFormat(" Rotate at: {0:0.0}°", angle);
+            if (_selectionController.EditorMode == EditorMode.Drag &&
+                _selectionController.Selection.Count > 0)
+            {
+                var figure = _selectionController.Selection.FirstOrDefault();
+                angle = EditorModel.Common.Helper.GetAngle(figure.Transform);
+                var size = EditorModel.Common.Helper.GetSize(figure.Transform);
+                sb.AppendFormat(" Figure: size {0}, rotated at {1:0.0}°", size, angle);
+            }
+
+            tsslRibbonRect.Text = sb.ToString();
             UpdateInterface();
         }
 
