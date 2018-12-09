@@ -18,6 +18,9 @@ namespace SimpleEditor
 {
     public partial class FormSimpleEditor : Form
     {
+        string _caption;
+        VersionInfo _versionInfo;
+
         Layer _layer;
         readonly SelectionController _selectionController;
         readonly UndoRedoController _undoRedoController;
@@ -25,6 +28,9 @@ namespace SimpleEditor
         public FormSimpleEditor()
         {
             InitializeComponent();
+            _versionInfo = new VersionInfo { Version = 1 };
+            _caption = string.Format("Simple Vector Graphics Editor (ver 0.{0})", _versionInfo.Version);
+
 
             _layer = new Layer();
             _undoRedoController = new UndoRedoController(_layer);
@@ -79,13 +85,19 @@ namespace SimpleEditor
 
         private void UpdateInterface()
         {
-            tsbUndo.Enabled = tsmUndo.Enabled = UndoRedoManager.Instance.CanUndo;
+            tsbUndo.Enabled = tsmUndo.Enabled = FileChanged = UndoRedoManager.Instance.CanUndo;
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
+            tsbSave.Enabled = tsmSave.Enabled = FileChanged;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
             tsbImage.Enabled = _selectionController.EditorMode == EditorMode.Select;
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = _selectionController.Selection.Count > 0;
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =
+                tsbBringToFront.Enabled = tsbSendToBack.Enabled =  _selectionController.Selection.Count > 0;
+
+            tsbGroup.Enabled = _selectionController.Selection.Count > 1;
+            tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Count() > 0;
+
 
             pbCanvas.Invalidate();
         }
@@ -574,6 +586,9 @@ namespace SimpleEditor
         }
 
         private ToolStripMenuItem _effectRenderer;
+        private string _fileName = string.Empty;
+
+        public bool FileChanged { get; private set; }
 
         private void tsmiNoneEffects_Click(object sender, EventArgs e)
         {
@@ -688,6 +703,17 @@ namespace SimpleEditor
             BuildInterface();
         }
 
+        private void tsmSave_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_fileName))
+            {
+                if (saveEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
+                SaveToFile(saveEditorFileDialog.FileName);
+            }
+            else
+                SaveToFile(_fileName);
+        }
+
         /// <summary>
         /// Метод записи фигур в файл
         /// </summary>
@@ -696,14 +722,16 @@ namespace SimpleEditor
         {
             using (var stream = new MemoryStream())
             {
-                Helper.SaveToStream(stream, new VersionInfo { Version = 1 });
+                Helper.SaveToStream(stream, _versionInfo);
                 Helper.SaveToStream(stream, _layer.FillStyle);
                 Helper.SaveToStream(stream, _layer.Figures);
                 stream.Position = 0;
                 Helper.Compress(stream, fileName);
             }
-            //_fileName = fileName;
-            //FileChanged = false;
+            _fileName = fileName;
+            UndoRedoManager.Instance.ClearHistory();
+            Text = _caption + " - " + _fileName;
+            BuildInterface();
         }
 
         private void tsmSaveAs_Click(object sender, EventArgs e)
@@ -718,15 +746,31 @@ namespace SimpleEditor
             {
                 Helper.Decompress(fileName, stream);
                 stream.Position = 0;
-                var info = (VersionInfo)Helper.LoadFromStream(stream);
+                var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
+                if (versionInfo.Version > _versionInfo.Version)
+                {
+                    MessageBox.Show(this, "Формат загружаемого файла не поддерживается.", "Загрузка файла отменена", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 _layer.FillStyle = (Fill)Helper.LoadFromStream(stream);
                 var figures = (List<Figure>)Helper.LoadFromStream(stream);
                 _layer.Figures = figures;
             }
+            _fileName = fileName;
+            Text = _caption + " - " + _fileName;
+            UndoRedoManager.Instance.ClearHistory();
+            BuildInterface();
         }
 
         private void tsmOpen_Click(object sender, EventArgs e)
         {
+            if (FileChanged)
+            {
+                if (MessageBox.Show(this, "Несохранённые данные будут потеряны.\nОткрыть новый файл?",
+                    "Сохранение файла", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button3) != DialogResult.Yes) return;
+            }
             if (openEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
             CreateNew();
             LoadFromFile(openEditorFileDialog.FileName);
@@ -740,11 +784,39 @@ namespace SimpleEditor
 
         private void CreateNew()
         {
+            _fileName = string.Empty;
+            FileChanged = false;
+            Text = _caption;
             _selectionController.Clear();
             UndoRedoManager.Instance.ClearHistory();
             _layer.FillStyle = new Fill { IsVisible = false };
             _layer.Figures.Clear();
             BuildInterface();
+        }
+
+        private void FormSimpleEditor_Load(object sender, EventArgs e)
+        {
+            Text = _caption;
+        }
+
+        private void tsmExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void FormSimpleEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (FileChanged)
+            {
+                if (MessageBox.Show(this, "Несохранённые данные будут потеряны.\nЗакрыть приложение?",
+                    "Завершение работы приложения", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button3) != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
         }
     }
 }
