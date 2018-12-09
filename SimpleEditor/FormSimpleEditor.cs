@@ -99,7 +99,6 @@ namespace SimpleEditor
             tsbGroup.Enabled = _selectionController.Selection.Count > 1;
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Count() > 0;
 
-
             pbCanvas.Invalidate();
         }
 
@@ -761,7 +760,7 @@ namespace SimpleEditor
                 Helper.Decompress(fileName, stream);
                 stream.Position = 0;
                 var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
-                if (versionInfo.Version > _versionInfo.Version)
+                if (versionInfo.Version != _versionInfo.Version)
                 {
                     MessageBox.Show(this, "Формат загружаемого файла не поддерживается.", "Загрузка файла отменена", 
                         MessageBoxButtons.OK, MessageBoxIcon.Error);

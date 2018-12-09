@@ -1,6 +1,7 @@
 ﻿using EditorModel.Figures;
 using EditorModel.Geometry;
 using EditorModel.Selections;
+using EditorModel.Style;
 using SimpleEditor.Common;
 using System;
 using System.Collections.Generic;
@@ -704,7 +705,7 @@ namespace SimpleEditor.Controllers
                             if (polygone == null) continue;
                             var points = polygone.GetTransformedPoints(fig);
                             for (var i = 0; i < points.Length; i++)
-                                Markers.Add(CreateVertexMarker(points[i], i, fig));
+                                Markers.Add(CreateMarker(MarkerType.Vertex, points[i], i, fig));
                         }
                     }
                     break;
@@ -735,17 +736,28 @@ namespace SimpleEditor.Controllers
                     }
                     break;
             }
+            // создаём маркеры линейного градиента
+            foreach (var fig in _selection.Where(figure => figure.Style.FillStyle is LinearGradientFill))
+            {
+                var lineGradient = fig.Style.FillStyle as LinearGradientFill;
+                //get transformed points
+                if (lineGradient == null) continue;
+                var points = lineGradient.GetGradientPoints(fig);
+                for (var i = 0; i < points.Length; i++)
+                    Markers.Add(CreateMarker(MarkerType.Grafient, points[i], i, fig));
+            }
+
             // задаём геометрию маркеров по умолчанию 
             var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
                 FigureBuilder.BuildMarkerGeometry(marker);
         }
 
-        private VertexMarker CreateVertexMarker(PointF point, int index, Figure fig)
+        private VertexMarker CreateMarker(MarkerType markerType, PointF point, int index, Figure fig)
         {
             var marker = new VertexMarker
             {
-                MarkerType = MarkerType.Vertex,
+                MarkerType = markerType,
                 Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
                 Position = point,
                 Index = index,

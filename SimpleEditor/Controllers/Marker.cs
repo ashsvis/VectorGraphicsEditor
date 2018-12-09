@@ -33,6 +33,7 @@ namespace SimpleEditor.Controllers
         Rotate,
         SkewX,
         SkewY,
-        Vertex
+        Vertex,
+        Grafient
     }
 }
