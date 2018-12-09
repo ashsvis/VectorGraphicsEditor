@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
-    <Compile Include="Common\SerializableGraphicsImage.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
     <Compile Include="Renderers\GlowRenderer.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />

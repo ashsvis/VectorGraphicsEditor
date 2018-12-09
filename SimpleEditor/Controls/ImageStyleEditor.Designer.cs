@@ -47,7 +47,6 @@
             // 
             this.lbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbImage.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.lbImage.Location = new System.Drawing.Point(42, 2);
             this.lbImage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbImage.Name = "lbImage";
