@@ -11,6 +11,7 @@ namespace SimpleEditor.Controls
     {
         private Selection _selection;
         private int _updating;
+        private Image _image;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -35,9 +36,9 @@ namespace SimpleEditor.Controls
             // copy properties of object to GUI
             _updating++;
 
-            lbImage.Image = imageFillStyles.GetProperty(f => f.Image);
+            lbImage.Image = _image = imageFillStyles.GetProperty(f => f.Image);
 
-            cbStretch.Enabled = lbImage.Image != null;
+            cbStretch.Enabled = _image != null;
 
             cbStretch.Checked = imageFillStyles.GetProperty(f => f.IsStretch);
 
@@ -59,7 +60,7 @@ namespace SimpleEditor.Controls
             var imageFillStyles = _selection.Select(f => f.Renderer as ImageRenderer).ToList();
 
             // send values back from GUI to object
-            imageFillStyles.SetProperty(f => f.Image = lbImage.Image);
+            imageFillStyles.SetProperty(f => f.Image = _image);
             imageFillStyles.SetProperty(f => f.IsStretch = cbStretch.Checked);
             imageFillStyles.SetProperty(f => f.IsTile = cbTile.Checked);
 
@@ -71,9 +72,9 @@ namespace SimpleEditor.Controls
         {
             var dlg = new OpenFileDialog {Filter = @"*.png;*.jpg;*.bmp|*.png;*.jpg;*.bmp"};
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            lbImage.Image = Image.FromFile(dlg.FileName);
-            cbStretch.Enabled = lbImage.Image != null;
-            cbTile.Enabled = !cbStretch.Checked && lbImage.Image != null;
+            lbImage.Image = _image = Image.FromFile(dlg.FileName);
+            cbStretch.Enabled = _image != null;
+            cbTile.Enabled = !cbStretch.Checked && _image != null;
             UpdateObject();
         }
 

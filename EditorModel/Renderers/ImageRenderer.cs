@@ -3,6 +3,7 @@ using EditorModel.Common;
 using System;
 using System.Drawing;
 using EditorModel.Figures;
+using System.IO;
 
 namespace EditorModel.Renderers
 {
@@ -10,17 +11,32 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика картинки
     /// </summary>
     [Serializable]
-    public sealed class ImageRenderer : Renderer, IDisposable
+    public sealed class ImageRenderer : Renderer
     {
-        private Image _image;
+        private string _base64ImageString;
 
         public Image Image
         {
-            get { return _image; }
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_base64ImageString))
+                    return null;
+                byte[] imageBytes = Convert.FromBase64String(_base64ImageString);
+                using (MemoryStream m = new MemoryStream(imageBytes))
+                {
+                    return Image.FromStream(m);
+                }
+            }
             set
             {
-                if (_image != null) _image.Dispose();
-                _image = value;
+                if (value == null) return;
+                using (MemoryStream m = new MemoryStream())
+                {
+                    value.Save(m, value.RawFormat);
+                    byte[] imageBytes = m.ToArray();
+                    // Convert byte[] to Base64 String
+                    _base64ImageString = Convert.ToBase64String(imageBytes);
+                }
             }
         }
 
@@ -30,18 +46,7 @@ namespace EditorModel.Renderers
 
         public ImageRenderer(Image image)
         {
-            _image = image;
-        }
-
-        ~ImageRenderer()
-        {
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            if (_image == null) return;
-            _image.Dispose();
+            Image = image;
         }
 
         /// <summary>
@@ -62,19 +67,20 @@ namespace EditorModel.Renderers
                 var size = Helper.GetSize(figure.Transform);
                 graphics.RotateTransform(angle);
                 var clientRect = new RectangleF(-size.Width / 2, -size.Height / 2, size.Width, size.Height);
-                if (_image == null)
+                var image = Image;
+                if (image == null)
                 {
                     using (var pen = new Pen(Color.Black, 1f))
                     {
                         pen.DashStyle = DashStyle.DashDot;
-                        graphics.DrawRectangles(pen, new[] {clientRect});
+                        graphics.DrawRectangles(pen, new[] { clientRect });
                     }
                 }
                 else if (IsStretch)
-                    graphics.DrawImage(_image, clientRect);
+                    graphics.DrawImage(image, clientRect);
                 else if (IsTile)
                 {
-                    var rsize = new Size(_image.Width, _image.Height);
+                    var rsize = new Size(image.Width, image.Height);
                     var rowcount = (int)Math.Ceiling(clientRect.Height / rsize.Height);
                     var colcount = (int)Math.Ceiling(clientRect.Width / rsize.Width);
                     for (var row = 0; row < rowcount; row++)
@@ -86,12 +92,12 @@ namespace EditorModel.Renderers
                             var r = new Rectangle(p, new Size(rsize.Width, rsize.Height));
                             var master = Rectangle.Ceiling(clientRect);
                             master.Intersect(r);
-                            graphics.DrawImageUnscaledAndClipped(_image, master);
+                            graphics.DrawImageUnscaledAndClipped(image, master);
                         }
                     }
                 }
                 else
-                    graphics.DrawImage(_image, clientRect.Location);
+                    graphics.DrawImage(image, clientRect.Location);
                 graphics.ResetTransform();
             }
         }
