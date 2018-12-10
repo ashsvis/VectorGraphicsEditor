@@ -8,6 +8,7 @@ using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Geometry;
 using EditorModel.Renderers;
+using EditorModel.Style;
 
 namespace EditorModel.Selections
 {
@@ -313,11 +314,34 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
+        /// Перемещение точки градиента
+        /// </summary>
+        /// <param name="owner">Фигура</param>
+        /// <param name="index">Индекс точки градиента</param>
+        /// <param name="newPosition">Смещение</param>
+        public void MoveGradient(Figure owner, int index, PointF newPosition)
+        {
+            var gradient = owner.Style.FillStyle as LinearGradientFill;
+            if (gradient == null)
+                return; // работаем только с линейными градиентами
+            
+            //get points in world coordinates
+            var points = gradient.GetGradientPoints(owner);
+
+            //move point
+            points[index] = newPosition;
+
+            //push
+            gradient.SetGradientPoints(owner, points);
+            
+        }
+
+        /// <summary>
         /// Перемещение вершины
         /// </summary>
         /// <param name="owner">Фигура</param>
         /// <param name="index">Индекс вершины</param>
-        /// <param name="newPosition">смещение</param>
+        /// <param name="newPosition">Смещение</param>
         public void MoveVertex(Figure owner, int index, PointF newPosition)
         {
             //можем менять положение вершин?

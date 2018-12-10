@@ -19,10 +19,10 @@ namespace SimpleEditor
 {
     public partial class FormSimpleEditor : Form
     {
-        string _caption;
-        VersionInfo _versionInfo;
+        readonly string _caption;
+        readonly VersionInfo _versionInfo;
 
-        Layer _layer;
+        readonly Layer _layer;
         readonly SelectionController _selectionController;
         readonly UndoRedoController _undoRedoController;
 
@@ -94,10 +94,24 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             tsddbGeometySwitcher.Enabled = exists;
             tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =
-                tsbBringToFront.Enabled = tsbSendToBack.Enabled =  _selectionController.Selection.Count > 0;
+                                             tsbBringToFront.Enabled = tsbSendToBack.Enabled =
+                                                                       tsbFlipX.Enabled =
+                                                                       tsbFlipY.Enabled =
+                                                                       tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled =
+                                                                                                tsbRotate180.Enabled =
+                                                                                                _selectionController
+                                                                                                    .Selection.Count > 0;
 
-            tsbGroup.Enabled = _selectionController.Selection.Count > 1;
-            tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Count() > 0;
+            tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
+                                                                               tsbAlignTop.Enabled =
+                                                                               tsbAlignMiddle.Enabled =
+                                                                               tsbAlignBottom.Enabled =
+                                                                               _selectionController.Selection.Count > 1;
+            tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
+
+            tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
+                                                           _selectionController.Selection.Count(
+                                                               SelectionHelper.IsNotSkewAndRotated) > 1;
 
             pbCanvas.Invalidate();
         }
@@ -106,15 +120,18 @@ namespace SimpleEditor
         {
             var sb = new StringBuilder();
             sb.AppendFormat("Area: {0}", rect);
-            if (angle != 0)
+            if (Math.Abs(angle - 0) > float.Epsilon)
                 sb.AppendFormat(" Rotate at: {0:0.0}°", angle);
             if (_selectionController.EditorMode == EditorMode.Drag &&
                 _selectionController.Selection.Count > 0)
             {
                 var figure = _selectionController.Selection.FirstOrDefault();
-                angle = EditorModel.Common.Helper.GetAngle(figure.Transform);
-                var size = EditorModel.Common.Helper.GetSize(figure.Transform);
-                sb.AppendFormat(" Figure: size {0}, rotated at {1:0.0}°", size, angle);
+                if (figure != null)
+                {
+                    angle = EditorModel.Common.Helper.GetAngle(figure.Transform);
+                    var size = EditorModel.Common.Helper.GetSize(figure.Transform);
+                    sb.AppendFormat(" Figure: size {0}, rotated at {1:0.0}°", size, angle);
+                }
             }
 
             tsslRibbonRect.Text = sb.ToString();
@@ -174,18 +191,9 @@ namespace SimpleEditor
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                #region Предлагаю
-
                 if (_layer.FillStyle.IsVisible)
-                {
                     using (var brush = _layer.FillStyle.GetBrush(null))
-                    {
                         graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
-                    }  
-                }
-                //graphics.Clear(Color.WhiteSmoke);
-
-                #endregion
 
                 // отрисовка созданных фигур
                 foreach (var fig in _layer.Figures)
@@ -543,12 +551,6 @@ namespace SimpleEditor
             ChangeFillBrush(_switchBrush);
         }
 
-        private void tsmiLinearGradientBrush_Click(object sender, EventArgs e)
-        {
-            _switchBrush = (ToolStripMenuItem)sender;
-            ChangeFillBrush(_switchBrush);
-        }
-
         private void tsddbFillBrushSwitcher_Click(object sender, EventArgs e)
         {
             if (_switchBrush == null)
@@ -601,21 +603,9 @@ namespace SimpleEditor
         private ToolStripMenuItem _effectRenderer;
         private string _fileName = string.Empty;
 
-        public bool FileChanged { get; private set; }
+        private bool FileChanged { get; set; }
 
         private void tsmiNoneEffects_Click(object sender, EventArgs e)
-        {
-            _effectRenderer = (ToolStripMenuItem)sender;
-            ChangeEffects(_effectRenderer);
-        }
-
-        private void tsmiShadow_Click(object sender, EventArgs e)
-        {
-            _effectRenderer = (ToolStripMenuItem)sender;
-            ChangeEffects(_effectRenderer);
-        }
-
-        private void tsmiGlow_Click(object sender, EventArgs e)
         {
             _effectRenderer = (ToolStripMenuItem)sender;
             ChangeEffects(_effectRenderer);
@@ -731,7 +721,7 @@ namespace SimpleEditor
         /// Метод записи фигур в файл
         /// </summary>
         /// <param name="fileName"></param>
-        public void SaveToFile(string fileName)
+        private void SaveToFile(string fileName)
         {
             using (var stream = new MemoryStream())
             {
@@ -743,7 +733,7 @@ namespace SimpleEditor
             }
             _fileName = fileName;
             UndoRedoManager.Instance.ClearHistory();
-            Text = _caption + " - " + _fileName;
+            Text = _caption + @" - " + _fileName;
             BuildInterface();
         }
 
@@ -762,8 +752,9 @@ namespace SimpleEditor
                 var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
                 if (versionInfo.Version != _versionInfo.Version)
                 {
-                    MessageBox.Show(this, "Формат загружаемого файла не поддерживается.", "Загрузка файла отменена", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, @"Формат загружаемого файла не поддерживается.",
+                                    @"Загрузка файла отменена",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 _layer.FillStyle = (Fill)Helper.LoadFromStream(stream);
@@ -771,7 +762,7 @@ namespace SimpleEditor
                 _layer.Figures = figures;
             }
             _fileName = fileName;
-            Text = _caption + " - " + _fileName;
+            Text = _caption + @" - " + _fileName;
             UndoRedoManager.Instance.ClearHistory();
             BuildInterface();
         }
@@ -780,8 +771,8 @@ namespace SimpleEditor
         {
             if (FileChanged)
             {
-                if (MessageBox.Show(this, "Несохранённые данные будут потеряны.\nОткрыть новый файл?",
-                    "Сохранение файла", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                if (MessageBox.Show(this, @"Несохранённые данные будут потеряны." + Environment.NewLine + @"Открыть новый файл?",
+                    @"Сохранение файла", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
                     MessageBoxDefaultButton.Button3) != DialogResult.Yes) return;
             }
             if (openEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
@@ -819,17 +810,65 @@ namespace SimpleEditor
 
         private void FormSimpleEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FileChanged)
-            {
-                if (MessageBox.Show(this, "Несохранённые данные будут потеряны.\nЗакрыть приложение?",
-                    "Завершение работы приложения", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button3) != DialogResult.Yes)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
+            if (!FileChanged) return;
+            if (MessageBox.Show(this, @"Несохранённые данные будут потеряны." + Environment.NewLine + @"Закрыть приложение?",
+                                @"Завершение работы приложения", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button3) == DialogResult.Yes) return;
+            e.Cancel = true;
+        }
 
+        private void tsbAlignLeft_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignHorizontal(FigureAlignment.Near);
+            UpdateInterface();
+        }
+
+        private void tsbAlignCenter_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignHorizontal(FigureAlignment.Center);
+            UpdateInterface();
+        }
+
+        private void tsbAlignRight_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignHorizontal(FigureAlignment.Far);
+            UpdateInterface();
+        }
+
+        private void tsbAlignTop_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignVertical(FigureAlignment.Near);
+            UpdateInterface();
+        }
+
+        private void tsbAlignMiddle_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignVertical(FigureAlignment.Center);
+            UpdateInterface();
+        }
+
+        private void tsbAlignBottom_Click(object sender, EventArgs e)
+        {
+            _selectionController.AlignVertical(FigureAlignment.Far);
+            UpdateInterface();
+        }
+
+        private void tsbSameBothSizes_Click(object sender, EventArgs e)
+        {
+            _selectionController.SameResize(FigureResize.Both);
+            UpdateInterface();
+        }
+
+        private void tsbSameWidth_Click(object sender, EventArgs e)
+        {
+            _selectionController.SameResize(FigureResize.Width);
+            UpdateInterface();
+        }
+
+        private void tsbSameHeight_Click(object sender, EventArgs e)
+        {
+            _selectionController.SameResize(FigureResize.Heigth);
+            UpdateInterface();
         }
     }
 }

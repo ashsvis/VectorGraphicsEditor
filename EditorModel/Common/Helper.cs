@@ -28,6 +28,18 @@ namespace EditorModel.Common
             return new SizeF((float)scaledX.Length, (float)scaledY.Length);
         }
 
+        public static float GetSkewAngle(Matrix matrix)
+        {
+            var x = new Vector(1, 0);
+            var y = new Vector(0, 1);
+            var matr = new System.Windows.Media.Matrix(matrix.Elements[0], matrix.Elements[1], matrix.Elements[2],
+                                                       matrix.Elements[3], matrix.Elements[4], matrix.Elements[5]);
+            var skewX = Vector.Multiply(x, matr);
+            var skewY = Vector.Multiply(y, matr);
+            var angleBetween = Vector.AngleBetween(skewX, skewY);
+            return (float)angleBetween;
+        }
+
         /// <summary>
         /// Преобразование ContentAlignment в StringFormat.Alignment и StringFormat.LineAlignment
         /// </summary>

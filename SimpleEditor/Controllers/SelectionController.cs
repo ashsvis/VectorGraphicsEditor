@@ -330,8 +330,6 @@ namespace SimpleEditor.Controllers
             }
             var selrect = Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds());
             var angle = EditorModel.Common.Helper.GetAngle(_selection.Transform);
-            var size = Size.Ceiling(EditorModel.Common.Helper.GetSize(_selection.Transform));
-
             OnSelectedRangeChanging(selrect, angle);
         }
 
@@ -478,6 +476,40 @@ namespace SimpleEditor.Controllers
             UpdateMarkers();
         }
 
+        public void AlignHorizontal(FigureAlignment alignment)
+        {
+            OnLayerStartChanging();
+            _selection.AlignHorizontal(alignment);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
+        public void AlignVertical(FigureAlignment alignment)
+        {
+            OnLayerStartChanging();
+            _selection.AlignVertical(alignment);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
+
+        public void SameResize(FigureResize resize)
+        {
+            OnLayerStartChanging();
+            _selection.SameResize(resize);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
         public void UpdateMarkers()
         {
             var list = new List<Figure>(_selection);
@@ -528,6 +560,7 @@ namespace SimpleEditor.Controllers
         /// Вызываем привязанный к событию метод при изменении рамки выбора
         /// </summary>
         /// <param name="rect"></param>
+        /// <param name="angle"></param>
         private void OnSelectedRangeChanging(Rectangle rect, float angle)
         {
             SelectedRangeChanging(rect, angle);
@@ -670,6 +703,20 @@ namespace SimpleEditor.Controllers
 
                     _wasVertexMoving = true;
                     break;
+                case MarkerType.Grafient:
+                    if (!_wasVertexMoving)
+                        OnLayerStartChanging();
+
+                    // двигаем вершину
+                    var gm = (VertexMarker)marker;
+                    _selection.MoveGradient(gm.Owner, gm.Index, mousePos);
+
+                    //обновляем позицию маркера
+                    gm.Position = mousePos;
+                    UpdateMarkerPositions();
+
+                    _wasVertexMoving = true;
+                    break;
             }
         }
 
@@ -748,7 +795,6 @@ namespace SimpleEditor.Controllers
             }
 
             // задаём геометрию маркеров по умолчанию 
-            var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
                 FigureBuilder.BuildMarkerGeometry(marker);
         }
@@ -878,7 +924,7 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public void Ungroup()
         {
-            if (_selection.OfType<GroupFigure>().Count() == 0) return;
+            if (!_selection.OfType<GroupFigure>().Any()) return;
             LayerStartChanging();
             foreach (var fig in _selection.OfType<GroupFigure>())
                 _layer.Figures.Remove(fig);

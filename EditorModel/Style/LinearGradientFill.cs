@@ -9,13 +9,11 @@ namespace EditorModel.Style
     public class LinearGradientFill : Fill
     {
         private PointF[] _points;
-        private LinearGradientMode _gradientMode;
 
         public LinearGradientFill()
         {
-            _points = new[] { new PointF(-0.5f, 0f), new PointF(0.5f, 0f) };
+            _points = new[] { new PointF(-0.5f, 0.25f), new PointF(0.5f, 0.25f) };
             GradientColor = Color.White;
-            Angle = 0;
         }
 
         /// <summary>
@@ -57,32 +55,6 @@ namespace EditorModel.Style
         /// Второй цвет для заполнения фона (цвет градиента)
         /// </summary>
         public Color GradientColor { get; set; }
-
-        public float Angle { get; set; }
-
-        public LinearGradientMode GradientMode
-        {
-            get { return _gradientMode; }
-            set
-            {
-                _gradientMode = value;
-                switch (_gradientMode)
-                {
-                    case LinearGradientMode.Horizontal:
-                        _points = new[] { new PointF(-0.5f, 0), new PointF(0.5f, 0) };
-                        break;
-                    case LinearGradientMode.Vertical:
-                        _points = new[] { new PointF(0f, -0.5f), new PointF(0f, 0.5f) };
-                        break;
-                    case LinearGradientMode.ForwardDiagonal:
-                        _points = new[] { new PointF(-0.5f, -0.5f), new PointF(0.5f, 0.5f) };
-                        break;
-                    case LinearGradientMode.BackwardDiagonal:
-                        _points = new[] { new PointF(0.5f, 0.5f), new PointF(-0.5f, -0.5f) };
-                        break;
-                }
-            }
-        }
 
         public override Brush GetBrush(Figure figure)
         {

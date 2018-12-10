@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Selections;
@@ -36,8 +35,6 @@ namespace SimpleEditor.Controls
             _updating++;
 
             lbGradientColor.BackColor = fillStyles.GetProperty(f => f.GradientColor);
-            cbDirection.SelectedIndex = fillStyles.GetProperty(f => (int)f.GradientMode);
-
             _updating--;
         }
 
@@ -53,7 +50,6 @@ namespace SimpleEditor.Controls
 
             // send values back from GUI to object
             fillStyles.SetProperty(f => f.GradientColor = lbGradientColor.BackColor);
-            fillStyles.SetProperty(f => f.GradientMode = (LinearGradientMode)cbDirection.SelectedIndex);
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -69,11 +65,6 @@ namespace SimpleEditor.Controls
             var dlg = new ColorDialog { Color = lbGradientColor.BackColor };
             if (dlg.ShowDialog() == DialogResult.OK)
                 lbGradientColor.BackColor = dlg.Color;
-        }
-
-        private void cbDirection_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            UpdateObject();
         }
     }
 }
