@@ -23,14 +23,15 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f.Renderer is ShadowRenderer); // show the editor only if all figures contain FillStyle
+            Visible = selection.ForAll(f => RendererDecorator.ContainsType(f.Renderer, typeof(ShadowRenderer))); 
             if (!Visible) return; // do not build anything
 
             // remember editing object
             _selection = selection;
 
             // get list of objects
-            var shadowStyles = selection.Select(f => f.Renderer as ShadowRenderer).ToList();
+            var shadowStyles = _selection.Select(f => 
+                (ShadowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRenderer))).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -50,7 +51,8 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Shadow Fill Style"));
 
             // get list of objects
-            var shadowStyles = _selection.Select(f => f.Renderer as ShadowRenderer).ToList();
+            var shadowStyles = _selection.Select(f =>
+                (ShadowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRenderer))).ToList();
 
             // send values back from GUI to object
             shadowStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);

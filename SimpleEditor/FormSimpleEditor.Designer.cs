@@ -88,14 +88,6 @@
             this.panelForScroll = new System.Windows.Forms.Panel();
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.pnTools = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnBorderStyle = new SimpleEditor.Controls.BorderStyleEditor();
-            this.pnLayerFillStyle = new SimpleEditor.Controls.LayerStyleEditor();
-            this.pnFillStyle = new SimpleEditor.Controls.FillStyleEditor();
-            this.pnLineGradientFillStyle = new SimpleEditor.Controls.LineGradientFillStyleEditor();
-            this.pnShadowStyle = new SimpleEditor.Controls.ShadowStyleEditor();
-            this.pnPolygoneStyle = new SimpleEditor.Controls.IsClosedEditor();
-            this.pnTextStyle = new SimpleEditor.Controls.TextStyleEditor();
-            this.pnImageStyle = new SimpleEditor.Controls.ImageStyleEditor();
             this.tsbImage = new System.Windows.Forms.ToolStrip();
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripButton();
@@ -161,6 +153,14 @@
             this.tsbEvenVerticalSpaces = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbLock = new System.Windows.Forms.ToolStripButton();
+            this.pnBorderStyle = new SimpleEditor.Controls.BorderStyleEditor();
+            this.pnLayerFillStyle = new SimpleEditor.Controls.LayerStyleEditor();
+            this.pnFillStyle = new SimpleEditor.Controls.FillStyleEditor();
+            this.pnLineGradientFillStyle = new SimpleEditor.Controls.LineGradientFillStyleEditor();
+            this.pnPolygoneStyle = new SimpleEditor.Controls.IsClosedEditor();
+            this.pnTextStyle = new SimpleEditor.Controls.TextStyleEditor();
+            this.pnShadowStyle = new SimpleEditor.Controls.ShadowStyleEditor();
+            this.pnImageStyle = new SimpleEditor.Controls.ImageStyleEditor();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -699,9 +699,9 @@
             this.panelForScroll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelForScroll.Controls.Add(this.pbCanvas);
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelForScroll.Location = new System.Drawing.Point(0, 100);
+            this.panelForScroll.Location = new System.Drawing.Point(0, 98);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(918, 293);
+            this.panelForScroll.Size = new System.Drawing.Size(918, 295);
             this.panelForScroll.TabIndex = 7;
             this.panelForScroll.SizeChanged += new System.EventHandler(this.panelForScroll_SizeChanged);
             // 
@@ -727,101 +727,16 @@
             this.pnTools.Controls.Add(this.pnLayerFillStyle);
             this.pnTools.Controls.Add(this.pnFillStyle);
             this.pnTools.Controls.Add(this.pnLineGradientFillStyle);
-            this.pnTools.Controls.Add(this.pnShadowStyle);
             this.pnTools.Controls.Add(this.pnPolygoneStyle);
             this.pnTools.Controls.Add(this.pnTextStyle);
+            this.pnTools.Controls.Add(this.pnShadowStyle);
             this.pnTools.Controls.Add(this.pnImageStyle);
             this.pnTools.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTools.Location = new System.Drawing.Point(0, 0);
             this.pnTools.MinimumSize = new System.Drawing.Size(0, 45);
             this.pnTools.Name = "pnTools";
-            this.pnTools.Size = new System.Drawing.Size(918, 100);
+            this.pnTools.Size = new System.Drawing.Size(918, 98);
             this.pnTools.TabIndex = 7;
-            // 
-            // pnBorderStyle
-            // 
-            this.pnBorderStyle.AutoSize = true;
-            this.pnBorderStyle.Location = new System.Drawing.Point(0, 0);
-            this.pnBorderStyle.Margin = new System.Windows.Forms.Padding(0);
-            this.pnBorderStyle.Name = "pnBorderStyle";
-            this.pnBorderStyle.Size = new System.Drawing.Size(317, 31);
-            this.pnBorderStyle.TabIndex = 1;
-            this.pnBorderStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnBorderStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnLayerFillStyle
-            // 
-            this.pnLayerFillStyle.AutoSize = true;
-            this.pnLayerFillStyle.Location = new System.Drawing.Point(319, 2);
-            this.pnLayerFillStyle.Margin = new System.Windows.Forms.Padding(2);
-            this.pnLayerFillStyle.Name = "pnLayerFillStyle";
-            this.pnLayerFillStyle.Size = new System.Drawing.Size(87, 24);
-            this.pnLayerFillStyle.TabIndex = 5;
-            this.pnLayerFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnLayerFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnFillStyle
-            // 
-            this.pnFillStyle.AutoSize = true;
-            this.pnFillStyle.Location = new System.Drawing.Point(408, 0);
-            this.pnFillStyle.Margin = new System.Windows.Forms.Padding(0);
-            this.pnFillStyle.Name = "pnFillStyle";
-            this.pnFillStyle.Size = new System.Drawing.Size(88, 26);
-            this.pnFillStyle.TabIndex = 0;
-            this.pnFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnLineGradientFillStyle
-            // 
-            this.pnLineGradientFillStyle.AutoSize = true;
-            this.pnLineGradientFillStyle.Location = new System.Drawing.Point(498, 2);
-            this.pnLineGradientFillStyle.Margin = new System.Windows.Forms.Padding(2);
-            this.pnLineGradientFillStyle.Name = "pnLineGradientFillStyle";
-            this.pnLineGradientFillStyle.Size = new System.Drawing.Size(110, 22);
-            this.pnLineGradientFillStyle.TabIndex = 4;
-            this.pnLineGradientFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnLineGradientFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnShadowStyle
-            // 
-            this.pnShadowStyle.AutoSize = true;
-            this.pnShadowStyle.Location = new System.Drawing.Point(613, 3);
-            this.pnShadowStyle.Name = "pnShadowStyle";
-            this.pnShadowStyle.Size = new System.Drawing.Size(293, 26);
-            this.pnShadowStyle.TabIndex = 7;
-            this.pnShadowStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnShadowStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnPolygoneStyle
-            // 
-            this.pnPolygoneStyle.Location = new System.Drawing.Point(4, 36);
-            this.pnPolygoneStyle.Margin = new System.Windows.Forms.Padding(4);
-            this.pnPolygoneStyle.Name = "pnPolygoneStyle";
-            this.pnPolygoneStyle.Size = new System.Drawing.Size(207, 27);
-            this.pnPolygoneStyle.TabIndex = 3;
-            this.pnPolygoneStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnPolygoneStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnTextStyle
-            // 
-            this.pnTextStyle.AutoSize = true;
-            this.pnTextStyle.Location = new System.Drawing.Point(215, 32);
-            this.pnTextStyle.Margin = new System.Windows.Forms.Padding(0);
-            this.pnTextStyle.Name = "pnTextStyle";
-            this.pnTextStyle.Size = new System.Drawing.Size(514, 28);
-            this.pnTextStyle.TabIndex = 2;
-            this.pnTextStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnTextStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
-            // 
-            // pnImageStyle
-            // 
-            this.pnImageStyle.AutoSize = true;
-            this.pnImageStyle.Location = new System.Drawing.Point(3, 70);
-            this.pnImageStyle.Name = "pnImageStyle";
-            this.pnImageStyle.Size = new System.Drawing.Size(199, 27);
-            this.pnImageStyle.TabIndex = 6;
-            this.pnImageStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnImageStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // tsbImage
             // 
@@ -1405,6 +1320,7 @@
             this.tsbEvenHorizontalSpaces.Name = "tsbEvenHorizontalSpaces";
             this.tsbEvenHorizontalSpaces.Size = new System.Drawing.Size(23, 22);
             this.tsbEvenHorizontalSpaces.Text = "Выровнять горизонтальные промежутки";
+            this.tsbEvenHorizontalSpaces.Click += new System.EventHandler(this.tsbEvenHorizontalSpaces_Click);
             // 
             // tsbEvenVerticalSpaces
             // 
@@ -1414,6 +1330,7 @@
             this.tsbEvenVerticalSpaces.Name = "tsbEvenVerticalSpaces";
             this.tsbEvenVerticalSpaces.Size = new System.Drawing.Size(23, 22);
             this.tsbEvenVerticalSpaces.Text = "Выровнять вертикальные промежутки";
+            this.tsbEvenVerticalSpaces.Click += new System.EventHandler(this.tsbEvenVerticalSpaces_Click);
             // 
             // toolStripSeparator21
             // 
@@ -1429,6 +1346,91 @@
             this.tsbLock.Name = "tsbLock";
             this.tsbLock.Size = new System.Drawing.Size(23, 22);
             this.tsbLock.Text = "Блокировать (разблокировать) перемещение элемента";
+            // 
+            // pnBorderStyle
+            // 
+            this.pnBorderStyle.AutoSize = true;
+            this.pnBorderStyle.Location = new System.Drawing.Point(0, 0);
+            this.pnBorderStyle.Margin = new System.Windows.Forms.Padding(0);
+            this.pnBorderStyle.Name = "pnBorderStyle";
+            this.pnBorderStyle.Size = new System.Drawing.Size(317, 31);
+            this.pnBorderStyle.TabIndex = 1;
+            this.pnBorderStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnBorderStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnLayerFillStyle
+            // 
+            this.pnLayerFillStyle.AutoSize = true;
+            this.pnLayerFillStyle.Location = new System.Drawing.Point(319, 2);
+            this.pnLayerFillStyle.Margin = new System.Windows.Forms.Padding(2);
+            this.pnLayerFillStyle.Name = "pnLayerFillStyle";
+            this.pnLayerFillStyle.Size = new System.Drawing.Size(87, 24);
+            this.pnLayerFillStyle.TabIndex = 5;
+            this.pnLayerFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnLayerFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnFillStyle
+            // 
+            this.pnFillStyle.AutoSize = true;
+            this.pnFillStyle.Location = new System.Drawing.Point(408, 0);
+            this.pnFillStyle.Margin = new System.Windows.Forms.Padding(0);
+            this.pnFillStyle.Name = "pnFillStyle";
+            this.pnFillStyle.Size = new System.Drawing.Size(88, 26);
+            this.pnFillStyle.TabIndex = 0;
+            this.pnFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnLineGradientFillStyle
+            // 
+            this.pnLineGradientFillStyle.AutoSize = true;
+            this.pnLineGradientFillStyle.Location = new System.Drawing.Point(498, 2);
+            this.pnLineGradientFillStyle.Margin = new System.Windows.Forms.Padding(2);
+            this.pnLineGradientFillStyle.Name = "pnLineGradientFillStyle";
+            this.pnLineGradientFillStyle.Size = new System.Drawing.Size(110, 22);
+            this.pnLineGradientFillStyle.TabIndex = 4;
+            this.pnLineGradientFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnLineGradientFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnPolygoneStyle
+            // 
+            this.pnPolygoneStyle.Location = new System.Drawing.Point(614, 4);
+            this.pnPolygoneStyle.Margin = new System.Windows.Forms.Padding(4);
+            this.pnPolygoneStyle.Name = "pnPolygoneStyle";
+            this.pnPolygoneStyle.Size = new System.Drawing.Size(207, 27);
+            this.pnPolygoneStyle.TabIndex = 3;
+            this.pnPolygoneStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnPolygoneStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnTextStyle
+            // 
+            this.pnTextStyle.AutoSize = true;
+            this.pnTextStyle.Location = new System.Drawing.Point(0, 35);
+            this.pnTextStyle.Margin = new System.Windows.Forms.Padding(0);
+            this.pnTextStyle.Name = "pnTextStyle";
+            this.pnTextStyle.Size = new System.Drawing.Size(514, 28);
+            this.pnTextStyle.TabIndex = 2;
+            this.pnTextStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnTextStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnShadowStyle
+            // 
+            this.pnShadowStyle.AutoSize = true;
+            this.pnShadowStyle.Location = new System.Drawing.Point(517, 38);
+            this.pnShadowStyle.Name = "pnShadowStyle";
+            this.pnShadowStyle.Size = new System.Drawing.Size(293, 26);
+            this.pnShadowStyle.TabIndex = 7;
+            this.pnShadowStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnShadowStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            // 
+            // pnImageStyle
+            // 
+            this.pnImageStyle.AutoSize = true;
+            this.pnImageStyle.Location = new System.Drawing.Point(3, 70);
+            this.pnImageStyle.Name = "pnImageStyle";
+            this.pnImageStyle.Size = new System.Drawing.Size(199, 25);
+            this.pnImageStyle.TabIndex = 6;
+            this.pnImageStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnImageStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // FormSimpleEditor
             // 

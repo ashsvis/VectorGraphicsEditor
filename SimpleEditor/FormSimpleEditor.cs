@@ -269,8 +269,10 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    //new FigureBuilder().BuildTextGeometry(fig, "Текст");
-                    FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
+                    if (ModifierKeys.HasFlag(Keys.Shift))
+                        FigureBuilder.BuildTextGeometry(fig, "Текст");
+                    else
+                        FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
                     return fig;
                 };
             else if (tsbPicture.Checked)
@@ -620,39 +622,61 @@ namespace SimpleEditor
             var figures = _selectionController.Selection.ToList();
             if (sender == tsmiNoneEffects)
             {
-                OnLayerStartChanging("Reset Figure Effect");
-                foreach (var figure in figures.Where(f => 
-                    f.Renderer.GetType() != typeof(Renderer)))
+                var decoratorsExists = figures.Count(figure => 
+                    RendererDecorator.ContainsAnyDecorator(figure.Renderer)) > 0;
+                if (decoratorsExists)
                 {
-                    figure.Renderer = new Renderer();
-                    list.Add(figure);
+                    OnLayerStartChanging("Reset Figure Effect");
+                    foreach (var figure in figures)
+                    {
+                        figure.Renderer = RendererDecorator.GetBaseRenerer(figure.Renderer);
+                        list.Add(figure);
+                    }
+                    OnLayerChanged();
                 }
-                OnLayerChanged();
             }
             else if (sender == tsmiShadow)
             {
-                OnLayerStartChanging("Shadow Figure Effect");
-                foreach (var figure in figures.Where(f => 
-                    f.Renderer.GetType() != typeof(ShadowRenderer)))
+                if (ExistsWithoutThisDecorator(figures, typeof(ShadowRenderer)))
                 {
-                    figure.Renderer = new ShadowRenderer();
-                    list.Add(figure);
+                    OnLayerStartChanging("Shadow Figure Effect");
+                    foreach (var figure in WhereContainsDecorator(figures, typeof(ShadowRenderer)))
+                    {
+                        if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Shadow))
+                            figure.Renderer = new ShadowRenderer(figure.Renderer);
+                        list.Add(figure);
+                    }
+                    OnLayerChanged();
                 }
-                OnLayerChanged();
             }
             else if (sender == tsmiGlow)
             {
-                OnLayerStartChanging("Glow Figure Effect");
-                foreach (var figure in figures.Where(f =>
-                    f.Renderer.GetType() != typeof(GlowRenderer)))
+                if (ExistsWithoutThisDecorator(figures, typeof(GlowRenderer)))
                 {
-                    figure.Renderer = new GlowRenderer();
-                    list.Add(figure);
+                    OnLayerStartChanging("Glow Figure Effect");
+                    foreach (var figure in WhereContainsDecorator(figures, typeof(GlowRenderer)))
+                    {
+                        if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
+                            figure.Renderer = new GlowRenderer(figure.Renderer);
+                        list.Add(figure);
+                    }
+                    OnLayerChanged();
                 }
-                OnLayerChanged();
             }
             _selectionController.UpdateMarkers();
             BuildInterface();
+        }
+
+        private static bool ExistsWithoutThisDecorator(IEnumerable<Figure> figures, Type type)
+        {
+            return figures.Count(figure => 
+                                 !RendererDecorator.ContainsType(figure.Renderer, type)) > 0;
+        }
+
+        private static IEnumerable<Figure> WhereContainsDecorator(IEnumerable<Figure> figures, Type type)
+        {
+            return figures.Where(figure => 
+                                 !RendererDecorator.ContainsType(figure.Renderer, type));
         }
 
         private void tsddbEffectSwitcher_ButtonClick(object sender, EventArgs e)
@@ -691,9 +715,8 @@ namespace SimpleEditor
             if (!exists) return;
             OnLayerStartChanging("Clone Selected Figures");
             var list = new List<Figure>();
-            foreach (var figure in _selectionController.Selection)
+            foreach (var fig in _selectionController.Selection.Select(figure => figure.DeepClone()))
             {
-                var fig = figure.DeepClone();
                 fig.Transform.Matrix.Translate(10, 10, MatrixOrder.Append);
                 list.Add(fig);
                 _layer.Figures.Add(fig);
@@ -868,6 +891,18 @@ namespace SimpleEditor
         private void tsbSameHeight_Click(object sender, EventArgs e)
         {
             _selectionController.SameResize(FigureResize.Heigth);
+            UpdateInterface();
+        }
+
+        private void tsbEvenHorizontalSpaces_Click(object sender, EventArgs e)
+        {
+            _selectionController.EvenSpaces(FigureArrange.Horizontal);
+            UpdateInterface();
+        }
+
+        private void tsbEvenVerticalSpaces_Click(object sender, EventArgs e)
+        {
+            _selectionController.EvenSpaces(FigureArrange.Vertical);
             UpdateInterface();
         }
     }

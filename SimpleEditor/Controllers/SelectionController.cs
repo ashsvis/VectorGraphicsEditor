@@ -510,6 +510,17 @@ namespace SimpleEditor.Controllers
             UpdateMarkers();
         }
 
+        public void EvenSpaces(FigureArrange arrange)
+        {
+            OnLayerStartChanging();
+            _selection.EvenSpaces(arrange);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
         public void UpdateMarkers()
         {
             var list = new List<Figure>(_selection);

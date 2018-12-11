@@ -37,7 +37,7 @@
             // lbImageText
             // 
             this.lbImageText.AutoSize = true;
-            this.lbImageText.Location = new System.Drawing.Point(3, 6);
+            this.lbImageText.Location = new System.Drawing.Point(3, 3);
             this.lbImageText.Name = "lbImageText";
             this.lbImageText.Size = new System.Drawing.Size(36, 13);
             this.lbImageText.TabIndex = 0;
@@ -47,7 +47,7 @@
             // 
             this.lbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbImage.Location = new System.Drawing.Point(42, 2);
+            this.lbImage.Location = new System.Drawing.Point(42, 0);
             this.lbImage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbImage.Name = "lbImage";
             this.lbImage.Size = new System.Drawing.Size(23, 22);
@@ -58,7 +58,7 @@
             // 
             this.cbStretch.AutoSize = true;
             this.cbStretch.Enabled = false;
-            this.cbStretch.Location = new System.Drawing.Point(69, 5);
+            this.cbStretch.Location = new System.Drawing.Point(69, 2);
             this.cbStretch.Margin = new System.Windows.Forms.Padding(2);
             this.cbStretch.Name = "cbStretch";
             this.cbStretch.Size = new System.Drawing.Size(60, 17);
@@ -71,7 +71,7 @@
             // 
             this.cbTile.AutoSize = true;
             this.cbTile.Enabled = false;
-            this.cbTile.Location = new System.Drawing.Point(130, 5);
+            this.cbTile.Location = new System.Drawing.Point(130, 2);
             this.cbTile.Margin = new System.Windows.Forms.Padding(2);
             this.cbTile.Name = "cbTile";
             this.cbTile.Size = new System.Drawing.Size(43, 17);

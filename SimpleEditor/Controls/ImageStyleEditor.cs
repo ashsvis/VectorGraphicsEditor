@@ -24,14 +24,15 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f.Renderer as ImageRenderer != null); // show the editor only if all figures contain FillStyle
+            Visible = selection.ForAll(f => RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer);
             if (!Visible) return; // do not build anything
 
             // remember editing object
             _selection = selection;
 
             // get list of objects
-            var imageFillStyles = selection.Select(f => f.Renderer as ImageRenderer).ToList();
+            var imageFillStyles = _selection.Select(f =>
+                            (ImageRenderer) RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -57,7 +58,8 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Image Fill Style"));
 
             // get list of objects
-            var imageFillStyles = _selection.Select(f => f.Renderer as ImageRenderer).ToList();
+            var imageFillStyles = _selection.Select(f =>
+                            (ImageRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
 
             // send values back from GUI to object
             imageFillStyles.SetProperty(f => f.Image = _image);
