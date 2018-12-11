@@ -5,6 +5,7 @@ using EditorModel.Figures;
 using EditorModel.Geometry;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Collections.Generic;
 
 namespace EditorModel.Selections
 {
@@ -222,23 +223,40 @@ namespace EditorModel.Selections
                 heigth += bounds.Height;
             }
             var selectionBounds = selection.GetTransformedPath().Path.GetBounds();
-            var sW = (selectionBounds.Width - width) / selection.Count;
-            var sH = (selectionBounds.Height - heigth) / selection.Count;
-            var fig = selection.ToArray();
+            var figures = new List<Figure>();
             switch (arrange)
             {
                 case FigureArrange.Horizontal:
-                    var w = selectionBounds.Left + fig[0].GetTransformedPath().Path.GetBounds().Width;
-                    for (var i = 1; i < fig.Length; i++)
+                    var sW = (selectionBounds.Width - width) / selection.Count;
+                    foreach (var fig in selection.OrderBy(item =>
+                                          item.GetTransformedPath().Path.GetBounds().Left))
+                        figures.Add(fig);
+                    var w = selectionBounds.Left + figures.First().GetTransformedPath().Path.GetBounds().Width + sW;
+                    for (var i = 1; i < figures.Count - 1; i++)
                     {
-                        w += sW + fig[i].GetTransformedPath().Path.GetBounds().Width / 2;
-                        var el = fig[i].Transform.Matrix.Elements;
+                        var half = figures[i].GetTransformedPath().Path.GetBounds().Width / 2;
+                        w += half;
+                        var el = figures[i].Transform.Matrix.Elements;
                         el[4] = w;
-                        w += fig[i].GetTransformedPath().Path.GetBounds().Width / 2;
-                        fig[i].Transform.Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);
+                        figures[i].Transform.Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);
+                        w += half + sW;
                     }
                     break;
                 case FigureArrange.Vertical:
+                    var sH = (selectionBounds.Height - heigth) / selection.Count;
+                    foreach (var fig in selection.OrderBy(item =>
+                                          item.GetTransformedPath().Path.GetBounds().Top))
+                        figures.Add(fig);
+                    var h = selectionBounds.Top + figures.First().GetTransformedPath().Path.GetBounds().Height + sH;
+                    for (var i = 1; i < figures.Count - 1; i++)
+                    {
+                        var half = figures[i].GetTransformedPath().Path.GetBounds().Height / 2;
+                        h += half;
+                        var el = figures[i].Transform.Matrix.Elements;
+                        el[5] = h;
+                        figures[i].Transform.Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);
+                        h += half + sH;
+                    }
                     break;
             }
         }
