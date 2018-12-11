@@ -10,7 +10,7 @@ namespace EditorModel.Figures
     /// <summary>
     /// Строит компоненты фигуры
     /// </summary>
-    public class FigureBuilder
+    public static class FigureBuilder
     {
 // ReSharper disable InconsistentNaming
         private const int MARKER_SIZE = 8;

@@ -100,12 +100,13 @@ namespace EditorModel.Geometry
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
                     };
         }
 
         /// <summary>
-        /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
+        /// Свойство возвращает путь, построенный по точкам
         /// </summary>
         public override SerializableGraphicsPath Path
         {

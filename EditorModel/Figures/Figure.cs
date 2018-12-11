@@ -24,7 +24,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство стиля рисования фигуры
         /// </summary>
-        public Style.Style Style { get; set; }
+        public Style.Style Style { get; private set; }
 
         /// <summary>
         /// Свойство рисовальщика фигуры
@@ -38,7 +38,7 @@ namespace EditorModel.Figures
         {
             Transform = new SerializableGraphicsMatrix();
             Style = new Style.Style();
-            Renderer = new Renderer();
+            Renderer = new DefaultRenderer();
         }
 
         /// <summary>
@@ -53,6 +53,7 @@ namespace EditorModel.Figures
             path.Transform(Transform);
             return path;
         }
+    
     }
 
 }

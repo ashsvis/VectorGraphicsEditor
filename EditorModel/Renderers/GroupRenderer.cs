@@ -24,5 +24,13 @@ namespace EditorModel.Renderers
                 fig.Transform.Matrix = new Matrix(e[0], e[1], e[2], e[3], e[4], e[5]);
             }
         }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get { return AllowedRendererDecorators.None; }
+        }
     }
 }

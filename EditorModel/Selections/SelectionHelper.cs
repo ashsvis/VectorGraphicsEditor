@@ -22,6 +22,12 @@ namespace EditorModel.Selections
         Both
     }
 
+    public enum FigureArrange
+    {
+        Horizontal,
+        Vertical
+    }
+
     public static class SelectionHelper
     {
         /// <summary>
@@ -198,12 +204,61 @@ namespace EditorModel.Selections
             }
         }
 
+        /// <summary>
+        /// Выравнивание по величине промежутков между фигурами
+        /// </summary>
+        /// <param name="selection">Текущее выделение фигур</param>
+        /// <param name="arrange">Направление выравнивания</param>
+        public static void EvenSpaces(this Selection selection, FigureArrange arrange)
+        {
+            var exists = selection.Count > 2;
+            if (!exists) return;
+            var width = 0f;
+            var heigth = 0f;
+            foreach (var bounds in selection.Select(figure => 
+                figure.GetTransformedPath().Path.GetBounds()))
+            {
+                width += bounds.Width;
+                heigth += bounds.Height;
+            }
+            var selectionBounds = selection.GetTransformedPath().Path.GetBounds();
+            var sW = (selectionBounds.Width - width) / selection.Count;
+            var sH = (selectionBounds.Height - heigth) / selection.Count;
+            var fig = selection.ToArray();
+            switch (arrange)
+            {
+                case FigureArrange.Horizontal:
+                    var w = selectionBounds.Left + fig[0].GetTransformedPath().Path.GetBounds().Width;
+                    for (var i = 1; i < fig.Length; i++)
+                    {
+                        w += sW + fig[i].GetTransformedPath().Path.GetBounds().Width / 2;
+                        var el = fig[i].Transform.Matrix.Elements;
+                        el[4] = w;
+                        w += fig[i].GetTransformedPath().Path.GetBounds().Width / 2;
+                        fig[i].Transform.Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);
+                    }
+                    break;
+                case FigureArrange.Vertical:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Признак того, что фигура не была повёрнута или искажена
+        /// </summary>
+        /// <param name="figure">Фигура</param>
+        /// <returns></returns>
         public static bool IsNotSkewAndRotated(Figure figure)
         {
             return Math.Abs(Helper.GetSkewAngle(figure.Transform.Matrix) - 90) < float.Epsilon &&
                 Math.Abs(Helper.GetAngle(figure.Transform.Matrix)) < float.Epsilon;
         }
 
+        /// <summary>
+        /// Выравнивание размеров фигур
+        /// </summary>
+        /// <param name="selection">Текущее выделение фигур</param>
+        /// <param name="resize">Направление выравнивания</param>
         public static void SameResize(this Selection selection, FigureResize resize)
         {
             var exists = selection.Count(IsNotSkewAndRotated) > 1;

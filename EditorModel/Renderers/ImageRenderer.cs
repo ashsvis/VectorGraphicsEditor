@@ -21,8 +21,8 @@ namespace EditorModel.Renderers
             {
                 if (string.IsNullOrWhiteSpace(_base64ImageString))
                     return null;
-                byte[] imageBytes = Convert.FromBase64String(_base64ImageString);
-                using (MemoryStream m = new MemoryStream(imageBytes))
+                var imageBytes = Convert.FromBase64String(_base64ImageString);
+                using (var m = new MemoryStream(imageBytes))
                 {
                     return Image.FromStream(m);
                 }
@@ -30,10 +30,10 @@ namespace EditorModel.Renderers
             set
             {
                 if (value == null) return;
-                using (MemoryStream m = new MemoryStream())
+                using (var m = new MemoryStream())
                 {
                     value.Save(m, value.RawFormat);
-                    byte[] imageBytes = m.ToArray();
+                    var imageBytes = m.ToArray();
                     // Convert byte[] to Base64 String
                     _base64ImageString = Convert.ToBase64String(imageBytes);
                 }
@@ -60,8 +60,6 @@ namespace EditorModel.Renderers
             using (var path = figure.GetTransformedPath().Path)
             {
                 var bounds = path.GetBounds();
-                var rendered = figure.Renderer as ImageRenderer;
-                if (rendered == null) return;
                 graphics.TranslateTransform(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
                 var angle = Helper.GetAngle(figure.Transform);
                 var size = Helper.GetSize(figure.Transform);
@@ -99,6 +97,18 @@ namespace EditorModel.Renderers
                 else
                     graphics.DrawImage(image, clientRect.Location);
                 graphics.ResetTransform();
+            }
+        }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get
+            {
+                return AllowedRendererDecorators.All ^
+                    (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow);
             }
         }
     }

@@ -5,33 +5,36 @@ using EditorModel.Figures;
 namespace EditorModel.Renderers
 {
     /// <summary>
+    /// Допустимые операции над геометрией
+    /// </summary>
+    [Serializable]
+    [Flags]
+    public enum AllowedRendererDecorators : uint
+    {
+        None = 0x0,         // ничего нельзя
+        Shadow = 0x1,       // может задавать тень
+        Glow = 0x2,         // может задавать "свечение"
+        // новые режимы добавлять здесь
+
+        All = 0xffffffff,   // всё можно
+    }
+
+    /// <summary>
     /// Класс рисовальщика фигуры
     /// </summary>
     [Serializable]
-    public class Renderer
+    public abstract class Renderer
     {
         /// <summary>
         /// Метод отрисовки фигуры на канве
         /// </summary>
         /// <param name="graphics">Канва для рисования</param>
         /// <param name="figure">Фигура со свойствами для рисования</param>
-        public virtual void Render(Graphics graphics, Figure figure)
-        {
-            // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = figure.GetTransformedPath().Path)
-            {
-                // если разрешено использование заливки
-                if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)
-                    // то получаем кисть из стиля рисования фигуры
-                    using (var brush = figure.Style.FillStyle.GetBrush(figure))
-                        graphics.FillPath(brush, path);
-                // если разрешено рисование контура
-                if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
-                    // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = figure.Style.BorderStyle.GetPen(figure))
-                        graphics.DrawPath(pen, path);
-            }
-        }
-    }
+        public abstract void Render(Graphics graphics, Figure figure);
 
+        /// <summary>
+        /// Допустимые операции над геометрией
+        /// </summary>
+        public abstract AllowedRendererDecorators AllowedDecorators { get; }
+    }
 }

@@ -53,9 +53,7 @@ namespace EditorModel.Renderers
             using (var sf = new StringFormat(StringFormatFlags.DisplayFormatControl))
             {
                 var bounds = path.GetBounds();
-                var rendered = figure.Renderer as TextRenderer;
-                if (rendered == null) return;
-                Helper.UpdateStringFormat(sf, rendered.TextAlign);
+                Helper.UpdateStringFormat(sf, TextAlign);
                 graphics.TranslateTransform(bounds.Left + bounds.Width/2, bounds.Top + bounds.Height/2);
                 var angle = Helper.GetAngle(figure.Transform);
                 var size = Helper.GetSize(figure.Transform);
@@ -70,11 +68,22 @@ namespace EditorModel.Renderers
                                 ? -clientRect.Height/2
                                 : sf.LineAlignment == StringAlignment.Far ? clientRect.Height/2 : 0;
                     path.Reset();
-                    path.AddString(rendered.Text, new FontFamily(rendered.FontName), 0,
-                                   rendered.FontSize, new PointF(x, y), sf);
+                    path.AddString(Text, new FontFamily(FontName), 0, FontSize, new PointF(x, y), sf);
                     graphics.FillPath(brush, path);
                 }
                 graphics.ResetTransform();
+            }
+        }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get
+            {
+                return AllowedRendererDecorators.All ^
+                    (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow);
             }
         }
     }
