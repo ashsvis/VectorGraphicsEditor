@@ -51,7 +51,7 @@ namespace SimpleEditor
 
         private void _selectionController_ResetCreateFigureSelector()
         {
-            tsbArrow_Click(tsbArrow, new EventArgs());            
+            //stub
         }
 
         protected override void OnLoad(EventArgs e)
@@ -86,11 +86,14 @@ namespace SimpleEditor
 
         private void UpdateInterface()
         {
+            tsbSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
+            tsbSkewMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
+            tsbVertexMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
+
             tsbUndo.Enabled = tsmUndo.Enabled = FileChanged = UndoRedoManager.Instance.CanUndo;
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
             tsbSave.Enabled = tsmSave.Enabled = FileChanged;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
-            tsbImage.Enabled = _selectionController.EditorMode == EditorMode.Select;
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             tsddbGeometySwitcher.Enabled = exists;
             tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =
@@ -107,6 +110,7 @@ namespace SimpleEditor
                                                                                tsbAlignMiddle.Enabled =
                                                                                tsbAlignBottom.Enabled =
                                                                                _selectionController.Selection.Count > 1;
+            tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
@@ -185,103 +189,132 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void pbCanvas_Paint(object sender, PaintEventArgs e)
         {
-            var bmp = new Bitmap(pbCanvas.Width, pbCanvas.Height);
-            using (var graphics = Graphics.FromImage(bmp))
-            {
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            var graphics = e.Graphics;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                if (_layer.FillStyle.IsVisible)
-                    using (var brush = _layer.FillStyle.GetBrush(null))
-                        graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
+            if (_layer.FillStyle.IsVisible)
+                using (var brush = _layer.FillStyle.GetBrush(null))
+                    graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
 
-                // отрисовка созданных фигур
-                foreach (var fig in _layer.Figures)
-                    fig.Renderer.Render(graphics, fig);
-                // отрисовка выделения
-                _selectionController.Selection.Renderer.Render(graphics,
-                                                               _selectionController.Selection);
-                // отрисовка маркеров
-                foreach (var marker in _selectionController.Markers)
-                    marker.Renderer.Render(graphics, marker);
-            }
-            e.Graphics.DrawImage(bmp, Point.Empty);
+            // отрисовка созданных фигур
+            foreach (var fig in _layer.Figures)
+                fig.Renderer.Render(graphics, fig);
+            // отрисовка выделения
+            _selectionController.Selection.Renderer.Render(graphics,
+                                                           _selectionController.Selection);
+            // отрисовка маркеров
+            foreach (var marker in _selectionController.Markers)
+                marker.Renderer.Render(graphics, marker);
         }
 
         /// <summary>
-        /// Этот обработчик также подключен ко всем кнопкам выбора фигур
+        /// Выбор фигур для последующего создания
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tsbArrow_Click(object sender, EventArgs e)
+        private void btnCreateFigure_Click(object sender, EventArgs e)
         {
-            foreach (var btn in tsbImage.Items.OfType<ToolStripButton>())
-                btn.Checked = false;
-            ((ToolStripButton)sender).Checked = true;
-
-            if (!tsbArrow.Checked)
-                _selectionController.Clear();
-
+            _selectionController.Clear();
             Func<Figure> figureCreator = null;
 
-            if (tsbPolyline.Checked)
+            if (sender == tsbPolyline || sender == btnPolyline)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildPolylineGeometry(fig);
                     return fig;
                 };
-            else if (tsbRect.Checked)
+            else if (sender == btnPolygone)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    if (ModifierKeys.HasFlag(Keys.Shift))
-                        FigureBuilder.BuildSquareGeometry(fig);
-                    else
-                        FigureBuilder.BuildRectangleGeometry(fig);
+                    FigureBuilder.BuildPolygoneGeometry(fig);
                     return fig;
                 };
-            else if (tsbEllipse.Checked)
+            else if (sender == btnRectangle || sender == tsbRect)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    if (ModifierKeys.HasFlag(Keys.Shift))
-                        FigureBuilder.BuildCircleGeometry(fig);
-                    else
-                        FigureBuilder.BuildEllipseGeometry(fig);
+                    FigureBuilder.BuildRectangleGeometry(fig);
                     return fig;
                 };
-            else if (tsbRegular4.Checked)
+            else if (sender == btnSquare)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildSquareGeometry(fig);
+                    return fig;
+                };
+            else if (sender == btnEllipse)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildEllipseGeometry(fig);
+                    return fig;
+                };
+            else if (sender == btnCircle)
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildCircleGeometry(fig);
+                    return fig;
+                };
+            else if (sender == tsbRomb || sender == btnRegular4)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildRegularGeometry(fig, 4);
                     return fig;
                 };
-            else if (tsbRegular8.Checked)
+            else if (sender == tsbText || sender == btnTextBlock)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildRegularGeometry(fig, 8);
+                    FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
                     return fig;
                 };
-            else if (tsbText.Checked)
+            else if (sender == btnTextLine)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    if (ModifierKeys.HasFlag(Keys.Shift))
-                        FigureBuilder.BuildTextGeometry(fig, "Текст");
-                    else
-                        FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
+                    FigureBuilder.BuildTextGeometry(fig, "Текст");
                     return fig;
                 };
-            else if (tsbPicture.Checked)
+            else if (sender == tsbPicture || sender == btnInsertImage)
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildImageRenderGeometry(fig, null);
                     return fig;
                 };
+            else if (sender == btnInsertPicture)
+                figureCreator = () =>
+                {
+                    var placeHolder = new Figure();
+                    placeHolder.Style.FillStyle.IsVisible = false;
+                    placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
+                    FigureBuilder.BuildRectangleGeometry(placeHolder);
+                    var fig = new GroupFigure(new[] { placeHolder })
+                        {
+                            Renderer = new GroupRenderer()
+                        };
+                    return fig;
+                };
+            else if (sender is ToolStripMenuItem)
+            {
+                var name = (sender as ToolStripMenuItem).Text;
+                if (name.StartsWith("Regular"))
+                {
+                    var number = int.Parse(name.Substring(7));
+                    figureCreator = () =>
+                    {
+                        var fig = new Figure();
+                        FigureBuilder.BuildRegularGeometry(fig, number);
+                        return fig;
+                    };
+                }
+            }
 
             _selectionController.CreateFigureRequest = figureCreator;
         }
@@ -293,10 +326,7 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void cmsCanvasPopup_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            tsmiSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
-            tsmiVerticiesSelectMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
-            tsmiDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
-
+            //stub
         }
 
         /// <summary>
@@ -306,39 +336,7 @@ namespace SimpleEditor
         /// <param name="e"></param>
         private void tsmEditMenu_DropDownOpening(object sender, EventArgs e)
         {
-            tsmSkewSelectMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
-            tsmVerticiesSelectMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
-            tsmDefaultSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
-        }
-
-        /// <summary>
-        /// Переключение в базовый режим для создания, перетаскивания, изменения размеров и поворота
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmDefaultSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.EditorMode = EditorMode.Select;
-        }
-
-        /// <summary>
-        /// Переключение в режим искажений (второй из базовых режимов)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiSkewSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.EditorMode = EditorMode.Skew;
-        }
-
-        /// <summary>
-        /// Переключение в режим изменения вершин (третий из базовых режимов)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmVerticiesSelectMode_Click(object sender, EventArgs e)
-        {
-            _selectionController.EditorMode = EditorMode.Verticies;
+            //stub
         }
 
         /// <summary>
@@ -453,6 +451,7 @@ namespace SimpleEditor
         {
             OnLayerChanged();
             UpdateInterface();
+            _selectionController.UpdateMarkers();
         }
 
         private ToolStripMenuItem _switchGeometry;
@@ -760,10 +759,35 @@ namespace SimpleEditor
             BuildInterface();
         }
 
+        private void SaveSelection(string fileName)
+        {
+            if (_selectionController.Selection.Count == 0) return;
+            var location = _selectionController.Selection.GetTransformedPath().Path.GetBounds().Location;
+            _selectionController.Selection.Translate(-location.X, -location.Y);
+            _selectionController.Selection.PushTransformToSelectedFigures();
+            using (var stream = new MemoryStream())
+            {
+                Helper.SaveToStream(stream, _versionInfo);
+                Helper.SaveToStream(stream, _selectionController.Selection.ToList());
+                stream.Position = 0;
+                Helper.Compress(stream, fileName);
+            }
+            _selectionController.Selection.Translate(location.X, location.Y);
+            _selectionController.Selection.PushTransformToSelectedFigures();
+        }
+
         private void tsmSaveAs_Click(object sender, EventArgs e)
         {
             if (saveEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
-            SaveToFile(saveEditorFileDialog.FileName);
+            switch (saveEditorFileDialog.FilterIndex)
+            {
+                case 1:
+                    SaveToFile(saveEditorFileDialog.FileName);
+                    break;
+                case 2:
+                    SaveSelection(saveEditorFileDialog.FileName);
+                    break;
+            }
         }
 
         private void LoadFromFile(string fileName)
@@ -904,6 +928,16 @@ namespace SimpleEditor
         {
             _selectionController.EvenSpaces(FigureArrange.Vertical);
             UpdateInterface();
+        }
+
+        private void ModeSelector_Click(object sender, EventArgs e)
+        {
+            if (sender == tsbSelectMode)
+                _selectionController.EditorMode = EditorMode.Select;
+            else if (sender == tsbSkewMode)
+                _selectionController.EditorMode = EditorMode.Skew;
+            else if (sender == tsbVertexMode)
+                _selectionController.EditorMode = EditorMode.Verticies;
         }
     }
 }

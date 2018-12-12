@@ -15,7 +15,24 @@ namespace EditorModel.Figures
     {
         private readonly List<Figure> _figures = new List<Figure>();
 
-        public IEnumerable<Figure> Figures { get { return _figures.ToArray(); } }
+        public IEnumerable<Figure> Figures
+        {
+            get { return _figures.ToArray(); }
+            set
+            {
+                _figures.Clear();
+                var size = Helper.GetSize(Transform.Matrix);
+                var x = Transform.Matrix.OffsetX - size.Width/2;
+                var y = Transform.Matrix.OffsetY - size.Height/2;
+                Transform.Matrix = new Matrix();
+                _figures.AddRange(value.DeepClone());
+                var selection = new Selections.Selection();
+                foreach (var figure in _figures)
+                    selection.Add(figure);
+                selection.Translate(x, y);
+                selection.PushTransformToSelectedFigures();
+            }
+        }
 
         public GroupFigure(IEnumerable<Figure> figures)
         {

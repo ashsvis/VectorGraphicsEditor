@@ -84,6 +84,7 @@ namespace EditorModel.Figures
         public static void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text };
+            figure.Style.FillStyle.Color = Color.Black;
             figure.Style.BorderStyle.IsVisible = false; // рамка по умолчанию выключена
         }
 
@@ -104,6 +105,11 @@ namespace EditorModel.Figures
             figure.Renderer = new TextRenderer(text);
         }
 
+        /// <summary>
+        /// Подключаем к фигуре геометрию и рендерер внешнего графического файла
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <param name="image"></param>
         public static void BuildImageRenderGeometry(Figure figure, Image image)
         {
             var path = new SerializableGraphicsPath();
@@ -113,8 +119,7 @@ namespace EditorModel.Figures
                 (AllowedOperations.Vertex | AllowedOperations.Skew));
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle = null; // отключение заливки для рендера
-            figure.Renderer = new ImageRenderer(image);
-      
+            figure.Renderer = new ImageRenderer(image);     
         }
 
         /// <summary>
@@ -123,6 +128,7 @@ namespace EditorModel.Figures
         /// <param name="figure"></param>
         public static void BuildPolygoneGeometry(Figure figure)
         {
+            figure.Style.FillStyle.IsVisible = false;
             figure.Geometry = new PolygoneGeometry();
         }
 
@@ -159,6 +165,7 @@ namespace EditorModel.Figures
         /// <param name="figure"></param>
         public static void BuildPolylineGeometry(Figure figure)
         {
+            figure.Style.FillStyle.IsVisible = false;
             figure.Geometry = new PolygoneGeometry(isClosed: false);
         }
 

@@ -92,6 +92,12 @@
     <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PictureStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PictureStyleEditor.Designer.cs">
+      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ShadowStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -103,6 +109,12 @@
     </Compile>
     <Compile Include="Controls\TextDialog.Designer.cs">
       <DependentUpon>TextDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBlockStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TextBlockStyleEditor.Designer.cs">
+      <DependentUpon>TextBlockStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -140,11 +152,17 @@
     <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PictureStyleEditor.resx">
+      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ShadowStyleEditor.resx">
       <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextBlockStyleEditor.resx">
+      <DependentUpon>TextBlockStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextStyleEditor.resx">
       <DependentUpon>TextStyleEditor.cs</DependentUpon>
@@ -441,6 +459,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\rotate180.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\skewmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\triangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subpicture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -92,9 +92,13 @@ namespace EditorModel.Geometry
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width/2, rect.Top),
                         new PointF(rect.Left + rect.Width, rect.Top),
+                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                        new PointF(rect.Left, rect.Top + rect.Height)
+                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height),
+                        new PointF(rect.Left, rect.Top + rect.Height),
+                        new PointF(rect.Left, rect.Top + rect.Height/2)
                     };
             else
                 _points = new[]

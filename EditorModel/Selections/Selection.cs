@@ -170,23 +170,23 @@ namespace EditorModel.Selections
             GrabGeometry();
         }
 
-        /// <summary>
-        /// Применение своего изменения пути к выделенным фигурам
-        /// </summary>
-        public void PushPathDataToSelectedFigures()
-        {
-            var fig = _selected.FirstOrDefault();
-            if (fig != null)
-            {
-                var types = Geometry.Path.Path.PathTypes;
-                var points = Geometry.Path.Path.PathPoints;
-                fig.Geometry = new PrimitiveGeometry(
-                    new SerializableGraphicsPath { Path = new GraphicsPath(points, types) },
-                    fig.Geometry.AllowedOperations);
-                fig.Transform = new SerializableGraphicsMatrix();
-            }
-            GrabGeometry();
-        }
+        ///// <summary>
+        ///// Применение своего изменения пути к выделенным фигурам
+        ///// </summary>
+        //public void PushPathDataToSelectedFigures()
+        //{
+        //    var fig = _selected.FirstOrDefault();
+        //    if (fig != null)
+        //    {
+        //        var types = Geometry.Path.Path.PathTypes;
+        //        var points = Geometry.Path.Path.PathPoints;
+        //        fig.Geometry = new PrimitiveGeometry(
+        //            new SerializableGraphicsPath { Path = new GraphicsPath(points, types) },
+        //            fig.Geometry.AllowedOperations);
+        //        fig.Transform = new SerializableGraphicsMatrix();
+        //    }
+        //    GrabGeometry();
+        //}
 
         /// <summary>
         /// Перенос фигур из списка

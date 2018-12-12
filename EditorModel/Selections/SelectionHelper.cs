@@ -227,10 +227,8 @@ namespace EditorModel.Selections
             switch (arrange)
             {
                 case FigureArrange.Horizontal:
-                    var sW = (selectionBounds.Width - width) / selection.Count;
-                    foreach (var fig in selection.OrderBy(item =>
-                                          item.GetTransformedPath().Path.GetBounds().Left))
-                        figures.Add(fig);
+                    var sW = (selectionBounds.Width - width) / (selection.Count - 1);
+                    figures.AddRange(selection.OrderBy(item => item.GetTransformedPath().Path.GetBounds().Left));
                     var w = selectionBounds.Left + figures.First().GetTransformedPath().Path.GetBounds().Width + sW;
                     for (var i = 1; i < figures.Count - 1; i++)
                     {
@@ -243,10 +241,8 @@ namespace EditorModel.Selections
                     }
                     break;
                 case FigureArrange.Vertical:
-                    var sH = (selectionBounds.Height - heigth) / selection.Count;
-                    foreach (var fig in selection.OrderBy(item =>
-                                          item.GetTransformedPath().Path.GetBounds().Top))
-                        figures.Add(fig);
+                    var sH = (selectionBounds.Height - heigth) / (selection.Count - 1);
+                    figures.AddRange(selection.OrderBy(item => item.GetTransformedPath().Path.GetBounds().Top));
                     var h = selectionBounds.Top + figures.First().GetTransformedPath().Path.GetBounds().Height + sH;
                     for (var i = 1; i < figures.Count - 1; i++)
                     {
