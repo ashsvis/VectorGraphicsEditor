@@ -54,6 +54,7 @@ namespace SimpleEditor.Controls
 
             cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
             nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
+            nudOpacity.Value = (decimal)borderStyles.GetProperty(f => f.Opacity, 255);
             lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
             cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
 
@@ -73,6 +74,7 @@ namespace SimpleEditor.Controls
             // send values back from GUI to object
             borderStyles.SetProperty(f => f.DashStyle = (DashStyle)cbPattern.SelectedIndex);
             borderStyles.SetProperty(f => f.Width = (float)nudWidth.Value);
+            borderStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
             borderStyles.SetProperty(f => f.Color = lbColor.BackColor);
             borderStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
 
@@ -82,8 +84,8 @@ namespace SimpleEditor.Controls
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
-            lbColor.Enabled = nudWidth.Enabled = cbPattern.Enabled = 
-                lbWidth.Enabled = lbPattern.Enabled = cbVisible.Checked;
+            lbColor.Enabled = nudWidth.Enabled = nudOpacity.Enabled = cbPattern.Enabled = 
+                lbWidth.Enabled = lbPattern.Enabled = lbOpacity.Enabled = cbVisible.Checked;
             UpdateObject();
         }
 

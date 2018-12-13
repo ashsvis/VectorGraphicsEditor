@@ -21,7 +21,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll( f => f.Style.FillStyle != null); // show the editor only if all figures contain FillStyle
+            Visible = selection.ForAll( f => f.Style.FillStyle != null);
             if (!Visible) return; // do not build anything
 
             // remember editing object
@@ -35,6 +35,7 @@ namespace SimpleEditor.Controls
 
             lbColor.BackColor = fillStyles.GetProperty(f => f.Color);
             cbVisible.Checked = fillStyles.GetProperty(f => f.IsVisible);
+            nudOpacity.Value = (decimal)fillStyles.GetProperty(f => f.Opacity, 255);
 
             _updating--;
         }
@@ -52,6 +53,7 @@ namespace SimpleEditor.Controls
             // send values back from GUI to object
             fillStyles.SetProperty(f => f.Color = lbColor.BackColor);
             fillStyles.SetProperty(f => f.IsVisible = cbVisible.Checked);
+            fillStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -59,7 +61,7 @@ namespace SimpleEditor.Controls
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
-            lbColor.Enabled = cbVisible.Checked;
+            lbColor.Enabled = lbOpacity.Enabled = nudOpacity.Enabled = cbVisible.Checked;
             UpdateObject();
         }
 

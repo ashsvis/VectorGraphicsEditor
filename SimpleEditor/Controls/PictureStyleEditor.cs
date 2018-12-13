@@ -66,11 +66,12 @@ namespace SimpleEditor.Controls
         {
             var dlg = new OpenFileDialog { Filter = @"Группа фигур графического редактора (*.sge)|*.sge" };
             if (dlg.ShowDialog() != DialogResult.OK) return;
+            var loaded = LoadSelection(dlg.FileName);
+            if (loaded == null) return;
             _figures.Clear();
-            foreach (var fig in LoadSelection(dlg.FileName))
+            foreach (var fig in loaded)
                 _figures.Add(fig.DeepClone());
             UpdateObject();
-
         }
 
         private IEnumerable<Figure> LoadSelection(string fileName)
@@ -80,7 +81,7 @@ namespace SimpleEditor.Controls
                 Helper.Decompress(fileName, stream);
                 stream.Position = 0;
                 var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
-                if (versionInfo.Version != 1 /*_versionInfo.Version*/)
+                if (versionInfo.Version != Helper.GetVersionInfo().Version)
                 {
                     MessageBox.Show(this, @"Формат загружаемого файла не поддерживается.",
                                     @"Загрузка файла отменена",
@@ -89,7 +90,6 @@ namespace SimpleEditor.Controls
                 }
                 return (List<Figure>)Helper.LoadFromStream(stream);
             }
-
         }
     }
 }

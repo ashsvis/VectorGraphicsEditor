@@ -34,6 +34,8 @@
             this.btnRightAllign = new System.Windows.Forms.Button();
             this.btnCenterAllign = new System.Windows.Forms.Button();
             this.btnLeftAllign = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbText
@@ -42,9 +44,10 @@
             this.lbText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbText.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbText.Location = new System.Drawing.Point(148, 0);
+            this.lbText.Location = new System.Drawing.Point(136, 1);
+            this.lbText.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbText.Name = "lbText";
-            this.lbText.Size = new System.Drawing.Size(68, 26);
+            this.lbText.Size = new System.Drawing.Size(45, 24);
             this.lbText.TabIndex = 5;
             this.lbText.Text = "Текст";
             this.lbText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -125,7 +128,8 @@
             "70",
             "71",
             "72"});
-            this.cbFontSize.Location = new System.Drawing.Point(97, 2);
+            this.cbFontSize.Location = new System.Drawing.Point(91, 1);
+            this.cbFontSize.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.cbFontSize.Name = "cbFontSize";
             this.cbFontSize.Size = new System.Drawing.Size(45, 21);
             this.cbFontSize.TabIndex = 4;
@@ -136,7 +140,8 @@
             this.cbFontName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFontName.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.cbFontName.FormattingEnabled = true;
-            this.cbFontName.Location = new System.Drawing.Point(3, 2);
+            this.cbFontName.Location = new System.Drawing.Point(3, 1);
+            this.cbFontName.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
             this.cbFontName.Name = "cbFontName";
             this.cbFontName.Size = new System.Drawing.Size(88, 21);
             this.cbFontName.TabIndex = 3;
@@ -146,7 +151,8 @@
             // 
             this.btnRightAllign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRightAllign.Image = global::SimpleEditor.Properties.Resources.alignright;
-            this.btnRightAllign.Location = new System.Drawing.Point(265, 2);
+            this.btnRightAllign.Location = new System.Drawing.Point(231, 1);
+            this.btnRightAllign.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.btnRightAllign.Name = "btnRightAllign";
             this.btnRightAllign.Size = new System.Drawing.Size(24, 22);
             this.btnRightAllign.TabIndex = 6;
@@ -157,7 +163,8 @@
             // 
             this.btnCenterAllign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCenterAllign.Image = global::SimpleEditor.Properties.Resources.aligncenter;
-            this.btnCenterAllign.Location = new System.Drawing.Point(242, 2);
+            this.btnCenterAllign.Location = new System.Drawing.Point(207, 1);
+            this.btnCenterAllign.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.btnCenterAllign.Name = "btnCenterAllign";
             this.btnCenterAllign.Size = new System.Drawing.Size(24, 22);
             this.btnCenterAllign.TabIndex = 7;
@@ -168,26 +175,38 @@
             // 
             this.btnLeftAllign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnLeftAllign.Image = global::SimpleEditor.Properties.Resources.alignleft;
-            this.btnLeftAllign.Location = new System.Drawing.Point(219, 2);
+            this.btnLeftAllign.Location = new System.Drawing.Point(183, 1);
+            this.btnLeftAllign.Margin = new System.Windows.Forms.Padding(2, 1, 0, 0);
             this.btnLeftAllign.Name = "btnLeftAllign";
             this.btnLeftAllign.Size = new System.Drawing.Size(24, 22);
             this.btnLeftAllign.TabIndex = 8;
             this.btnLeftAllign.UseVisualStyleBackColor = true;
             this.btnLeftAllign.Click += new System.EventHandler(this.btnLeftAllign_Click);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.cbFontName);
+            this.flowLayoutPanel1.Controls.Add(this.cbFontSize);
+            this.flowLayoutPanel1.Controls.Add(this.lbText);
+            this.flowLayoutPanel1.Controls.Add(this.btnLeftAllign);
+            this.flowLayoutPanel1.Controls.Add(this.btnCenterAllign);
+            this.flowLayoutPanel1.Controls.Add(this.btnRightAllign);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(260, 25);
+            this.flowLayoutPanel1.TabIndex = 9;
+            // 
             // TextStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.btnRightAllign);
-            this.Controls.Add(this.btnCenterAllign);
-            this.Controls.Add(this.btnLeftAllign);
-            this.Controls.Add(this.lbText);
-            this.Controls.Add(this.cbFontSize);
-            this.Controls.Add(this.cbFontName);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TextStyleEditor";
-            this.Size = new System.Drawing.Size(297, 28);
+            this.Size = new System.Drawing.Size(267, 28);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -200,5 +219,6 @@
         private System.Windows.Forms.Button btnRightAllign;
         private System.Windows.Forms.Button btnCenterAllign;
         private System.Windows.Forms.Button btnLeftAllign;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

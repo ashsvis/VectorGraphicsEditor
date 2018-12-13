@@ -1,6 +1,6 @@
 ﻿namespace SimpleEditor.Controls
 {
-    partial class PictureStyleEditor
+    partial class ClosedSmoothedStyleEditor
     {
         /// <summary> 
         /// Требуется переменная конструктора.
@@ -28,61 +28,67 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbPicture = new System.Windows.Forms.Label();
-            this.lbPictureText = new System.Windows.Forms.Label();
+            this.cbIsClosed = new System.Windows.Forms.CheckBox();
+            this.cbIsSmoothed = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lbPicture
+            // cbIsClosed
             // 
-            this.lbPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbPicture.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbPicture.Location = new System.Drawing.Point(48, 0);
-            this.lbPicture.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbPicture.Name = "lbPicture";
-            this.lbPicture.Size = new System.Drawing.Size(23, 22);
-            this.lbPicture.TabIndex = 6;
-            this.lbPicture.Click += new System.EventHandler(this.lbPicture_Click);
+            this.cbIsClosed.AutoSize = true;
+            this.cbIsClosed.Location = new System.Drawing.Point(3, 1);
+            this.cbIsClosed.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
+            this.cbIsClosed.Name = "cbIsClosed";
+            this.cbIsClosed.Size = new System.Drawing.Size(66, 17);
+            this.cbIsClosed.TabIndex = 1;
+            this.cbIsClosed.Text = "IsClosed";
+            this.cbIsClosed.UseVisualStyleBackColor = true;
+            this.cbIsClosed.CheckedChanged += new System.EventHandler(this.cbIsClosed_CheckedChanged);
             // 
-            // lbPictureText
+            // cbIsSmoothed
             // 
-            this.lbPictureText.AutoSize = true;
-            this.lbPictureText.Location = new System.Drawing.Point(3, 3);
-            this.lbPictureText.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbPictureText.Name = "lbPictureText";
-            this.lbPictureText.Size = new System.Drawing.Size(40, 13);
-            this.lbPictureText.TabIndex = 5;
-            this.lbPictureText.Text = "Picture";
+            this.cbIsSmoothed.AutoSize = true;
+            this.cbIsSmoothed.Location = new System.Drawing.Point(69, 1);
+            this.cbIsSmoothed.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.cbIsSmoothed.Name = "cbIsSmoothed";
+            this.cbIsSmoothed.Size = new System.Drawing.Size(82, 17);
+            this.cbIsSmoothed.TabIndex = 1;
+            this.cbIsSmoothed.Text = "IsSmoothed";
+            this.cbIsSmoothed.UseVisualStyleBackColor = true;
+            this.cbIsSmoothed.CheckedChanged += new System.EventHandler(this.cbIsClosed_CheckedChanged);
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.lbPictureText);
-            this.flowLayoutPanel1.Controls.Add(this.lbPicture);
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(this.cbIsClosed);
+            this.flowLayoutPanel1.Controls.Add(this.cbIsSmoothed);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(78, 24);
-            this.flowLayoutPanel1.TabIndex = 7;
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(157, 23);
+            this.flowLayoutPanel1.TabIndex = 2;
             // 
-            // PictureStyleEditor
+            // IsClosedEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "PictureStyleEditor";
-            this.Size = new System.Drawing.Size(83, 28);
+            this.Name = "IsClosedEditor";
+            this.Size = new System.Drawing.Size(163, 26);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lbPicture;
-        private System.Windows.Forms.Label lbPictureText;
+        private System.Windows.Forms.CheckBox cbIsClosed;
+        private System.Windows.Forms.CheckBox cbIsSmoothed;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

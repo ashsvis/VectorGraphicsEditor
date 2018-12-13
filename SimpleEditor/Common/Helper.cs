@@ -1,6 +1,4 @@
-using EditorModel.Figures;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -86,7 +84,6 @@ namespace SimpleEditor.Common
         {
             var formatter = new BinaryFormatter();
             formatter.Serialize(stream, obj);
-            //stream.Position = 0;
         }
 
         /// <summary>
@@ -97,8 +94,12 @@ namespace SimpleEditor.Common
         public static object LoadFromStream(Stream stream)
         {
             var formatter = new BinaryFormatter();
-            //stream.Position = 0;
             return formatter.Deserialize(stream);
+        }
+
+        public static VersionInfo GetVersionInfo()
+        {
+            return new VersionInfo { Version = 2 };
         }
     }
 }

@@ -28,7 +28,7 @@ namespace EditorModel.Renderers
             : base(renderer)
         {
             _renderer = renderer;
-            Offset = new PointF(10, 10);
+            Offset = new PointF(5, 5);
             Opacity = 128;
         }
 

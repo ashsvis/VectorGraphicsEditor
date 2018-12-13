@@ -29,9 +29,8 @@ namespace SimpleEditor
         public FormSimpleEditor()
         {
             InitializeComponent();
-            _versionInfo = new VersionInfo { Version = 1 };
-            _caption = string.Format("Simple Vector Graphics Editor (ver 0.{0})", _versionInfo.Version);
-
+            _versionInfo = Helper.GetVersionInfo();
+            _caption = string.Format("Simple Vector Graphics Editor (Ver 0.{0})", _versionInfo.Version);
 
             _layer = new Layer();
             _undoRedoController = new UndoRedoController(_layer);
@@ -740,7 +739,7 @@ namespace SimpleEditor
         }
 
         /// <summary>
-        /// Метод записи фигур в файл
+        /// Метод записи всех фигур в слое в файл
         /// </summary>
         /// <param name="fileName"></param>
         private void SaveToFile(string fileName)
@@ -759,6 +758,10 @@ namespace SimpleEditor
             BuildInterface();
         }
 
+        /// <summary>
+        /// Метод записи фигур из списка выделенных в файл
+        /// </summary>
+        /// <param name="fileName"></param>
         private void SaveSelection(string fileName)
         {
             if (_selectionController.Selection.Count == 0) return;

@@ -33,14 +33,17 @@
             this.lbOffset = new System.Windows.Forms.Label();
             this.nudOffsetX = new System.Windows.Forms.NumericUpDown();
             this.nudOffsetY = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetY)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // nudOpacity
             // 
-            this.nudOpacity.Location = new System.Drawing.Point(91, 0);
+            this.nudOpacity.Location = new System.Drawing.Point(97, 1);
+            this.nudOpacity.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.nudOpacity.Maximum = new decimal(new int[] {
             255,
             0,
@@ -54,7 +57,8 @@
             // lbOpacity
             // 
             this.lbOpacity.AutoSize = true;
-            this.lbOpacity.Location = new System.Drawing.Point(0, 2);
+            this.lbOpacity.Location = new System.Drawing.Point(3, 2);
+            this.lbOpacity.Margin = new System.Windows.Forms.Padding(3, 2, 0, 0);
             this.lbOpacity.Name = "lbOpacity";
             this.lbOpacity.Size = new System.Drawing.Size(94, 13);
             this.lbOpacity.TabIndex = 7;
@@ -63,7 +67,8 @@
             // lbOffset
             // 
             this.lbOffset.AutoSize = true;
-            this.lbOffset.Location = new System.Drawing.Point(133, 2);
+            this.lbOffset.Location = new System.Drawing.Point(137, 2);
+            this.lbOffset.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbOffset.Name = "lbOffset";
             this.lbOffset.Size = new System.Drawing.Size(35, 13);
             this.lbOffset.TabIndex = 9;
@@ -71,7 +76,8 @@
             // 
             // nudOffsetX
             // 
-            this.nudOffsetX.Location = new System.Drawing.Point(167, 0);
+            this.nudOffsetX.Location = new System.Drawing.Point(172, 1);
+            this.nudOffsetX.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.nudOffsetX.Minimum = new decimal(new int[] {
             100,
             0,
@@ -84,7 +90,8 @@
             // 
             // nudOffsetY
             // 
-            this.nudOffsetY.Location = new System.Drawing.Point(208, 0);
+            this.nudOffsetY.Location = new System.Drawing.Point(212, 1);
+            this.nudOffsetY.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.nudOffsetY.Minimum = new decimal(new int[] {
             100,
             0,
@@ -95,23 +102,34 @@
             this.nudOffsetY.TabIndex = 10;
             this.nudOffsetY.ValueChanged += new System.EventHandler(this.nudOpacity_ValueChanged);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.lbOpacity);
+            this.flowLayoutPanel1.Controls.Add(this.nudOpacity);
+            this.flowLayoutPanel1.Controls.Add(this.lbOffset);
+            this.flowLayoutPanel1.Controls.Add(this.nudOffsetX);
+            this.flowLayoutPanel1.Controls.Add(this.nudOffsetY);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(258, 25);
+            this.flowLayoutPanel1.TabIndex = 11;
+            // 
             // ShadowStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.nudOffsetY);
-            this.Controls.Add(this.nudOffsetX);
-            this.Controls.Add(this.lbOffset);
-            this.Controls.Add(this.nudOpacity);
-            this.Controls.Add(this.lbOpacity);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ShadowStyleEditor";
-            this.Size = new System.Drawing.Size(257, 26);
+            this.Size = new System.Drawing.Size(266, 26);
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetY)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -122,5 +140,6 @@
         private System.Windows.Forms.Label lbOffset;
         private System.Windows.Forms.NumericUpDown nudOffsetX;
         private System.Windows.Forms.NumericUpDown nudOffsetY;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

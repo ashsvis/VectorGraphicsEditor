@@ -19,7 +19,14 @@ namespace EditorModel.Style
             IsVisible = true;
             // по умолчанию белый цвет заливки
             Color = Color.White;
+            // по умолчанию полная непрозрачность
+            Opacity = 255;
         }
+
+        /// <summary>
+        /// Величина прозрачности цвета заливки
+        /// </summary>
+        public int Opacity { get; set; }
 
         /// <summary>
         /// Цвет для заполнения фона (цвет заливки)
@@ -39,7 +46,7 @@ namespace EditorModel.Style
         public virtual Brush GetBrush(Figure figure)
         {
             // возвращаем созданную и настроенную кисть для фигуры
-            return new SolidBrush(Color);
+            return new SolidBrush(Color.FromArgb(Opacity, Color));
         }
     }
 

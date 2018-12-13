@@ -73,11 +73,11 @@
     <Compile Include="Controls\ImageStyleEditor.Designer.cs">
       <DependentUpon>ImageStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IsClosedEditor.cs">
+    <Compile Include="Controls\ClosedSmoothedStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\IsClosedEditor.Designer.cs">
-      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    <Compile Include="Controls\ClosedSmoothedStyleEditor.Designer.cs">
+      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\LayerSelectionInfo.cs" />
     <Compile Include="Controls\LayerStyleEditor.cs">
@@ -143,8 +143,8 @@
     <EmbeddedResource Include="Controls\ImageStyleEditor.resx">
       <DependentUpon>ImageStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\IsClosedEditor.resx">
-      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ClosedSmoothedStyleEditor.resx">
+      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LayerStyleEditor.resx">
       <DependentUpon>LayerStyleEditor.cs</DependentUpon>

@@ -30,6 +30,7 @@ namespace SimpleEditor.Controls
 
             lbColor.BackColor = _layer.FillStyle.Color;
             cbVisible.Checked = _layer.FillStyle.IsVisible;
+            nudOpacity.Value = _layer.FillStyle.Opacity;
 
             _updating--;
         }
@@ -43,6 +44,7 @@ namespace SimpleEditor.Controls
             // send values back from GUI to object
             _layer.FillStyle.Color = lbColor.BackColor;
             _layer.FillStyle.IsVisible = cbVisible.Checked;
+            _layer.FillStyle.Opacity = (int)nudOpacity.Value;
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -50,7 +52,7 @@ namespace SimpleEditor.Controls
 
         private void cbVisible_CheckedChanged(object sender, EventArgs e)
         {
-            lbColor.Enabled = cbVisible.Checked;
+            lbColor.Enabled = lbOpacity.Enabled = nudOpacity.Enabled = cbVisible.Checked;
             UpdateObject();
         }
 
