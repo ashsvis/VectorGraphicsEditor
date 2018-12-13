@@ -216,78 +216,111 @@ namespace SimpleEditor
         {
             _selectionController.Clear();
             Func<Figure> figureCreator = null;
+            Cursor figureCreatorCursor = CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
 
             if (sender == tsbPolyline || sender == btnPolyline)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildPolylineGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == btnPolygone)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildPolygoneGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == btnRectangle || sender == tsbRect)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateRect);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildRectangleGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == btnSquare)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateSquare);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildSquareGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == btnEllipse)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateEllipse);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildEllipseGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == btnCircle)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateCircle);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildCircleGeometry(fig);
                     return fig;
                 };
+            }
             else if (sender == tsbRomb || sender == btnRegular4)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateRect);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildRegularGeometry(fig, 4);
                     return fig;
                 };
+            }
             else if (sender == tsbText || sender == btnTextBlock)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateBlockText);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
                     return fig;
                 };
+            }
             else if (sender == btnTextLine)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateText);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildTextGeometry(fig, "Текст");
                     return fig;
                 };
+            }
             else if (sender == tsbPicture || sender == btnInsertImage)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateImage);
                 figureCreator = () =>
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildImageRenderGeometry(fig, null);
                     return fig;
                 };
+            }
             else if (sender == btnInsertPicture)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePicture);
                 figureCreator = () =>
                 {
                     var placeHolder = new Figure();
@@ -295,16 +328,18 @@ namespace SimpleEditor
                     placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
                     FigureBuilder.BuildRectangleGeometry(placeHolder);
                     var fig = new GroupFigure(new[] { placeHolder })
-                        {
-                            Renderer = new GroupRenderer()
-                        };
+                    {
+                        Renderer = new GroupRenderer()
+                    };
                     return fig;
                 };
+            }
             else if (sender is ToolStripMenuItem)
             {
                 var name = (sender as ToolStripMenuItem).Text;
                 if (name.StartsWith("Regular"))
                 {
+                    figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateRect);
                     var number = int.Parse(name.Substring(7));
                     figureCreator = () =>
                     {
@@ -315,6 +350,7 @@ namespace SimpleEditor
                 }
             }
 
+            _selectionController.CreateFigureCursor = figureCreatorCursor;
             _selectionController.CreateFigureRequest = figureCreator;
         }
 

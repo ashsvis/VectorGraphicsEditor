@@ -19,7 +19,7 @@ namespace SimpleEditor.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -243,6 +243,26 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] CreateBlockText {
+            get {
+                object obj = ResourceManager.GetObject("CreateBlockText", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateCircle {
+            get {
+                object obj = ResourceManager.GetObject("CreateCircle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] CreateEllipse {
             get {
                 object obj = ResourceManager.GetObject("CreateEllipse", resourceCulture);
@@ -253,9 +273,59 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] CreateImage {
+            get {
+                object obj = ResourceManager.GetObject("CreateImage", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreatePicture {
+            get {
+                object obj = ResourceManager.GetObject("CreatePicture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreatePolyline {
+            get {
+                object obj = ResourceManager.GetObject("CreatePolyline", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] CreateRect {
             get {
                 object obj = ResourceManager.GetObject("CreateRect", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateSquare {
+            get {
+                object obj = ResourceManager.GetObject("CreateSquare", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateText {
+            get {
+                object obj = ResourceManager.GetObject("CreateText", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -297,6 +367,16 @@ namespace SimpleEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("double1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] DragCopy {
+            get {
+                object obj = ResourceManager.GetObject("DragCopy", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

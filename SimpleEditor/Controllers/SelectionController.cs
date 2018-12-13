@@ -33,6 +33,7 @@ namespace SimpleEditor.Controllers
         private readonly Layer _layer;
 
         public Func<Figure> CreateFigureRequest;
+        public Cursor CreateFigureCursor = Cursors.Default;
 
         public SelectionController(Layer layer)
         {
@@ -378,6 +379,15 @@ namespace SimpleEditor.Controllers
                         if (!_selection.Transform.Matrix.IsIdentity)
                         {
                             OnLayerStartChanging();
+                            if (modifierKeys.HasFlag(Keys.Control))
+                            {
+                                var list = new List<Figure>();
+                                foreach (var fig in Selection.Select(figure => figure.DeepClone()))
+                                {
+                                    list.Add(fig);
+                                    _layer.Figures.Add(fig);
+                                }
+                            }
                             _selection.PushTransformToSelectedFigures();
                             OnLayerChanged();
                         }
@@ -843,6 +853,9 @@ namespace SimpleEditor.Controllers
         /// <returns>Настроенный курсор</returns>
         public Cursor GetCursor(Point point, Keys modifierKeys, MouseButtons button)
         {
+            if (CreateFigureRequest != null)
+                return CreateFigureCursor;
+
             switch (EditorMode)
             {
                 // для базовых режимов настраиваем вид курсора на маркерах
@@ -865,13 +878,17 @@ namespace SimpleEditor.Controllers
                             return CursorFactory.GetCursor(UserCursor.AddVertex);
                         return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }
-                    if (!modifierKeys.HasFlag(Keys.Left))
-                        return Cursors.Default;
-                    break;
+                    return Cursors.Default;
+                case EditorMode.FrameSelect:
+                    return CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                case EditorMode.CreateFigure:
+                    return CreateFigureCursor;
                 // когда тащим фигуры
                 case EditorMode.Drag:
                     return _selection.Count > 0
-                               ? CursorFactory.GetCursor(UserCursor.SizeAll)
+                               ? modifierKeys.HasFlag(Keys.Control)
+                                          ? CursorFactory.GetCursor(UserCursor.DragCopy) 
+                                          : CursorFactory.GetCursor(UserCursor.SizeAll)
                                : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
                 // когда изменяем масштабируем, меняем ширину/высоту, вращаем или искажаем
                 case EditorMode.ChangeGeometry:

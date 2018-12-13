@@ -320,13 +320,7 @@
     <None Include="Resources\296.cur" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RECT.cur" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ELLIPSE.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ELLIP.cur" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CreateText.png" />
@@ -474,6 +468,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\subpicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\295poly.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\294.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\330.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RECT.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELLIP.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\346.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\380.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\14617.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,22 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbPicture = new System.Windows.Forms.Label();
             this.lbPictureText = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnLoadPicture = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbPicture
-            // 
-            this.lbPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbPicture.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbPicture.Location = new System.Drawing.Point(48, 0);
-            this.lbPicture.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbPicture.Name = "lbPicture";
-            this.lbPicture.Size = new System.Drawing.Size(23, 22);
-            this.lbPicture.TabIndex = 6;
-            this.lbPicture.Click += new System.EventHandler(this.lbPicture_Click);
             // 
             // lbPictureText
             // 
@@ -58,12 +47,26 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.lbPictureText);
-            this.flowLayoutPanel1.Controls.Add(this.lbPicture);
+            this.flowLayoutPanel1.Controls.Add(this.btnLoadPicture);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(78, 24);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(108, 22);
             this.flowLayoutPanel1.TabIndex = 7;
+            // 
+            // btnLoadPicture
+            // 
+            this.btnLoadPicture.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoadPicture.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnLoadPicture.Location = new System.Drawing.Point(46, 0);
+            this.btnLoadPicture.Margin = new System.Windows.Forms.Padding(0);
+            this.btnLoadPicture.Name = "btnLoadPicture";
+            this.btnLoadPicture.Size = new System.Drawing.Size(57, 21);
+            this.btnLoadPicture.TabIndex = 6;
+            this.btnLoadPicture.Text = "Load...";
+            this.btnLoadPicture.UseVisualStyleBackColor = true;
+            this.btnLoadPicture.Click += new System.EventHandler(this.lbPicture_Click);
             // 
             // PictureStyleEditor
             // 
@@ -72,7 +75,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "PictureStyleEditor";
-            this.Size = new System.Drawing.Size(83, 28);
+            this.Size = new System.Drawing.Size(115, 28);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -80,9 +83,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lbPicture;
         private System.Windows.Forms.Label lbPictureText;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button btnLoadPicture;
     }
 }
