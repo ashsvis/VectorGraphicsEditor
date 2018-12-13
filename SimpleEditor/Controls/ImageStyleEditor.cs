@@ -72,7 +72,10 @@ namespace SimpleEditor.Controls
 
         private void lbImage_Click(object sender, EventArgs e)
         {
-            var dlg = new OpenFileDialog {Filter = @"*.png;*.jpg;*.bmp|*.png;*.jpg;*.bmp"};
+            var dlg = new OpenFileDialog
+            {
+                Filter = @"*.png;*.jpg;*.bmp;*.emf;*.tif;*.gif;*.ico|*.png;*.jpg;*.bmp;*.emf;*.tif;*.gif;*.ico"
+            };
             if (dlg.ShowDialog() != DialogResult.OK) return;
             lbImage.Image = _image = Image.FromFile(dlg.FileName);
             cbStretch.Enabled = _image != null;
