@@ -8,12 +8,14 @@ namespace EditorModel.Geometry
     /// Содержит геометрию текстовой строки
     /// </summary>
     [Serializable]
-    public class TextGeometry : Geometry
+    public sealed class TextGeometry : Geometry, IDisposable
     {
         /// <summary>
         /// Текст для построения пути
         /// </summary>
         public string Text { get; set; }
+
+        public StringAlignment Alignment { get; set; }
 
         /// <summary>
         /// Имя файла шрифта
@@ -45,10 +47,12 @@ namespace EditorModel.Geometry
                 // сброс пути.
                 _path.Path.Reset();
                 // добавляем в путь текстовую строку
-                
-                _path.Path.AddString(Text ?? "",
-                    new FontFamily(FontName), 0, FontSize, PointF.Empty, 
-                                    StringFormat.GenericTypographic);
+                using (var sf = new StringFormat(StringFormat.GenericTypographic))
+                {
+                    sf.Alignment = Alignment;
+                    var text = string.IsNullOrWhiteSpace(Text) ? "(empty)" : Text;
+                    _path.Path.AddString(text, new FontFamily(FontName), 0, FontSize, PointF.Empty, sf);
+                }
                 // возвращаем настроенный путь
                 return _path;
             }
@@ -69,6 +73,16 @@ namespace EditorModel.Geometry
             Text = String.Empty;
             FontName = "Arial";
             FontSize = 14f;
+        }
+
+        ~TextGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
         }
     }
 }

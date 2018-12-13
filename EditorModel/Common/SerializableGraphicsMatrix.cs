@@ -5,13 +5,13 @@ using System.Runtime.Serialization;
 namespace EditorModel.Common
 {
     [Serializable]
-    public class SerializableGraphicsMatrix : ISerializable
+    public sealed class SerializableGraphicsMatrix : ISerializable, IDisposable
     {
         public Matrix Matrix = new Matrix();
 
         public SerializableGraphicsMatrix() { }
 
-        protected SerializableGraphicsMatrix(SerializationInfo info, StreamingContext context)
+        private SerializableGraphicsMatrix(SerializationInfo info, StreamingContext context)
         {
             if (info.MemberCount == 1)
             {
@@ -20,6 +20,16 @@ namespace EditorModel.Common
             }
             else
                 Matrix = new Matrix();
+        }
+
+        ~SerializableGraphicsMatrix()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (Matrix != null) Matrix.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

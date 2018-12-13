@@ -19,7 +19,7 @@ namespace SimpleEditor.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -243,9 +243,59 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] CreateBlockText {
+            get {
+                object obj = ResourceManager.GetObject("CreateBlockText", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateCircle {
+            get {
+                object obj = ResourceManager.GetObject("CreateCircle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] CreateEllipse {
             get {
                 object obj = ResourceManager.GetObject("CreateEllipse", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateImage {
+            get {
+                object obj = ResourceManager.GetObject("CreateImage", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreatePicture {
+            get {
+                object obj = ResourceManager.GetObject("CreatePicture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreatePolyline {
+            get {
+                object obj = ResourceManager.GetObject("CreatePolyline", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -261,11 +311,41 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateSquare {
+            get {
+                object obj = ResourceManager.GetObject("CreateSquare", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] CreateText {
+            get {
+                object obj = ResourceManager.GetObject("CreateText", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap cut {
             get {
                 object obj = ResourceManager.GetObject("cut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -287,6 +367,16 @@ namespace SimpleEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("double1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] DragCopy {
+            get {
+                object obj = ResourceManager.GetObject("DragCopy", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -493,6 +583,16 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap picture {
+            get {
+                object obj = ResourceManager.GetObject("picture", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap poligon {
             get {
                 object obj = ResourceManager.GetObject("poligon", resourceCulture);
@@ -543,6 +643,16 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap regular6 {
+            get {
+                object obj = ResourceManager.GetObject("regular6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap regular8 {
             get {
                 object obj = ResourceManager.GetObject("regular8", resourceCulture);
@@ -577,6 +687,16 @@ namespace SimpleEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("Rotate", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rotate180 {
+            get {
+                object obj = ResourceManager.GetObject("rotate180", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -731,6 +851,16 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap skewmode {
+            get {
+                object obj = ResourceManager.GetObject("skewmode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
         internal static byte[] SkewVertical {
@@ -763,9 +893,29 @@ namespace SimpleEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap subpicture {
+            get {
+                object obj = ResourceManager.GetObject("subpicture", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap text {
             get {
                 object obj = ResourceManager.GetObject("text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap textline {
+            get {
+                object obj = ResourceManager.GetObject("textline", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -796,6 +946,16 @@ namespace SimpleEditor.Properties {
         internal static System.Drawing.Bitmap transparent1 {
             get {
                 object obj = ResourceManager.GetObject("transparent1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap triangle {
+            get {
+                object obj = ResourceManager.GetObject("triangle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

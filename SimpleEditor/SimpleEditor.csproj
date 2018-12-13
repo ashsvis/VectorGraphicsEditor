@@ -65,15 +65,21 @@
     <Compile Include="Controls\FillStyleEditor.Designer.cs">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Helper.cs" />
+    <Compile Include="Controls\ControlsHelper.cs" />
     <Compile Include="Controls\IEditor.cs" />
-    <Compile Include="Controls\IsClosedEditor.cs">
+    <Compile Include="Controls\ImageStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\IsClosedEditor.Designer.cs">
-      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    <Compile Include="Controls\ImageStyleEditor.Designer.cs">
+      <DependentUpon>ImageStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LayerSelectionHelper.cs" />
+    <Compile Include="Controls\ClosedSmoothedStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ClosedSmoothedStyleEditor.Designer.cs">
+      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayerSelectionInfo.cs" />
     <Compile Include="Controls\LayerStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -86,11 +92,29 @@
     <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PictureStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PictureStyleEditor.Designer.cs">
+      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShadowStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ShadowStyleEditor.Designer.cs">
+      <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\TextDialog.Designer.cs">
       <DependentUpon>TextDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBlockStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TextBlockStyleEditor.Designer.cs">
+      <DependentUpon>TextBlockStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -109,14 +133,18 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
+    <Compile Include="Common\VersionInfo.cs" />
     <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
       <DependentUpon>BorderStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FillStyleEditor.resx">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\IsClosedEditor.resx">
-      <DependentUpon>IsClosedEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ImageStyleEditor.resx">
+      <DependentUpon>ImageStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ClosedSmoothedStyleEditor.resx">
+      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LayerStyleEditor.resx">
       <DependentUpon>LayerStyleEditor.cs</DependentUpon>
@@ -124,8 +152,17 @@
     <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PictureStyleEditor.resx">
+      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ShadowStyleEditor.resx">
+      <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextBlockStyleEditor.resx">
+      <DependentUpon>TextBlockStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextStyleEditor.resx">
       <DependentUpon>TextStyleEditor.cs</DependentUpon>
@@ -283,13 +320,7 @@
     <None Include="Resources\296.cur" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RECT.cur" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ELLIPSE.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ELLIP.cur" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CreateText.png" />
@@ -413,6 +444,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\transparent1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rotate180.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\skewmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\triangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subpicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\295poly.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\294.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\330.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RECT.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELLIP.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\346.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\380.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\14617.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

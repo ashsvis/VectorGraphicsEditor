@@ -47,9 +47,13 @@
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
-    <Compile Include="Figures\GroupRenderer.cs" />
-    <Compile Include="Figures\ImageRenderer.cs" />
-    <Compile Include="Figures\TextRenderer.cs" />
+    <Compile Include="Renderers\GlowRenderer.cs" />
+    <Compile Include="Renderers\GroupRenderer.cs" />
+    <Compile Include="Renderers\ImageRenderer.cs" />
+    <Compile Include="Renderers\Renderer.cs" />
+    <Compile Include="Renderers\RendererDecorator.cs" />
+    <Compile Include="Renderers\ShadowRenderer.cs" />
+    <Compile Include="Renderers\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />
     <Compile Include="Style\Border.cs" />
@@ -61,11 +65,11 @@
     <Compile Include="Geometry\PrimitiveGeometry.cs" />
     <Compile Include="Figures\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Figures\Renderer.cs" />
+    <Compile Include="Renderers\DefaultRenderer.cs" />
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Common\SerializableGraphicsMatrix.cs" />
     <Compile Include="Common\SerializableGraphicsPath.cs" />
-    <Compile Include="Style\LineGradientFill.cs" />
+    <Compile Include="Style\LinearGradientFill.cs" />
     <Compile Include="Style\Style.cs" />
     <Compile Include="Geometry\TextGeometry.cs" />
   </ItemGroup>

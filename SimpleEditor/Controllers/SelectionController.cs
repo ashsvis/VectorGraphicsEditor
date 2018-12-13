@@ -1,6 +1,7 @@
 ﻿using EditorModel.Figures;
 using EditorModel.Geometry;
 using EditorModel.Selections;
+using EditorModel.Style;
 using SimpleEditor.Common;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace SimpleEditor.Controllers
         private readonly Layer _layer;
 
         public Func<Figure> CreateFigureRequest;
+        public Cursor CreateFigureCursor = Cursors.Default;
 
         public SelectionController(Layer layer)
         {
@@ -73,7 +75,7 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Изменилась рамка выделения
         /// </summary>
-        public event Action<Rectangle> SelectedRangeChanging = delegate { };
+        public event Action<Rectangle, float> SelectedRangeChanging = delegate { };
 
         /// <summary>
         /// Изменился режим работы редактора
@@ -90,9 +92,15 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public event Action LayerChanged = delegate { };
 
+        /// <summary>
+        /// Требуется сбросить выбор фигуры для создания
+        /// </summary>
+        public event Action ResetFigureCreator = delegate { };
+
         private bool _wasMouseMoving;
         private bool _wasVertexMoving;
         private bool _isMouseDown;
+        private bool _isFigureCreated;
         private Point _firstMouseDown;
         private Marker _movedMarker;
 
@@ -116,7 +124,8 @@ namespace SimpleEditor.Controllers
                 }
                 _editorMode = value;
                 // запрещаем рисовать рамку вокруг фигур, когда изменяем вершины
-                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies && (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
+                _selection.IsFrameVisible = _editorMode != EditorMode.Verticies && 
+                    (_editorMode != EditorMode.ChangeGeometry || _lastMode != EditorMode.Verticies);
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
@@ -162,6 +171,16 @@ namespace SimpleEditor.Controllers
             _isMouseDown = true;
             // запоминаем точку нажатия мышкой
             _firstMouseDown = point;
+
+            if (CreateFigureRequest != null)
+            {
+                //создаем новую фигуру
+                EditorMode = EditorMode.CreateFigure;
+                OnLayerStartChanging();
+                CreateFigure(point);
+                _isFigureCreated = true;
+                return;
+            }
 
             if (EditorMode != EditorMode.Select &&
                 EditorMode != EditorMode.Skew &&
@@ -220,17 +239,10 @@ namespace SimpleEditor.Controllers
                     Clear(); // очищаем список выбранных
                     OnSelectedFigureChanged();
 
-                    if (CreateFigureRequest != null)
-                    {
-                        //создаем новую фигуру
-                        EditorMode = EditorMode.CreateFigure;
-                        OnLayerStartChanging();
-                        CreateFigure(point);
-                    }
-                    else
+                    if (CreateFigureRequest == null)
                     {
                         // создаём "резиновую" рамку
-                        new FigureBuilder().BuildFrameGeometry(_selection, point);
+                        FigureBuilder.BuildFrameGeometry(_selection, point);
                         EditorMode = EditorMode.FrameSelect;
                     }
                 }
@@ -317,7 +329,9 @@ namespace SimpleEditor.Controllers
                         break;
                 }
             }
-            OnSelectedRangeChanging(Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds()));
+            var selrect = Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds());
+            var angle = EditorModel.Common.Helper.GetAngle(_selection.Transform);
+            OnSelectedRangeChanging(selrect, angle);
         }
 
         /// <summary>
@@ -365,6 +379,15 @@ namespace SimpleEditor.Controllers
                         if (!_selection.Transform.Matrix.IsIdentity)
                         {
                             OnLayerStartChanging();
+                            if (modifierKeys.HasFlag(Keys.Control))
+                            {
+                                var list = new List<Figure>();
+                                foreach (var fig in Selection.Select(figure => figure.DeepClone()))
+                                {
+                                    list.Add(fig);
+                                    _layer.Figures.Add(fig);
+                                }
+                            }
                             _selection.PushTransformToSelectedFigures();
                             OnLayerChanged();
                         }
@@ -383,6 +406,12 @@ namespace SimpleEditor.Controllers
 
             // возврат в текущий режим
             EditorMode = _lastMode;
+
+            if (_isFigureCreated)
+            {
+                _isFigureCreated = false;
+                OnResetFigureCreator();
+            }
 
             _isMouseDown = false;
         }
@@ -457,6 +486,51 @@ namespace SimpleEditor.Controllers
             UpdateMarkers();
         }
 
+        public void AlignHorizontal(FigureAlignment alignment)
+        {
+            OnLayerStartChanging();
+            _selection.AlignHorizontal(alignment);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
+        public void AlignVertical(FigureAlignment alignment)
+        {
+            OnLayerStartChanging();
+            _selection.AlignVertical(alignment);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
+
+        public void SameResize(FigureResize resize)
+        {
+            OnLayerStartChanging();
+            _selection.SameResize(resize);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
+        public void EvenSpaces(FigureArrange arrange)
+        {
+            OnLayerStartChanging();
+            _selection.EvenSpaces(arrange);
+            _selection.PushTransformToSelectedFigures();
+            OnLayerChanged();
+
+            //строим маркеры
+            UpdateMarkers();
+        }
+
         public void UpdateMarkers()
         {
             var list = new List<Figure>(_selection);
@@ -507,9 +581,10 @@ namespace SimpleEditor.Controllers
         /// Вызываем привязанный к событию метод при изменении рамки выбора
         /// </summary>
         /// <param name="rect"></param>
-        private void OnSelectedRangeChanging(Rectangle rect)
+        /// <param name="angle"></param>
+        private void OnSelectedRangeChanging(Rectangle rect, float angle)
         {
-            SelectedRangeChanging(rect);
+            SelectedRangeChanging(rect, angle);
         }
 
         /// <summary>
@@ -535,6 +610,14 @@ namespace SimpleEditor.Controllers
         private void OnLayerChanged()
         {
             LayerChanged();
+        }
+
+        /// <summary>
+        /// Вызывает сброс выбора создания фигур
+        /// </summary>
+        private void OnResetFigureCreator()
+        {
+            ResetFigureCreator();
         }
 
         #endregion Извещатели событий
@@ -641,6 +724,20 @@ namespace SimpleEditor.Controllers
 
                     _wasVertexMoving = true;
                     break;
+                case MarkerType.Grafient:
+                    if (!_wasVertexMoving)
+                        OnLayerStartChanging();
+
+                    // двигаем вершину
+                    var gm = (VertexMarker)marker;
+                    _selection.MoveGradient(gm.Owner, gm.Index, mousePos);
+
+                    //обновляем позицию маркера
+                    gm.Position = mousePos;
+                    UpdateMarkerPositions();
+
+                    _wasVertexMoving = true;
+                    break;
             }
         }
 
@@ -676,7 +773,7 @@ namespace SimpleEditor.Controllers
                             if (polygone == null) continue;
                             var points = polygone.GetTransformedPoints(fig);
                             for (var i = 0; i < points.Length; i++)
-                                Markers.Add(CreateVertexMarker(points[i], i, fig));
+                                Markers.Add(CreateMarker(MarkerType.Vertex, points[i], i, fig));
                         }
                     }
                     break;
@@ -707,17 +804,27 @@ namespace SimpleEditor.Controllers
                     }
                     break;
             }
+            // создаём маркеры линейного градиента
+            foreach (var fig in _selection.Where(figure => figure.Style.FillStyle is LinearGradientFill))
+            {
+                var lineGradient = fig.Style.FillStyle as LinearGradientFill;
+                //get transformed points
+                if (lineGradient == null) continue;
+                var points = lineGradient.GetGradientPoints(fig);
+                for (var i = 0; i < points.Length; i++)
+                    Markers.Add(CreateMarker(MarkerType.Grafient, points[i], i, fig));
+            }
+
             // задаём геометрию маркеров по умолчанию 
-            var figureBuilder = new FigureBuilder();
             foreach (var marker in Markers)
-                figureBuilder.BuildMarkerGeometry(marker);
+                FigureBuilder.BuildMarkerGeometry(marker);
         }
 
-        private VertexMarker CreateVertexMarker(PointF point, int index, Figure fig)
+        private VertexMarker CreateMarker(MarkerType markerType, PointF point, int index, Figure fig)
         {
             var marker = new VertexMarker
             {
-                MarkerType = MarkerType.Vertex,
+                MarkerType = markerType,
                 Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
                 Position = point,
                 Index = index,
@@ -746,6 +853,9 @@ namespace SimpleEditor.Controllers
         /// <returns>Настроенный курсор</returns>
         public Cursor GetCursor(Point point, Keys modifierKeys, MouseButtons button)
         {
+            if (CreateFigureRequest != null)
+                return CreateFigureCursor;
+
             switch (EditorMode)
             {
                 // для базовых режимов настраиваем вид курсора на маркерах
@@ -768,13 +878,17 @@ namespace SimpleEditor.Controllers
                             return CursorFactory.GetCursor(UserCursor.AddVertex);
                         return CursorFactory.GetCursor(UserCursor.MoveAll);
                     }
-                    if (!modifierKeys.HasFlag(Keys.Left))
-                        return Cursors.Default;
-                    break;
+                    return Cursors.Default;
+                case EditorMode.FrameSelect:
+                    return CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                case EditorMode.CreateFigure:
+                    return CreateFigureCursor;
                 // когда тащим фигуры
                 case EditorMode.Drag:
                     return _selection.Count > 0
-                               ? CursorFactory.GetCursor(UserCursor.SizeAll)
+                               ? modifierKeys.HasFlag(Keys.Control)
+                                          ? CursorFactory.GetCursor(UserCursor.DragCopy) 
+                                          : CursorFactory.GetCursor(UserCursor.SizeAll)
                                : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
                 // когда изменяем масштабируем, меняем ширину/высоту, вращаем или искажаем
                 case EditorMode.ChangeGeometry:
@@ -838,7 +952,7 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public void Ungroup()
         {
-            if (_selection.Count == 0) return;
+            if (!_selection.OfType<GroupFigure>().Any()) return;
             LayerStartChanging();
             foreach (var fig in _selection.OfType<GroupFigure>())
                 _layer.Figures.Remove(fig);

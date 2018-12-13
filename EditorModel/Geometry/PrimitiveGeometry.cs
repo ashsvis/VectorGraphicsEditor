@@ -7,7 +7,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию фиксированной формы
     /// </summary>
     [Serializable]
-    public class PrimitiveGeometry : Geometry
+    public sealed class PrimitiveGeometry : Geometry, IDisposable
     {
         /// <summary>
         /// Локальное поле для хранения пути
@@ -41,6 +41,16 @@ namespace EditorModel.Geometry
             _path = path;
             // запоминаем ограничения для операций в локальном поле
             _allowedOperations = allowed;
+        }
+
+        ~PrimitiveGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
         }
     }
 }

@@ -88,6 +88,8 @@
             this.ClientSize = new System.Drawing.Size(349, 220);
             this.Controls.Add(this.tbText);
             this.Controls.Add(this.panel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "TextDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактор текста";

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using EditorModel.Common;
+using EditorModel.Figures;
 
-namespace EditorModel.Figures
+namespace EditorModel.Renderers
 {
     /// <summary>
     /// Класс рисовальщика текстового блока
@@ -46,15 +47,13 @@ namespace EditorModel.Figures
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public override void Render(Graphics graphics, Figure figure)
         {
+            if (figure.Style.FillStyle == null || !figure.Style.FillStyle.IsVisible) return;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = figure.GetTransformedPath().Path)
             using (var sf = new StringFormat(StringFormatFlags.DisplayFormatControl))
             {
                 var bounds = path.GetBounds();
-                if (!figure.Style.FillStyle.IsVisible) return;
-                var rendered = figure.Renderer as TextRenderer;
-                if (rendered == null) return;
-                Helper.UpdateStringFormat(sf, rendered.TextAlign);
+                Helper.UpdateStringFormat(sf, TextAlign);
                 graphics.TranslateTransform(bounds.Left + bounds.Width/2, bounds.Top + bounds.Height/2);
                 var angle = Helper.GetAngle(figure.Transform);
                 var size = Helper.GetSize(figure.Transform);
@@ -69,11 +68,22 @@ namespace EditorModel.Figures
                                 ? -clientRect.Height/2
                                 : sf.LineAlignment == StringAlignment.Far ? clientRect.Height/2 : 0;
                     path.Reset();
-                    path.AddString(rendered.Text, new FontFamily(rendered.FontName), 0,
-                                   rendered.FontSize, new PointF(x, y), sf);
+                    path.AddString(Text, new FontFamily(FontName), 0, FontSize, new PointF(x, y), sf);
                     graphics.FillPath(brush, path);
                 }
                 graphics.ResetTransform();
+            }
+        }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get
+            {
+                return AllowedRendererDecorators.All ^
+                    (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow);
             }
         }
     }

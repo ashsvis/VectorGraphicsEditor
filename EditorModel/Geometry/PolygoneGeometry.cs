@@ -9,7 +9,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    public class PolygoneGeometry : Geometry
+    public sealed class PolygoneGeometry : Geometry, IDisposable
     {
         private PointF[] _points;
         private bool _isClosed = true;
@@ -70,6 +70,16 @@ namespace EditorModel.Geometry
             Points = points;
         }
 
+        ~PolygoneGeometry()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_path != null) _path.Dispose();
+        }
+
         /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
@@ -82,20 +92,25 @@ namespace EditorModel.Geometry
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width/2, rect.Top),
                         new PointF(rect.Left + rect.Width, rect.Top),
+                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                        new PointF(rect.Left, rect.Top + rect.Height)
+                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height),
+                        new PointF(rect.Left, rect.Top + rect.Height),
+                        new PointF(rect.Left, rect.Top + rect.Height/2)
                     };
             else
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
+                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
                     };
         }
 
         /// <summary>
-        /// Свойство возвращает путь, построенный по данным строки и свойств шрифта
+        /// Свойство возвращает путь, построенный по точкам
         /// </summary>
         public override SerializableGraphicsPath Path
         {

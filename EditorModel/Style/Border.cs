@@ -18,12 +18,20 @@ namespace EditorModel.Style
         {
             // по умолчанию заливка разрешена
             IsVisible = true;
+            // по умолчанию полная непрозрачность
+            Opacity = 255;
             // по умолчанию чёрный цвет контура
             Color = Color.Black;
             // по умолчанию 1 единица
             Width = 1f;
+            // по умолчанию сплошная линия
             DashStyle = DashStyle.Solid;
         }
+
+        /// <summary>
+        /// Величина прозрачности цвета контура
+        /// </summary>
+        public int Opacity { get; set; }
 
         /// <summary>
         /// Толщина линии для рисования контура
@@ -50,7 +58,7 @@ namespace EditorModel.Style
         public Pen GetPen(Figure figure)
         {
             // возвращаем созданный и настроенный карандаш для контура фигуры
-            return new Pen(Color, Width) { DashStyle = DashStyle };
+            return new Pen(Color.FromArgb(Opacity, Color), Width) { DashStyle = DashStyle };
         }
     }
 
