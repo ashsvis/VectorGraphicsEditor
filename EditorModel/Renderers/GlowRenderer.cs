@@ -29,18 +29,17 @@ namespace EditorModel.Renderers
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = figure.GetTransformedPath().Path)
             {
-                if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
-                    // то получаем карандаш из стиля рисования фигуры
-                    using (var pen = figure.Style.BorderStyle.GetPen(figure))
+                // то получаем карандаш из стиля рисования фигуры
+                using (var pen = new Pen(Color))
+                {
+                    var color = Color;
+                    for (var i = 0; i < 4; i++)
                     {
-                        var color = Color;
-                        for (var i = 0; i < 4; i++)
-                        {
-                            pen.Color = Color.FromArgb(color.A / 2, color);
-                            pen.Width += 4;
-                            graphics.DrawPath(pen, path);
-                        }
+                        pen.Color = Color.FromArgb(color.A / 2, color);
+                        pen.Width += 4;
+                        graphics.DrawPath(pen, path);
                     }
+                }
             }
             _renderer.Render(graphics, figure);
         }
