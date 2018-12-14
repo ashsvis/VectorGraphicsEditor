@@ -49,29 +49,29 @@ namespace EditorModel.Renderers
         {
             if (figure.Style.FillStyle == null || !figure.Style.FillStyle.IsVisible) return;
             // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = figure.GetTransformedPath().Path)
+            using (var path = figure.Geometry.GetTransformedPath(figure))
             using (var sf = new StringFormat(StringFormatFlags.DisplayFormatControl))
             {
-                var bounds = path.GetBounds();
+                var bounds = figure.Geometry.GetTransformedBounds(figure);
                 Helper.UpdateStringFormat(sf, TextAlign);
-                graphics.TranslateTransform(bounds.Left + bounds.Width/2, bounds.Top + bounds.Height/2);
-                var angle = Helper.GetAngle(figure.Transform);
-                var size = Helper.GetSize(figure.Transform);
-                graphics.RotateTransform(angle);
-                var clientRect = new RectangleF(-size.Width/2, -size.Height/2, size.Width, size.Height);
+                //graphics.TranslateTransform(bounds.Left + bounds.Width/2, bounds.Top + bounds.Height/2);
+                //var angle = Helper.GetAngle(figure.Transform);
+                //var size = Helper.GetSize(figure.Transform);
+                //graphics.RotateTransform(angle);
+                //var clientRect = new RectangleF(-size.Width/2, -size.Height/2, size.Width, size.Height);
                 using (var brush = figure.Style.FillStyle.GetBrush(figure))
                 {
-                    var x = sf.Alignment == StringAlignment.Near
-                                ? -clientRect.Width/2
-                                : sf.Alignment == StringAlignment.Far ? clientRect.Width/2 : 0;
-                    var y = sf.LineAlignment == StringAlignment.Near
-                                ? -clientRect.Height/2
-                                : sf.LineAlignment == StringAlignment.Far ? clientRect.Height/2 : 0;
-                    path.Reset();
-                    path.AddString(Text, new FontFamily(FontName), 0, FontSize, new PointF(x, y), sf);
+                    //var x = sf.Alignment == StringAlignment.Near
+                    //            ? -clientRect.Width/2
+                    //            : sf.Alignment == StringAlignment.Far ? clientRect.Width/2 : 0;
+                    //var y = sf.LineAlignment == StringAlignment.Near
+                    //            ? -clientRect.Height/2
+                    //            : sf.LineAlignment == StringAlignment.Far ? clientRect.Height/2 : 0;
+                    //path.Reset();
+                    //path.AddString(Text, new FontFamily(FontName), 0, FontSize, new PointF(x, y), sf);
                     graphics.FillPath(brush, path);
                 }
-                graphics.ResetTransform();
+                //graphics.ResetTransform();
             }
         }
 

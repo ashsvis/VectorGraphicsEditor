@@ -37,8 +37,8 @@
             // lbGradient
             // 
             this.lbGradient.AutoSize = true;
-            this.lbGradient.Location = new System.Drawing.Point(3, 1);
-            this.lbGradient.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
+            this.lbGradient.Location = new System.Drawing.Point(0, 1);
+            this.lbGradient.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbGradient.Name = "lbGradient";
             this.lbGradient.Size = new System.Drawing.Size(50, 13);
             this.lbGradient.TabIndex = 4;
@@ -48,7 +48,7 @@
             // 
             this.lbGradientColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbGradientColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbGradientColor.Location = new System.Drawing.Point(53, 1);
+            this.lbGradientColor.Location = new System.Drawing.Point(50, 1);
             this.lbGradientColor.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbGradientColor.Name = "lbGradientColor";
             this.lbGradientColor.Size = new System.Drawing.Size(39, 17);
@@ -63,19 +63,19 @@
             this.flowLayoutPanel1.Controls.Add(this.lbGradientColor);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(102, 21);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(93, 21);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // LineGradientFillStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LineGradientFillStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(111, 27);
+            this.Size = new System.Drawing.Size(101, 25);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

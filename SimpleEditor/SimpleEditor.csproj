@@ -48,7 +48,6 @@
     <Compile Include="Common\ActionCommand.cs" />
     <Compile Include="Common\CursorFactory.cs" />
     <Compile Include="Common\MultipleCommand.cs" />
-    <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Common\UndoableCommand.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\Marker.cs" />
@@ -128,12 +127,9 @@
     <Compile Include="FormSimpleEditor.Designer.cs">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\PointFExtension.cs" />
-    <Compile Include="Common\Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
-    <Compile Include="Common\VersionInfo.cs" />
     <EmbeddedResource Include="Controls\BorderStyleEditor.resx">
       <DependentUpon>BorderStyleEditor.cs</DependentUpon>
     </EmbeddedResource>

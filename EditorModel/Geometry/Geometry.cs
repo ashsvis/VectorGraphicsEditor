@@ -1,5 +1,8 @@
 ﻿using EditorModel.Common;
+using EditorModel.Figures;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -37,5 +40,10 @@ namespace EditorModel.Geometry
         /// Допустимые операции над геометрией
         /// </summary>
         public abstract AllowedOperations AllowedOperations { get; }
+
+        public abstract GraphicsPath GetTransformedPath(Figure fig);
+
+        public abstract RectangleF GetTransformedBounds(Figure fig);
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using EditorModel.Common;
+using EditorModel.Figures;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -83,6 +85,19 @@ namespace EditorModel.Geometry
         public void Dispose()
         {
             if (_path != null) _path.Dispose();
+        }
+
+        public override GraphicsPath GetTransformedPath(Figure fig)
+        {
+            return fig.GetTransformedPath();
+        }
+
+        public override RectangleF GetTransformedBounds(Figure fig)
+        {
+            var path = (GraphicsPath)Path.Path.Clone();
+            // трансформируем её при помощи Трансформера
+            path.Transform(fig.Transform);
+            return path.GetBounds();
         }
     }
 }

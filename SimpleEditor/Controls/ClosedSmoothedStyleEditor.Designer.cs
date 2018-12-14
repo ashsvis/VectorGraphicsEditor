@@ -69,15 +69,15 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(157, 23);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
-            // IsClosedEditor
+            // ClosedSmoothedStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "IsClosedEditor";
-            this.Size = new System.Drawing.Size(163, 26);
+            this.Name = "ClosedSmoothedStyleEditor";
+            this.Size = new System.Drawing.Size(161, 24);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

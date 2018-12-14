@@ -13,16 +13,15 @@ namespace EditorModel.Renderers
     [Serializable]
     public sealed class ImageRenderer : Renderer
     {
-        private string _base64ImageString;
+        //public SerializableGraphicsImage Image { get; set; }
+        private byte[] _imageBytes;
 
         public Image Image
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_base64ImageString))
-                    return null;
-                var imageBytes = Convert.FromBase64String(_base64ImageString);
-                using (var m = new MemoryStream(imageBytes))
+                if (_imageBytes == null) return null;
+                using (var m = new MemoryStream(_imageBytes))
                 {
                     return Image.FromStream(m);
                 }
@@ -33,9 +32,7 @@ namespace EditorModel.Renderers
                 using (var m = new MemoryStream())
                 {
                     value.Save(m, value.RawFormat);
-                    var imageBytes = m.ToArray();
-                    // Convert byte[] to Base64 String
-                    _base64ImageString = Convert.ToBase64String(imageBytes);
+                    _imageBytes = m.ToArray();
                 }
             }
         }

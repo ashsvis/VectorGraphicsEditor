@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Selections;
-using SimpleEditor.Common;
 
 namespace SimpleEditor.Controls
 {
@@ -40,7 +39,8 @@ namespace SimpleEditor.Controls
             _updating++;
 
             _figures.Clear();
-            _figures.AddRange(pictureFillStyles.GetProperty(f => f.Figures));
+            _figures.AddRange(pictureFillStyles.GetProperty(f => f.Figures, 
+                                                            pictureFillStyles.First().Figures));
 
             _updating--;
         }
@@ -64,31 +64,20 @@ namespace SimpleEditor.Controls
 
         private void lbPicture_Click(object sender, EventArgs e)
         {
-            var dlg = new OpenFileDialog { Filter = @"Группа фигур графического редактора (*.sge)|*.sge" };
+            var dlg = new OpenFileDialog { Filter = @"Файл редактора (*.vge)|*.vge" };
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            var loaded = LoadSelection(dlg.FileName);
-            if (loaded == null) return;
-            _figures.Clear();
-            foreach (var fig in loaded)
-                _figures.Add(fig.DeepClone());
-            UpdateObject();
-        }
-
-        private IEnumerable<Figure> LoadSelection(string fileName)
-        {
-            using (var stream = new MemoryStream())
+            try
             {
-                Helper.Decompress(fileName, stream);
-                stream.Position = 0;
-                var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
-                if (versionInfo.Version != Helper.GetVersionInfo().Version)
-                {
-                    MessageBox.Show(this, @"Формат загружаемого файла не поддерживается.",
-                                    @"Загрузка файла отменена",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return null;
-                }
-                return (List<Figure>)Helper.LoadFromStream(stream);
+                var loaded = SaverLoader.LoadSelection(dlg.FileName);
+                _figures.Clear();
+                foreach (var fig in loaded)
+                    _figures.Add(fig.DeepClone());
+                UpdateObject();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, @"Загрузка файла отменена",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
