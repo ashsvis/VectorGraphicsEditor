@@ -914,9 +914,13 @@ namespace SimpleEditor
         {
             if (FileChanged)
             {
-                if (MessageBox.Show(this, @"Несохранённые данные будут потеряны." + Environment.NewLine + @"Открыть новый файл?",
-                    @"Сохранение файла", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button3) != DialogResult.Yes) return;
+                var result = MessageBox.Show(this, @"В документе есть несохранённые данные." + Environment.NewLine +
+                    @"Желаете их сохранить?", @"Открытие другого документа",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
+                if (result == DialogResult.Cancel)
+                    return;
+                if (result == DialogResult.Yes)
+                    tsmSave.PerformClick();
             }
             if (openEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
             CreateNew();
@@ -954,10 +958,13 @@ namespace SimpleEditor
         private void FormSimpleEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!FileChanged) return;
-            if (MessageBox.Show(this, @"Несохранённые данные будут потеряны." + Environment.NewLine + @"Закрыть приложение?",
-                                @"Завершение работы приложения", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning,
-                                MessageBoxDefaultButton.Button3) == DialogResult.Yes) return;
-            e.Cancel = true;
+            var result = MessageBox.Show(this, @"В документе есть несохранённые данные." + Environment.NewLine +
+                @"Желаете их сохранить?", @"Завершение работы приложения",
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3);
+            if (result == DialogResult.Yes)
+                tsmSave.PerformClick();
+            else if (result == DialogResult.Cancel)
+                e.Cancel = true;
         }
 
         private void tsbAlignLeft_Click(object sender, EventArgs e)

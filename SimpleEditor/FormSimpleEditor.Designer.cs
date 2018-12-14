@@ -657,9 +657,9 @@
             this.panelForScroll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelForScroll.Controls.Add(this.pbCanvas);
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelForScroll.Location = new System.Drawing.Point(0, 103);
+            this.panelForScroll.Location = new System.Drawing.Point(0, 67);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(970, 290);
+            this.panelForScroll.Size = new System.Drawing.Size(970, 326);
             this.panelForScroll.TabIndex = 7;
             this.panelForScroll.SizeChanged += new System.EventHandler(this.panelForScroll_SizeChanged);
             // 
@@ -680,7 +680,6 @@
             // 
             // pnTools
             // 
-            this.pnTools.AutoSize = true;
             this.pnTools.Controls.Add(this.pnBorderStyle);
             this.pnTools.Controls.Add(this.pnFillStyle);
             this.pnTools.Controls.Add(this.pnLayerFillStyle);
@@ -695,7 +694,7 @@
             this.pnTools.Location = new System.Drawing.Point(0, 0);
             this.pnTools.MinimumSize = new System.Drawing.Size(0, 45);
             this.pnTools.Name = "pnTools";
-            this.pnTools.Size = new System.Drawing.Size(970, 103);
+            this.pnTools.Size = new System.Drawing.Size(970, 67);
             this.pnTools.TabIndex = 7;
             // 
             // pnBorderStyle
@@ -1673,7 +1672,6 @@
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
-            this.toolStripContainer1.ContentPanel.PerformLayout();
             this.toolStripContainer1.LeftToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.LeftToolStripPanel.PerformLayout();
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
