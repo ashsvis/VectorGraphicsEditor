@@ -13,6 +13,7 @@ namespace EditorModel.Renderers
     [Serializable]
     public sealed class ImageRenderer : Renderer
     {
+        //public SerializableGraphicsImage Image { get; set; }
         private byte[] _imageBytes;
 
         public Image Image
