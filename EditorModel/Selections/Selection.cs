@@ -448,10 +448,7 @@ namespace EditorModel.Selections
         /// <returns></returns>
         public Figure Group()
         {
-            return new GroupFigure(_selected.ToList())
-            {
-                Renderer = new GroupRenderer()
-            };
+            return new GroupFigure(_selected.ToList());
         }
 
         /// <summary>

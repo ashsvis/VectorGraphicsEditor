@@ -2,6 +2,7 @@
 using EditorModel.Geometry;
 using EditorModel.Selections;
 using EditorModel.Style;
+using EditorModel.Common;
 using SimpleEditor.Common;
 using System;
 using System.Collections.Generic;

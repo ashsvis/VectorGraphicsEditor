@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using EditorModel.Common;
 using EditorModel.Geometry;
+using EditorModel.Renderers;
 
 namespace EditorModel.Figures
 {
@@ -36,11 +37,14 @@ namespace EditorModel.Figures
 
         public GroupFigure(IEnumerable<Figure> figures)
         {
+            Style.BorderStyle = null;
+            Style.FillStyle = null;
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             foreach (var figure in figures)
                 _figures.Add(figure.DeepClone());
             Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
+            Renderer = new GroupRenderer();
         }
 
         /// <summary>

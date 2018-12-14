@@ -43,9 +43,9 @@
             this.cbVisible.Location = new System.Drawing.Point(3, 1);
             this.cbVisible.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
             this.cbVisible.Name = "cbVisible";
-            this.cbVisible.Size = new System.Drawing.Size(38, 17);
+            this.cbVisible.Size = new System.Drawing.Size(68, 17);
             this.cbVisible.TabIndex = 0;
-            this.cbVisible.Text = "Fill";
+            this.cbVisible.Text = "Fill Color:";
             this.cbVisible.UseVisualStyleBackColor = true;
             this.cbVisible.CheckedChanged += new System.EventHandler(this.cbVisible_CheckedChanged);
             // 
@@ -53,7 +53,7 @@
             // 
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Location = new System.Drawing.Point(41, 1);
+            this.lbColor.Location = new System.Drawing.Point(71, 1);
             this.lbColor.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbColor.Name = "lbColor";
             this.lbColor.Size = new System.Drawing.Size(39, 17);
@@ -71,22 +71,22 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 3);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(173, 23);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(211, 23);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // lbOpacity
             // 
             this.lbOpacity.AutoSize = true;
-            this.lbOpacity.Location = new System.Drawing.Point(80, 2);
+            this.lbOpacity.Location = new System.Drawing.Point(110, 2);
             this.lbOpacity.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbOpacity.Name = "lbOpacity";
-            this.lbOpacity.Size = new System.Drawing.Size(46, 13);
+            this.lbOpacity.Size = new System.Drawing.Size(61, 13);
             this.lbOpacity.TabIndex = 2;
-            this.lbOpacity.Text = "Opacity:";
+            this.lbOpacity.Text = "Fill Opacity:";
             // 
             // nudOpacity
             // 
-            this.nudOpacity.Location = new System.Drawing.Point(126, 0);
+            this.nudOpacity.Location = new System.Drawing.Point(171, 0);
             this.nudOpacity.Margin = new System.Windows.Forms.Padding(0);
             this.nudOpacity.Maximum = new decimal(new int[] {
             255,
@@ -108,11 +108,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(179, 26);
+            this.Size = new System.Drawing.Size(211, 26);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();

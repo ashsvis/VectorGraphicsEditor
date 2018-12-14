@@ -14,6 +14,7 @@ using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
 using System.IO;
 using System.Text;
+using EditorModel.Common;
 
 namespace SimpleEditor
 {
@@ -22,9 +23,9 @@ namespace SimpleEditor
         readonly string _caption;
         readonly VersionInfo _versionInfo;
 
-        readonly Layer _layer;
-        readonly SelectionController _selectionController;
-        readonly UndoRedoController _undoRedoController;
+        Layer _layer;
+        SelectionController _selectionController;
+        UndoRedoController _undoRedoController;
 
         public FormSimpleEditor()
         {
@@ -33,10 +34,14 @@ namespace SimpleEditor
             _caption = string.Format("Simple Vector Graphics Editor (Ver 0.{0})", _versionInfo.Version);
 
             _layer = new Layer();
-            _undoRedoController = new UndoRedoController(_layer);
+            ConnectMethods();
+        }
 
+        private void ConnectMethods()
+        {
+            _undoRedoController = new UndoRedoController(_layer);
             _selectionController = new SelectionController(_layer);
-            
+
             // подключение обработчиков событий для контроллера выбора
             _selectionController.SelectedFigureChanged += BuildInterface;
             _selectionController.SelectedTransformChanging += UpdateInterface;
@@ -93,7 +98,8 @@ namespace SimpleEditor
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
             tsbSave.Enabled = tsmSave.Enabled = FileChanged;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
-            var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
+            var exists = _selectionController.Selection.ForAll(f => 
+                                 f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer);
             tsddbGeometySwitcher.Enabled = exists;
             tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =
                                              tsbBringToFront.Enabled = tsbSendToBack.Enabled =
@@ -327,10 +333,7 @@ namespace SimpleEditor
                     placeHolder.Style.FillStyle.IsVisible = false;
                     placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
                     FigureBuilder.BuildRectangleGeometry(placeHolder);
-                    var fig = new GroupFigure(new[] { placeHolder })
-                    {
-                        Renderer = new GroupRenderer()
-                    };
+                    var fig = new GroupFigure(new[] { placeHolder });
                     return fig;
                 };
             }
@@ -510,7 +513,8 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => f.Geometry as PrimitiveGeometry != null);
             if (!exists) return;
             tsddbGeometySwitcher.Text = @"Geometry: " + sender.Text;
-            var primitives = _selectionController.Selection.Where(f => f.Geometry is PrimitiveGeometry).ToList();
+            var primitives = _selectionController.Selection.Where(f => 
+                                f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer).ToList();
             if (sender.Tag != null)
             {
                 var vertexCount = int.Parse(sender.Tag.ToString());
@@ -646,7 +650,6 @@ namespace SimpleEditor
             _effectRenderer = (ToolStripMenuItem)sender;
             ChangeEffects(_effectRenderer);
         }
-
         private void ChangeEffects(ToolStripItem sender)
         {
             var exists = _selectionController.Selection.Count > 0;
@@ -768,105 +771,13 @@ namespace SimpleEditor
             if (string.IsNullOrWhiteSpace(_fileName))
             {
                 if (saveEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
-                SaveToFile(saveEditorFileDialog.FileName);
+                SaverLoader.SaveToFile(saveEditorFileDialog.FileName, _layer);
             }
             else
-                SaveToFile(_fileName);
-        }
-
-        /// <summary>
-        /// Метод записи всех фигур в слое в файл
-        /// </summary>
-        /// <param name="fileName"></param>
-        private void SaveToFile(string fileName)
-        {
-            using (var stream = new MemoryStream())
-            {
-                Helper.SaveToStream(stream, _versionInfo);
-                Helper.SaveToStream(stream, _layer.FillStyle);
-                Helper.SaveToStream(stream, _layer.Figures);
-                stream.Position = 0;
-                Helper.Compress(stream, fileName);
-            }
-            _fileName = fileName;
+                SaverLoader.SaveToFile(_fileName, _layer);
             UndoRedoManager.Instance.ClearHistory();
             Text = _caption + @" - " + _fileName;
             BuildInterface();
-        }
-
-        /// <summary>
-        /// Метод записи фигур из списка выделенных в файл
-        /// </summary>
-        /// <param name="fileName"></param>
-        private void SaveSelection(string fileName)
-        {
-            if (_selectionController.Selection.Count == 0) return;
-            var location = _selectionController.Selection.GetTransformedPath().Path.GetBounds().Location;
-            _selectionController.Selection.Translate(-location.X, -location.Y);
-            _selectionController.Selection.PushTransformToSelectedFigures();
-            using (var stream = new MemoryStream())
-            {
-                Helper.SaveToStream(stream, _versionInfo);
-                Helper.SaveToStream(stream, _selectionController.Selection.ToList());
-                stream.Position = 0;
-                Helper.Compress(stream, fileName);
-            }
-            _selectionController.Selection.Translate(location.X, location.Y);
-            _selectionController.Selection.PushTransformToSelectedFigures();
-        }
-
-        private void SaveToImage(string fileName)
-        {
-            var ext = Path.GetExtension(fileName).ToLower();
-            var group = new GroupFigure(_layer.Figures) { Renderer = new GroupRenderer() };
-            var bounds = group.GetTransformedPath().Path.GetBounds();
-            int width, height;
-            if (_layer.FillStyle.IsVisible)
-            {
-                width = (int)(bounds.Left * 2 + bounds.Width);
-                height = (int)(bounds.Top * 2 + bounds.Height);
-            }
-            else
-            {
-                width = (int)(bounds.Width + 2);
-                height = (int)(bounds.Height + 2);
-                group.Transform.Matrix.Translate(-bounds.Left, -bounds.Top);
-            }
-            System.Drawing.Imaging.ImageFormat format;
-            switch (ext)
-            {
-                case ".png":
-                    format = System.Drawing.Imaging.ImageFormat.Png;
-                    break;
-                case ".jpg":
-                    format = System.Drawing.Imaging.ImageFormat.Jpeg;
-                    break;
-                case ".emf":
-                    format = System.Drawing.Imaging.ImageFormat.Emf;
-                    break;
-                case ".gif":
-                    format = System.Drawing.Imaging.ImageFormat.Gif;
-                    break;
-                case ".ico":
-                    format = System.Drawing.Imaging.ImageFormat.Icon;
-                    break;
-                case ".tif":
-                    format = System.Drawing.Imaging.ImageFormat.Tiff;
-                    break;
-                default:
-                    format = System.Drawing.Imaging.ImageFormat.Bmp;
-                    break;
-            }
-            using (var image = new Bitmap(width, height))
-            {
-                using (var g = Graphics.FromImage(image))
-                {
-                    if (_layer.FillStyle.IsVisible)
-                        g.Clear(Color.FromArgb(_layer.FillStyle.Opacity, _layer.FillStyle.Color));
-                    group.Renderer.Render(g, group);
-                }
-                image.Save(fileName, format);
-            }
         }
 
         private void tsmSaveAs_Click(object sender, EventArgs e)
@@ -875,39 +786,12 @@ namespace SimpleEditor
             switch (saveEditorFileDialog.FilterIndex)
             {
                 case 1:
-                    SaveToFile(saveEditorFileDialog.FileName);
-                    break;
-                case 2:
-                    SaveSelection(saveEditorFileDialog.FileName);
+                    SaverLoader.SaveToFile(saveEditorFileDialog.FileName, _layer);
                     break;
                 default:
-                    SaveToImage(saveEditorFileDialog.FileName);
+                    ExportImport.SaveToImage(saveEditorFileDialog.FileName, _layer);
                     break;
             }
-        }
-
-        private void LoadFromFile(string fileName)
-        {
-            using (var stream = new MemoryStream())
-            {
-                Helper.Decompress(fileName, stream);
-                stream.Position = 0;
-                var versionInfo = (VersionInfo)Helper.LoadFromStream(stream);
-                if (versionInfo.Version != _versionInfo.Version)
-                {
-                    MessageBox.Show(this, @"Формат загружаемого файла не поддерживается.",
-                                    @"Загрузка файла отменена",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                _layer.FillStyle = (Fill)Helper.LoadFromStream(stream);
-                var figures = (List<Figure>)Helper.LoadFromStream(stream);
-                _layer.Figures = figures;
-            }
-            _fileName = fileName;
-            Text = _caption + @" - " + _fileName;
-            UndoRedoManager.Instance.ClearHistory();
-            BuildInterface();
         }
 
         private void tsmOpen_Click(object sender, EventArgs e)
@@ -924,7 +808,11 @@ namespace SimpleEditor
             }
             if (openEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
             CreateNew();
-            LoadFromFile(openEditorFileDialog.FileName);
+            _fileName = openEditorFileDialog.FileName;
+            _layer = SaverLoader.LoadFromFile(_fileName);
+            ConnectMethods();
+            Text = _caption + @" - " + _fileName;
+            UndoRedoManager.Instance.ClearHistory();
             BuildInterface();
         }
 

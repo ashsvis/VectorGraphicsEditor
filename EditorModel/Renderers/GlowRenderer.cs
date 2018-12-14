@@ -12,10 +12,16 @@ namespace EditorModel.Renderers
     {
         private readonly Renderer _renderer;
 
+        /// <summary>
+        /// Цвет для свечения
+        /// </summary>
+        public Color Color { get; set; }
+
         public GlowRenderer(Renderer renderer)
             : base(renderer)
         {
             _renderer = renderer;
+            Color = Color.Yellow;
         }
 
         public override void Render(Graphics graphics, Figure figure)
@@ -27,9 +33,10 @@ namespace EditorModel.Renderers
                     // то получаем карандаш из стиля рисования фигуры
                     using (var pen = figure.Style.BorderStyle.GetPen(figure))
                     {
+                        var color = Color;
                         for (var i = 0; i < 4; i++)
                         {
-                            pen.Color = Color.FromArgb(pen.Color.A / 2, pen.Color);
+                            pen.Color = Color.FromArgb(color.A / 2, color);
                             pen.Width += 4;
                             graphics.DrawPath(pen, path);
                         }

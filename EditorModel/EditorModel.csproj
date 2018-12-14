@@ -44,8 +44,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ExportImport.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
+    <Compile Include="Common\PointFExtension.cs" />
+    <Compile Include="Common\SaverLoader.cs" />
+    <Compile Include="Common\VersionInfo.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
     <Compile Include="Renderers\GlowRenderer.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />
@@ -73,6 +77,5 @@
     <Compile Include="Style\Style.cs" />
     <Compile Include="Geometry\TextGeometry.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

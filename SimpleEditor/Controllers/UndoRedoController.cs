@@ -1,4 +1,5 @@
 ﻿using System;
+using EditorModel.Common;
 using EditorModel.Figures;
 using SimpleEditor.Common;
 
