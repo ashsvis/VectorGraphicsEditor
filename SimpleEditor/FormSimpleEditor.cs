@@ -304,16 +304,6 @@ namespace SimpleEditor
                     return fig;
                 };
             }
-            else if (sender == btnTextLine)
-            {
-                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateText);
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    FigureBuilder.BuildTextGeometry(fig, "Текст");
-                    return fig;
-                };
-            }
             else if (sender == tsbPicture || sender == btnInsertImage)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateImage);

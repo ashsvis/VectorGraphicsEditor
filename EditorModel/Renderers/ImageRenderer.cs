@@ -33,10 +33,16 @@ namespace EditorModel.Renderers
                 var image = Image.Bitmap;
                 if (image == null)
                 {
-                    using (var pen = new Pen(Color.Black, 1f))
+                    using (var pen = new Pen(Color.Black, 0f))
                     {
-                        pen.DashStyle = DashStyle.DashDot;
+                        pen.DashStyle = DashStyle.Dot;
                         graphics.DrawRectangles(pen, new[] { bounds });
+                        using (var sf = new StringFormat(StringFormat.GenericTypographic))
+                        {
+                            sf.Alignment = StringAlignment.Center;
+                            sf.LineAlignment = StringAlignment.Center;
+                            graphics.DrawString("Image Place Holder", SystemFonts.DefaultFont, Brushes.Black, bounds, sf);
+                        }
                     }
                 }
                 else
