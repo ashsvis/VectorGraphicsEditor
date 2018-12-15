@@ -52,7 +52,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(102, 25);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(104, 25);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // btnLoadPicture
@@ -75,7 +75,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "ImageStyleEditor";
-            this.Size = new System.Drawing.Size(135, 28);
+            this.Size = new System.Drawing.Size(108, 28);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

@@ -23,11 +23,6 @@ namespace EditorModel.Renderers
         public string FontName { get; set; }
 
         /// <summary>
-        /// Размер шрифта
-        /// </summary>
-        //public float FontSize { get; set; }
-
-        /// <summary>
         /// Выравнивание текста
         /// </summary>
         public StringAlignment Alignment { get; set; }
@@ -37,7 +32,6 @@ namespace EditorModel.Renderers
         {
             Text = text;
             FontName = "Arial";
-            //FontSize = 14f;
             Alignment = StringAlignment.Center;
         }
 
@@ -54,21 +48,6 @@ namespace EditorModel.Renderers
                 using (var brush = figure.Style.FillStyle.GetBrush(figure))
                     graphics.FillPath(brush, gp);
             }
-            else
-            {
-                var bounds = figure.GetTransformedPath().Path.GetBounds();
-                using (var pen = new Pen(Color.Black, 0f))
-                {
-                    pen.DashStyle = DashStyle.Dot;
-                    graphics.DrawRectangles(pen, new[] { bounds });
-                    using (var sf = new StringFormat(StringFormat.GenericTypographic))
-                    {
-                        sf.Alignment = StringAlignment.Center;
-                        sf.LineAlignment = StringAlignment.Center;
-                        graphics.DrawString("Text Place Holder", SystemFonts.DefaultFont, Brushes.Black, bounds, sf);
-                    }
-                }
-            }
         }
 
         public GraphicsPath GetTransformedPath(Figure figure)
@@ -78,14 +57,7 @@ namespace EditorModel.Renderers
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
                 sf.Alignment = Alignment;
-                graphicsPath.AddString(
-                    text,
-                    new FontFamily(FontName),
-                    0, //(int)FontStyle.Bold,
-                    14f, // FontSize,
-                    PointF.Empty,
-                    sf
-                );
+                graphicsPath.AddString(text, new FontFamily(FontName), 0, 14f, PointF.Empty, sf);
             }
             var bounds = graphicsPath.GetBounds();
             var pts = graphicsPath.PathPoints;
@@ -98,7 +70,6 @@ namespace EditorModel.Renderers
             figure.Transform.Matrix.TransformPoints(pts);
             return new GraphicsPath(pts, ptt);
         }
-
 
         /// <summary>
         /// Свойство возвращает ограничения для подключения декораторов

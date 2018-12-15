@@ -37,7 +37,7 @@
             // cbIsClosed
             // 
             this.cbIsClosed.AutoSize = true;
-            this.cbIsClosed.Location = new System.Drawing.Point(3, 1);
+            this.cbIsClosed.Location = new System.Drawing.Point(3, 4);
             this.cbIsClosed.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
             this.cbIsClosed.Name = "cbIsClosed";
             this.cbIsClosed.Size = new System.Drawing.Size(66, 17);
@@ -49,7 +49,7 @@
             // cbIsSmoothed
             // 
             this.cbIsSmoothed.AutoSize = true;
-            this.cbIsSmoothed.Location = new System.Drawing.Point(69, 1);
+            this.cbIsSmoothed.Location = new System.Drawing.Point(69, 4);
             this.cbIsSmoothed.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.cbIsSmoothed.Name = "cbIsSmoothed";
             this.cbIsSmoothed.Size = new System.Drawing.Size(82, 17);
@@ -66,6 +66,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(151, 23);
             this.flowLayoutPanel1.TabIndex = 2;
             // 

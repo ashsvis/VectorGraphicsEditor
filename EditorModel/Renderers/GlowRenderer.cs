@@ -23,7 +23,7 @@ namespace EditorModel.Renderers
             : base(renderer)
         {
             _renderer = renderer;
-            Color = Color.Yellow;
+            Color = Color.White;
         }
 
         public override void Render(Graphics graphics, Figure figure)
@@ -38,11 +38,12 @@ namespace EditorModel.Renderers
                 using (var pen = new Pen(Color))
                 {
                     var color = Color;
-                    for (var i = 0; i < 4; i++)
+                    for (var i = 0; i < 8; i++)
                     {
-                        pen.Color = Color.FromArgb(color.A / 2, color);
+                        pen.Color = color;
                         pen.Width += 4;
                         graphics.DrawPath(pen, path);
+                        color = Color.FromArgb(color.A / 2, color);
                     }
                 }
             }
