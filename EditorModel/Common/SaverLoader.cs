@@ -18,7 +18,7 @@ namespace EditorModel.Common
             {
                 var formatter = new BinaryFormatter();
                 var versionInfo = (VersionInfo)formatter.Deserialize(zip);
-                if (versionInfo.Version > Helper.GetVersionInfo().Version)
+                if (versionInfo.Version > VersionInfo.DEFAULT_VERSION)
                     throw new Exception(@"Формат загружаемого файла не поддерживается.");
                 return (Layer)formatter.Deserialize(zip);
             }
@@ -68,12 +68,11 @@ namespace EditorModel.Common
         /// <param name="fileName"></param>
         public static void SaveToFile(string fileName, Layer layer)
         {
-            if (File.Exists(fileName)) File.Delete(fileName);
-            using (var fs = File.OpenWrite(fileName))
+            using (var fs = File.Create(fileName))
             using (var zip = new GZipStream(fs, CompressionMode.Compress))
             {
                 var formatter = new BinaryFormatter();
-                formatter.Serialize(zip, Helper.GetVersionInfo());
+                formatter.Serialize(zip, new VersionInfo());
                 formatter.Serialize(zip, layer);
             }
         }

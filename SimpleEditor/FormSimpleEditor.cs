@@ -30,8 +30,8 @@ namespace SimpleEditor
         public FormSimpleEditor()
         {
             InitializeComponent();
-            _versionInfo = Helper.GetVersionInfo();
-            _caption = string.Format("Simple Vector Graphics Editor (Ver 0.{0})", _versionInfo.Version);
+            _versionInfo = new VersionInfo();
+            _caption = string.Format("Simple Vector Graphics Editor (Ver {0:0.0})", (decimal)_versionInfo.Version / 10);
 
             _layer = new Layer();
             ConnectMethods();
