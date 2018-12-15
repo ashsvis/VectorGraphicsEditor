@@ -143,15 +143,5 @@ namespace EditorModel.Geometry
         /// Свойство возвращает определённые в конструкторе ограничения для операций
         /// </summary>
         public override AllowedOperations AllowedOperations { get { return _allowedOperations; } }
-
-        public override GraphicsPath GetTransformedPath(Figure fig)
-        {
-            return fig.GetTransformedPath();
-        }
-
-        public override RectangleF GetTransformedBounds(Figure fig)
-        {
-            return GetTransformedPath(fig).GetBounds();
-        }
     }
 }

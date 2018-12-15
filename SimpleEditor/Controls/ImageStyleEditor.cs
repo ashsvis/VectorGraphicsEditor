@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Renderers;
@@ -37,15 +38,7 @@ namespace SimpleEditor.Controls
             // copy properties of object to GUI
             _updating++;
 
-            lbImage.Image = _image = imageFillStyles.GetProperty(f => f.Image);
-
-            cbStretch.Enabled = _image != null;
-
-            cbStretch.Checked = imageFillStyles.GetProperty(f => f.IsStretch);
-
-            cbTile.Enabled = !cbStretch.Checked && lbImage.Image != null;
-
-            cbTile.Checked = imageFillStyles.GetProperty(f => f.IsTile);
+            _image = imageFillStyles.GetProperty(f => f.Image);
 
             _updating--;
         }
@@ -61,10 +54,25 @@ namespace SimpleEditor.Controls
             var imageFillStyles = _selection.Select(f =>
                             (ImageRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
 
-            // send values back from GUI to object
-            imageFillStyles.SetProperty(f => f.Image = _image);
-            imageFillStyles.SetProperty(f => f.IsStretch = cbStretch.Checked);
-            imageFillStyles.SetProperty(f => f.IsTile = cbTile.Checked);
+            //imageFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
+            foreach (var fig in _selection.Where(f => RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer))
+            {
+                var renderer = (ImageRenderer)RendererDecorator.GetBaseRenerer(fig.Renderer);
+                var firstIsEmpty = renderer.Image.Bitmap == null;
+                renderer.Image = (Bitmap)_image;
+                if (firstIsEmpty)
+                {
+                    var bounds = fig.GetTransformedPath().Path.GetBounds();
+                    var x = bounds.X;
+                    var y = bounds.Y;
+                    var width = renderer.Image.Bitmap.Width;
+                    var height = renderer.Image.Bitmap.Height;
+                    var m = new Matrix();
+                    m.Translate(x + width / 2, y + height / 2);
+                    m.Scale(width, height);
+                    fig.Transform.Matrix = m;
+                }
+            }
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -74,18 +82,10 @@ namespace SimpleEditor.Controls
         {
             var dlg = new OpenFileDialog
             {
-                Filter = @"*.png;*.jpg;*.bmp;*.emf;*.tif;*.gif;*.ico|*.png;*.jpg;*.bmp;*.emf;*.tif;*.gif;*.ico"
+                Filter = @"*Файлы графических форматов (.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif"
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            lbImage.Image = _image = Image.FromFile(dlg.FileName);
-            cbStretch.Enabled = _image != null;
-            cbTile.Enabled = !cbStretch.Checked && _image != null;
-            UpdateObject();
-        }
-
-        private void cbStretch_CheckedChanged(object sender, EventArgs e)
-        {
-            cbTile.Enabled = !cbStretch.Checked;
+            _image = (Bitmap)Image.FromFile(dlg.FileName);
             UpdateObject();
         }
     }

@@ -65,6 +65,12 @@
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ControlsHelper.cs" />
+    <Compile Include="Controls\GlowStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GlowStyleEditor.Designer.cs">
+      <DependentUpon>GlowStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IEditor.cs" />
     <Compile Include="Controls\ImageStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FillStyleEditor.resx">
       <DependentUpon>FillStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GlowStyleEditor.resx">
+      <DependentUpon>GlowStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageStyleEditor.resx">
       <DependentUpon>ImageStyleEditor.cs</DependentUpon>

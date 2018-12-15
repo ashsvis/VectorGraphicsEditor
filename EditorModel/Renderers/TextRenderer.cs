@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using EditorModel.Common;
 using EditorModel.Figures;
 
@@ -9,7 +10,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика текстового блока
     /// </summary>
     [Serializable]
-    public class TextRenderer : Renderer
+    public class TextRenderer : Renderer, IRendererTransformedPath
     {
         /// <summary>
         /// Текст для построения пути
@@ -22,22 +23,16 @@ namespace EditorModel.Renderers
         public string FontName { get; set; }
 
         /// <summary>
-        /// Размер шрифта
-        /// </summary>
-        public float FontSize { get; set; }
-
-        /// <summary>
         /// Выравнивание текста
         /// </summary>
-        public ContentAlignment TextAlign { get; set; }
+        public StringAlignment Alignment { get; set; }
 
 
         public TextRenderer(string text)
         {
             Text = text;
             FontName = "Arial";
-            FontSize = 14f;
-            TextAlign = ContentAlignment.MiddleCenter;
+            Alignment = StringAlignment.Center;
         }
 
         /// <summary>
@@ -47,32 +42,33 @@ namespace EditorModel.Renderers
         /// <param name="figure">Фигура со свойствами для рисования</param>
         public override void Render(Graphics graphics, Figure figure)
         {
-            if (figure.Style.FillStyle == null || !figure.Style.FillStyle.IsVisible) return;
-            // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = figure.Geometry.GetTransformedPath(figure))
-            using (var sf = new StringFormat(StringFormatFlags.DisplayFormatControl))
+            if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)
             {
-                var bounds = figure.Geometry.GetTransformedBounds(figure);
-                Helper.UpdateStringFormat(sf, TextAlign);
-                //graphics.TranslateTransform(bounds.Left + bounds.Width/2, bounds.Top + bounds.Height/2);
-                //var angle = Helper.GetAngle(figure.Transform);
-                //var size = Helper.GetSize(figure.Transform);
-                //graphics.RotateTransform(angle);
-                //var clientRect = new RectangleF(-size.Width/2, -size.Height/2, size.Width, size.Height);
+                using (var gp = GetTransformedPath(figure))
                 using (var brush = figure.Style.FillStyle.GetBrush(figure))
-                {
-                    //var x = sf.Alignment == StringAlignment.Near
-                    //            ? -clientRect.Width/2
-                    //            : sf.Alignment == StringAlignment.Far ? clientRect.Width/2 : 0;
-                    //var y = sf.LineAlignment == StringAlignment.Near
-                    //            ? -clientRect.Height/2
-                    //            : sf.LineAlignment == StringAlignment.Far ? clientRect.Height/2 : 0;
-                    //path.Reset();
-                    //path.AddString(Text, new FontFamily(FontName), 0, FontSize, new PointF(x, y), sf);
-                    graphics.FillPath(brush, path);
-                }
-                //graphics.ResetTransform();
+                    graphics.FillPath(brush, gp);
             }
+        }
+
+        public GraphicsPath GetTransformedPath(Figure figure)
+        {
+            var text = string.IsNullOrWhiteSpace(Text) ? "(empty)" : Text;
+            var graphicsPath = new GraphicsPath();
+            using (var sf = new StringFormat(StringFormat.GenericTypographic))
+            {
+                sf.Alignment = Alignment;
+                graphicsPath.AddString(text, new FontFamily(FontName), 0, 14f, PointF.Empty, sf);
+            }
+            var bounds = graphicsPath.GetBounds();
+            var pts = graphicsPath.PathPoints;
+            for (var i = 0; i < pts.Length; i++)
+            {
+                pts[i].X = (pts[i].X - bounds.Left) / bounds.Width - 0.5f;
+                pts[i].Y = (pts[i].Y - bounds.Top) / bounds.Height - 0.5f;
+            }
+            var ptt = graphicsPath.PathTypes;
+            figure.Transform.Matrix.TransformPoints(pts);
+            return new GraphicsPath(pts, ptt);
         }
 
         /// <summary>
@@ -82,8 +78,8 @@ namespace EditorModel.Renderers
         {
             get
             {
-                return AllowedRendererDecorators.All ^
-                    (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow);
+                return AllowedRendererDecorators.All; // ^
+                    //(AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow);
             }
         }
     }

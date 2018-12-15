@@ -41,9 +41,9 @@ namespace EditorModel.Geometry
         /// </summary>
         public abstract AllowedOperations AllowedOperations { get; }
 
-        public abstract GraphicsPath GetTransformedPath(Figure fig);
+        //public abstract GraphicsPath GetTransformedPath(Figure fig);
 
-        public abstract RectangleF GetTransformedBounds(Figure fig);
+        //public abstract RectangleF GetTransformedBounds(Figure fig);
 
     }
 }

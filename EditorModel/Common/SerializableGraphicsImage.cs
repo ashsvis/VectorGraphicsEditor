@@ -2,13 +2,14 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Drawing.Imaging;
 
 namespace EditorModel.Common
 {
     [Serializable]
     public sealed class SerializableGraphicsImage : ISerializable, IDisposable
     {
-        public Image Image;
+        public Bitmap Bitmap;
 
         public SerializableGraphicsImage() { }
 
@@ -19,11 +20,11 @@ namespace EditorModel.Common
                 var bytes = (byte[])info.GetValue("m", typeof(byte[]));
                 using (var m = new MemoryStream(bytes))
                 {
-                    Image = Image.FromStream(m);
+                    Bitmap = new Bitmap(m);
                 }
             }
             else
-                Image = null;
+                Bitmap = null;
         }
 
         ~SerializableGraphicsImage()
@@ -33,27 +34,28 @@ namespace EditorModel.Common
 
         public void Dispose()
         {
-            if (Image != null) Image.Dispose();
+            if (Bitmap != null) Bitmap.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (Image == null) return;
+            if (Bitmap == null || 
+                Bitmap.PixelFormat == PixelFormat.DontCare) return;
             using (var m = new MemoryStream())
             {
-                Image.Save(m, Image.RawFormat);
+                Bitmap.Save(m, ImageFormat.Png);
                 info.AddValue("m", m.ToArray());
             }
         }
 
         public static implicit operator Image(SerializableGraphicsImage image)
         {
-            return image.Image;
+            return image != null ? image.Bitmap : null;
         }
 
-        public static implicit operator SerializableGraphicsImage(Image image)
+        public static implicit operator SerializableGraphicsImage(Bitmap image)
         {
-            return new SerializableGraphicsImage { Image = image };
+            return new SerializableGraphicsImage { Bitmap = image };
         }
     }
 }

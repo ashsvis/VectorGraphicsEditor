@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Common\ExportImport.cs" />
     <Compile Include="Common\Helper.cs" />
+    <Compile Include="Common\IRendererTransformedPath.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\SaverLoader.cs" />

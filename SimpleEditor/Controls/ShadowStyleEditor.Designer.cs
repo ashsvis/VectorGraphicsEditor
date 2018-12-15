@@ -120,11 +120,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ShadowStyleEditor";
-            this.Size = new System.Drawing.Size(259, 24);
+            this.Size = new System.Drawing.Size(261, 26);
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffsetY)).EndInit();

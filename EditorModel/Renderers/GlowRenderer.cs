@@ -1,6 +1,8 @@
-﻿using EditorModel.Figures;
+﻿using EditorModel.Common;
+using EditorModel.Figures;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Renderers
 {
@@ -21,23 +23,27 @@ namespace EditorModel.Renderers
             : base(renderer)
         {
             _renderer = renderer;
-            Color = Color.Yellow;
+            Color = Color.White;
         }
 
         public override void Render(Graphics graphics, Figure figure)
         {
+            var baseRenderer = GetBaseRenerer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = figure.GetTransformedPath().Path)
+            using (var path = baseRenderer != null
+                ? baseRenderer.GetTransformedPath(figure)
+                : figure.GetTransformedPath().Path)
             {
                 // то получаем карандаш из стиля рисования фигуры
                 using (var pen = new Pen(Color))
                 {
                     var color = Color;
-                    for (var i = 0; i < 4; i++)
+                    for (var i = 0; i < 8; i++)
                     {
-                        pen.Color = Color.FromArgb(color.A / 2, color);
+                        pen.Color = color;
                         pen.Width += 4;
                         graphics.DrawPath(pen, path);
+                        color = Color.FromArgb(color.A / 2, color);
                     }
                 }
             }

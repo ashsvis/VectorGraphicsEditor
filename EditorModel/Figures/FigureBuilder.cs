@@ -95,16 +95,14 @@ namespace EditorModel.Figures
         /// <param name="text">Текстовая строка</param>
         public static void BuildTextRenderGeometry(Figure figure, string text)
         {
-            //var path = new SerializableGraphicsPath();
-            //path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
+            var path = new SerializableGraphicsPath();
+            path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
 
-            //figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
-            //    (AllowedOperations.Vertex | AllowedOperations.Skew));
-
-            figure.Geometry = new TextGeometry() { Text = text };
-
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
+      
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle.Color = Color.Black;
+
             figure.Renderer = new TextRenderer(text);
         }
 
@@ -113,13 +111,12 @@ namespace EditorModel.Figures
         /// </summary>
         /// <param name="figure"></param>
         /// <param name="image"></param>
-        public static void BuildImageRenderGeometry(Figure figure, Image image)
+        public static void BuildImageRenderGeometry(Figure figure, Bitmap image)
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
 
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
-                (AllowedOperations.Vertex | AllowedOperations.Skew));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle = null; // отключение заливки для рендера
             figure.Renderer = new ImageRenderer(image);     

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using EditorModel.Figures;
 
 namespace EditorModel.Renderers
@@ -15,6 +16,25 @@ namespace EditorModel.Renderers
         {
             var group = figure as GroupFigure;
             if (group == null) return;
+            if (group.Figures.ToArray().Length == 0)
+            {
+                using (var path = figure.GetTransformedPath().Path)
+                {
+                    var bounds = path.GetBounds();
+                    using (var pen = new Pen(Color.Black, 0f))
+                    {
+                        pen.DashStyle = DashStyle.Dot;
+                        graphics.DrawRectangles(pen, new[] { bounds });
+                        using (var sf = new StringFormat(StringFormat.GenericTypographic))
+                        {
+                            sf.Alignment = StringAlignment.Center;
+                            sf.LineAlignment = StringAlignment.Center;
+                            graphics.DrawString("Picture Place Holder", SystemFonts.DefaultFont, Brushes.Black, bounds, sf);
+                        }
+                    }
+                }
+                return;
+            }
             // отрисовка фигур в группе
             foreach (var fig in group.Figures)
             {
