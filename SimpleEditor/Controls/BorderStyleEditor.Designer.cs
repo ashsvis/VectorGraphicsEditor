@@ -132,7 +132,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 3);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(494, 25);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(497, 25);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // lbOpacity
@@ -168,13 +168,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "BorderStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(494, 28);
+            this.Size = new System.Drawing.Size(503, 30);
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();

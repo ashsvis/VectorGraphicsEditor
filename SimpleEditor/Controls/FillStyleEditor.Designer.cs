@@ -107,13 +107,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FillStyleEditor";
             this.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Size = new System.Drawing.Size(211, 26);
+            this.Size = new System.Drawing.Size(213, 28);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();

@@ -201,11 +201,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TextStyleEditor";
-            this.Size = new System.Drawing.Size(263, 23);
+            this.Size = new System.Drawing.Size(265, 25);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
