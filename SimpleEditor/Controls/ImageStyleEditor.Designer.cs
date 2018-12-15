@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.lbImageText = new System.Windows.Forms.Label();
-            this.lbImage = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnLoadPicture = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,27 +44,30 @@
             this.lbImageText.TabIndex = 0;
             this.lbImageText.Text = "Image";
             // 
-            // lbImage
-            // 
-            this.lbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbImage.Location = new System.Drawing.Point(39, 1);
-            this.lbImage.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.lbImage.Name = "lbImage";
-            this.lbImage.Size = new System.Drawing.Size(23, 22);
-            this.lbImage.TabIndex = 3;
-            this.lbImage.Click += new System.EventHandler(this.lbImage_Click);
-            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.lbImageText);
-            this.flowLayoutPanel1.Controls.Add(this.lbImage);
+            this.flowLayoutPanel1.Controls.Add(this.btnLoadPicture);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(67, 25);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(102, 25);
             this.flowLayoutPanel1.TabIndex = 5;
+            // 
+            // btnLoadPicture
+            // 
+            this.btnLoadPicture.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoadPicture.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnLoadPicture.Location = new System.Drawing.Point(39, 0);
+            this.btnLoadPicture.Margin = new System.Windows.Forms.Padding(0);
+            this.btnLoadPicture.Name = "btnLoadPicture";
+            this.btnLoadPicture.Size = new System.Drawing.Size(57, 21);
+            this.btnLoadPicture.TabIndex = 7;
+            this.btnLoadPicture.Text = "Load...";
+            this.btnLoadPicture.UseVisualStyleBackColor = true;
+            this.btnLoadPicture.Click += new System.EventHandler(this.lbImage_Click);
             // 
             // ImageStyleEditor
             // 
@@ -72,7 +75,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "ImageStyleEditor";
-            this.Size = new System.Drawing.Size(71, 28);
+            this.Size = new System.Drawing.Size(135, 28);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -83,7 +86,7 @@
         #endregion
 
         private System.Windows.Forms.Label lbImageText;
-        private System.Windows.Forms.Label lbImage;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button btnLoadPicture;
     }
 }

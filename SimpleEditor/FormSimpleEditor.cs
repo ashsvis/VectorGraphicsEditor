@@ -323,7 +323,7 @@ namespace SimpleEditor
                     placeHolder.Style.FillStyle.IsVisible = false;
                     placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
                     FigureBuilder.BuildRectangleGeometry(placeHolder);
-                    var fig = new GroupFigure(new[] { placeHolder });
+                    var fig = new GroupFigure(new Figure[] { placeHolder });
                     return fig;
                 };
             }

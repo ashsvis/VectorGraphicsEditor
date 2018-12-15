@@ -38,7 +38,7 @@ namespace SimpleEditor.Controls
             // copy properties of object to GUI
             _updating++;
 
-            lbImage.Image = _image = imageFillStyles.GetProperty(f => f.Image);
+            _image = imageFillStyles.GetProperty(f => f.Image);
 
             _updating--;
         }
@@ -85,7 +85,7 @@ namespace SimpleEditor.Controls
                 Filter = @"*Файлы графических форматов (.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif"
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
-            lbImage.Image = _image = (Bitmap)Image.FromFile(dlg.FileName);
+            _image = (Bitmap)Image.FromFile(dlg.FileName);
             UpdateObject();
         }
     }

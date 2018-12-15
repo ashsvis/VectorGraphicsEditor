@@ -773,14 +773,14 @@
             // 
             this.pnImageStyle.Location = new System.Drawing.Point(705, 37);
             this.pnImageStyle.Name = "pnImageStyle";
-            this.pnImageStyle.Size = new System.Drawing.Size(75, 29);
+            this.pnImageStyle.Size = new System.Drawing.Size(112, 29);
             this.pnImageStyle.TabIndex = 6;
             this.pnImageStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnImageStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnPictureStyle
             // 
-            this.pnPictureStyle.Location = new System.Drawing.Point(785, 36);
+            this.pnPictureStyle.Location = new System.Drawing.Point(822, 36);
             this.pnPictureStyle.Margin = new System.Windows.Forms.Padding(2);
             this.pnPictureStyle.Name = "pnPictureStyle";
             this.pnPictureStyle.Size = new System.Drawing.Size(120, 28);
@@ -1037,7 +1037,7 @@
             this.tsbPicture.Name = "tsbPicture";
             this.tsbPicture.Size = new System.Drawing.Size(31, 20);
             this.tsbPicture.Text = "Image";
-            this.tsbPicture.ToolTipText = "Insert Image & Selection";
+            this.tsbPicture.ToolTipText = "Insert Image & Picture";
             this.tsbPicture.ButtonClick += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // btnInsertImage

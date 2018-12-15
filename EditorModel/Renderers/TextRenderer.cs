@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using EditorModel.Common;
 using EditorModel.Figures;
 
 namespace EditorModel.Renderers
@@ -9,7 +10,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика текстового блока
     /// </summary>
     [Serializable]
-    public class TextRenderer : Renderer
+    public class TextRenderer : Renderer, IRendererTransformedPath
     {
         /// <summary>
         /// Текст для построения пути
@@ -49,32 +50,9 @@ namespace EditorModel.Renderers
         {
             if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)
             {
-                var text = string.IsNullOrWhiteSpace(Text) ? "(empty)" : Text;
-                using (GraphicsPath graphicsPath = new GraphicsPath())
-                using (var sf = new StringFormat(StringFormat.GenericTypographic))
-                {
-                    sf.Alignment = Alignment;
-                    graphicsPath.AddString(
-                        text,
-                        new FontFamily(FontName),
-                        0, //(int)FontStyle.Bold,
-                        14f, // FontSize,
-                        PointF.Empty,
-                        sf
-                    );
-                    var bounds = graphicsPath.GetBounds();
-                    var pts = graphicsPath.PathPoints;
-                    for (var i = 0; i < pts.Length; i++)
-                    {
-                        pts[i].X = (pts[i].X - bounds.Left) / bounds.Width - 0.5f;
-                        pts[i].Y = (pts[i].Y - bounds.Top) / bounds.Height - 0.5f;
-                    }
-                    var ptt = graphicsPath.PathTypes;
-                    figure.Transform.Matrix.TransformPoints(pts);
-                    using (var gp = new GraphicsPath(pts, ptt))
-                    using (var brush = figure.Style.FillStyle.GetBrush(figure))
-                        graphics.FillPath(brush, gp);
-                }
+                using (var gp = GetTransformedPath(figure))
+                using (var brush = figure.Style.FillStyle.GetBrush(figure))
+                    graphics.FillPath(brush, gp);
             }
             else
             {
@@ -92,6 +70,35 @@ namespace EditorModel.Renderers
                 }
             }
         }
+
+        public GraphicsPath GetTransformedPath(Figure figure)
+        {
+            var text = string.IsNullOrWhiteSpace(Text) ? "(empty)" : Text;
+            var graphicsPath = new GraphicsPath();
+            using (var sf = new StringFormat(StringFormat.GenericTypographic))
+            {
+                sf.Alignment = Alignment;
+                graphicsPath.AddString(
+                    text,
+                    new FontFamily(FontName),
+                    0, //(int)FontStyle.Bold,
+                    14f, // FontSize,
+                    PointF.Empty,
+                    sf
+                );
+            }
+            var bounds = graphicsPath.GetBounds();
+            var pts = graphicsPath.PathPoints;
+            for (var i = 0; i < pts.Length; i++)
+            {
+                pts[i].X = (pts[i].X - bounds.Left) / bounds.Width - 0.5f;
+                pts[i].Y = (pts[i].Y - bounds.Top) / bounds.Height - 0.5f;
+            }
+            var ptt = graphicsPath.PathTypes;
+            figure.Transform.Matrix.TransformPoints(pts);
+            return new GraphicsPath(pts, ptt);
+        }
+
 
         /// <summary>
         /// Свойство возвращает ограничения для подключения декораторов

@@ -86,18 +86,5 @@ namespace EditorModel.Geometry
         {
             if (_path != null) _path.Dispose();
         }
-
-        public override GraphicsPath GetTransformedPath(Figure fig)
-        {
-            return fig.GetTransformedPath();
-        }
-
-        public override RectangleF GetTransformedBounds(Figure fig)
-        {
-            var path = (GraphicsPath)Path.Path.Clone();
-            // трансформируем её при помощи Трансформера
-            path.Transform(fig.Transform);
-            return path.GetBounds();
-        }
     }
 }
