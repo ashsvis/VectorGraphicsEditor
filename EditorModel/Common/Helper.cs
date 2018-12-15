@@ -90,10 +90,6 @@ namespace EditorModel.Common
                     break;
             }
         }
-        public static VersionInfo GetVersionInfo()
-        {
-            return new VersionInfo { Version = 2 };
-        }
 
         // ReSharper disable InconsistentNaming
         public const float EPSILON = 0.01f;
@@ -129,37 +125,6 @@ namespace EditorModel.Common
             var a = marker.Sub(anchor);
             var m = mouse.Sub(anchor);
             return m.Angle(a) * PointFExtension.TO_DEGREES;
-        }
-
-        public static void Compress(Stream sourceStream, string compressedFile)
-        {
-            // поток для записи сжатого файла
-            using (FileStream targetStream = File.Create(compressedFile))
-            {
-                // поток архивации
-                using (GZipStream compressionStream = new GZipStream(targetStream, CompressionMode.Compress))
-                {
-                    sourceStream.CopyTo(compressionStream); // копируем байты из одного потока в другой
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="compressedFile"></param>
-        /// <param name="targetStream">поток для записи восстановленного файла</param>
-        public static void Decompress(string compressedFile, Stream targetStream)
-        {
-            // поток для чтения из сжатого файла
-            using (FileStream sourceStream = new FileStream(compressedFile, FileMode.OpenOrCreate))
-            {
-                // поток разархивации
-                using (GZipStream decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
-                {
-                    decompressionStream.CopyTo(targetStream);
-                }
-            }
         }
 
         /// <summary>
