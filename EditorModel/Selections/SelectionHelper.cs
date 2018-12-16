@@ -299,5 +299,19 @@ namespace EditorModel.Selections
                 figure.Transform.Matrix = new Matrix(el[0], el[1], el[2], el[3], el[4], el[5]);
             }
         }
+
+        /// <summary>
+        /// Преобразование фигуры к замкнутому полигону
+        /// </summary>
+        public static void ConvertToPath(this Selection selection)
+        {
+            foreach (var fig in selection.Where(fig => fig.Geometry as PolygoneGeometry == null))
+            {
+                var pathPoints = fig.Geometry.Path.Path.PathPoints;
+                fig.Geometry = new PolygoneGeometry();
+                (fig.Geometry as PolygoneGeometry).Points = pathPoints;
+            }
+        }
+
     }
 }

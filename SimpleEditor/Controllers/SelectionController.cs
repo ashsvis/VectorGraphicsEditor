@@ -967,5 +967,15 @@ namespace SimpleEditor.Controllers
             UpdateMarkerPositions();
             OnSelectedFigureChanged();
         }
+
+        public void ConvertToPath()
+        {
+            if (_selection.Count(fig => fig.Geometry as PolygoneGeometry == null) == 0) return;
+            LayerStartChanging();
+            _selection.ConvertToPath();
+            LayerChanged();
+            BuildMarkers();
+            UpdateMarkerPositions();
+        }
     }
 }

@@ -12,7 +12,6 @@ using EditorModel.Style;
 using SimpleEditor.Common;
 using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
-using System.IO;
 using System.Text;
 using EditorModel.Common;
 
@@ -122,6 +121,8 @@ namespace SimpleEditor
                                                            _selectionController.Selection.Count(
                                                                SelectionHelper.IsNotSkewAndRotated) > 1;
 
+            tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => fig.Geometry as PolygoneGeometry == null) > 0;
+
             pbCanvas.Invalidate();
         }
 
@@ -137,8 +138,8 @@ namespace SimpleEditor
                 var figure = _selectionController.Selection.FirstOrDefault();
                 if (figure != null)
                 {
-                    angle = EditorModel.Common.Helper.GetAngle(figure.Transform);
-                    var size = EditorModel.Common.Helper.GetSize(figure.Transform);
+                    angle = Helper.GetAngle(figure.Transform);
+                    var size = Helper.GetSize(figure.Transform);
                     sb.AppendFormat(" Figure: size {0}, rotated at {1:0.0}°", size, angle);
                 }
             }
@@ -919,6 +920,12 @@ namespace SimpleEditor
                 _selectionController.EditorMode = EditorMode.Skew;
             else if (sender == tsbVertexMode)
                 _selectionController.EditorMode = EditorMode.Verticies;
+        }
+
+        private void tsbConvertToPath_Click(object sender, EventArgs e)
+        {
+            _selectionController.ConvertToPath();
+            UpdateInterface();
         }
     }
 }

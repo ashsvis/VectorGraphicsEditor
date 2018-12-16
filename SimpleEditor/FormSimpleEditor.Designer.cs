@@ -634,9 +634,9 @@
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStripMain);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStripFile);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsArrange);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStripMain);
             // 
             // statusStrip1
             // 
@@ -898,7 +898,7 @@
             this.btnPolyline.Image = global::SimpleEditor.Properties.Resources.poliline;
             this.btnPolyline.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnPolyline.Name = "btnPolyline";
-            this.btnPolyline.Size = new System.Drawing.Size(180, 22);
+            this.btnPolyline.Size = new System.Drawing.Size(124, 22);
             this.btnPolyline.Text = "Polyline";
             this.btnPolyline.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -907,7 +907,7 @@
             this.btnPolygone.Image = global::SimpleEditor.Properties.Resources.poligon;
             this.btnPolygone.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnPolygone.Name = "btnPolygone";
-            this.btnPolygone.Size = new System.Drawing.Size(180, 22);
+            this.btnPolygone.Size = new System.Drawing.Size(124, 22);
             this.btnPolygone.Text = "Polygone";
             this.btnPolygone.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -933,7 +933,7 @@
             this.btnRectangle.Image = global::SimpleEditor.Properties.Resources.rect;
             this.btnRectangle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRectangle.Name = "btnRectangle";
-            this.btnRectangle.Size = new System.Drawing.Size(180, 22);
+            this.btnRectangle.Size = new System.Drawing.Size(126, 22);
             this.btnRectangle.Text = "Rectangle";
             this.btnRectangle.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -942,7 +942,7 @@
             this.btnSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.btnSquare.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnSquare.Name = "btnSquare";
-            this.btnSquare.Size = new System.Drawing.Size(180, 22);
+            this.btnSquare.Size = new System.Drawing.Size(126, 22);
             this.btnSquare.Text = "Square";
             this.btnSquare.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -951,7 +951,7 @@
             this.btnEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.btnEllipse.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnEllipse.Name = "btnEllipse";
-            this.btnEllipse.Size = new System.Drawing.Size(180, 22);
+            this.btnEllipse.Size = new System.Drawing.Size(126, 22);
             this.btnEllipse.Text = "Ellipse";
             this.btnEllipse.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -960,7 +960,7 @@
             this.btnCircle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.btnCircle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnCircle.Name = "btnCircle";
-            this.btnCircle.Size = new System.Drawing.Size(180, 22);
+            this.btnCircle.Size = new System.Drawing.Size(126, 22);
             this.btnCircle.Text = "Circle";
             this.btnCircle.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -990,7 +990,7 @@
             this.btnRegular3.Image = global::SimpleEditor.Properties.Resources.triangle;
             this.btnRegular3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRegular3.Name = "btnRegular3";
-            this.btnRegular3.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular3.Size = new System.Drawing.Size(126, 22);
             this.btnRegular3.Text = "Regular3";
             this.btnRegular3.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -999,14 +999,14 @@
             this.btnRegular4.Image = global::SimpleEditor.Properties.Resources.romb;
             this.btnRegular4.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRegular4.Name = "btnRegular4";
-            this.btnRegular4.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular4.Size = new System.Drawing.Size(126, 22);
             this.btnRegular4.Text = "Regular4";
             this.btnRegular4.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // btnRegular5
             // 
             this.btnRegular5.Name = "btnRegular5";
-            this.btnRegular5.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular5.Size = new System.Drawing.Size(126, 22);
             this.btnRegular5.Text = "Regular5";
             this.btnRegular5.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1015,14 +1015,14 @@
             this.btnRegular6.Image = global::SimpleEditor.Properties.Resources.regular6;
             this.btnRegular6.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRegular6.Name = "btnRegular6";
-            this.btnRegular6.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular6.Size = new System.Drawing.Size(126, 22);
             this.btnRegular6.Text = "Regular6";
             this.btnRegular6.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // btnRegular7
             // 
             this.btnRegular7.Name = "btnRegular7";
-            this.btnRegular7.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular7.Size = new System.Drawing.Size(126, 22);
             this.btnRegular7.Text = "Regular7";
             this.btnRegular7.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1031,21 +1031,21 @@
             this.btnRegular8.Image = global::SimpleEditor.Properties.Resources.regular8;
             this.btnRegular8.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRegular8.Name = "btnRegular8";
-            this.btnRegular8.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular8.Size = new System.Drawing.Size(126, 22);
             this.btnRegular8.Text = "Regular8";
             this.btnRegular8.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // btnRegular9
             // 
             this.btnRegular9.Name = "btnRegular9";
-            this.btnRegular9.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular9.Size = new System.Drawing.Size(126, 22);
             this.btnRegular9.Text = "Regular9";
             this.btnRegular9.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // btnRegular10
             // 
             this.btnRegular10.Name = "btnRegular10";
-            this.btnRegular10.Size = new System.Drawing.Size(180, 22);
+            this.btnRegular10.Size = new System.Drawing.Size(126, 22);
             this.btnRegular10.Text = "Regular10";
             this.btnRegular10.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1068,7 +1068,7 @@
             this.btnTextBlock.Image = global::SimpleEditor.Properties.Resources.text;
             this.btnTextBlock.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnTextBlock.Name = "btnTextBlock";
-            this.btnTextBlock.Size = new System.Drawing.Size(180, 22);
+            this.btnTextBlock.Size = new System.Drawing.Size(127, 22);
             this.btnTextBlock.Text = "Text Block";
             this.btnTextBlock.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1092,7 +1092,7 @@
             this.btnInsertImage.Image = global::SimpleEditor.Properties.Resources.picture;
             this.btnInsertImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnInsertImage.Name = "btnInsertImage";
-            this.btnInsertImage.Size = new System.Drawing.Size(180, 22);
+            this.btnInsertImage.Size = new System.Drawing.Size(111, 22);
             this.btnInsertImage.Text = "Image";
             this.btnInsertImage.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1101,7 +1101,7 @@
             this.btnInsertPicture.Image = global::SimpleEditor.Properties.Resources.subpicture;
             this.btnInsertPicture.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnInsertPicture.Name = "btnInsertPicture";
-            this.btnInsertPicture.Size = new System.Drawing.Size(180, 22);
+            this.btnInsertPicture.Size = new System.Drawing.Size(111, 22);
             this.btnInsertPicture.Text = "Picture";
             this.btnInsertPicture.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1156,7 +1156,7 @@
             this.tsbUnion});
             this.tsArrange.Location = new System.Drawing.Point(3, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1007, 31);
+            this.tsArrange.Size = new System.Drawing.Size(1028, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1630,13 +1630,13 @@
             // tsbConvertToPath
             // 
             this.tsbConvertToPath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbConvertToPath.Enabled = false;
             this.tsbConvertToPath.Image = global::SimpleEditor.Properties.Resources.converttopath;
             this.tsbConvertToPath.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbConvertToPath.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbConvertToPath.Name = "tsbConvertToPath";
             this.tsbConvertToPath.Size = new System.Drawing.Size(28, 28);
             this.tsbConvertToPath.Text = "Convert To Path";
+            this.tsbConvertToPath.Click += new System.EventHandler(this.tsbConvertToPath_Click);
             // 
             // toolStripSeparator22
             // 

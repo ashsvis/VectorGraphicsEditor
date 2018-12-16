@@ -7,7 +7,6 @@ using System.Linq;
 using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Geometry;
-using EditorModel.Renderers;
 using EditorModel.Style;
 
 namespace EditorModel.Selections
@@ -170,24 +169,6 @@ namespace EditorModel.Selections
 
             GrabGeometry();
         }
-
-        ///// <summary>
-        ///// Применение своего изменения пути к выделенным фигурам
-        ///// </summary>
-        //public void PushPathDataToSelectedFigures()
-        //{
-        //    var fig = _selected.FirstOrDefault();
-        //    if (fig != null)
-        //    {
-        //        var types = Geometry.Path.Path.PathTypes;
-        //        var points = Geometry.Path.Path.PathPoints;
-        //        fig.Geometry = new PrimitiveGeometry(
-        //            new SerializableGraphicsPath { Path = new GraphicsPath(points, types) },
-        //            fig.Geometry.AllowedOperations);
-        //        fig.Transform = new SerializableGraphicsMatrix();
-        //    }
-        //    GrabGeometry();
-        //}
 
         /// <summary>
         /// Перенос фигур из списка
@@ -471,10 +452,10 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Объединение выбранных фигур в одну
+        /// Объединение геометрий выбранных фигур в одну
         /// </summary>
         /// <returns>Новая фигура, содержащая фигуры группы</returns>
-        public Figure Join()
+        public Figure JoinGeometry()
         {
             var groupPath = new SerializableGraphicsPath();
             foreach (var fig in _selected)
@@ -491,11 +472,11 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Разъединение фигур в список
+        /// Разъединение геометрий фигур в список
         /// todo: Настройки AllowedOperations для примитивных фигур теряются!
         /// </summary>
         /// <returns>Список фигур, содержавшихся внутри группы</returns>
-        public List<Figure> Unjoin()
+        public List<Figure> UnjoinGeometry()
         {
             var list = new List<Figure>();
             foreach (var pathIterator in _selected.Select(fig =>
