@@ -51,8 +51,10 @@ namespace EditorModel.Renderers
                                                    new PointF(0.5f, -0.5f),     // destination for upper-right point of original
                                                    new PointF(-0.5f, 0.5f)};    // destination for lower-left point of original
                     figure.Transform.Matrix.TransformPoints(destinationPoints);
-                    if (image.PixelFormat == System.Drawing.Imaging.PixelFormat.DontCare) return;
-                    graphics.DrawImage(image, destinationPoints);
+                    //if (image.PixelFormat == System.Drawing.Imaging.PixelFormat.DontCare) return;
+                    GraphicsUnit unit = GraphicsUnit.Pixel;
+                    var rect = Image.Bitmap.GetBounds(ref unit);
+                    graphics.DrawImage(image, destinationPoints, rect, GraphicsUnit.Pixel);
                 }
             }
         }

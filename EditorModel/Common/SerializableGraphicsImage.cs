@@ -39,8 +39,8 @@ namespace EditorModel.Common
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (Bitmap == null || 
-                Bitmap.PixelFormat == PixelFormat.DontCare) return;
+            if (Bitmap == null) return;
+            //if (Bitmap.PixelFormat == PixelFormat.DontCare) return;
             using (var m = new MemoryStream())
             {
                 Bitmap.Save(m, ImageFormat.Png);

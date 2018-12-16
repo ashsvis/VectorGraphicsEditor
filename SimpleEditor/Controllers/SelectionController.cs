@@ -977,5 +977,88 @@ namespace SimpleEditor.Controllers
             BuildMarkers();
             UpdateMarkerPositions();
         }
+
+        // определение типа формата работы с буфером обмена Windows
+        [NonSerialized]
+        readonly DataFormats.Format _drawsFormat = DataFormats.GetFormat("clipboardVectorFiguresFormat");
+
+        /// <summary>
+        /// Вырезать выделенные в буфер обмена
+        /// </summary>
+        public void CutSelectedToClipboard()
+        {
+            if (_selection.Count == 0) return;
+            var forcopy = new List<Figure>();
+            foreach (var fig in _selection)
+                forcopy.Add(fig.DeepClone());
+            var clipboardDataObject = new DataObject(_drawsFormat.Name, forcopy);
+            Clipboard.SetDataObject(clipboardDataObject, false);
+            LayerStartChanging();
+            foreach (var fig in _selection)
+                _layer.Figures.Remove(fig);
+            LayerChanged();
+            _selection.Clear();
+            BuildMarkers();
+            UpdateMarkerPositions();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Копировать выделенные в буфер обмена
+        /// </summary>
+        public void CopySelectedToClipboard()
+        {
+            if (_selection.Count == 0) return;
+            var forcopy = new List<Figure>();
+            foreach (var fig in _selection)
+                forcopy.Add(fig.DeepClone());
+            var clipboardDataObject = new DataObject(_drawsFormat.Name, forcopy);
+            Clipboard.SetDataObject(clipboardDataObject, false);
+        }
+
+        /// <summary>
+        /// Признак возможности вставки данных из буфера обмена
+        /// </summary>
+        public bool CanPasteFromClipboard
+        {
+            get { return Clipboard.ContainsData(_drawsFormat.Name); }
+        }
+
+        /// <summary>
+        /// Вставка ранее скопированных фигур из буфера обмена
+        /// </summary>
+        public void PasteFromClipboardAndSelected()
+        {
+            if (!Clipboard.ContainsData(_drawsFormat.Name)) return;
+            var clipboardRetrievedObject = Clipboard.GetDataObject();
+            if (clipboardRetrievedObject == null) return;
+            var pastedObject = (List<Figure>)clipboardRetrievedObject.GetData(_drawsFormat.Name);
+            LayerStartChanging();
+            var list = new List<Figure>();
+            foreach (var fig in pastedObject)
+            {
+                _layer.Figures.Add(fig);
+                list.Add(fig);
+            }
+            _selection.Clear();
+            foreach (var fig in list)
+                _selection.Add(fig);
+            BuildMarkers();
+            UpdateMarkerPositions();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Выбрать все фигуры
+        /// </summary>
+        public void SelectAllFigures()
+        {
+            _selection.Clear();
+            foreach (var fig in _layer.Figures) _selection.Add(fig);
+            BuildMarkers();
+            UpdateMarkerPositions();
+            OnSelectedFigureChanged();
+        }
+
     }
 }

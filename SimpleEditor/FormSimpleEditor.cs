@@ -100,20 +100,12 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => 
                                  f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =
-                                             tsbBringToFront.Enabled = tsbSendToBack.Enabled =
-                                                                       tsbFlipX.Enabled =
-                                                                       tsbFlipY.Enabled =
-                                                                       tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled =
-                                                                                                tsbRotate180.Enabled =
-                                                                                                _selectionController
-                                                                                                    .Selection.Count > 0;
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =  tsbBringToFront.Enabled = tsbSendToBack.Enabled =
+                 tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
+                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
-                                                                               tsbAlignTop.Enabled =
-                                                                               tsbAlignMiddle.Enabled =
-                                                                               tsbAlignBottom.Enabled =
-                                                                               _selectionController.Selection.Count > 1;
+                 tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
 
@@ -124,6 +116,11 @@ namespace SimpleEditor
             tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => fig.Geometry as PolygoneGeometry == null) > 0;
 
             pbCanvas.Invalidate();
+        }
+
+        private void timerCheckClipboard_Tick(object sender, EventArgs e)
+        {
+            tsbPaste.Enabled = tsmPaste.Enabled = tsmiPaste.Enabled = _selectionController.CanPasteFromClipboard;
         }
 
         private void _selectionController_SelectedRangeChanging(Rectangle rect, float angle)
@@ -926,6 +923,22 @@ namespace SimpleEditor
         {
             _selectionController.ConvertToPath();
             UpdateInterface();
+        }
+
+        private void tsmPaste_Click(object sender, EventArgs e)
+        {
+            if (!_selectionController.CanPasteFromClipboard) return;
+            _selectionController.PasteFromClipboardAndSelected();
+        }
+
+        private void tsbCopy_Click(object sender, EventArgs e)
+        {
+            _selectionController.CopySelectedToClipboard();
+        }
+
+        private void tsbCut_Click(object sender, EventArgs e)
+        {
+            _selectionController.CutSelectedToClipboard();
         }
     }
 }
