@@ -2,16 +2,29 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using EditorModel.Common;
 using EditorModel.Figures;
 
 namespace EditorModel.Renderers
 {
+    public enum GroupJoin
+    {
+        None,
+        Intersect,
+        Union,
+        Xor,
+        Exclude,
+        Complement
+    }
+
     /// <summary>
     /// Класс рисовальщика группы фигур
     /// </summary>
     [Serializable]
     public class GroupRenderer : Renderer
     {
+        public GroupJoin JoinMode { get; set; }
+
         public override void Render(Graphics graphics, Figure figure)
         {
             var group = figure as GroupFigure;
@@ -36,12 +49,55 @@ namespace EditorModel.Renderers
                 return;
             }
             // отрисовка фигур в группе
-            foreach (var fig in group.Figures)
+            if (JoinMode == GroupJoin.None)
             {
-                var e = fig.Transform.Matrix.Elements;
-                fig.Transform.Matrix.Multiply(group.Transform, MatrixOrder.Append);
-                fig.Renderer.Render(graphics, fig);
-                fig.Transform.Matrix = new Matrix(e[0], e[1], e[2], e[3], e[4], e[5]);
+                foreach (var fig in group.Figures)
+                {
+                    var matrix = fig.Transform.DeepClone();
+                    fig.Transform.Matrix.Multiply(group.Transform, MatrixOrder.Append);
+                    fig.Renderer.Render(graphics, fig);
+                    fig.Transform = matrix;
+                }
+            }
+            else
+            {
+                var first = group.Figures.First();
+                var e = first.Transform.Matrix.Elements;
+                var firstMatrix = first.Transform.DeepClone();
+                first.Transform.Matrix.Multiply(group.Transform, MatrixOrder.Append);
+                using (var region = new Region(first.GetTransformedPath().Path))
+                {
+                    foreach (var fig in group.Figures.Skip(1))
+                    {
+                        var matrix = fig.Transform.DeepClone();
+                        fig.Transform.Matrix.Multiply(group.Transform, MatrixOrder.Append);
+                        switch (JoinMode)
+                        {
+                            case GroupJoin.Intersect:
+                                region.Intersect(fig.GetTransformedPath().Path);
+                                break;
+                            case GroupJoin.Union:
+                                region.Union(fig.GetTransformedPath().Path);
+                                break;
+                            case GroupJoin.Xor:
+                                region.Xor(fig.GetTransformedPath().Path);
+                                break;
+                            case GroupJoin.Exclude:
+                                region.Exclude(fig.GetTransformedPath().Path);
+                                break;
+                            case GroupJoin.Complement:
+                                region.Complement(fig.GetTransformedPath().Path);
+                                break;
+                        }
+                        fig.Transform = matrix;
+                    }
+                    if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)
+                    {
+                        using (var brush = figure.Style.FillStyle.GetBrush(figure))
+                            graphics.FillRegion(brush, region);
+                    }
+                }
+                first.Transform = firstMatrix;
             }
         }
 

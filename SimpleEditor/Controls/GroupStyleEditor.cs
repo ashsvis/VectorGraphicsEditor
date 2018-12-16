@@ -4,11 +4,12 @@ using System.Linq;
 using System.Windows.Forms;
 using EditorModel.Common;
 using EditorModel.Figures;
+using EditorModel.Renderers;
 using EditorModel.Selections;
 
 namespace SimpleEditor.Controls
 {
-    public partial class PictureStyleEditor : UserControl, IEditor<Selection>
+    public partial class GroupStyleEditor : UserControl, IEditor<Selection>
     {
         private Selection _selection;
         private int _updating;
@@ -17,7 +18,7 @@ namespace SimpleEditor.Controls
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
 
-        public PictureStyleEditor()
+        public GroupStyleEditor()
         {
             InitializeComponent();
             _figures = new List<Figure>();
@@ -31,6 +32,12 @@ namespace SimpleEditor.Controls
 
             // remember editing object
             _selection = selection;
+
+            btnLoadPicture.Visible = _selection.Any(f => (f as GroupFigure).Figures.ToList().Count == 1);
+
+            var groupStyles = _selection.Select(f =>
+                            (GroupRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+            cbJoin.SelectedIndex = groupStyles.GetProperty(f => (int)f.JoinMode, -1);
 
             // get list of objects
             var pictureFillStyles = _selection.Select(f => f as GroupFigure).ToList();
@@ -50,7 +57,11 @@ namespace SimpleEditor.Controls
             if (_updating > 0) return; // we are in updating mode
 
             // fire event
-            StartChanging(this, new ChangingEventArgs("Image Fill Style"));
+            StartChanging(this, new ChangingEventArgs("Group Selection Style"));
+
+            var groupStyles = _selection.Select(f =>
+                            (GroupRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+            groupStyles.SetProperty(f => f.JoinMode = cbJoin.SelectedIndex < 0 ? GroupJoin.None : (GroupJoin)cbJoin.SelectedIndex);
 
             // get list of objects
             var pictureFillStyles = _selection.Select(f => f as GroupFigure).ToList();
@@ -79,6 +90,11 @@ namespace SimpleEditor.Controls
                 MessageBox.Show(this, ex.Message, @"Загрузка файла отменена",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void cbJoin_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            UpdateObject();
         }
     }
 }

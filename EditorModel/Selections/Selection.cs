@@ -450,52 +450,5 @@ namespace EditorModel.Selections
             }
             return list;
         }
-
-        /// <summary>
-        /// Объединение геометрий выбранных фигур в одну
-        /// </summary>
-        /// <returns>Новая фигура, содержащая фигуры группы</returns>
-        public Figure JoinGeometry()
-        {
-            var groupPath = new SerializableGraphicsPath();
-            foreach (var fig in _selected)
-            {
-                groupPath.Path.AddPath(fig.GetTransformedPath().Path, false);
-                if (_selected.Last() != fig)
-                    groupPath.Path.SetMarkers();
-            }
-            var group = new Figure
-            {
-                Geometry = new PrimitiveGeometry(groupPath, AllowedOperations.All)
-            };
-            return group;
-        }
-
-        /// <summary>
-        /// Разъединение геометрий фигур в список
-        /// todo: Настройки AllowedOperations для примитивных фигур теряются!
-        /// </summary>
-        /// <returns>Список фигур, содержавшихся внутри группы</returns>
-        public List<Figure> UnjoinGeometry()
-        {
-            var list = new List<Figure>();
-            foreach (var pathIterator in _selected.Select(fig =>
-                new GraphicsPathIterator(fig.GetTransformedPath().Path)))
-            {
-                pathIterator.Rewind();
-                var pathSection = new SerializableGraphicsPath();
-                bool closed;
-                while (pathIterator.NextSubpath(pathSection.Path, out closed) > 0)
-                {
-                    var figure = new Figure
-                    {
-                        Geometry = new PrimitiveGeometry(pathSection, AllowedOperations.All)
-                    };
-                    pathSection = new SerializableGraphicsPath();
-                    list.Add(figure);
-                }
-            }
-            return list;
-        }
     }
 }

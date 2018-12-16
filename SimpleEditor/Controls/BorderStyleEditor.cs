@@ -54,7 +54,7 @@ namespace SimpleEditor.Controls
 
             cbPattern.SelectedIndex = (int)borderStyles.GetProperty(f => f.DashStyle);
             nudWidth.Value = (decimal)borderStyles.GetProperty(f => f.Width, 1);
-            nudOpacity.Value = (decimal)borderStyles.GetProperty(f => f.Opacity, 255);
+            nudOpacity.Value = borderStyles.GetProperty(f => f.Opacity, 255);
             lbColor.BackColor = borderStyles.GetProperty(f => f.Color);
             cbVisible.Checked = borderStyles.GetProperty(f => f.IsVisible);
 

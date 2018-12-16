@@ -315,7 +315,7 @@ namespace SimpleEditor
                     return fig;
                 };
             }
-            else if (sender == btnInsertPicture)
+            else if (sender == btnLoadGroup)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePicture);
                 figureCreator = () =>

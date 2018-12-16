@@ -89,7 +89,7 @@
             this.pnShadowStyle = new SimpleEditor.Controls.ShadowStyleEditor();
             this.pnGlowStyle = new SimpleEditor.Controls.GlowStyleEditor();
             this.pnImageStyle = new SimpleEditor.Controls.ImageStyleEditor();
-            this.pnPictureStyle = new SimpleEditor.Controls.PictureStyleEditor();
+            this.pnGroupStyle = new SimpleEditor.Controls.GroupStyleEditor();
             this.tsbCreateTools = new System.Windows.Forms.ToolStrip();
             this.tsbSelectMode = new System.Windows.Forms.ToolStripButton();
             this.tsbSkewMode = new System.Windows.Forms.ToolStripButton();
@@ -116,7 +116,7 @@
             this.btnTextBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbPicture = new System.Windows.Forms.ToolStripSplitButton();
             this.btnInsertImage = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnInsertPicture = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnLoadGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.tsArrange = new System.Windows.Forms.ToolStrip();
             this.tsddbGeometySwitcher = new System.Windows.Forms.ToolStripSplitButton();
             this.tsmiCyrcle = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,12 +172,6 @@
             this.tsbLock = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbConvertToPath = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbDifference = new System.Windows.Forms.ToolStripButton();
-            this.tsbExclusiveor = new System.Windows.Forms.ToolStripButton();
-            this.tsbIntersection = new System.Windows.Forms.ToolStripButton();
-            this.tsbJoin = new System.Windows.Forms.ToolStripButton();
-            this.tsbUnion = new System.Windows.Forms.ToolStripButton();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -253,7 +247,7 @@
             this.tsmEditMenu});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(1031, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(1033, 24);
             this.menuStripMain.TabIndex = 0;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -619,7 +613,7 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelForScroll);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.pnTools);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(999, 387);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1001, 387);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer1.LeftToolStripPanel
@@ -628,7 +622,7 @@
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(1031, 489);
+            this.toolStripContainer1.Size = new System.Drawing.Size(1033, 489);
             this.toolStripContainer1.TabIndex = 5;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -647,7 +641,7 @@
             this.tsslRibbonRect});
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1031, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1033, 22);
             this.statusStrip1.TabIndex = 0;
             // 
             // tsslEditorMode
@@ -672,7 +666,7 @@
             this.panelForScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelForScroll.Location = new System.Drawing.Point(0, 98);
             this.panelForScroll.Name = "panelForScroll";
-            this.panelForScroll.Size = new System.Drawing.Size(999, 289);
+            this.panelForScroll.Size = new System.Drawing.Size(1001, 289);
             this.panelForScroll.TabIndex = 7;
             this.panelForScroll.SizeChanged += new System.EventHandler(this.panelForScroll_SizeChanged);
             // 
@@ -702,117 +696,127 @@
             this.pnTools.Controls.Add(this.pnShadowStyle);
             this.pnTools.Controls.Add(this.pnGlowStyle);
             this.pnTools.Controls.Add(this.pnImageStyle);
-            this.pnTools.Controls.Add(this.pnPictureStyle);
+            this.pnTools.Controls.Add(this.pnGroupStyle);
             this.pnTools.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTools.Location = new System.Drawing.Point(0, 0);
             this.pnTools.MinimumSize = new System.Drawing.Size(0, 45);
             this.pnTools.Name = "pnTools";
-            this.pnTools.Size = new System.Drawing.Size(999, 98);
+            this.pnTools.Size = new System.Drawing.Size(1001, 98);
             this.pnTools.TabIndex = 7;
             // 
             // pnBorderStyle
             // 
+            this.pnBorderStyle.AutoSize = true;
             this.pnBorderStyle.Location = new System.Drawing.Point(0, 0);
             this.pnBorderStyle.Margin = new System.Windows.Forms.Padding(0);
             this.pnBorderStyle.Name = "pnBorderStyle";
             this.pnBorderStyle.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.pnBorderStyle.Size = new System.Drawing.Size(676, 34);
+            this.pnBorderStyle.Size = new System.Drawing.Size(580, 32);
             this.pnBorderStyle.TabIndex = 1;
             this.pnBorderStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnBorderStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnFillStyle
             // 
-            this.pnFillStyle.Location = new System.Drawing.Point(676, 0);
+            this.pnFillStyle.AutoSize = true;
+            this.pnFillStyle.Location = new System.Drawing.Point(580, 0);
             this.pnFillStyle.Margin = new System.Windows.Forms.Padding(0);
             this.pnFillStyle.Name = "pnFillStyle";
             this.pnFillStyle.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.pnFillStyle.Size = new System.Drawing.Size(290, 31);
+            this.pnFillStyle.Size = new System.Drawing.Size(246, 30);
             this.pnFillStyle.TabIndex = 0;
             this.pnFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnLayerFillStyle
             // 
-            this.pnLayerFillStyle.Location = new System.Drawing.Point(2, 36);
+            this.pnLayerFillStyle.AutoSize = true;
+            this.pnLayerFillStyle.Location = new System.Drawing.Point(2, 34);
             this.pnLayerFillStyle.Margin = new System.Windows.Forms.Padding(2);
             this.pnLayerFillStyle.Name = "pnLayerFillStyle";
             this.pnLayerFillStyle.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.pnLayerFillStyle.Size = new System.Drawing.Size(271, 29);
+            this.pnLayerFillStyle.Size = new System.Drawing.Size(244, 30);
             this.pnLayerFillStyle.TabIndex = 5;
             this.pnLayerFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnLayerFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnLineGradientFillStyle
             // 
-            this.pnLineGradientFillStyle.Location = new System.Drawing.Point(277, 36);
+            this.pnLineGradientFillStyle.AutoSize = true;
+            this.pnLineGradientFillStyle.Location = new System.Drawing.Point(250, 34);
             this.pnLineGradientFillStyle.Margin = new System.Windows.Forms.Padding(2);
             this.pnLineGradientFillStyle.Name = "pnLineGradientFillStyle";
             this.pnLineGradientFillStyle.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.pnLineGradientFillStyle.Size = new System.Drawing.Size(122, 29);
+            this.pnLineGradientFillStyle.Size = new System.Drawing.Size(111, 30);
             this.pnLineGradientFillStyle.TabIndex = 4;
             this.pnLineGradientFillStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnLineGradientFillStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnPolygoneStyle
             // 
-            this.pnPolygoneStyle.Location = new System.Drawing.Point(403, 36);
+            this.pnPolygoneStyle.AutoSize = true;
+            this.pnPolygoneStyle.Location = new System.Drawing.Point(365, 34);
             this.pnPolygoneStyle.Margin = new System.Windows.Forms.Padding(2);
             this.pnPolygoneStyle.Name = "pnPolygoneStyle";
-            this.pnPolygoneStyle.Size = new System.Drawing.Size(197, 30);
+            this.pnPolygoneStyle.Size = new System.Drawing.Size(176, 27);
             this.pnPolygoneStyle.TabIndex = 3;
             this.pnPolygoneStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnPolygoneStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnTextBlockStyle
             // 
-            this.pnTextBlockStyle.Location = new System.Drawing.Point(602, 34);
+            this.pnTextBlockStyle.AutoSize = true;
+            this.pnTextBlockStyle.Location = new System.Drawing.Point(543, 32);
             this.pnTextBlockStyle.Margin = new System.Windows.Forms.Padding(0);
             this.pnTextBlockStyle.Name = "pnTextBlockStyle";
-            this.pnTextBlockStyle.Size = new System.Drawing.Size(279, 37);
+            this.pnTextBlockStyle.Size = new System.Drawing.Size(250, 32);
             this.pnTextBlockStyle.TabIndex = 2;
             this.pnTextBlockStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnTextBlockStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnShadowStyle
             // 
-            this.pnShadowStyle.Location = new System.Drawing.Point(2, 73);
+            this.pnShadowStyle.AutoSize = true;
+            this.pnShadowStyle.Location = new System.Drawing.Point(2, 68);
             this.pnShadowStyle.Margin = new System.Windows.Forms.Padding(2);
             this.pnShadowStyle.Name = "pnShadowStyle";
-            this.pnShadowStyle.Size = new System.Drawing.Size(342, 34);
+            this.pnShadowStyle.Size = new System.Drawing.Size(301, 29);
             this.pnShadowStyle.TabIndex = 7;
             this.pnShadowStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnShadowStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnGlowStyle
             // 
-            this.pnGlowStyle.Location = new System.Drawing.Point(350, 75);
+            this.pnGlowStyle.AutoSize = true;
+            this.pnGlowStyle.Location = new System.Drawing.Point(309, 70);
             this.pnGlowStyle.Margin = new System.Windows.Forms.Padding(4);
             this.pnGlowStyle.Name = "pnGlowStyle";
-            this.pnGlowStyle.Size = new System.Drawing.Size(148, 30);
+            this.pnGlowStyle.Size = new System.Drawing.Size(131, 24);
             this.pnGlowStyle.TabIndex = 10;
             this.pnGlowStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnGlowStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // pnImageStyle
             // 
-            this.pnImageStyle.Location = new System.Drawing.Point(506, 75);
+            this.pnImageStyle.AutoSize = true;
+            this.pnImageStyle.Location = new System.Drawing.Point(448, 70);
             this.pnImageStyle.Margin = new System.Windows.Forms.Padding(4);
             this.pnImageStyle.Name = "pnImageStyle";
-            this.pnImageStyle.Size = new System.Drawing.Size(134, 32);
+            this.pnImageStyle.Size = new System.Drawing.Size(121, 29);
             this.pnImageStyle.TabIndex = 6;
             this.pnImageStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
             this.pnImageStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
-            // pnPictureStyle
+            // pnGroupStyle
             // 
-            this.pnPictureStyle.Location = new System.Drawing.Point(646, 73);
-            this.pnPictureStyle.Margin = new System.Windows.Forms.Padding(2);
-            this.pnPictureStyle.Name = "pnPictureStyle";
-            this.pnPictureStyle.Size = new System.Drawing.Size(143, 32);
-            this.pnPictureStyle.TabIndex = 9;
-            this.pnPictureStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
-            this.pnPictureStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
+            this.pnGroupStyle.AutoSize = true;
+            this.pnGroupStyle.Location = new System.Drawing.Point(575, 68);
+            this.pnGroupStyle.Margin = new System.Windows.Forms.Padding(2);
+            this.pnGroupStyle.Name = "pnGroupStyle";
+            this.pnGroupStyle.Size = new System.Drawing.Size(286, 25);
+            this.pnGroupStyle.TabIndex = 9;
+            this.pnGroupStyle.StartChanging += new System.EventHandler<SimpleEditor.Controls.ChangingEventArgs>(this.pnStyle_StartChanging);
+            this.pnGroupStyle.Changed += new System.EventHandler<System.EventArgs>(this.pnStyle_Changed);
             // 
             // tsbCreateTools
             // 
@@ -1077,7 +1081,7 @@
             this.tsbPicture.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbPicture.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnInsertImage,
-            this.btnInsertPicture});
+            this.btnLoadGroup});
             this.tsbPicture.Image = global::SimpleEditor.Properties.Resources.picture;
             this.tsbPicture.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbPicture.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1092,18 +1096,18 @@
             this.btnInsertImage.Image = global::SimpleEditor.Properties.Resources.picture;
             this.btnInsertImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnInsertImage.Name = "btnInsertImage";
-            this.btnInsertImage.Size = new System.Drawing.Size(111, 22);
+            this.btnInsertImage.Size = new System.Drawing.Size(158, 22);
             this.btnInsertImage.Text = "Image";
             this.btnInsertImage.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
-            // btnInsertPicture
+            // btnLoadGroup
             // 
-            this.btnInsertPicture.Image = global::SimpleEditor.Properties.Resources.subpicture;
-            this.btnInsertPicture.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnInsertPicture.Name = "btnInsertPicture";
-            this.btnInsertPicture.Size = new System.Drawing.Size(111, 22);
-            this.btnInsertPicture.Text = "Picture";
-            this.btnInsertPicture.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            this.btnLoadGroup.Image = global::SimpleEditor.Properties.Resources.subpicture;
+            this.btnLoadGroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnLoadGroup.Name = "btnLoadGroup";
+            this.btnLoadGroup.Size = new System.Drawing.Size(158, 22);
+            this.btnLoadGroup.Text = "Selection Group";
+            this.btnLoadGroup.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // tsArrange
             // 
@@ -1147,16 +1151,10 @@
             this.toolStripSeparator21,
             this.tsbLock,
             this.toolStripSeparator17,
-            this.tsbConvertToPath,
-            this.toolStripSeparator22,
-            this.tsbDifference,
-            this.tsbExclusiveor,
-            this.tsbIntersection,
-            this.tsbJoin,
-            this.tsbUnion});
+            this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(3, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1028, 31);
+            this.tsArrange.Size = new System.Drawing.Size(861, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1185,28 +1183,28 @@
             // tsmiCyrcle
             // 
             this.tsmiCyrcle.Name = "tsmiCyrcle";
-            this.tsmiCyrcle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiCyrcle.Size = new System.Drawing.Size(180, 22);
             this.tsmiCyrcle.Text = "Cyrcle";
             this.tsmiCyrcle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiEllipse
             // 
             this.tsmiEllipse.Name = "tsmiEllipse";
-            this.tsmiEllipse.Size = new System.Drawing.Size(159, 22);
+            this.tsmiEllipse.Size = new System.Drawing.Size(180, 22);
             this.tsmiEllipse.Text = "Ellipse";
             this.tsmiEllipse.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRectangle
             // 
             this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRectangle.Size = new System.Drawing.Size(180, 22);
             this.tsmiRectangle.Text = "Rectangle";
             this.tsmiRectangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRegularTriangle
             // 
             this.tsmiRegularTriangle.Name = "tsmiRegularTriangle";
-            this.tsmiRegularTriangle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegularTriangle.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegularTriangle.Tag = "3";
             this.tsmiRegularTriangle.Text = "Regular Triangle";
             this.tsmiRegularTriangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1214,14 +1212,14 @@
             // tsmiSquare
             // 
             this.tsmiSquare.Name = "tsmiSquare";
-            this.tsmiSquare.Size = new System.Drawing.Size(159, 22);
+            this.tsmiSquare.Size = new System.Drawing.Size(180, 22);
             this.tsmiSquare.Text = "Square";
             this.tsmiSquare.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRomb
             // 
             this.tsmiRomb.Name = "tsmiRomb";
-            this.tsmiRomb.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRomb.Size = new System.Drawing.Size(180, 22);
             this.tsmiRomb.Tag = "4";
             this.tsmiRomb.Text = "Romb";
             this.tsmiRomb.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1229,7 +1227,7 @@
             // tsmiRegular5gon
             // 
             this.tsmiRegular5gon.Name = "tsmiRegular5gon";
-            this.tsmiRegular5gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular5gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular5gon.Tag = "5";
             this.tsmiRegular5gon.Text = "Regular 5-gon";
             this.tsmiRegular5gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1237,7 +1235,7 @@
             // tsmiRegular6gon
             // 
             this.tsmiRegular6gon.Name = "tsmiRegular6gon";
-            this.tsmiRegular6gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular6gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular6gon.Tag = "6";
             this.tsmiRegular6gon.Text = "Regular 6-gon";
             this.tsmiRegular6gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1245,7 +1243,7 @@
             // tsmiRegular7gon
             // 
             this.tsmiRegular7gon.Name = "tsmiRegular7gon";
-            this.tsmiRegular7gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular7gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular7gon.Tag = "7";
             this.tsmiRegular7gon.Text = "Regular 7-gon";
             this.tsmiRegular7gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1253,7 +1251,7 @@
             // tsmiRegular8gon
             // 
             this.tsmiRegular8gon.Name = "tsmiRegular8gon";
-            this.tsmiRegular8gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular8gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular8gon.Tag = "8";
             this.tsmiRegular8gon.Text = "Regular 8-gon";
             this.tsmiRegular8gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1261,7 +1259,7 @@
             // tsmiRegular9gon
             // 
             this.tsmiRegular9gon.Name = "tsmiRegular9gon";
-            this.tsmiRegular9gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular9gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular9gon.Tag = "9";
             this.tsmiRegular9gon.Text = "Regular 9-gon";
             this.tsmiRegular9gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1269,7 +1267,7 @@
             // tsmiRegular10gon
             // 
             this.tsmiRegular10gon.Name = "tsmiRegular10gon";
-            this.tsmiRegular10gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular10gon.Size = new System.Drawing.Size(180, 22);
             this.tsmiRegular10gon.Tag = "10";
             this.tsmiRegular10gon.Text = "Regular 10-gon";
             this.tsmiRegular10gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1638,71 +1636,11 @@
             this.tsbConvertToPath.Text = "Convert To Path";
             this.tsbConvertToPath.Click += new System.EventHandler(this.tsbConvertToPath_Click);
             // 
-            // toolStripSeparator22
-            // 
-            this.toolStripSeparator22.Name = "toolStripSeparator22";
-            this.toolStripSeparator22.Size = new System.Drawing.Size(6, 31);
-            // 
-            // tsbDifference
-            // 
-            this.tsbDifference.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbDifference.Enabled = false;
-            this.tsbDifference.Image = global::SimpleEditor.Properties.Resources.difference;
-            this.tsbDifference.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbDifference.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDifference.Name = "tsbDifference";
-            this.tsbDifference.Size = new System.Drawing.Size(28, 28);
-            this.tsbDifference.Text = "Difference";
-            // 
-            // tsbExclusiveor
-            // 
-            this.tsbExclusiveor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbExclusiveor.Enabled = false;
-            this.tsbExclusiveor.Image = global::SimpleEditor.Properties.Resources.exclusiveor;
-            this.tsbExclusiveor.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbExclusiveor.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbExclusiveor.Name = "tsbExclusiveor";
-            this.tsbExclusiveor.Size = new System.Drawing.Size(28, 28);
-            this.tsbExclusiveor.Text = "Exclusiveor";
-            // 
-            // tsbIntersection
-            // 
-            this.tsbIntersection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbIntersection.Enabled = false;
-            this.tsbIntersection.Image = global::SimpleEditor.Properties.Resources.intersection;
-            this.tsbIntersection.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbIntersection.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbIntersection.Name = "tsbIntersection";
-            this.tsbIntersection.Size = new System.Drawing.Size(28, 28);
-            this.tsbIntersection.Text = "Intersection";
-            // 
-            // tsbJoin
-            // 
-            this.tsbJoin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbJoin.Enabled = false;
-            this.tsbJoin.Image = global::SimpleEditor.Properties.Resources.join;
-            this.tsbJoin.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbJoin.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbJoin.Name = "tsbJoin";
-            this.tsbJoin.Size = new System.Drawing.Size(28, 28);
-            this.tsbJoin.Text = "Join";
-            // 
-            // tsbUnion
-            // 
-            this.tsbUnion.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbUnion.Enabled = false;
-            this.tsbUnion.Image = global::SimpleEditor.Properties.Resources.union;
-            this.tsbUnion.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbUnion.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbUnion.Name = "tsbUnion";
-            this.tsbUnion.Size = new System.Drawing.Size(28, 28);
-            this.tsbUnion.Text = "Union";
-            // 
             // FormSimpleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1031, 489);
+            this.ClientSize = new System.Drawing.Size(1033, 489);
             this.Controls.Add(this.toolStripContainer1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.KeyPreview = true;
@@ -1729,6 +1667,7 @@
             this.panelForScroll.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCanvas)).EndInit();
             this.pnTools.ResumeLayout(false);
+            this.pnTools.PerformLayout();
             this.tsbCreateTools.ResumeLayout(false);
             this.tsbCreateTools.PerformLayout();
             this.tsArrange.ResumeLayout(false);
@@ -1852,12 +1791,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator21;
         private System.Windows.Forms.ToolStrip tsbCreateTools;
         private System.Windows.Forms.ToolStripButton tsbSelectMode;
-        private System.Windows.Forms.ToolStripButton tsbDifference;
-        private System.Windows.Forms.ToolStripButton tsbExclusiveor;
-        private System.Windows.Forms.ToolStripButton tsbIntersection;
-        private System.Windows.Forms.ToolStripButton tsbJoin;
-        private System.Windows.Forms.ToolStripButton tsbUnion;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator22;
         private System.Windows.Forms.ToolStripSplitButton tsbRect;
         private System.Windows.Forms.ToolStripMenuItem btnRectangle;
         private System.Windows.Forms.ToolStripMenuItem btnSquare;
@@ -1882,10 +1815,10 @@
         private System.Windows.Forms.ToolStripMenuItem btnPolygone;
         private System.Windows.Forms.ToolStripSplitButton tsbPicture;
         private System.Windows.Forms.ToolStripMenuItem btnInsertImage;
-        private System.Windows.Forms.ToolStripMenuItem btnInsertPicture;
+        private System.Windows.Forms.ToolStripMenuItem btnLoadGroup;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
         private System.Windows.Forms.ToolStripButton tsbConvertToPath;
-        private Controls.PictureStyleEditor pnPictureStyle;
+        private Controls.GroupStyleEditor pnGroupStyle;
         private Controls.GlowStyleEditor pnGlowStyle;
     }
 }

@@ -38,7 +38,7 @@ namespace EditorModel.Figures
         public GroupFigure(IEnumerable<Figure> figures)
         {
             Style.BorderStyle = null;
-            Style.FillStyle = null;
+            //Style.FillStyle = null;
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             foreach (var figure in figures)

@@ -97,11 +97,11 @@
     <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PictureStyleEditor.cs">
+    <Compile Include="Controls\GroupStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PictureStyleEditor.Designer.cs">
-      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    <Compile Include="Controls\GroupStyleEditor.Designer.cs">
+      <DependentUpon>GroupStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShadowStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -157,8 +157,8 @@
     <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
       <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PictureStyleEditor.resx">
-      <DependentUpon>PictureStyleEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\GroupStyleEditor.resx">
+      <DependentUpon>GroupStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ShadowStyleEditor.resx">
       <DependentUpon>ShadowStyleEditor.cs</DependentUpon>
