@@ -62,7 +62,6 @@ namespace EditorModel.Renderers
             else
             {
                 var first = group.Figures.First();
-                var e = first.Transform.Matrix.Elements;
                 var firstMatrix = first.Transform.DeepClone();
                 first.Transform.Matrix.Multiply(group.Transform, MatrixOrder.Append);
                 using (var region = new Region(first.GetTransformedPath().Path))

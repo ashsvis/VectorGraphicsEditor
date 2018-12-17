@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using EditorModel.Figures;
-using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -143,5 +142,11 @@ namespace EditorModel.Geometry
         /// Свойство возвращает определённые в конструкторе ограничения для операций
         /// </summary>
         public override AllowedOperations AllowedOperations { get { return _allowedOperations; } }
+
+        public override string ToString()
+        {
+            return IsClosed ? "Polygone" : "Polyline";
+        }
+
     }
 }

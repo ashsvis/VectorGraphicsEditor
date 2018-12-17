@@ -39,6 +39,7 @@ namespace SimpleEditor.Controls
             nudOpacity.Value = shadowStyles.GetProperty(f => (decimal)f.Opacity);
             nudOffsetX.Value = shadowStyles.GetProperty(f => (decimal)f.Offset.X);
             nudOffsetY.Value = shadowStyles.GetProperty(f => (decimal)f.Offset.Y);
+            lbColor.BackColor = shadowStyles.GetProperty(f => f.Color, Color.Black);
 
             _updating--;
         }
@@ -58,6 +59,7 @@ namespace SimpleEditor.Controls
             shadowStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);
             shadowStyles.SetProperty(f => f.Offset = new PointF((float)nudOffsetX.Value, f.Offset.Y));
             shadowStyles.SetProperty(f => f.Offset = new PointF(f.Offset.X, (float)nudOffsetY.Value));
+            shadowStyles.SetProperty(f => f.Color = lbColor.BackColor);
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -66,6 +68,13 @@ namespace SimpleEditor.Controls
         private void nudOpacity_ValueChanged(object sender, EventArgs e)
         {
             UpdateObject();
+        }
+
+        private void lbColor_Click(object sender, EventArgs e)
+        {
+            var dlg = new ColorDialog { Color = lbColor.BackColor };
+            if (dlg.ShowDialog() == DialogResult.OK)
+                lbColor.BackColor = dlg.Color;
         }
     }
 }

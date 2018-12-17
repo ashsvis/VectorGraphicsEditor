@@ -69,6 +69,72 @@ namespace SimpleEditor
             UpdateCanvasSize();
         }
 
+        private void UpdateFiguresTree()
+        {
+            var first = _selectionController.Selection.FirstOrDefault();
+            tvFigures.BeginUpdate();
+            try
+            {
+                tvFigures.AfterSelect -= tvFigures_AfterSelect;
+                tvFigures.Nodes.Clear();
+                var list = new List<Figure>();
+                foreach (var fig in _layer.Figures) list.Add(fig);
+                list.Reverse();
+                foreach (var fig in list)
+                {
+                    var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig };
+                    tvFigures.Nodes.Add(fignode);
+                    if (fig == first)
+                        tvFigures.SelectedNode = fignode;
+                    var group = fig as GroupFigure;
+                    if (group != null) ExpandGroup(group, fignode, first);
+                }
+            }
+            finally
+            {
+                tvFigures.EndUpdate();
+                tvFigures.AfterSelect += tvFigures_AfterSelect;
+            }
+        }
+
+        private void ExpandGroup(GroupFigure group, FigureTreeNode node, Figure firstInSelected)
+        {
+            var list = new List<Figure>();
+            foreach (var fig in group.Figures) list.Add(fig);
+            list.Reverse();
+            foreach (var fig in list)
+            {
+                var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig, Group = group };
+                node.Nodes.Add(fignode);
+                if (fig == firstInSelected)
+                    tvFigures.SelectedNode = fignode;
+                var childgroup = fig as GroupFigure;
+                if (childgroup != null) ExpandGroup(childgroup, fignode, firstInSelected);
+            }
+        }
+
+        private void tvFigures_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            _selectionController.Selection.Clear();
+            if (e.Node != null)
+            {
+                var fignode = e.Node as FigureTreeNode;
+                if (fignode == null) return;
+                //_selectionController.Selection.Add(fignode.Group == null ? fignode.Figure : fignode.Group);
+                if (fignode.Group == null)
+                {
+                    _selectionController.Selection.Add(fignode.Figure);
+                    _selectionController.UpdateMarkers();
+                }
+                else
+                {
+                    _selectionController.UpdateMarkers();
+                    _selectionController.Selection.Add(fignode.Figure);
+                }
+                BuildInterface();
+            }
+        }
+
         void OnLayerStartChanging(string opName)
         {
             _undoRedoController.OnStartOperation(opName);
@@ -84,11 +150,15 @@ namespace SimpleEditor
                 editor.Build(_selectionController.Selection);
 
             //
+            UpdateFiguresTree();
             UpdateInterface();
         }
 
         private void UpdateInterface()
         {
+            tsbPolyline.Enabled = tsbRect.Enabled = tsbRomb.Enabled = 
+                tsbText.Enabled = tsbPicture.Enabled = _selectionController.EditorMode == EditorMode.Select;
+
             tsbSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
             tsbSkewMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
             tsbVertexMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
@@ -113,7 +183,8 @@ namespace SimpleEditor
                                                            _selectionController.Selection.Count(
                                                                SelectionHelper.IsNotSkewAndRotated) > 1;
 
-            tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => fig.Geometry as PolygoneGeometry == null) > 0;
+            tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => 
+                                                 fig.Geometry as PolygoneGeometry == null) > 0;
 
             pbCanvas.Invalidate();
         }
@@ -221,8 +292,12 @@ namespace SimpleEditor
             _selectionController.Clear();
             Func<Figure> figureCreator = null;
             Cursor figureCreatorCursor = CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
-
-            if (sender == tsbPolyline || sender == btnPolyline)
+            if (sender == tsbArrow)
+            {
+                figureCreatorCursor = Cursors.Default;
+                Cursor = Cursors.Default;
+            }
+            else if (sender == tsbPolyline || sender == btnPolyline)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 figureCreator = () =>
@@ -321,7 +396,7 @@ namespace SimpleEditor
                     placeHolder.Style.FillStyle.IsVisible = false;
                     placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
                     FigureBuilder.BuildRectangleGeometry(placeHolder);
-                    var fig = new GroupFigure(new Figure[] { placeHolder });
+                    var fig = new GroupFigure(new[] { placeHolder });
                     return fig;
                 };
             }
@@ -541,6 +616,7 @@ namespace SimpleEditor
             }
             _selectionController.UpdateMarkers();
             BuildInterface();
+            UpdateFiguresTree();
         }
 
         /// <summary>
@@ -922,6 +998,7 @@ namespace SimpleEditor
         private void tsbConvertToPath_Click(object sender, EventArgs e)
         {
             _selectionController.ConvertToPath();
+            UpdateFiguresTree();
             UpdateInterface();
         }
 

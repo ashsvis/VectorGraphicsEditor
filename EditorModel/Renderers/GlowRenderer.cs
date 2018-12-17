@@ -2,7 +2,6 @@
 using EditorModel.Figures;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace EditorModel.Renderers
 {
@@ -31,7 +30,7 @@ namespace EditorModel.Renderers
             var baseRenderer = GetBaseRenerer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = baseRenderer != null
-                ? baseRenderer.GetTransformedPath(figure)
+                ? baseRenderer.GetTransformedPath(graphics, figure)
                 : figure.GetTransformedPath().Path)
             {
                 // то получаем карандаш из стиля рисования фигуры

@@ -133,7 +133,6 @@ namespace EditorModel.Selections
             foreach (var fig in _selected)
             {
                 path.Path.SetMarkers();
-                var transformedPath = fig.GetTransformedPath();
                 path.Path.AddPath(fig.GetTransformedPath(), false);
             }
 

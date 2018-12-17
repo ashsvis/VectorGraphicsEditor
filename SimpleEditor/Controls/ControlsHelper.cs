@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 
 namespace SimpleEditor.Controls
@@ -13,14 +15,14 @@ namespace SimpleEditor.Controls
         /// Returns value of property if all of objects contain same value.
         /// Returns default(T) if objects contains different values
         /// </returns>
-        public static T GetProperty<P, T>(this IEnumerable<P> list, Func<P, T> selector, T defaultValue = default(T))
+        public static T GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector, 
+            T defaultValue = default(T))
         {
             T result = defaultValue;
             var isAssigned = false;
 
-            foreach (var obj in list)
+            foreach (var val in list.Select(selector))
             {
-                var val = selector(obj);
                 if (!isAssigned)
                 {
                     result = val;
@@ -28,7 +30,7 @@ namespace SimpleEditor.Controls
                 }
                 else
                 {
-                    if (!Object.Equals(result, val))
+                    if (!Equals(result, val))
                         return defaultValue;
                 }
             }
@@ -50,7 +52,24 @@ namespace SimpleEditor.Controls
         /// </summary>
         public static bool ForAll<T>(this IEnumerable<T> list, Func<T, bool> condition)
         {
-            return list.Any() && list.All(condition);
+            var enumerable = list as T[] ?? list.ToArray();
+            return enumerable.Any() && enumerable.All(condition);
+        }
+        public static IEnumerable<string> GetInstalledFontCollection(FontStyle fontStyle = FontStyle.Regular)
+        {
+            var sbFonts = new List<string>();
+            var ifc = new InstalledFontCollection();
+            var ff = ifc.Families;
+            foreach (var family in ff)
+            {
+                if (family.IsStyleAvailable(fontStyle))
+                {
+                    var f = new Font(family.Name, 12);
+                    sbFonts.Add(f.Name);
+                    f.Dispose();
+                }
+            }
+            return sbFonts;
         }
     }
 }

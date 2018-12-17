@@ -51,11 +51,12 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Image Fill Style"));
 
             // get list of objects
-            var imageFillStyles = _selection.Select(f =>
-                            (ImageRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+            //var imageFillStyles = _selection.Select(f =>
+            //                (ImageRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
 
             //imageFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
-            foreach (var fig in _selection.Where(f => RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer))
+            foreach (var fig in _selection.Where(f => 
+                RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer))
             {
                 var renderer = (ImageRenderer)RendererDecorator.GetBaseRenerer(fig.Renderer);
                 var firstIsEmpty = renderer.Image.Bitmap == null;
@@ -68,7 +69,7 @@ namespace SimpleEditor.Controls
                     var width = renderer.Image.Bitmap.Width;
                     var height = renderer.Image.Bitmap.Height;
                     var m = new Matrix();
-                    m.Translate(x + width / 2, y + height / 2);
+                    m.Translate(x + width / 2f, y + height / 2f);
                     m.Scale(width, height);
                     fig.Transform.Matrix = m;
                 }

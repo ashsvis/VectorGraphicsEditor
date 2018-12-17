@@ -11,7 +11,7 @@ namespace EditorModel.Common
     {
         public Bitmap Bitmap;
 
-        public SerializableGraphicsImage() { }
+        private SerializableGraphicsImage() { }
 
         private SerializableGraphicsImage(SerializationInfo info, StreamingContext context)
         {

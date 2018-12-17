@@ -331,7 +331,7 @@ namespace SimpleEditor.Controllers
                 }
             }
             var selrect = Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds());
-            var angle = EditorModel.Common.Helper.GetAngle(_selection.Transform);
+            var angle = Helper.GetAngle(_selection.Transform);
             OnSelectedRangeChanging(selrect, angle);
         }
 
@@ -988,9 +988,7 @@ namespace SimpleEditor.Controllers
         public void CutSelectedToClipboard()
         {
             if (_selection.Count == 0) return;
-            var forcopy = new List<Figure>();
-            foreach (var fig in _selection)
-                forcopy.Add(fig.DeepClone());
+            var forcopy = _selection.Select(fig => fig.DeepClone()).ToList();
             var clipboardDataObject = new DataObject(_drawsFormat.Name, forcopy);
             Clipboard.SetDataObject(clipboardDataObject, false);
             LayerStartChanging();
@@ -1009,9 +1007,7 @@ namespace SimpleEditor.Controllers
         public void CopySelectedToClipboard()
         {
             if (_selection.Count == 0) return;
-            var forcopy = new List<Figure>();
-            foreach (var fig in _selection)
-                forcopy.Add(fig.DeepClone());
+            var forcopy = _selection.Select(fig => fig.DeepClone()).ToList();
             var clipboardDataObject = new DataObject(_drawsFormat.Name, forcopy);
             Clipboard.SetDataObject(clipboardDataObject, false);
         }

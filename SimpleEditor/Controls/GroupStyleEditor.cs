@@ -33,7 +33,11 @@ namespace SimpleEditor.Controls
             // remember editing object
             _selection = selection;
 
-            btnLoadPicture.Visible = _selection.Any(f => (f as GroupFigure).Figures.ToList().Count == 1);
+            btnLoadPicture.Visible = _selection.Any(f =>
+                {
+                    var groupFigure = f as GroupFigure;
+                    return groupFigure != null && groupFigure.Figures.Count() == 1;
+                });
 
             var groupStyles = _selection.Select(f =>
                             (GroupRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();

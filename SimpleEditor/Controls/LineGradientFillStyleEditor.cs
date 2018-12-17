@@ -22,7 +22,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f.Style.FillStyle is LinearGradientFill); // show the editor only if all figures contain FillStyle
+            Visible = selection.ForAll(f => f.Style.FillStyle is LinearGradientFill);
             if (!Visible) return; // do not build anything
 
             // remember editing object

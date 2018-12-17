@@ -1,8 +1,5 @@
 ﻿using EditorModel.Common;
-using EditorModel.Figures;
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -40,6 +37,7 @@ namespace EditorModel.Geometry
         /// <param name="allowed">набор прав для операций</param>
         internal PrimitiveGeometry(SerializableGraphicsPath path, AllowedOperations allowed)
         {
+            Name = "Primitive";
             // запоминаем переданный в конструкторе путь в локальном поле
             _path = path;
             // запоминаем ограничения для операций в локальном поле
@@ -54,6 +52,11 @@ namespace EditorModel.Geometry
         public void Dispose()
         {
             if (_path != null) _path.Dispose();
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -24,8 +24,9 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
-                (AllowedOperations.Size | AllowedOperations.Vertex));
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^
+                (AllowedOperations.Size | AllowedOperations.Vertex))
+            { Name = "Square" };
         }
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            { Name = "Rectangle" };
         }
 
         /// <summary>
@@ -48,7 +50,8 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
             figure.Geometry = new PrimitiveGeometry(path, 
-                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Vertex));
+                AllowedOperations.All ^ (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Vertex))
+            { Name = "Circle" };
         }
 
         /// <summary>
@@ -59,7 +62,8 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             path.Path.AddEllipse(new RectangleF(-0.5f, -0.5f, 1, 1));
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            { Name = "Ellipse" };
         }
 
         /// <summary>
@@ -73,7 +77,8 @@ namespace EditorModel.Figures
             path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
                 (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | 
-                 AllowedOperations.Skew | AllowedOperations.Vertex));         
+                 AllowedOperations.Skew | AllowedOperations.Vertex))
+            { Name = "Marker" };
         }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace EditorModel.Figures
         /// <param name="text">Текстовая строка</param>
         public static void BuildTextGeometry(Figure figure, string text)
         {
-            figure.Geometry = new TextGeometry { Text = text };
+            figure.Geometry = new TextGeometry { Text = text, Name = "Text" };
             figure.Style.FillStyle.Color = Color.Black;
             figure.Style.BorderStyle.IsVisible = false; // рамка по умолчанию выключена
         }
@@ -98,8 +103,9 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
 
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
-      
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            { Name = "TextBlock" };
+
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle.Color = Color.Black;
 
@@ -116,7 +122,8 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
 
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            { Name = "Image" };
             figure.Style.BorderStyle = null; // отключение рамки для рендера
             figure.Style.FillStyle = null; // отключение заливки для рендера
             figure.Renderer = new ImageRenderer(image);     
@@ -129,7 +136,7 @@ namespace EditorModel.Figures
         public static void BuildPolygoneGeometry(Figure figure)
         {
             figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry();
+            figure.Geometry = new PolygoneGeometry() { Name = "Polygone" };
         }
 
         /// <summary>
@@ -155,8 +162,11 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddPolygon(points.ToArray());
 
+            var names = new[] {"Nothing", "Circle", "Line", "Triangle", "Romb", "Pentagon", "Gexagon" };
+
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
-                (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew));
+                (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew))
+            { Name = vertexCount <= 6 ? names[vertexCount] : "Regular" + vertexCount };
         }
 
         /// <summary>
@@ -166,7 +176,7 @@ namespace EditorModel.Figures
         public static void BuildPolylineGeometry(Figure figure)
         {
             figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry(isClosed: false);
+            figure.Geometry = new PolygoneGeometry(isClosed: false) { Name = "Polyline" };
         }
 
         /// <summary>
@@ -176,7 +186,7 @@ namespace EditorModel.Figures
         /// <param name="startPoint"></param>
         public static void BuildFrameGeometry(Figure figure, Point startPoint)
         {
-            figure.Geometry = new FrameGeometry(startPoint);
+            figure.Geometry = new FrameGeometry(startPoint) { Name = "Frame" };
         }
     }
 }

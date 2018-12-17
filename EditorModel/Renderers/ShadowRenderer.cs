@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using EditorModel.Common;
 using EditorModel.Figures;
 
@@ -16,6 +15,11 @@ namespace EditorModel.Renderers
         private int _opacity;
         public PointF Offset { get; set; }
 
+        /// <summary>
+        /// Цвет для тени
+        /// </summary>
+        public Color Color { get; set; }
+
         public int Opacity
         {
             get { return _opacity; }
@@ -30,8 +34,9 @@ namespace EditorModel.Renderers
             : base(renderer)
         {
             _renderer = renderer;
-            Offset = new PointF(5, 5);
+            Offset = new PointF(10, 10);
             Opacity = 128;
+            Color = Color.Black;
         }
 
         public override void Render(Graphics graphics, Figure figure)
@@ -39,11 +44,11 @@ namespace EditorModel.Renderers
             var baseRenderer = GetBaseRenerer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = baseRenderer != null 
-                ? baseRenderer.GetTransformedPath(figure) 
+                ? baseRenderer.GetTransformedPath(graphics, figure) 
                 : figure.GetTransformedPath().Path)
             {
                 graphics.TranslateTransform(Offset.X, Offset.Y);
-                var shadowColor = Color.FromArgb(Opacity, Color.Black);
+                var shadowColor = Color.FromArgb(Opacity, Color);
                 if (figure.Style.FillStyle != null)
                 {
                     if ((!figure.Style.FillStyle.IsVisible) &&

@@ -1,5 +1,4 @@
 ﻿using EditorModel.Figures;
-using EditorModel.Renderers;
 using System.Drawing;
 using System.IO;
 
@@ -9,9 +8,11 @@ namespace EditorModel.Common
     {
         public static void SaveToImage(string fileName, Layer layer)
         {
-            var ext = Path.GetExtension(fileName).ToLower();
+            var extension = Path.GetExtension(fileName);
+            if (extension == null) return;
+            var ext = extension.ToLower();
             var group = new GroupFigure(layer.Figures);
-            var bounds = group.GetTransformedPath().Path.GetBounds();
+            var bounds = @group.GetTransformedPath().Path.GetBounds();
             int width, height;
             if (layer.FillStyle.IsVisible)
             {
@@ -22,7 +23,7 @@ namespace EditorModel.Common
             {
                 width = (int)(bounds.Width + 2);
                 height = (int)(bounds.Height + 2);
-                group.Transform.Matrix.Translate(-bounds.Left, -bounds.Top);
+                @group.Transform.Matrix.Translate(-bounds.Left, -bounds.Top);
             }
             System.Drawing.Imaging.ImageFormat format;
             switch (ext)
@@ -55,7 +56,7 @@ namespace EditorModel.Common
                 {
                     if (layer.FillStyle.IsVisible)
                         g.Clear(Color.FromArgb(layer.FillStyle.Opacity, layer.FillStyle.Color));
-                    group.Renderer.Render(g, group);
+                    @group.Renderer.Render(g, @group);
                 }
                 image.Save(fileName, format);
             }

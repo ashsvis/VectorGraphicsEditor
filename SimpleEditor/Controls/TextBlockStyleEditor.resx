@@ -117,4 +117,86 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnBottomRightAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A///wAAAADwD/////////APAAAAAAAA8A/////////wD/8AAAAA
+        APAP////////8A/////////wD/////////AP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnMiddleRightAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A///wAAAADwD///////
+        //APAAAAAAAA8A/////////wD/8AAAAAAPAP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnTopRightAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A/////////wD///////
+        //AP////////8A///wAAAADwD/////////APAAAAAAAA8A/////////wD/8AAAAAAPAP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnBottomCenterAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A//AAAAAP/wD/////////APAAAAAAAA8A/////////wD/AAAAAA
+        D/AP////////8A/////////wD/////////AP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnMiddleCenterAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A//AAAAAP/wD///////
+        //APAAAAAAAA8A/////////wD/AAAAAAD/AP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnTopCenterAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A/////////wD///////
+        //AP////////8A//AAAAAP/wD/////////APAAAAAAAA8A/////////wD/AAAAAAD/AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnBottomLeftAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A8AAAAA///wD/////////APAAAAAAAA8A/////////wDwAAAAAA
+        //AP////////8A/////////wD/////////AP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnMiddleLeftAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A8AAAAA///wD///////
+        //APAAAAAAAA8A/////////wDwAAAAAA//AP////////8A/////////wD/////////AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
+  <data name="btnTopLeftAllign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/4CAgP/AwMD/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        ////////AAAAAAAAAAAP////////8A/////////wD/////////AP////////8A/////////wD///////
+        //AP////////8A8AAAAA///wD/////////APAAAAAAAA8A/////////wDwAAAAAA//AP////////8AAA
+        AAAAAAAA
+</value>
+  </data>
 </root>

@@ -303,7 +303,7 @@ namespace EditorModel.Selections
         /// <summary>
         /// Преобразование фигуры к замкнутому полигону
         /// </summary>
-        public static void ConvertToPath(this Selection selection)
+        public static void ConvertToPath(this IEnumerable<Figure> selection)
         {
             foreach (var fig in selection.Where(fig => fig.Geometry as PolygoneGeometry == null))
             {

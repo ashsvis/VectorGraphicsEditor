@@ -28,7 +28,7 @@ namespace EditorModel.Common
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static List<Figure> LoadSelection(string fileName)
+        public static IEnumerable<Figure> LoadSelection(string fileName)
         {
             var layer = LoadFromFile(fileName);
             var selection = new Selection();
@@ -44,6 +44,7 @@ namespace EditorModel.Common
         /// Метод записи всех фигур в слое в файл
         /// </summary>
         /// <param name="fileName"></param>
+        /// <param name="layer"></param>
         public static void SaveToFile(string fileName, Layer layer)
         {
             using (var fs = File.Create(fileName))

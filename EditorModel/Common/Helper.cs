@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 
@@ -11,7 +10,6 @@ namespace EditorModel.Common
     {
         public static float GetAngle(Matrix matrix)
         {
-            // взято из ответов https://stackoverflow.com/questions/14125771/calculate-angle-from-matrix-transform
             var x = new Vector(1, 0);
             var matr = new System.Windows.Media.Matrix(matrix.Elements[0], matrix.Elements[1], matrix.Elements[2],
                                                        matrix.Elements[3], matrix.Elements[4], matrix.Elements[5]);
@@ -131,7 +129,7 @@ namespace EditorModel.Common
         /// Сохранить все фигуры в поток
         /// </summary>
         /// <param name="stream">поток в памяти</param>
-        /// <param name="listToSave">список для сохранения</param>
+        /// <param name="obj"></param>
         public static void SaveToStream(Stream stream, object obj)
         {
             var formatter = new BinaryFormatter();

@@ -6,6 +6,8 @@ using System.Drawing.Text;
 using EditorModel.Renderers;
 using EditorModel.Selections;
 using TextRenderer = EditorModel.Renderers.TextRenderer;
+using System.Text;
+using System.Collections.Generic;
 
 namespace SimpleEditor.Controls
 {
@@ -13,7 +15,6 @@ namespace SimpleEditor.Controls
     {
         private Selection _selection;
         private int _updating;
-        private StringAlignment _alignment;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -21,20 +22,9 @@ namespace SimpleEditor.Controls
         public TextBlockStyleEditor()
         {
             InitializeComponent();
-            _alignment = StringAlignment.Center;
             cbFontName.Items.Clear();
-            using (var ifc = new InstalledFontCollection())
-            {
-                var ie = ifc.Families.GetEnumerator();
-                while (ie.MoveNext())
-                {
-                    var fontFamily = ie.Current.ToString();
-                    //вид возвращаемой строки: [FontFamily: Name=Algerian]
-                    var fontName = fontFamily.Substring(18, fontFamily.Length - 19);
-                    if (!string.IsNullOrWhiteSpace(fontName))
-                        cbFontName.Items.Add(fontName);
-                }
-            }
+            foreach (var fontName in ControlsHelper.GetInstalledFontCollection())
+                cbFontName.Items.Add(fontName);
         }
 
         public void Build(Selection selection)
@@ -54,20 +44,9 @@ namespace SimpleEditor.Controls
             _updating++;
 
             cbFontName.Text = fontStyles.GetProperty(f => f.FontName);
+            cbFontSize.Text = fontStyles.GetProperty(f => f.FontSize.ToString("0"));
             lbText.Text = fontStyles.GetProperty(f => f.Text);
-            _alignment = fontStyles.GetProperty(f => f.Alignment);
-            switch (_alignment)
-            {
-                case StringAlignment.Near:
-                    lbText.TextAlign = ContentAlignment.MiddleLeft;
-                    break;
-                case StringAlignment.Center:
-                    lbText.TextAlign = ContentAlignment.MiddleCenter;
-                    break;
-                case StringAlignment.Far:
-                    lbText.TextAlign = ContentAlignment.MiddleRight;
-                    break;
-            }
+            lbText.TextAlign = fontStyles.GetProperty(f => f.Alignment);
 
             _updating--;
         }
@@ -77,7 +56,7 @@ namespace SimpleEditor.Controls
             if (_updating > 0) return; // we are in updating mode
 
             // fire event
-            StartChanging(this, new ChangingEventArgs("Text Style"));
+            StartChanging(this, new ChangingEventArgs("Text Block Style"));
 
             // get list of objects
             var fontStyles = _selection.Select(f =>
@@ -85,20 +64,9 @@ namespace SimpleEditor.Controls
 
             // send values back from GUI to object
             fontStyles.SetProperty(f => f.FontName = cbFontName.Text);
+            fontStyles.SetProperty(f => f.FontSize = float.Parse(cbFontSize.Text));
             fontStyles.SetProperty(f => f.Text = lbText.Text);
-            switch (_alignment)
-            {
-                case StringAlignment.Near:
-                    lbText.TextAlign = ContentAlignment.MiddleLeft;
-                    break;
-                case StringAlignment.Center:
-                    lbText.TextAlign = ContentAlignment.MiddleCenter;
-                    break;
-                case StringAlignment.Far:
-                    lbText.TextAlign = ContentAlignment.MiddleRight;
-                    break;
-            }
-            fontStyles.SetProperty(f => f.Alignment = _alignment);
+            fontStyles.SetProperty(f => f.Alignment = lbText.TextAlign);
             // fire event
             Changed(this, EventArgs.Empty);
         }
@@ -174,21 +142,57 @@ namespace SimpleEditor.Controls
             }
         }
 
-        private void btnLeftAllign_Click(object sender, EventArgs e)
+        private void btnTopLeftAllignClick(object sender, EventArgs e)
         {
-            _alignment = StringAlignment.Near;
+            lbText.TextAlign = ContentAlignment.TopLeft;
             UpdateObject();
         }
 
-        private void btnCenterAllign_Click(object sender, EventArgs e)
+        private void btnTopCenterAllignClick(object sender, EventArgs e)
         {
-            _alignment = StringAlignment.Center;
+            lbText.TextAlign = ContentAlignment.TopCenter;
             UpdateObject();
         }
 
-        private void btnRightAllign_Click(object sender, EventArgs e)
+        private void btnTopRightAllignClick(object sender, EventArgs e)
         {
-            _alignment = StringAlignment.Far;
+            lbText.TextAlign = ContentAlignment.TopRight;
+            UpdateObject();
+        }
+
+        private void btnMiddleLeftAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.MiddleLeft;
+            UpdateObject();
+        }
+
+        private void btnMiddleCenterAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.MiddleCenter;
+            UpdateObject();
+        }
+
+        private void btnMiddleRightAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.MiddleRight;
+            UpdateObject();
+        }
+
+        private void btnBottomLeftAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.BottomLeft;
+            UpdateObject();
+        }
+
+        private void btnBottomCenterAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.BottomCenter;
+            UpdateObject();
+        }
+
+        private void btnBottomRightAllignClick(object sender, EventArgs e)
+        {
+            lbText.TextAlign = ContentAlignment.BottomRight;
             UpdateObject();
         }
     }

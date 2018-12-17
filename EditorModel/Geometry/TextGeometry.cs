@@ -1,8 +1,6 @@
 ﻿using EditorModel.Common;
-using EditorModel.Figures;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -85,6 +83,10 @@ namespace EditorModel.Geometry
         public void Dispose()
         {
             if (_path != null) _path.Dispose();
+        }
+        public override string ToString()
+        {
+            return "Text";
         }
     }
 }

@@ -148,6 +148,9 @@
   <data name="romb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\romb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CreateText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\380.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotate.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -178,8 +181,8 @@
   <data name="aligntop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\aligntop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="skewmode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\skewmode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MoveVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\266.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="alignright1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\alignright1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -187,8 +190,8 @@
   <data name="union" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\union.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="regular6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\regular6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="skewmode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\skewmode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CreateEllipse" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ELLIPSE.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -220,9 +223,6 @@
   <data name="ungrouping" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ungrouping.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SizeNWSE" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\133.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="SizeNESW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\134.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -241,6 +241,9 @@
   <data name="samewidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\samewidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CreateSquare" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RECT.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="converttopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\converttopath.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -256,8 +259,8 @@
   <data name="square" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\square.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MoveVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\266.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="picture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\picture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SizeWE" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\137.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -268,8 +271,11 @@
   <data name="intersection" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\intersection.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="picture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\picture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="subpicture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\subpicture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CreatePicture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\346.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="rotate180" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotate180.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -282,6 +288,9 @@
   </data>
   <data name="alignleft" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\alignleft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CreatePolyline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\295poly.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -307,6 +316,9 @@
   <data name="penprops" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="fontsizedown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fontsizedown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="sameheight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sameheight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -328,8 +340,8 @@
   <data name="textprops" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\text.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="fontsizedown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fontsizedown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SizeNWSE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\133.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="circle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\circle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -337,17 +349,32 @@
   <data name="grouping" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\grouping.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="regular6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\regular6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="sameboth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sameboth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="openfolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openfolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CreateBlockText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\294.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="textline" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\textline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="props" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\props.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CreateCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ELLIP.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CreateImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\330.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DragCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\14617.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="text" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CreateText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -370,31 +397,7 @@
   <data name="rotateright" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotateright.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="subpicture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\subpicture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CreateBlockText" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\294.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreateCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ELLIP.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreateImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\330.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreatePicture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\346.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreatePolyline" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\295poly.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreateSquare" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RECT.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CreateText" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\380.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DragCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\14617.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="underline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\underline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

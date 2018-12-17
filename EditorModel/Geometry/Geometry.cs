@@ -1,8 +1,5 @@
 ﻿using EditorModel.Common;
-using EditorModel.Figures;
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace EditorModel.Geometry
 {
@@ -31,6 +28,8 @@ namespace EditorModel.Geometry
     [Serializable]
     public abstract class Geometry
     {
+        public string Name { get; set; }
+
         /// <summary>
         /// Предоставление пути для рисования фигуры
         /// </summary>

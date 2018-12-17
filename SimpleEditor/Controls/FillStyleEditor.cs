@@ -35,7 +35,7 @@ namespace SimpleEditor.Controls
 
             lbColor.BackColor = fillStyles.GetProperty(f => f.Color);
             cbVisible.Checked = fillStyles.GetProperty(f => f.IsVisible);
-            nudOpacity.Value = (decimal)fillStyles.GetProperty(f => f.Opacity, 255);
+            nudOpacity.Value = fillStyles.GetProperty(f => f.Opacity, 255);
 
             _updating--;
         }

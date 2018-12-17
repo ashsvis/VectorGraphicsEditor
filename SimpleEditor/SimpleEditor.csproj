@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Common\ActionCommand.cs" />
     <Compile Include="Common\CursorFactory.cs" />
+    <Compile Include="Common\FigureTreeNode.cs" />
     <Compile Include="Common\MultipleCommand.cs" />
     <Compile Include="Common\UndoableCommand.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
@@ -497,6 +498,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\14617.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\underline.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
