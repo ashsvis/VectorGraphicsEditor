@@ -55,7 +55,8 @@ namespace SimpleEditor.Controls
             var enumerable = list as T[] ?? list.ToArray();
             return enumerable.Any() && enumerable.All(condition);
         }
-        public static IEnumerable<string> GetInstalledFontCollection(FontStyle fontStyle = FontStyle.Regular)
+        public static IEnumerable<string> GetInstalledFontCollection(FontStyle fontStyle = 
+            FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline)
         {
             var sbFonts = new List<string>();
             var ifc = new InstalledFontCollection();

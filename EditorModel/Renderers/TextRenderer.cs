@@ -31,6 +31,7 @@ namespace EditorModel.Renderers
         /// Тип шрифта
         /// </summary>
         public FontStyle FontStyle { get; set; }
+        
         /// <summary>
         /// Выравнивание текста
         /// </summary>

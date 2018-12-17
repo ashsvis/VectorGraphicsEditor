@@ -103,7 +103,8 @@ namespace EditorModel.Figures
             var path = new SerializableGraphicsPath();
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
 
-            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
+                (AllowedOperations.Vertex | AllowedOperations.Pathed))
             { Name = "TextBlock" };
 
             figure.Style.BorderStyle = null; // отключение рамки для рендера

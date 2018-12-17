@@ -54,7 +54,7 @@ namespace SimpleEditor
 
         private void _selectionController_ResetCreateFigureSelector()
         {
-            //stub
+            tsbArrow.Enabled = false;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -180,11 +180,10 @@ namespace SimpleEditor
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
-                                                           _selectionController.Selection.Count(
-                                                               SelectionHelper.IsNotSkewAndRotated) > 1;
+                         _selectionController.Selection.Count( SelectionHelper.IsNotSkewAndRotated) > 1;
 
             tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => 
-                                                 fig.Geometry as PolygoneGeometry == null) > 0;
+                        fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)) > 0;
 
             pbCanvas.Invalidate();
         }
@@ -296,8 +295,14 @@ namespace SimpleEditor
             {
                 figureCreatorCursor = Cursors.Default;
                 Cursor = Cursors.Default;
+                tsbArrow.Enabled = false;
+
+                _selectionController.CreateFigureCursor = figureCreatorCursor;
+                _selectionController.CreateFigureRequest = figureCreator;
+                return;
             }
-            else if (sender == tsbPolyline || sender == btnPolyline)
+            tsbArrow.Enabled = true;
+            if (sender == tsbPolyline || sender == btnPolyline)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 figureCreator = () =>
@@ -374,6 +379,16 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
+                    return fig;
+                };
+            }
+            else if (sender == btnText)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateText);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildTextGeometry(fig, "Текст");
                     return fig;
                 };
             }

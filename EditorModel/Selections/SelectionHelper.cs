@@ -305,7 +305,8 @@ namespace EditorModel.Selections
         /// </summary>
         public static void ConvertToPath(this IEnumerable<Figure> selection)
         {
-            foreach (var fig in selection.Where(fig => fig.Geometry as PolygoneGeometry == null))
+            foreach (var fig in selection.Where(fig => 
+                                    fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)))
             {
                 var pathPoints = fig.Geometry.Path.Path.PathPoints;
                 fig.Geometry = new PolygoneGeometry();

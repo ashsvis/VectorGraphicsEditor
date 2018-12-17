@@ -2,12 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing.Text;
 using EditorModel.Renderers;
 using EditorModel.Selections;
 using TextRenderer = EditorModel.Renderers.TextRenderer;
-using System.Text;
-using System.Collections.Generic;
 
 namespace SimpleEditor.Controls
 {

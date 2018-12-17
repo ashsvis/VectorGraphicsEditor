@@ -40,7 +40,7 @@
             this.btnLoadPicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLoadPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadPicture.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnLoadPicture.Location = new System.Drawing.Point(178, 16);
+            this.btnLoadPicture.Location = new System.Drawing.Point(67, 46);
             this.btnLoadPicture.Margin = new System.Windows.Forms.Padding(0);
             this.btnLoadPicture.Name = "btnLoadPicture";
             this.btnLoadPicture.Size = new System.Drawing.Size(51, 21);
@@ -73,7 +73,7 @@
             this.cbJoin.Location = new System.Drawing.Point(67, 16);
             this.cbJoin.Margin = new System.Windows.Forms.Padding(0);
             this.cbJoin.Name = "cbJoin";
-            this.cbJoin.Size = new System.Drawing.Size(102, 21);
+            this.cbJoin.Size = new System.Drawing.Size(119, 21);
             this.cbJoin.TabIndex = 8;
             this.cbJoin.SelectionChangeCommitted += new System.EventHandler(this.cbJoin_SelectionChangeCommitted);
             // 
@@ -85,7 +85,7 @@
             this.groupBox1.Controls.Add(this.cbJoin);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(242, 53);
+            this.groupBox1.Size = new System.Drawing.Size(200, 83);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Group Style";
@@ -98,7 +98,7 @@
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GroupStyleEditor";
-            this.Size = new System.Drawing.Size(251, 61);
+            this.Size = new System.Drawing.Size(207, 90);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

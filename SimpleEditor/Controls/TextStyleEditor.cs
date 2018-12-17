@@ -13,6 +13,7 @@ namespace SimpleEditor.Controls
         private Selection _selection;
         private int _updating;
         private StringAlignment _alignment;
+        private FontStyle _fontStyle;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -21,18 +22,8 @@ namespace SimpleEditor.Controls
         {
             InitializeComponent();
             cbFontName.Items.Clear();
-            using (var ifc = new InstalledFontCollection())
-            {
-                var ie = ifc.Families.GetEnumerator();
-                while (ie.MoveNext())
-                {
-                    var fontFamily = ie.Current.ToString();
-                    //вид возвращаемой строки: [FontFamily: Name=Algerian]
-                    var fontName = fontFamily.Substring(18, fontFamily.Length - 19);
-                    if (!string.IsNullOrWhiteSpace(fontName))
-                        cbFontName.Items.Add(fontName);
-                }
-            }
+            foreach (var fontName in ControlsHelper.GetInstalledFontCollection())
+                cbFontName.Items.Add(fontName);
         }
 
         public void Build(Selection selection)
@@ -51,7 +42,7 @@ namespace SimpleEditor.Controls
             _updating++;
 
             cbFontName.Text = fontStyles.GetProperty(f => f.FontName);
-            cbFontSize.Text = fontStyles.GetProperty(f => f.FontSize.ToString("0"));
+            _fontStyle = fontStyles.GetProperty(f => f.FontStyle);
             lbText.Text = fontStyles.GetProperty(f => f.Text);
             _alignment = fontStyles.GetProperty(f => f.Alignment);
             switch (_alignment)
@@ -82,7 +73,7 @@ namespace SimpleEditor.Controls
 
             // send values back from GUI to object
             fontStyles.SetProperty(f => f.FontName = cbFontName.Text);
-            fontStyles.SetProperty(f => f.FontSize = float.Parse(cbFontSize.Text));
+            fontStyles.SetProperty(f => f.FontStyle = _fontStyle);
             fontStyles.SetProperty(f => f.Text = lbText.Text);
             switch (_alignment)
             {
@@ -129,6 +120,33 @@ namespace SimpleEditor.Controls
         private void btnRightAllign_Click(object sender, EventArgs e)
         {
             _alignment = StringAlignment.Far;
+            UpdateObject();
+        }
+
+        private void btnTextBold_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Bold))
+                _fontStyle = _fontStyle & ~FontStyle.Bold;
+            else
+                _fontStyle = _fontStyle | FontStyle.Bold;
+            UpdateObject();
+        }
+
+        private void btnTextItalic_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Italic))
+                _fontStyle = _fontStyle & ~FontStyle.Italic;
+            else
+                _fontStyle = _fontStyle | FontStyle.Italic;
+            UpdateObject();
+        }
+
+        private void btnTextUnderline_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Underline))
+                _fontStyle = _fontStyle & ~FontStyle.Underline;
+            else
+                _fontStyle = _fontStyle | FontStyle.Underline;
             UpdateObject();
         }
     }

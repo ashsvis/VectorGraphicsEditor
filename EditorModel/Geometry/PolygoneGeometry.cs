@@ -86,7 +86,7 @@ namespace EditorModel.Geometry
         internal PolygoneGeometry(bool isClosed = true)
         {
             IsClosed = isClosed;
-            _allowedOperations = AllowedOperations.All;
+            _allowedOperations = AllowedOperations.All ^ AllowedOperations.Pathed;
             var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
             if (isClosed)
                 _points = new[]
