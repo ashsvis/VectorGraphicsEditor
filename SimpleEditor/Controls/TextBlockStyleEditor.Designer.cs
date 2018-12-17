@@ -220,6 +220,7 @@
             this.btnTextUnderline.Size = new System.Drawing.Size(24, 22);
             this.btnTextUnderline.TabIndex = 9;
             this.btnTextUnderline.UseVisualStyleBackColor = true;
+            this.btnTextUnderline.Click += new System.EventHandler(this.btnTextUnderline_Click);
             // 
             // btnTopRightAllign
             // 
@@ -267,6 +268,7 @@
             this.btnTextItalic.Size = new System.Drawing.Size(24, 22);
             this.btnTextItalic.TabIndex = 10;
             this.btnTextItalic.UseVisualStyleBackColor = true;
+            this.btnTextItalic.Click += new System.EventHandler(this.btnTextItalic_Click);
             // 
             // btnTopCenterAllign
             // 
@@ -302,6 +304,7 @@
             this.btnTextBold.Size = new System.Drawing.Size(24, 22);
             this.btnTextBold.TabIndex = 11;
             this.btnTextBold.UseVisualStyleBackColor = true;
+            this.btnTextBold.Click += new System.EventHandler(this.btnTextBold_Click);
             // 
             // btnMiddleLeftAllign
             // 

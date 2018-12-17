@@ -28,6 +28,10 @@ namespace EditorModel.Renderers
         public float FontSize { get; set; }
 
         /// <summary>
+        /// Тип шрифта
+        /// </summary>
+        public FontStyle FontStyle { get; set; }
+        /// <summary>
         /// Выравнивание текста
         /// </summary>
         public ContentAlignment Alignment { get; set; }
@@ -63,7 +67,7 @@ namespace EditorModel.Renderers
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
                 Helper.UpdateStringFormat(sf, Alignment);
-                graphicsPath.AddString(text, new FontFamily(FontName), 0, FontSize, PointF.Empty, sf);
+                graphicsPath.AddString(text, new FontFamily(FontName), (int)FontStyle, FontSize, PointF.Empty, sf);
             }
             var textBounds = graphicsPath.GetBounds();
             var pts = graphicsPath.PathPoints;

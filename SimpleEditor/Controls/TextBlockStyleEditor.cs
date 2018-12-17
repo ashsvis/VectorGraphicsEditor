@@ -15,6 +15,7 @@ namespace SimpleEditor.Controls
     {
         private Selection _selection;
         private int _updating;
+        private FontStyle _fontStyle;
 
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
@@ -45,6 +46,7 @@ namespace SimpleEditor.Controls
 
             cbFontName.Text = fontStyles.GetProperty(f => f.FontName);
             cbFontSize.Text = fontStyles.GetProperty(f => f.FontSize.ToString("0"));
+            _fontStyle = fontStyles.GetProperty(f => f.FontStyle);
             lbText.Text = fontStyles.GetProperty(f => f.Text);
             lbText.TextAlign = fontStyles.GetProperty(f => f.Alignment);
 
@@ -65,6 +67,7 @@ namespace SimpleEditor.Controls
             // send values back from GUI to object
             fontStyles.SetProperty(f => f.FontName = cbFontName.Text);
             fontStyles.SetProperty(f => f.FontSize = float.Parse(cbFontSize.Text));
+            fontStyles.SetProperty(f => f.FontStyle = _fontStyle);
             fontStyles.SetProperty(f => f.Text = lbText.Text);
             fontStyles.SetProperty(f => f.Alignment = lbText.TextAlign);
             // fire event
@@ -130,7 +133,7 @@ namespace SimpleEditor.Controls
 
         private void lbText_Paint(object sender, PaintEventArgs e)
         {
-            var text = lbText.Text.Substring(0, 5);
+            var text = lbText.Text.Length >= 5 ? lbText.Text.Substring(0, 5) : lbText.Text;
             if (lbText.Text.TrimEnd().Length > 5) text += "...";
             var rect = new Rectangle(0, 0, lbText.Width-1, lbText.Height-1);
             using (var brush = new SolidBrush(lbText.BackColor))
@@ -193,6 +196,33 @@ namespace SimpleEditor.Controls
         private void btnBottomRightAllignClick(object sender, EventArgs e)
         {
             lbText.TextAlign = ContentAlignment.BottomRight;
+            UpdateObject();
+        }
+
+        private void btnTextBold_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Bold))
+                _fontStyle = _fontStyle & ~FontStyle.Bold;
+            else
+                _fontStyle = _fontStyle | FontStyle.Bold;
+            UpdateObject();
+        }
+
+        private void btnTextItalic_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Italic))
+                _fontStyle = _fontStyle & ~FontStyle.Italic;
+            else
+                _fontStyle = _fontStyle | FontStyle.Italic;
+            UpdateObject();
+        }
+
+        private void btnTextUnderline_Click(object sender, EventArgs e)
+        {
+            if (_fontStyle.HasFlag(FontStyle.Underline))
+                _fontStyle = _fontStyle & ~FontStyle.Underline;
+            else
+                _fontStyle = _fontStyle | FontStyle.Underline;
             UpdateObject();
         }
     }
