@@ -48,14 +48,9 @@ namespace EditorModel.Geometry
             EndPoint = StartPoint = startPoint;
         }
 
-        ~FrameGeometry()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (_path != null) _path.Dispose();
+            _path?.Dispose();
         }
     }
 }

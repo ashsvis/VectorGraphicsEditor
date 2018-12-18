@@ -42,10 +42,10 @@ namespace EditorModel.Renderers
         /// </summary>
         /// <param name="renderer">Рендерер для исследования</param>
         /// <returns>Первичный рендерер</returns>
-        public static Renderer GetBaseRenerer(Renderer renderer)
+        public static Renderer GetBaseRenderer(Renderer renderer)
         {
             var rendererDecorator = renderer as RendererDecorator;
-            return rendererDecorator == null ? renderer : GetBaseRenerer(rendererDecorator._renderer);
+            return rendererDecorator == null ? renderer : GetBaseRenderer(rendererDecorator._renderer);
         }
 
         public static bool ContainsAnyDecorator(Renderer renderer)

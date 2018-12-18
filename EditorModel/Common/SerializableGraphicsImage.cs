@@ -9,7 +9,7 @@ namespace EditorModel.Common
     [Serializable]
     public sealed class SerializableGraphicsImage : ISerializable, IDisposable
     {
-        public Bitmap Bitmap;
+        public Bitmap Bitmap { get; set; }
 
         private SerializableGraphicsImage() { }
 
@@ -27,14 +27,9 @@ namespace EditorModel.Common
                 Bitmap = null;
         }
 
-        ~SerializableGraphicsImage()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (Bitmap != null) Bitmap.Dispose();
+            Bitmap?.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

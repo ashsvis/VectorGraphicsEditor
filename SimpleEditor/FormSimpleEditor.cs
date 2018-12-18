@@ -77,10 +77,7 @@ namespace SimpleEditor
             {
                 tvFigures.AfterSelect -= tvFigures_AfterSelect;
                 tvFigures.Nodes.Clear();
-                var list = new List<Figure>();
-                foreach (var fig in _layer.Figures) list.Add(fig);
-                list.Reverse();
-                foreach (var fig in list)
+                foreach (var fig in _layer.Figures.ToList().AsEnumerable().Reverse())
                 {
                     var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig };
                     tvFigures.Nodes.Add(fignode);
@@ -99,10 +96,7 @@ namespace SimpleEditor
 
         private void ExpandGroup(GroupFigure group, FigureTreeNode node, Figure firstInSelected)
         {
-            var list = new List<Figure>();
-            foreach (var fig in group.Figures) list.Add(fig);
-            list.Reverse();
-            foreach (var fig in list)
+            foreach (var fig in group.Figures.ToList().AsEnumerable().Reverse())
             {
                 var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig, Group = group };
                 node.Nodes.Add(fignode);
@@ -745,7 +739,7 @@ namespace SimpleEditor
                     OnLayerStartChanging("Reset Figure Effect");
                     foreach (var figure in figures)
                     {
-                        figure.Renderer = RendererDecorator.GetBaseRenerer(figure.Renderer);
+                        figure.Renderer = RendererDecorator.GetBaseRenderer(figure.Renderer);
                         list.Add(figure);
                     }
                     OnLayerChanged();

@@ -44,14 +44,9 @@ namespace EditorModel.Geometry
             _allowedOperations = allowed;
         }
 
-        ~PrimitiveGeometry()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (_path != null) _path.Dispose();
+            _path?.Dispose();
         }
 
         public override string ToString()

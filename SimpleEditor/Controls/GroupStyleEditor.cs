@@ -40,7 +40,7 @@ namespace SimpleEditor.Controls
                 });
 
             var groupStyles = _selection.Select(f =>
-                            (GroupRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+                            (GroupRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
             cbJoin.SelectedIndex = groupStyles.GetProperty(f => (int)f.JoinMode, -1);
 
             // get list of objects
@@ -64,7 +64,7 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Group Selection Style"));
 
             var groupStyles = _selection.Select(f =>
-                            (GroupRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+                            (GroupRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
             groupStyles.SetProperty(f => f.JoinMode = cbJoin.SelectedIndex < 0 ? GroupJoin.None : (GroupJoin)cbJoin.SelectedIndex);
 
             // get list of objects
