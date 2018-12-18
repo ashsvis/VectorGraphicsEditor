@@ -58,19 +58,17 @@ namespace SimpleEditor.Controls
         public static IEnumerable<string> GetInstalledFontCollection(FontStyle fontStyle = 
             FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline)
         {
-            var sbFonts = new List<string>();
-            var ifc = new InstalledFontCollection();
-            var ff = ifc.Families;
-            foreach (var family in ff)
+            using (var ifc = new InstalledFontCollection())
             {
-                if (family.IsStyleAvailable(fontStyle))
-                {
-                    var f = new Font(family.Name, 12);
-                    sbFonts.Add(f.Name);
-                    f.Dispose();
-                }
+                return ifc.Families
+                    .Where(f => f.IsStyleAvailable(fontStyle))
+                    .Select(f =>
+                    {
+                        using (var font = new Font(f, 12, fontStyle))
+                            return font.Name;
+                    })
+                    .ToArray(); // to dispose ifc as soon as possible
             }
-            return sbFonts;
         }
     }
 }
