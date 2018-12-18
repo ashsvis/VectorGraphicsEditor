@@ -55,21 +55,26 @@ namespace SimpleEditor.Controls
             var enumerable = list as T[] ?? list.ToArray();
             return enumerable.Any() && enumerable.All(condition);
         }
+
+        /// <summary>
+        /// Получение имён шрифтов, поддерживаемых требуемые начертания
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<string> GetInstalledFontCollection()
         {
             var sbFonts = new List<string>();
-            var ifc = new InstalledFontCollection();
-            var ff = ifc.Families;
-            foreach (var family in ff)
+            using (var ifc = new InstalledFontCollection())
             {
-                if (family.IsStyleAvailable(FontStyle.Regular) &&
-                    family.IsStyleAvailable(FontStyle.Bold) &&
-                    family.IsStyleAvailable(FontStyle.Italic) &&
-                    family.IsStyleAvailable(FontStyle.Underline))
+                foreach (var family in ifc.Families)
                 {
-                    var f = new Font(family.Name, 12);
-                    sbFonts.Add(f.Name);
-                    f.Dispose();
+                    if (family.IsStyleAvailable(FontStyle.Regular) &&
+                        family.IsStyleAvailable(FontStyle.Bold) &&
+                        family.IsStyleAvailable(FontStyle.Italic) &&
+                        family.IsStyleAvailable(FontStyle.Underline))
+                    {
+                        using (var f = new Font(family.Name, 12))
+                            sbFonts.Add(f.Name);
+                    }
                 }
             }
             return sbFonts;
