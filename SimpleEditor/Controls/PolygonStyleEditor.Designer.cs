@@ -1,6 +1,6 @@
 ﻿namespace SimpleEditor.Controls
 {
-    partial class ClosedSmoothedStyleEditor
+    partial class PolygonStyleEditor
     {
         /// <summary> 
         /// Требуется переменная конструктора.

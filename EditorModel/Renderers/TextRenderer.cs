@@ -42,7 +42,7 @@ namespace EditorModel.Renderers
         {
             Text = text;
             FontName = "Arial";
-            FontSize = 14f;
+            FontSize = 36f;
             Alignment = ContentAlignment.MiddleCenter;
         }
 

@@ -777,6 +777,16 @@ namespace SimpleEditor.Controllers
                                 Markers.Add(CreateMarker(MarkerType.Vertex, points[i], i, fig));
                         }
                     }
+                    // создаём маркеры градиента
+                    foreach (var fig in _selection.Where(figure => figure.Style.FillStyle is IGradientFill))
+                    {
+                        var gradient = fig.Style.FillStyle as IGradientFill;
+                        //get transformed points
+                        if (gradient == null) continue;
+                        var points = gradient.GetGradientPoints(fig);
+                        for (var i = 0; i < points.Length; i++)
+                            Markers.Add(CreateMarker(MarkerType.Grafient, points[i], i, fig));
+                    }
                     break;
                 case EditorMode.Select:
                     // создаём маркеры масштаба
@@ -804,16 +814,6 @@ namespace SimpleEditor.Controllers
                         Markers.Add(rotateMarker);
                     }
                     break;
-            }
-            // создаём маркеры линейного градиента
-            foreach (var fig in _selection.Where(figure => figure.Style.FillStyle is LinearGradientFill))
-            {
-                var lineGradient = fig.Style.FillStyle as LinearGradientFill;
-                //get transformed points
-                if (lineGradient == null) continue;
-                var points = lineGradient.GetGradientPoints(fig);
-                for (var i = 0; i < points.Length; i++)
-                    Markers.Add(CreateMarker(MarkerType.Grafient, points[i], i, fig));
             }
 
             // задаём геометрию маркеров по умолчанию 

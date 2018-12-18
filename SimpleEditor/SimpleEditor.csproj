@@ -72,6 +72,12 @@
     <Compile Include="Controls\GlowStyleEditor.Designer.cs">
       <DependentUpon>GlowStyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HatchStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HatchStyleEditor.Designer.cs">
+      <DependentUpon>HatchStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IEditor.cs" />
     <Compile Include="Controls\ImageStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -79,11 +85,11 @@
     <Compile Include="Controls\ImageStyleEditor.Designer.cs">
       <DependentUpon>ImageStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ClosedSmoothedStyleEditor.cs">
+    <Compile Include="Controls\PolygonStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ClosedSmoothedStyleEditor.Designer.cs">
-      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
+    <Compile Include="Controls\PolygonStyleEditor.Designer.cs">
+      <DependentUpon>PolygonStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\LayerSelectionInfo.cs" />
     <Compile Include="Controls\LayerStyleEditor.cs">
@@ -92,11 +98,11 @@
     <Compile Include="Controls\LayerStyleEditor.Designer.cs">
       <DependentUpon>LayerStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LineGradientFillStyleEditor.cs">
+    <Compile Include="Controls\GradientStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\LineGradientFillStyleEditor.Designer.cs">
-      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    <Compile Include="Controls\GradientStyleEditor.Designer.cs">
+      <DependentUpon>GradientStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\GroupStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -146,17 +152,20 @@
     <EmbeddedResource Include="Controls\GlowStyleEditor.resx">
       <DependentUpon>GlowStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HatchStyleEditor.resx">
+      <DependentUpon>HatchStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageStyleEditor.resx">
       <DependentUpon>ImageStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ClosedSmoothedStyleEditor.resx">
-      <DependentUpon>ClosedSmoothedStyleEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\PolygonStyleEditor.resx">
+      <DependentUpon>PolygonStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LayerStyleEditor.resx">
       <DependentUpon>LayerStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LineGradientFillStyleEditor.resx">
-      <DependentUpon>LineGradientFillStyleEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\GradientStyleEditor.resx">
+      <DependentUpon>GradientStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GroupStyleEditor.resx">
       <DependentUpon>GroupStyleEditor.cs</DependentUpon>

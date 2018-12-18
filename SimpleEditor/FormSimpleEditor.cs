@@ -14,6 +14,7 @@ using SimpleEditor.Controllers;
 using SimpleEditor.Controls;
 using System.Text;
 using EditorModel.Common;
+using System.IO;
 
 namespace SimpleEditor
 {
@@ -32,8 +33,47 @@ namespace SimpleEditor
             _versionInfo = new VersionInfo();
             _caption = string.Format("Simple Vector Graphics Editor (Ver {0:0.0})", (decimal)_versionInfo.Version / 10);
 
+            ConnectEditors();
+
             _layer = new Layer();
             ConnectMethods();
+        }
+
+        private void ConnectEditors()
+        {
+            pnTools.Controls.Clear();
+            var editors = new [] 
+            {
+                typeof(LayerStyleEditor),
+                typeof(BorderStyleEditor),
+                typeof(FillStyleEditor),
+                typeof(ShadowStyleEditor),
+                typeof(GlowStyleEditor),
+                typeof(GradientStyleEditor),
+                typeof(HatchStyleEditor),
+                typeof(PolygonStyleEditor),
+                typeof(TextStyleEditor),
+                typeof(TextBlockStyleEditor),
+                typeof(ImageStyleEditor),
+                typeof(GroupStyleEditor),
+            };
+            foreach (var typeName in editors)
+            {
+                var uc = (UserControl)Activator.CreateInstance(typeName);
+                var figEditor = uc as IEditor<Selection>;
+                if (figEditor != null)
+                {
+                    figEditor.StartChanging += pnStyle_StartChanging;
+                    figEditor.Changed += pnStyle_Changed;
+                }
+                var lyaerEditor = uc as IEditor<LayerSelectionInfo>;
+                if (lyaerEditor != null)
+                {
+                    lyaerEditor.StartChanging += pnStyle_StartChanging;
+                    lyaerEditor.Changed += pnStyle_Changed;
+                }
+                pnTools.Controls.Add(uc);
+            }
         }
 
         private void ConnectMethods()
@@ -67,6 +107,7 @@ namespace SimpleEditor
         {
             _undoRedoController.OnFinishOperation();
             UpdateCanvasSize();
+            UpdateFiguresTree();
         }
 
         private void UpdateFiguresTree()
@@ -163,7 +204,9 @@ namespace SimpleEditor
             tsbSkewMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
             tsbVertexMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
 
+            var changedUndo = FileChanged != UndoRedoManager.Instance.CanUndo;
             tsbUndo.Enabled = tsmUndo.Enabled = FileChanged = UndoRedoManager.Instance.CanUndo;
+            var changedRedo = tsbRedo.Enabled != UndoRedoManager.Instance.CanRedo;
             tsbRedo.Enabled = tsmRedo.Enabled = UndoRedoManager.Instance.CanRedo;
             tsbSave.Enabled = tsmSave.Enabled = FileChanged;
             tsslEditorMode.Text = string.Format("Mode: {0}", _selectionController.EditorMode);
@@ -184,6 +227,9 @@ namespace SimpleEditor
 
             tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => 
                         fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)) > 0;
+
+            if (changedUndo || changedRedo)
+                UpdateFiguresTree();
 
             pbCanvas.Invalidate();
         }
@@ -273,6 +319,7 @@ namespace SimpleEditor
             // отрисовка созданных фигур
             foreach (var fig in _layer.Figures)
                 fig.Renderer.Render(graphics, fig);
+
             // отрисовка выделения
             _selectionController.Selection.Renderer.Render(graphics,
                                                            _selectionController.Selection);
@@ -378,7 +425,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildTextRenderGeometry(fig, "Текст");
+                    FigureBuilder.BuildTextRenderGeometry(fig, "Text");
                     return fig;
                 };
             }
@@ -388,7 +435,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildTextGeometry(fig, "Текст");
+                    FigureBuilder.BuildTextGeometry(fig, "Text");
                     return fig;
                 };
             }
@@ -682,38 +729,82 @@ namespace SimpleEditor
         {
             var exists = _selectionController.Selection.Count > 0;
             if (!exists) return;
-            var list = new List<Figure>();
             tsddbFillBrushSwitcher.Text = @"Fill: " + sender.Text;
             var figures = _selectionController.Selection.ToList();
             if (sender == tsmiSolidBrush)
             {
-                OnLayerStartChanging("Change Solid Fill Brush");
-                foreach (var figure in figures)
+                var decoratorsExists = figures.Count(figure =>
+                    FillDecorator.ContainsAnyDecorator(figure.Style.FillStyle)) > 0;
+                if (decoratorsExists)
                 {
-                    if (figure.Style.FillStyle == null) continue;
-                    var fillStyle = figure.Style.FillStyle.DeepClone();
-                    figure.Style.FillStyle = new Fill { Color = fillStyle.Color, IsVisible = fillStyle.IsVisible };
-                    list.Add(figure);
+                    OnLayerStartChanging("Reset Figure Fill");
+                    foreach (var figure in figures)
+                    {
+                        if (figure.Style.FillStyle == null) continue;
+                        figure.Style.FillStyle = FillDecorator.GetBaseFill(figure.Style.FillStyle);
+                    }
+                    OnLayerChanged();
                 }
-                OnLayerChanged();
             }
             else if (sender == tsmiLinearGradientBrush)
             {
-                OnLayerStartChanging("Change Line Gradient Fill Brush");
-                foreach (var figure in figures)
+                if (FillDecorator.ExistsWithoutThisDecorator(figures, typeof(LinearGradientFill)))
                 {
-                    if (figure.Style.FillStyle == null) continue;
-                    var fillStyle = figure.Style.FillStyle.DeepClone();
-                    if (fillStyle.GetType() != typeof(LinearGradientFill))
-                    figure.Style.FillStyle = new LinearGradientFill
+                    OnLayerStartChanging("Change Line Gradient Fill Brush");
+                    foreach (var figure in FillDecorator.WhereContainsDecorator(figures, typeof(LinearGradientFill)))
+                    {
+                        if (figure.Style.FillStyle == null) continue;
+                        if (figure.Style.FillStyle.AllowedDecorators.HasFlag(AllowedFillDecorators.LinearGradient))
+                            figure.Style.FillStyle = new LinearGradientFill(figure.Style.FillStyle);
+                        else
                         {
-                            Color = fillStyle.Color, 
-                            IsVisible = fillStyle.IsVisible,
-                            GradientColor = fillStyle.Color
-                        };
-                    list.Add(figure);
+                            var baseFill = FillDecorator.GetBaseFill(figure.Style.FillStyle);
+                            if (baseFill.AllowedDecorators.HasFlag(AllowedFillDecorators.LinearGradient))
+                                figure.Style.FillStyle = new LinearGradientFill(FillDecorator.GetBaseFill(figure.Style.FillStyle));
+                        }
+                    }
+                    OnLayerChanged();
                 }
-                OnLayerChanged();
+            }
+            else if (sender == tsmiRadialGradientBrush)
+            {
+                if (FillDecorator.ExistsWithoutThisDecorator(figures, typeof(RadialGradientFill)))
+                {
+                    OnLayerStartChanging("Change Radial Gradient Fill Brush");
+                    foreach (var figure in FillDecorator.WhereContainsDecorator(figures, typeof(RadialGradientFill)))
+                    {
+                        if (figure.Style.FillStyle == null) continue;
+                        if (figure.Style.FillStyle.AllowedDecorators.HasFlag(AllowedFillDecorators.RadialGradient))
+                            figure.Style.FillStyle = new RadialGradientFill(figure.Style.FillStyle);
+                        else
+                        {
+                            var baseFill = FillDecorator.GetBaseFill(figure.Style.FillStyle);
+                            if (baseFill.AllowedDecorators.HasFlag(AllowedFillDecorators.RadialGradient))
+                                figure.Style.FillStyle = new RadialGradientFill(FillDecorator.GetBaseFill(figure.Style.FillStyle));
+                        }
+                    }
+                    OnLayerChanged();
+                }
+            }
+            else if (sender == tsmiHatchBrush)
+            {
+                if (FillDecorator.ExistsWithoutThisDecorator(figures, typeof(HatchFill)))
+                {
+                    OnLayerStartChanging("Change Hatch Fill Brush");
+                    foreach (var figure in FillDecorator.WhereContainsDecorator(figures, typeof(HatchFill)))
+                    {
+                        if (figure.Style.FillStyle == null) continue;
+                        if (figure.Style.FillStyle.AllowedDecorators.HasFlag(AllowedFillDecorators.Hatch))
+                            figure.Style.FillStyle = new HatchFill(figure.Style.FillStyle);
+                        else
+                        {
+                            var baseFill = FillDecorator.GetBaseFill(figure.Style.FillStyle);
+                            if (baseFill.AllowedDecorators.HasFlag(AllowedFillDecorators.Hatch))
+                                figure.Style.FillStyle = new HatchFill(FillDecorator.GetBaseFill(figure.Style.FillStyle));
+                        }
+                    }
+                    OnLayerChanged();
+                }
             }
             _selectionController.UpdateMarkers();
             BuildInterface();
@@ -733,7 +824,6 @@ namespace SimpleEditor
         {
             var exists = _selectionController.Selection.Count > 0;
             if (!exists) return;
-            var list = new List<Figure>();
             tsddbEffectSwitcher.Text = @"Effect: " + sender.Text;
             var figures = _selectionController.Selection.ToList();
             if (sender == tsmiNoneEffects)
@@ -744,55 +834,38 @@ namespace SimpleEditor
                 {
                     OnLayerStartChanging("Reset Figure Effect");
                     foreach (var figure in figures)
-                    {
                         figure.Renderer = RendererDecorator.GetBaseRenerer(figure.Renderer);
-                        list.Add(figure);
-                    }
                     OnLayerChanged();
                 }
             }
             else if (sender == tsmiShadow)
             {
-                if (ExistsWithoutThisDecorator(figures, typeof(ShadowRenderer)))
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(ShadowRenderer)))
                 {
                     OnLayerStartChanging("Shadow Figure Effect");
-                    foreach (var figure in WhereContainsDecorator(figures, typeof(ShadowRenderer)))
+                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(ShadowRenderer)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Shadow))
                             figure.Renderer = new ShadowRenderer(figure.Renderer);
-                        list.Add(figure);
                     }
                     OnLayerChanged();
                 }
             }
             else if (sender == tsmiGlow)
             {
-                if (ExistsWithoutThisDecorator(figures, typeof(GlowRenderer)))
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(GlowRenderer)))
                 {
                     OnLayerStartChanging("Glow Figure Effect");
-                    foreach (var figure in WhereContainsDecorator(figures, typeof(GlowRenderer)))
+                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(GlowRenderer)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
                             figure.Renderer = new GlowRenderer(figure.Renderer);
-                        list.Add(figure);
                     }
                     OnLayerChanged();
                 }
             }
             _selectionController.UpdateMarkers();
             BuildInterface();
-        }
-
-        private static bool ExistsWithoutThisDecorator(IEnumerable<Figure> figures, Type type)
-        {
-            return figures.Count(figure => 
-                                 !RendererDecorator.ContainsType(figure.Renderer, type)) > 0;
-        }
-
-        private static IEnumerable<Figure> WhereContainsDecorator(IEnumerable<Figure> figures, Type type)
-        {
-            return figures.Where(figure => 
-                                 !RendererDecorator.ContainsType(figure.Renderer, type));
         }
 
         private void tsddbEffectSwitcher_ButtonClick(object sender, EventArgs e)
@@ -907,7 +980,7 @@ namespace SimpleEditor
             Text = _caption;
             _selectionController.Clear();
             UndoRedoManager.Instance.ClearHistory();
-            _layer.FillStyle = new Fill { IsVisible = false };
+            _layer.FillStyle = new DefaultFill { IsVisible = false };
             _layer.Figures.Clear();
             BuildInterface();
         }
@@ -1031,6 +1104,53 @@ namespace SimpleEditor
         private void tsbCut_Click(object sender, EventArgs e)
         {
             _selectionController.CutSelectedToClipboard();
+        }
+
+        /// <summary>
+        /// Проверка возможности вставки файла
+        /// можно вставить только один файл перечисленных расширений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void panelForScroll_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
+            {
+                var allowed = new[] { ".png", ".bmp", ".jpg", ".jpeg", ".gif" };
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length == 1 && allowed.Contains(Path.GetExtension(files[0]).ToLower()))
+                    e.Effect = DragDropEffects.All;
+                else
+                    e.Effect = DragDropEffects.None;
+            }
+        }
+
+        /// <summary>
+        /// Вставка графического файла в поле редактора
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void panelForScroll_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length != 1) return;
+            var figure = new Figure();
+            var image = (Bitmap)Image.FromFile(files[0]);
+            FigureBuilder.BuildImageRenderGeometry(figure, image);
+            var point = panelForScroll.PointToClient(new Point(e.X, e.Y));
+            var width = image.Width;
+            var height = image.Height;
+            var m = new Matrix();
+            m.Translate(point.X + width / 2f, point.Y + height / 2f);
+            m.Scale(width, height);
+            figure.Transform.Matrix = m;
+            OnLayerStartChanging("Insert Image By File Drag&Drop");
+            _layer.Figures.Add(figure);
+            OnLayerChanged();
+            _selectionController.Clear();
+            _selectionController.Selection.Add(figure);
+            _selectionController.UpdateMarkers();
+            UpdateInterface();
         }
     }
 }

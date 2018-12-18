@@ -302,9 +302,9 @@ namespace EditorModel.Selections
         /// <param name="newPosition">Смещение</param>
         public void MoveGradient(Figure owner, int index, PointF newPosition)
         {
-            var gradient = owner.Style.FillStyle as LinearGradientFill;
+            var gradient = owner.Style.FillStyle as IGradientFill;
             if (gradient == null)
-                return; // работаем только с линейными градиентами
+                return; // работаем только с градиентами
             
             //get points in world coordinates
             var points = gradient.GetGradientPoints(owner);

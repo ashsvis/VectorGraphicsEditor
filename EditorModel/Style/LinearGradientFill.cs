@@ -6,14 +6,18 @@ using EditorModel.Figures;
 namespace EditorModel.Style
 {
     [Serializable]
-    public class LinearGradientFill : Fill
+    public class LinearGradientFill : FillDecorator, IGradientFill
     {
+        private readonly Fill _fill;
+
         private PointF[] _points;
 
-        public LinearGradientFill()
+        public LinearGradientFill(Fill fill)
+            : base(fill)
         {
+            _fill = fill;
             _points = new[] { new PointF(-0.5f, 0.25f), new PointF(0.5f, 0.25f) };
-            GradientColor = Color.White;
+            GradientColor = Color.Gray;
         }
 
         /// <summary>
@@ -61,7 +65,41 @@ namespace EditorModel.Style
             // возвращаем созданную и настроенную кисть для фигуры
             var pts = (PointF[])_points.Clone();
             figure.Transform.Matrix.TransformPoints(pts);
-            return new LinearGradientBrush(pts[0], pts[1], Color, GradientColor);
+            return new LinearGradientBrush(pts[0], pts[1], Color.FromArgb(_fill.Opacity, _fill.Color), GradientColor);
+        }
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedFillDecorators AllowedDecorators
+        {
+            get { return AllowedFillDecorators.None; }
+        }
+        /// <summary>
+        /// Величина прозрачности цвета заливки
+        /// </summary>
+        public override int Opacity
+        {
+            get { return _fill.Opacity; }
+            set { _fill.Opacity = value;  }
+        }
+
+        /// <summary>
+        /// Цвет для заполнения фона (цвет заливки)
+        /// </summary>
+        public override Color Color
+        {
+            get { return _fill.Color; }
+            set { _fill.Color = value; }
+        }
+
+        /// <summary>
+        /// Признак возможности заливки фигуры
+        /// </summary>
+        public override bool IsVisible
+        {
+            get { return _fill.IsVisible; }
+            set { _fill.IsVisible = value; }
         }
 
     }

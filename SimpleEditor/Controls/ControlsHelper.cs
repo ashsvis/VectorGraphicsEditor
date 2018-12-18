@@ -55,15 +55,17 @@ namespace SimpleEditor.Controls
             var enumerable = list as T[] ?? list.ToArray();
             return enumerable.Any() && enumerable.All(condition);
         }
-        public static IEnumerable<string> GetInstalledFontCollection(FontStyle fontStyle = 
-            FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline)
+        public static IEnumerable<string> GetInstalledFontCollection()
         {
             var sbFonts = new List<string>();
             var ifc = new InstalledFontCollection();
             var ff = ifc.Families;
             foreach (var family in ff)
             {
-                if (family.IsStyleAvailable(fontStyle))
+                if (family.IsStyleAvailable(FontStyle.Regular) &&
+                    family.IsStyleAvailable(FontStyle.Bold) &&
+                    family.IsStyleAvailable(FontStyle.Italic) &&
+                    family.IsStyleAvailable(FontStyle.Underline))
                 {
                     var f = new Font(family.Name, 12);
                     sbFonts.Add(f.Name);

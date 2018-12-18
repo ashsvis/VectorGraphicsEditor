@@ -6,7 +6,7 @@ using EditorModel.Selections;
 
 namespace SimpleEditor.Controls
 {
-    public partial class ClosedSmoothedStyleEditor : UserControl, IEditor<Selection>
+    public partial class PolygonStyleEditor : UserControl, IEditor<Selection>
     {
         private Selection _selection;
         private int _updating;
@@ -14,7 +14,7 @@ namespace SimpleEditor.Controls
         public event EventHandler<ChangingEventArgs> StartChanging = delegate { };
         public event EventHandler<EventArgs> Changed = delegate { };
 
-        public ClosedSmoothedStyleEditor()
+        public PolygonStyleEditor()
         {
             InitializeComponent();
         }
