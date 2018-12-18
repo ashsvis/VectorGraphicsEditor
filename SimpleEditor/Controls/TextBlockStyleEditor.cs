@@ -28,7 +28,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => RendererDecorator.GetBaseRenerer(f.Renderer) is TextRenderer);
+            Visible = selection.ForAll(f => RendererDecorator.GetBaseRenderer(f.Renderer) is TextRenderer);
             if (!Visible) return; // do not build anything
 
             // remember editing object
@@ -36,7 +36,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var fontStyles = _selection.Select(f =>
-                            (TextRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+                            (TextRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -59,7 +59,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var fontStyles = _selection.Select(f =>
-                            (TextRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+                            (TextRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
 
             // send values back from GUI to object
             fontStyles.SetProperty(f => f.FontName = cbFontName.Text);

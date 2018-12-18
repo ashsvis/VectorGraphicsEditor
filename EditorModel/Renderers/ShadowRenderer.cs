@@ -41,7 +41,7 @@ namespace EditorModel.Renderers
 
         public override void Render(Graphics graphics, Figure figure)
         {
-            var baseRenderer = GetBaseRenerer(figure.Renderer) as IRendererTransformedPath;
+            var baseRenderer = GetBaseRenderer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = baseRenderer != null 
                 ? baseRenderer.GetTransformedPath(graphics, figure) 

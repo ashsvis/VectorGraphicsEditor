@@ -25,7 +25,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer);
+            Visible = selection.ForAll(f => RendererDecorator.GetBaseRenderer(f.Renderer) is ImageRenderer);
             if (!Visible) return; // do not build anything
 
             // remember editing object
@@ -33,7 +33,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var imageFillStyles = _selection.Select(f =>
-                            (ImageRenderer) RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
+                            (ImageRenderer) RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -56,9 +56,9 @@ namespace SimpleEditor.Controls
 
             //imageFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
             foreach (var fig in _selection.Where(f => 
-                RendererDecorator.GetBaseRenerer(f.Renderer) is ImageRenderer))
+                RendererDecorator.GetBaseRenderer(f.Renderer) is ImageRenderer))
             {
-                var renderer = (ImageRenderer)RendererDecorator.GetBaseRenerer(fig.Renderer);
+                var renderer = (ImageRenderer)RendererDecorator.GetBaseRenderer(fig.Renderer);
                 var firstIsEmpty = renderer.Image.Bitmap == null;
                 renderer.Image = (Bitmap)_image;
                 if (firstIsEmpty)

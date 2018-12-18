@@ -834,7 +834,7 @@ namespace SimpleEditor
                 {
                     OnLayerStartChanging("Reset Figure Effect");
                     foreach (var figure in figures)
-                        figure.Renderer = RendererDecorator.GetBaseRenerer(figure.Renderer);
+                        figure.Renderer = RendererDecorator.GetBaseRenderer(figure.Renderer);
                     OnLayerChanged();
                 }
             }
