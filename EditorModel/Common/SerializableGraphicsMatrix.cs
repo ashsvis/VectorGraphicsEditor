@@ -24,7 +24,7 @@ namespace EditorModel.Common
 
         public void Dispose()
         {
-			Matrix?.Dispose();
+            Matrix?.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

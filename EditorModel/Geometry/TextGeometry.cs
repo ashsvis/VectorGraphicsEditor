@@ -89,7 +89,7 @@ namespace EditorModel.Geometry
 
         public void Dispose()
         {
-			_path?.Dispose();
+            _path?.Dispose();
         }
         public override string ToString()
         {

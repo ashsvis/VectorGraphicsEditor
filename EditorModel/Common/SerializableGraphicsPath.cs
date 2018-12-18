@@ -32,7 +32,7 @@ namespace EditorModel.Common
 
         public void Dispose()
         {
-			Path?.Dispose();
+            Path?.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
