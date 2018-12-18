@@ -1,4 +1,7 @@
+using EditorModel.Figures;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EditorModel.Renderers
 {
@@ -51,6 +54,16 @@ namespace EditorModel.Renderers
         public static bool ContainsAnyDecorator(Renderer renderer)
         {
             return renderer as RendererDecorator != null;
+        }
+
+        public static bool ExistsWithoutThisDecorator(IEnumerable<Figure> figures, Type type)
+        {
+            return figures.Count(figure => !ContainsType(figure.Renderer, type)) > 0;
+        }
+
+        public static IEnumerable<Figure> WhereContainsDecorator(IEnumerable<Figure> figures, Type type)
+        {
+            return figures.Where(figure => !ContainsType(figure.Renderer, type));
         }
     }
 }

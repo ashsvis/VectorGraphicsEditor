@@ -4,6 +4,7 @@ using EditorModel.Common;
 using System.Drawing;
 using EditorModel.Geometry;
 using EditorModel.Renderers;
+using EditorModel.Style;
 
 namespace EditorModel.Figures
 {
@@ -89,7 +90,8 @@ namespace EditorModel.Figures
         public static void BuildTextGeometry(Figure figure, string text)
         {
             figure.Geometry = new TextGeometry { Text = text, Name = "Text" };
-            figure.Style.FillStyle.Color = Color.Black;
+            figure.Style.FillStyle = new DefaultFill(AllowedFillDecorators.All ^
+                AllowedFillDecorators.RadialGradient) { Color = Color.Black };
             figure.Style.BorderStyle.IsVisible = false; // рамка по умолчанию выключена
         }
 
@@ -108,7 +110,8 @@ namespace EditorModel.Figures
             { Name = "TextBlock" };
 
             figure.Style.BorderStyle = null; // отключение рамки для рендера
-            figure.Style.FillStyle.Color = Color.Black;
+            figure.Style.FillStyle = new DefaultFill(AllowedFillDecorators.All ^
+                AllowedFillDecorators.RadialGradient) { Color = Color.Black };
 
             figure.Renderer = new TextRenderer(text);
         }

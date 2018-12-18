@@ -65,7 +65,7 @@
     <Compile Include="Style\Border.cs" />
     <Compile Include="Figures\Figure.cs" />
     <Compile Include="Figures\FigureBuilder.cs" />
-    <Compile Include="Style\Fill.cs" />
+    <Compile Include="Style\DefaultFill.cs" />
     <Compile Include="Geometry\Geometry.cs" />
     <Compile Include="Geometry\PolygoneGeometry.cs" />
     <Compile Include="Geometry\PrimitiveGeometry.cs" />
@@ -75,7 +75,12 @@
     <Compile Include="Selections\Selection.cs" />
     <Compile Include="Common\SerializableGraphicsMatrix.cs" />
     <Compile Include="Common\SerializableGraphicsPath.cs" />
+    <Compile Include="Style\Fill.cs" />
+    <Compile Include="Style\FillDecorator.cs" />
+    <Compile Include="Style\HatchFill.cs" />
+    <Compile Include="Style\IGradientFill.cs" />
     <Compile Include="Style\LinearGradientFill.cs" />
+    <Compile Include="Style\RadialGradientFill.cs" />
     <Compile Include="Style\Style.cs" />
     <Compile Include="Geometry\TextGeometry.cs" />
   </ItemGroup>

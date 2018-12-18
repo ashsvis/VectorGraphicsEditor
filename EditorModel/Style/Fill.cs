@@ -1,53 +1,51 @@
-﻿using System;
+﻿using EditorModel.Figures;
+using System;
 using System.Drawing;
-using EditorModel.Figures;
 
 namespace EditorModel.Style
 {
     /// <summary>
-    /// Класс хранения данных заливки фигуры
+    /// Допустимые операции над геометрией
     /// </summary>
     [Serializable]
-    public class Fill
+    [Flags]
+    public enum AllowedFillDecorators : uint
     {
-        /// <summary>
-        /// Конструктор класса хранения данных заливки фигуры
-        /// </summary>
-        public Fill()
-        {
-            // по умолчанию заливка разрешена
-            IsVisible = true;
-            // по умолчанию белый цвет заливки
-            Color = Color.White;
-            // по умолчанию полная непрозрачность
-            Opacity = 255;
-        }
+        None = 0x0,             // ничего нельзя
+        LinearGradient = 0x1,   // может задавать линейный градиент
+        RadialGradient = 0x2,   // может задавать радиальный градиент
+        Hatch = 0x4,            // может задавать штриховку
+        // новые режимы добавлять здесь
 
+        All = 0xffffffff,   // всё можно
+    }
+
+    /// <summary>
+    /// Класс рисовальщика фона фигуры
+    /// </summary>
+    [Serializable]
+    public abstract class Fill
+    {
         /// <summary>
         /// Величина прозрачности цвета заливки
         /// </summary>
-        public int Opacity { get; set; }
+        public virtual int Opacity { get; set; }
 
         /// <summary>
         /// Цвет для заполнения фона (цвет заливки)
         /// </summary>
-        public Color Color { get; set; }
+        public virtual Color Color { get; set; }
 
         /// <summary>
         /// Признак возможности заливки фигуры
         /// </summary>
-        public bool IsVisible { get; set; }
+        public virtual bool IsVisible { get; set; }
+
+        public abstract Brush GetBrush(Figure figure);
 
         /// <summary>
-        /// Предоставление кисти для заливки фигуры
+        /// Допустимые операции над геометрией
         /// </summary>
-        /// <param name="figure">Ссылка на фигуру</param>
-        /// <returns>Возвращаем настроенную кисть</returns>
-        public virtual Brush GetBrush(Figure figure)
-        {
-            // возвращаем созданную и настроенную кисть для фигуры
-            return new SolidBrush(Color.FromArgb(Opacity, Color));
-        }
+        public abstract AllowedFillDecorators AllowedDecorators { get; }
     }
-
 }
