@@ -70,14 +70,9 @@ namespace EditorModel.Geometry
             Points = points;
         }
 
-        ~PolygoneGeometry()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (_path != null) _path.Dispose();
+            _path?.Dispose();
         }
 
         /// <summary>

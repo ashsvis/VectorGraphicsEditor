@@ -30,14 +30,9 @@ namespace EditorModel.Common
                 Path = new GraphicsPath();
         }
 
-        ~SerializableGraphicsPath()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (Path != null) Path.Dispose();
+            Path?.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

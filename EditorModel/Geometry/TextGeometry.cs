@@ -87,14 +87,9 @@ namespace EditorModel.Geometry
             FontName = "Arial";
         }
 
-        ~TextGeometry()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (_path != null) _path.Dispose();
+            _path?.Dispose();
         }
         public override string ToString()
         {

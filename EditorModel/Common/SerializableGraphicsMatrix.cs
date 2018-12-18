@@ -7,7 +7,7 @@ namespace EditorModel.Common
     [Serializable]
     public sealed class SerializableGraphicsMatrix : ISerializable, IDisposable
     {
-        public Matrix Matrix = new Matrix();
+        public Matrix Matrix { get; set; } = new Matrix();
 
         public SerializableGraphicsMatrix() { }
 
@@ -22,14 +22,9 @@ namespace EditorModel.Common
                 Matrix = new Matrix();
         }
 
-        ~SerializableGraphicsMatrix()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
-            if (Matrix != null) Matrix.Dispose();
+            Matrix?.Dispose();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
