@@ -42,7 +42,8 @@ namespace EditorModel.Figures
             path.Path.AddRectangle(new RectangleF(-0.5f, -0.5f, 1, 1));
             foreach (var figure in figures)
                 _figures.Add(figure.DeepClone());
-            Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
+                (AllowedOperations.Vertex | AllowedOperations.Pathed))
             { Name = "Group" };
             Renderer = new GroupRenderer();
         }
