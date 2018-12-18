@@ -25,7 +25,7 @@ namespace EditorModel.Figures
         /// <summary>
         /// Свойство для хранения данных кисти
         /// </summary>
-        public DefaultFill FillStyle { get; set; }
+        public Fill FillStyle { get; set; }
 
         public Layer()
         {

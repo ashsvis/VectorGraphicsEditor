@@ -77,6 +77,7 @@ namespace SimpleEditor.Controls
                     }
                 }
             }
+            return sbFonts;
         }
     }
 }
