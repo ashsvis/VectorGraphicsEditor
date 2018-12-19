@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,8 +21,14 @@ namespace SimpleEditor.Controls
         public TextBlockStyleEditor()
         {
             InitializeComponent();
+            InitFontNamesSelector();
+        }
+
+        private async void InitFontNamesSelector()
+        {
             cbFontName.Items.Clear();
-            foreach (var fontName in ControlsHelper.GetInstalledFontCollection())
+            var fontNames = new List<string>();
+            foreach (var fontName in await ControlsHelper.GetInstalledFontCollectionAsync())
                 cbFontName.Items.Add(fontName);
         }
 

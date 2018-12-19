@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SimpleEditor.Controls
 {
@@ -15,7 +16,7 @@ namespace SimpleEditor.Controls
         /// Returns value of property if all of objects contain same value.
         /// Returns default(T) if objects contains different values
         /// </returns>
-        public static T GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector, 
+        public static T GetProperty<TP, T>(this IEnumerable<TP> list, Func<TP, T> selector,
             T defaultValue = default(T))
         {
             T result = defaultValue;
@@ -78,6 +79,13 @@ namespace SimpleEditor.Controls
                 }
             }
             return sbFonts;
+        }
+
+        public static Task<IEnumerable<string>> GetInstalledFontCollectionAsync()
+        {
+            var task = new Task<IEnumerable<string>>(() => GetInstalledFontCollection());
+            task.Start();
+            return task;
         }
     }
 }

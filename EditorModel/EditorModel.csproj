@@ -53,6 +53,7 @@
     <Compile Include="Common\SerializableGraphicsImage.cs" />
     <Compile Include="Common\VersionInfo.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
+    <Compile Include="Geometry\WedgeGeometry.cs" />
     <Compile Include="Renderers\GlowRenderer.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />
     <Compile Include="Renderers\ImageRenderer.cs" />

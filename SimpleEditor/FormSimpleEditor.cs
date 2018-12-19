@@ -56,6 +56,7 @@ namespace SimpleEditor
                 typeof(TextBlockStyleEditor),
                 typeof(ImageStyleEditor),
                 typeof(GroupStyleEditor),
+                typeof( WedgeStyleEditor),
             };
             foreach (var typeName in editors)
             {
@@ -400,6 +401,36 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildCircleGeometry(fig);
+                    return fig;
+                };
+            }
+            else if (sender == btnArc)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateCircle);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildWedgeGeometry(fig, WedgeKind.Arc);
+                    return fig;
+                };
+            }
+            else if (sender == btnSegment)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateCircle);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildWedgeGeometry(fig, WedgeKind.Chord);
+                    return fig;
+                };
+            }
+            else if (sender == btnPie)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateCircle);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildWedgeGeometry(fig, WedgeKind.Pie);
                     return fig;
                 };
             }

@@ -158,7 +158,7 @@
             this.groupBox1.Controls.Add(this.nudOpacity);
             this.groupBox1.Controls.Add(this.lbOpacity);
             this.groupBox1.Controls.Add(this.cbVisible);
-            this.groupBox1.Location = new System.Drawing.Point(3, 6);
+            this.groupBox1.Location = new System.Drawing.Point(1, 1);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(1);

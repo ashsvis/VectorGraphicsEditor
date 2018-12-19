@@ -145,6 +145,26 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
+        /// Подключаем к фигуре геометрию ломаной линии
+        /// </summary>
+        /// <param name="figure"></param>
+        public static void BuildPolylineGeometry(Figure figure)
+        {
+            figure.Style.FillStyle.IsVisible = false;
+            figure.Geometry = new PolygoneGeometry(isClosed: false) { Name = "Polyline" };
+        }
+
+        /// <summary>
+        /// Подключаем к фигуре геометрию линии дуги, хорды и, как её там...
+        /// </summary>
+        /// <param name="figure"></param>
+        public static void BuildWedgeGeometry(Figure figure, WedgeKind kind)
+        {
+            figure.Style.FillStyle.IsVisible = kind != WedgeKind.Arc;
+            figure.Geometry = new WedgeGeometry(kind);
+        }
+
+        /// <summary>
         /// Подключаем к фигуре геометрию полигона
         /// </summary>
         /// <param name="figure"></param>
@@ -172,16 +192,6 @@ namespace EditorModel.Figures
             figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
                 (AllowedOperations.Vertex | AllowedOperations.Size | AllowedOperations.Skew))
             { Name = vertexCount <= 6 ? names[vertexCount] : "Regular" + vertexCount };
-        }
-
-        /// <summary>
-        /// Подключаем к фигуре геометрию ломаной линии
-        /// </summary>
-        /// <param name="figure"></param>
-        public static void BuildPolylineGeometry(Figure figure)
-        {
-            figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry(isClosed: false) { Name = "Polyline" };
         }
 
         /// <summary>

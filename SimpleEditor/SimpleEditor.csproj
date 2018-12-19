@@ -134,6 +134,12 @@
     <Compile Include="Controls\TextStyleEditor.Designer.cs">
       <DependentUpon>TextStyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WedgeStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WedgeStyleEditor.Designer.cs">
+      <DependentUpon>WedgeStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextStyleEditor.resx">
       <DependentUpon>TextStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WedgeStyleEditor.resx">
+      <DependentUpon>WedgeStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSimpleEditor.resx">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
@@ -510,6 +519,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\underline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bezier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chord.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\polygon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\polyline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\roundrect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wedge.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
