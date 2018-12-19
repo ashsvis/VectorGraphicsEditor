@@ -145,7 +145,6 @@
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripSplitButton();
             this.btnPolyline = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnArc = new System.Windows.Forms.ToolStripMenuItem();
             this.btnPolygone = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbRect = new System.Windows.Forms.ToolStripSplitButton();
             this.btnRectangle = new System.Windows.Forms.ToolStripMenuItem();
@@ -174,6 +173,8 @@
             this.tsmiCloneFigure = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnArc = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -1338,7 +1339,6 @@
             this.tsbPolyline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbPolyline.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnPolyline,
-            this.btnArc,
             this.btnPolygone});
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.polyline;
             this.tsbPolyline.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -1358,14 +1358,6 @@
             this.btnPolyline.Text = "Polyline";
             this.btnPolyline.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
-            // btnArc
-            // 
-            this.btnArc.Image = global::SimpleEditor.Properties.Resources.arc;
-            this.btnArc.Name = "btnArc";
-            this.btnArc.Size = new System.Drawing.Size(180, 22);
-            this.btnArc.Text = "Arc";
-            this.btnArc.Click += new System.EventHandler(this.btnCreateFigure_Click);
-            // 
             // btnPolygone
             // 
             this.btnPolygone.Image = global::SimpleEditor.Properties.Resources.polygon;
@@ -1383,6 +1375,8 @@
             this.btnSquare,
             this.btnEllipse,
             this.btnCircle,
+            this.toolStripMenuItem1,
+            this.btnArc,
             this.btnSegment,
             this.btnPie});
             this.tsbRect.Image = global::SimpleEditor.Properties.Resources.rect;
@@ -1652,6 +1646,19 @@
             this.tsmiDelete.Text = "Delete";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmDelete_Click);
             // 
+            // btnArc
+            // 
+            this.btnArc.Image = global::SimpleEditor.Properties.Resources.arc;
+            this.btnArc.Name = "btnArc";
+            this.btnArc.Size = new System.Drawing.Size(180, 22);
+            this.btnArc.Text = "Arc";
+            this.btnArc.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
             // FormSimpleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1838,9 +1845,10 @@
         private System.Windows.Forms.ToolStripMenuItem btnText;
         private System.Windows.Forms.ToolStripMenuItem tsmiHatchBrush;
         private System.Windows.Forms.ToolStripMenuItem tsmiRadialGradientBrush;
-        private System.Windows.Forms.ToolStripMenuItem btnArc;
         private System.Windows.Forms.ToolStripMenuItem btnSegment;
         private System.Windows.Forms.ToolStripMenuItem btnPie;
+        private System.Windows.Forms.ToolStripMenuItem btnArc;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 
