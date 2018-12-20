@@ -41,7 +41,10 @@ namespace SimpleEditor.Controllers
             _selection = new Selection();
             _markers = new List<Marker>();
             _layer = layer;
+            ScaleFactor = 1f;
         }
+
+        public float ScaleFactor { get; set; }
 
         /// <summary>
         /// Текущий слой
@@ -147,30 +150,23 @@ namespace SimpleEditor.Controllers
         /// <param name="modifierKeys"></param>
         public void OnDblClick(Point location, Keys modifierKeys)
         {
-            Figure fig;
-            if ((EditorMode != EditorMode.Select && 
-                 EditorMode != EditorMode.Skew && 
-                 EditorMode != EditorMode.Verticies) ||
-                !_selection.FindFigureAt(_layer, location, out fig)) return;
-            // фигура найдена.
-            var textGeometry = fig.Geometry as TextGeometry;
-            if (textGeometry != null)
-            {
-                    
-            }
+            var pt = new PointF(location.X / ScaleFactor, location.Y / ScaleFactor);
+            // stub
         }
 
         /// <summary>
         /// Обработчик нажатия левой кнопки мышки
         /// </summary>
-        /// <param name="point">Координаты курсора</param>
+        /// <param name="location">Координаты курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
-        public void OnMouseDown(Point point, Keys modifierKeys)
+        public void OnMouseDown(Point location, Keys modifierKeys)
         {
             _wasMouseMoving = false;
             _wasVertexMoving = false;
             _isMouseDown = true;
+            _movedMarker = null;
             // запоминаем точку нажатия мышкой
+            var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
             _firstMouseDown = point;
 
             if (CreateFigureRequest != null)
@@ -271,14 +267,14 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Создаём новую фигуру
         /// </summary>
-        /// <param name="point">Позиция мышки</param>
-        private void CreateFigure(Point point)
+        /// <param name="location">Позиция мышки</param>
+        private void CreateFigure(Point location)
         {
             //создаем новую фигуру
             var newFig = CreateFigureRequest();
             if (newFig == null) return;
             // сразу смещаем на половину размера, чтобы левый верхний угол был в точке мышки
-            newFig.Transform.Matrix.Translate(point.X + 0.5f, point.Y + 0.5f);
+            newFig.Transform.Matrix.Translate(location.X + 0.5f, location.Y + 0.5f);
             _layer.Figures.Add(newFig);
             _selection.Add(newFig);
             CreateFigureRequest = null;
@@ -288,10 +284,12 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Обработчик перемещения мышки при нажатой левой кнопке мышки 
         /// </summary>
-        /// <param name="point">Координаты курсора</param>
+        /// <param name="location">Координаты курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
-        public void OnMouseMove(Point point, Keys modifierKeys)
+        public void OnMouseMove(Point location, Keys modifierKeys)
         {
+            var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
+
             if (!_isMouseDown) return;
             _wasMouseMoving = true;
 
@@ -338,10 +336,11 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Обработчик отпускания левой кнопки мышки
         /// </summary>
-        /// <param name="point">Координаты курсора</param>
+        /// <param name="location">Координаты курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
-        public void OnMouseUp(Point point, Keys modifierKeys)
+        public void OnMouseUp(Point location, Keys modifierKeys)
         {
+            var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
             if (_isMouseDown)
             {
                 switch (EditorMode)
@@ -810,7 +809,8 @@ namespace SimpleEditor.Controllers
                     // создаём маркер вращения
                     if (Selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Rotate)) //если разрешено вращение
                     {
-                        var rotateMarker = CreateMarker(MarkerType.Rotate, 1, 0, UserCursor.Rotate, 0.5f, 0.5f, 15, -15);
+                        var sf = ScaleFactor;
+                        var rotateMarker = CreateMarker(MarkerType.Rotate, 1, 0, UserCursor.Rotate, 0.5f, 0.5f, 15 / sf, -15 / sf);
                         Markers.Add(rotateMarker);
                     }
                     break;
@@ -848,12 +848,13 @@ namespace SimpleEditor.Controllers
         /// <summary>
         /// Форма курсора в зависимости от контекста
         /// </summary>
-        /// <param name="point">Позиция курсора</param>
+        /// <param name="location">Позиция курсора</param>
         /// <param name="modifierKeys">Какие клавиши были ещё нажаты в этот момент</param>
         /// <param name="button">Нажатая кнопка мышки</param>
         /// <returns>Настроенный курсор</returns>
-        public Cursor GetCursor(Point point, Keys modifierKeys, MouseButtons button)
+        public Cursor GetCursor(Point location, Keys modifierKeys, MouseButtons button)
         {
+            var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
             if (CreateFigureRequest != null)
                 return CreateFigureCursor;
 
@@ -1049,7 +1050,6 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public void SelectAllFigures()
         {
-            _selection.Clear();
             foreach (var fig in _layer.Figures) _selection.Add(fig);
             BuildMarkers();
             UpdateMarkerPositions();

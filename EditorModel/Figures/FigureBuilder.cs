@@ -74,6 +74,7 @@ namespace EditorModel.Figures
         public static void BuildMarkerGeometry(Figure marker)
         {
             var path = new SerializableGraphicsPath();
+            marker.Style.BorderStyle.Width = 0;
             // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
             path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
@@ -161,7 +162,7 @@ namespace EditorModel.Figures
         public static void BuildWedgeGeometry(Figure figure, WedgeKind kind)
         {
             figure.Style.FillStyle.IsVisible = kind != WedgeKind.Arc;
-            figure.Geometry = new WedgeGeometry(kind);
+            figure.Geometry = new WedgeGeometry(kind, 0, 270);
         }
 
         /// <summary>
@@ -201,6 +202,7 @@ namespace EditorModel.Figures
         /// <param name="startPoint"></param>
         public static void BuildFrameGeometry(Figure figure, Point startPoint)
         {
+            figure.Style.BorderStyle.Width = 0;
             figure.Geometry = new FrameGeometry(startPoint) { Name = "Frame" };
         }
     }

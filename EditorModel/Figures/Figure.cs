@@ -54,6 +54,11 @@ namespace EditorModel.Figures
             return path;
         }
     
+        public virtual void PushTransform(Matrix matrix)
+        {
+            Transform.Matrix.Multiply(matrix, MatrixOrder.Append);
+        }
+
     }
 
 }

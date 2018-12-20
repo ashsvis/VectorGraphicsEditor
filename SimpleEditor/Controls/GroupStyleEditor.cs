@@ -27,21 +27,16 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => f is GroupFigure);
+            Visible = selection.ForAll(f => f is GroupFigure) && selection.Any(f =>
+            {
+                var groupFigure = f as GroupFigure;
+                return groupFigure != null && groupFigure.Figures.Count() == 1;
+            });
+
             if (!Visible) return; // do not build anything
 
             // remember editing object
             _selection = selection;
-
-            btnLoadPicture.Visible = _selection.Any(f =>
-                {
-                    var groupFigure = f as GroupFigure;
-                    return groupFigure != null && groupFigure.Figures.Count() == 1;
-                });
-
-            var groupStyles = _selection.Select(f =>
-                            (GroupRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
-            cbJoin.SelectedIndex = groupStyles.GetProperty(f => (int)f.JoinMode, -1);
 
             // get list of objects
             var pictureFillStyles = _selection.Select(f => f as GroupFigure).ToList();
@@ -62,10 +57,6 @@ namespace SimpleEditor.Controls
 
             // fire event
             StartChanging(this, new ChangingEventArgs("Group Selection Style"));
-
-            var groupStyles = _selection.Select(f =>
-                            (GroupRenderer)RendererDecorator.GetBaseRenderer(f.Renderer)).ToList();
-            groupStyles.SetProperty(f => f.JoinMode = cbJoin.SelectedIndex < 0 ? GroupJoin.None : (GroupJoin)cbJoin.SelectedIndex);
 
             // get list of objects
             var pictureFillStyles = _selection.Select(f => f as GroupFigure).ToList();

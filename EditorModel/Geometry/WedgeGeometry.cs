@@ -25,11 +25,11 @@ namespace EditorModel.Geometry
         /// </summary>
         private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
-        public WedgeGeometry(WedgeKind kind)
+        public WedgeGeometry(WedgeKind kind, float startAngle, float sweepAngle)
         {
             Kind = kind;
-            StartAngle = 0f;
-            SweepAngle = 270f;
+            StartAngle = startAngle;
+            SweepAngle = sweepAngle;
         }
 
         public float StartAngle { get; set; }

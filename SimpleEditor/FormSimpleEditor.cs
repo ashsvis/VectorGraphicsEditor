@@ -31,12 +31,14 @@ namespace SimpleEditor
         {
             InitializeComponent();
             _versionInfo = new VersionInfo();
-            _caption = string.Format("Simple Vector Graphics Editor (Ver {0:0.0})", (decimal)_versionInfo.Version / 10);
+            _caption = string.Format("Simple Vector Graphics Editor (Ver {0:0.0})", 
+                (decimal)_versionInfo.Version / 10);
 
             ConnectEditors();
 
             _layer = new Layer();
             ConnectMethods();
+
         }
 
         private void ConnectEditors()
@@ -45,8 +47,8 @@ namespace SimpleEditor
             var editors = new [] 
             {
                 typeof(LayerStyleEditor),
-                typeof(BorderStyleEditor),
                 typeof(FillStyleEditor),
+                typeof(BorderStyleEditor),
                 typeof(ShadowStyleEditor),
                 typeof(GlowStyleEditor),
                 typeof(GradientStyleEditor),
@@ -56,7 +58,7 @@ namespace SimpleEditor
                 typeof(TextBlockStyleEditor),
                 typeof(ImageStyleEditor),
                 typeof(GroupStyleEditor),
-                typeof( WedgeStyleEditor),
+                typeof(WedgeStyleEditor),
             };
             foreach (var typeName in editors)
             {
@@ -88,7 +90,8 @@ namespace SimpleEditor
             _selectionController.SelectedTransformChanged += UpdateInterface;
             _selectionController.SelectedRangeChanging += _selectionController_SelectedRangeChanging;
             _selectionController.EditorModeChanged += _ => UpdateInterface();
-            _selectionController.LayerStartChanging += () => OnLayerStartChanging(_selectionController.EditorMode.ToString());
+            _selectionController.LayerStartChanging += () => 
+                                      OnLayerStartChanging(_selectionController.EditorMode.ToString());
             _selectionController.LayerChanged += OnLayerChanged;
             _selectionController.ResetFigureCreator += _selectionController_ResetCreateFigureSelector;
         }
@@ -156,7 +159,6 @@ namespace SimpleEditor
             {
                 var fignode = e.Node as FigureTreeNode;
                 if (fignode == null) return;
-                //_selectionController.Selection.Add(fignode.Group == null ? fignode.Figure : fignode.Group);
                 if (fignode.Group == null)
                 {
                     _selectionController.Selection.Add(fignode.Figure);
@@ -218,13 +220,23 @@ namespace SimpleEditor
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
-                         _selectionController.Selection.Count( SelectionHelper.IsNotSkewAndRotated) > 1;
+                         _selectionController.Selection.Count(SelectionHelper.IsNotSkewAndRotated) > 1;
 
             tsbConvertToPath.Enabled = _selectionController.Selection.Count(fig => 
                         fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)) > 0;
 
             if (changedUndo || changedRedo)
                 UpdateFiguresTree();
+
+            try
+            {
+                cbScaleFactor.SelectedIndexChanged -= cbScaleFactor_SelectedIndexChanged;
+                cbScaleFactor.Text = string.Format("{0}%", _selectionController.ScaleFactor * 100);
+            }
+            finally
+            {
+                cbScaleFactor.SelectedIndexChanged += cbScaleFactor_SelectedIndexChanged;
+            }
 
             pbCanvas.Invalidate();
         }
@@ -280,9 +292,7 @@ namespace SimpleEditor
             // состояние курсора обрабатывается вне зависимости от нажатых клавиш мышки
             Cursor = _selectionController.GetCursor(e.Location, ModifierKeys, e.Button);
             if (e.Button == MouseButtons.Left)
-            {
                 _selectionController.OnMouseMove(e.Location, ModifierKeys);
-            }
         }
 
         /// <summary>
@@ -307,20 +317,29 @@ namespace SimpleEditor
             graphics.SmoothingMode = SmoothingMode.HighQuality;
             graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
+            var scaleFactor = _selectionController.ScaleFactor;
+            graphics.ScaleTransform(scaleFactor, scaleFactor);
+
             if (_layer.FillStyle.IsVisible)
                 using (var brush = _layer.FillStyle.GetBrush(null))
                     graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
 
             // отрисовка созданных фигур
             foreach (var fig in _layer.Figures)
+            {
                 fig.Renderer.Render(graphics, fig);
+            }
 
             // отрисовка выделения
             _selectionController.Selection.Renderer.Render(graphics,
                                                            _selectionController.Selection);
             // отрисовка маркеров
             foreach (var marker in _selectionController.Markers)
+            {
+                marker.Transform.Matrix.Scale(1 / scaleFactor, 1 / scaleFactor);
                 marker.Renderer.Render(graphics, marker);
+                marker.Transform.Matrix.Scale(scaleFactor, scaleFactor);
+            }
         }
 
         /// <summary>
@@ -479,11 +498,7 @@ namespace SimpleEditor
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePicture);
                 figureCreator = () =>
                 {
-                    var placeHolder = new Figure();
-                    placeHolder.Style.FillStyle.IsVisible = false;
-                    placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
-                    FigureBuilder.BuildRectangleGeometry(placeHolder);
-                    var fig = new GroupFigure(new[] { placeHolder });
+                    var fig = new GroupFigure();
                     return fig;
                 };
             }
@@ -724,6 +739,9 @@ namespace SimpleEditor
             size.Width += 50;
             size.Height += 50;
 
+            var sf = _selectionController.ScaleFactor;
+            size = new Size((int)(size.Width * sf), (int)(size.Height * sf));
+
             var pnlSize = panelForScroll.ClientSize;
             pbCanvas.Size = new Size(size.Width < pnlSize.Width ? pnlSize.Width : size.Width,
                                      size.Height < pnlSize.Height ? pnlSize.Height : size.Height);
@@ -885,6 +903,19 @@ namespace SimpleEditor
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
                             figure.Renderer = new GlowRenderer(figure.Renderer);
+                    }
+                    OnLayerChanged();
+                }
+            }
+            else if (sender == tsmiTextBlock)
+            {
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(TextBlockDecorator)))
+                {
+                    OnLayerStartChanging("Block Text Figure Effect");
+                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(TextBlockDecorator)))
+                    {
+                        if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.TextBlock))
+                            figure.Renderer = new TextBlockDecorator(figure.Renderer, new Padding(10));
                     }
                     OnLayerChanged();
                 }
@@ -1175,6 +1206,15 @@ namespace SimpleEditor
             _selectionController.Clear();
             _selectionController.Selection.Add(figure);
             _selectionController.UpdateMarkers();
+            UpdateInterface();
+        }
+
+        private void cbScaleFactor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var pst = float.Parse(cbScaleFactor.Text.TrimEnd('%'));
+            _selectionController.Clear();
+            _selectionController.ScaleFactor = pst / 100f;
+            UpdateCanvasSize();
             UpdateInterface();
         }
     }

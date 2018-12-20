@@ -64,7 +64,9 @@ namespace EditorModel.Renderers
         public override AllowedRendererDecorators AllowedDecorators
         {
             get { return AllowedRendererDecorators.All ^ 
-                    (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow); }
+                    (AllowedRendererDecorators.Shadow | 
+                     AllowedRendererDecorators.Glow | 
+                     AllowedRendererDecorators.TextBlock); }
         }
     }
 }

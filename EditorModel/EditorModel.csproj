@@ -47,6 +47,7 @@
     <Compile Include="Common\ExportImport.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\IRendererTransformedPath.cs" />
+    <Compile Include="Common\ITextBlock.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Common\PointFExtension.cs" />
     <Compile Include="Common\SaverLoader.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />
     <Compile Include="Renderers\ShadowRenderer.cs" />
+    <Compile Include="Renderers\TextBlockDecorator.cs" />
     <Compile Include="Renderers\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />

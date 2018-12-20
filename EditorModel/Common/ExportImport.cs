@@ -31,7 +31,8 @@ namespace EditorModel.Common
             }
         }
 
-        private static void SaveImage(string fileName, Layer layer, GroupFigure group, int width, int height, System.Drawing.Imaging.ImageFormat format)
+        private static void SaveImage(string fileName, Layer layer, GroupFigure group, 
+            int width, int height, ImageFormat format)
         {
             using (var image = new Bitmap(width, height))
             {

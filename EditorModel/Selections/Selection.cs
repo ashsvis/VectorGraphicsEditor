@@ -163,7 +163,8 @@ namespace EditorModel.Selections
         {
             foreach (var fig in _selected)
             {
-                fig.Transform.Matrix.Multiply(Transform, MatrixOrder.Append);
+                //fig.Transform.Matrix.Multiply(Transform, MatrixOrder.Append);
+                fig.PushTransform(Transform);
             }
 
             GrabGeometry();

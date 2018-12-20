@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using EditorModel.Common;
 using EditorModel.Figures;
+using System.Windows.Forms;
 
 namespace EditorModel.Renderers
 {
@@ -10,7 +11,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика текстового блока
     /// </summary>
     [Serializable]
-    public class TextRenderer : Renderer, IRendererTransformedPath
+    public class TextRenderer : Renderer, ITextBlock, IRendererTransformedPath
     {
         /// <summary>
         /// Текст для построения пути
@@ -37,6 +38,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public ContentAlignment Alignment { get; set; }
 
+        public Padding Padding { get; set; }
 
         public TextRenderer(string text)
         {
@@ -44,6 +46,7 @@ namespace EditorModel.Renderers
             FontName = "Arial";
             FontSize = 36f;
             Alignment = ContentAlignment.MiddleCenter;
+            Padding = new Padding();
         }
 
         /// <summary>
@@ -61,52 +64,65 @@ namespace EditorModel.Renderers
             }
         }
 
+        /// <summary>
+        /// Реализация интерфейса IRendererTransformedPath
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="figure"></param>
+        /// <returns></returns>
         public GraphicsPath GetTransformedPath(Graphics graphics, Figure figure)
         {
-            var text = string.IsNullOrWhiteSpace(Text) ? "(empty)" : Text;
+            return GetTextBlockTransformedPath(figure, this, Padding);
+        }
+
+        public static GraphicsPath GetTextBlockTransformedPath(Figure figure, ITextBlock textBlock,
+               Padding padding)
+        {
+            var text = string.IsNullOrWhiteSpace(textBlock.Text) ? "-" : textBlock.Text;
             var graphicsPath = new GraphicsPath();
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
-                Helper.UpdateStringFormat(sf, Alignment);
-                graphicsPath.AddString(text, new FontFamily(FontName), (int)FontStyle, FontSize, PointF.Empty, sf);
+                Helper.UpdateStringFormat(sf, textBlock.Alignment);
+                graphicsPath.AddString(text, new FontFamily(textBlock.FontName),
+                    (int)textBlock.FontStyle, textBlock.FontSize, PointF.Empty, sf);
             }
             var textBounds = graphicsPath.GetBounds();
             var pts = graphicsPath.PathPoints;
             var outRectSize = Helper.GetSize(figure.Transform);
-            var eps = 0.0001f;
+            var eps = Helper.EPSILON;
             var kfx = (outRectSize.Width < eps) ? eps : 1 / outRectSize.Width;
             var kfy = (outRectSize.Height < eps) ? eps : 1 / outRectSize.Height;
-            var dx = outRectSize.Width - textBounds.Width;
-            var dy = outRectSize.Height - textBounds.Height;
-            switch (Alignment)
+            var dx = outRectSize.Width - textBounds.Width - padding.Right;
+            var dy = outRectSize.Height - textBounds.Height - padding.Bottom;
+            switch (textBlock.Alignment)
             {
                 case ContentAlignment.TopLeft:
-                    dx = 0;
-                    dy = 0;
+                    dx = padding.Left;
+                    dy = padding.Top;
                     break;
                 case ContentAlignment.TopCenter:
-                    dx /= 2f;
-                    dy = 0;
+                    dx = dx/2f + padding.Left / 2;
+                    dy = padding.Top;
                     break;
                 case ContentAlignment.TopRight:
-                    dy = 0;
+                    dy = padding.Top;
                     break;
                 case ContentAlignment.MiddleLeft:
-                    dx = 0;
-                    dy /= 2f;
+                    dx = padding.Left;
+                    dy = dy/2f + padding.Top / 2;
                     break;
                 case ContentAlignment.MiddleCenter:
-                    dx /= 2f;
-                    dy /= 2f;
+                    dx = dx / 2f + padding.Left / 2;
+                    dy = dy / 2f + padding.Top / 2;
                     break;
                 case ContentAlignment.MiddleRight:
-                    dy /= 2f;
+                    dy = dy / 2f + padding.Top / 2;
                     break;
                 case ContentAlignment.BottomLeft:
-                    dx = 0;
+                    dx = padding.Left;
                     break;
                 case ContentAlignment.BottomCenter:
-                    dx /= 2f;
+                    dx = dx / 2f + padding.Left / 2;
                     break;
             }
             for (var i = 0; i < pts.Length; i++)
@@ -124,10 +140,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public override AllowedRendererDecorators AllowedDecorators
         {
-            get
-            {
-                return AllowedRendererDecorators.All;
-            }
+            get { return AllowedRendererDecorators.All ^ AllowedRendererDecorators.TextBlock; }
         }
     }
 }
