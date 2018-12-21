@@ -140,7 +140,7 @@ namespace EditorModel.Geometry
 
         public override string ToString()
         {
-            return IsClosed ? "Polygone" : "Polyline";
+            return IsClosed ? "Polygon" : "Polyline";
         }
 
     }

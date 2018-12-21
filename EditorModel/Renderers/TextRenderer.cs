@@ -40,6 +40,8 @@ namespace EditorModel.Renderers
 
         public Padding Padding { get; set; }
 
+        public bool WordWrap { get; set; }
+
         public TextRenderer(string text)
         {
             Text = text;
@@ -72,26 +74,36 @@ namespace EditorModel.Renderers
         /// <returns></returns>
         public GraphicsPath GetTransformedPath(Graphics graphics, Figure figure)
         {
-            return GetTextBlockTransformedPath(figure, this, Padding);
+            return GetTextBlockTransformedPath(graphics, figure, this, Padding, WordWrap);
         }
 
-        public static GraphicsPath GetTextBlockTransformedPath(Figure figure, ITextBlock textBlock,
-               Padding padding)
+        public static GraphicsPath GetTextBlockTransformedPath(Graphics graphics, Figure figure,
+            ITextBlock textBlock, Padding padding, bool wordWrap = false)
         {
-            var text = string.IsNullOrWhiteSpace(textBlock.Text) ? "-" : textBlock.Text;
+            var outRectSize = Helper.GetSize(figure.Transform);
+            var text = textBlock.Text;
             var graphicsPath = new GraphicsPath();
             using (var sf = new StringFormat(StringFormat.GenericTypographic))
             {
                 Helper.UpdateStringFormat(sf, textBlock.Alignment);
-                graphicsPath.AddString(text, new FontFamily(textBlock.FontName),
-                    (int)textBlock.FontStyle, textBlock.FontSize, PointF.Empty, sf);
+                if (!string.IsNullOrWhiteSpace(textBlock.Text))
+                {
+                    if (wordWrap)
+                    {
+                        var size = outRectSize;
+                        size.Width -= padding.Left + padding.Right;
+                        var rect = new RectangleF(PointF.Empty, size);
+                        graphicsPath.AddString(text, new FontFamily(textBlock.FontName),
+                            (int)textBlock.FontStyle, textBlock.FontSize, rect, sf);
+                    }
+                    else
+                        graphicsPath.AddString(text, new FontFamily(textBlock.FontName),
+                            (int)textBlock.FontStyle, textBlock.FontSize, PointF.Empty, sf);
+                }
+                else
+                    graphicsPath.AddLine(PointF.Empty, PointF.Empty);
             }
             var textBounds = graphicsPath.GetBounds();
-            var pts = graphicsPath.PathPoints;
-            var outRectSize = Helper.GetSize(figure.Transform);
-            var eps = Helper.EPSILON;
-            var kfx = (outRectSize.Width < eps) ? eps : 1 / outRectSize.Width;
-            var kfy = (outRectSize.Height < eps) ? eps : 1 / outRectSize.Height;
             var dx = outRectSize.Width - textBounds.Width - padding.Right;
             var dy = outRectSize.Height - textBounds.Height - padding.Bottom;
             switch (textBlock.Alignment)
@@ -125,6 +137,10 @@ namespace EditorModel.Renderers
                     dx = dx / 2f + padding.Left / 2;
                     break;
             }
+            var eps = Helper.EPSILON;
+            var kfx = (outRectSize.Width < eps) ? eps : 1 / outRectSize.Width;
+            var kfy = (outRectSize.Height < eps) ? eps : 1 / outRectSize.Height;
+            var pts = graphicsPath.PathPoints;
             for (var i = 0; i < pts.Length; i++)
             {
                 pts[i].X = kfx * (pts[i].X - textBounds.Left + dx) - 0.5f;

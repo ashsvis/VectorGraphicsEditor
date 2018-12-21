@@ -53,11 +53,7 @@ namespace EditorModel.Figures
         {
             if (figures == null)
             {
-                _placeHolder = new Figure();
-                _placeHolder.Style.FillStyle.IsVisible = false;
-                _placeHolder.Style.BorderStyle.DashStyle = DashStyle.Dash;
-                FigureBuilder.BuildRectangleGeometry(_placeHolder);
-                _placeHolder.Geometry.Name = "Placeholder";
+                _placeHolder = new Placeholder();
                 figures = new List<Figure> { _placeHolder };
             }
             Style.BorderStyle = null;
@@ -99,10 +95,23 @@ namespace EditorModel.Figures
             foreach (var fig in _figures)
             {
                 fig.Transform.Matrix.Multiply(Transform, MatrixOrder.Append);
-                if (_figures.Count == 1 && fig.Geometry.Name == "Placeholder")
-                    _placeHolder = fig.DeepClone();
+                if (fig is Placeholder) _placeHolder = fig.DeepClone();
             }
             Transform = new SerializableGraphicsMatrix();
         }
     }
+
+    [Serializable]
+    public class Placeholder : Figure
+    {
+        public Placeholder()
+        {
+            Style.FillStyle.IsVisible = false;
+            Style.BorderStyle.DashStyle = DashStyle.Dash;
+            FigureBuilder.BuildRectangleGeometry(this);
+            Geometry.Name = "Placeholder";
+        }
+    }
+
+
 }

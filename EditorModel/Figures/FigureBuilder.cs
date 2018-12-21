@@ -142,7 +142,7 @@ namespace EditorModel.Figures
         public static void BuildPolygoneGeometry(Figure figure)
         {
             figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry() { Name = "Polygone" };
+            figure.Geometry = new PolygoneGeometry() { Name = "Polygon" };
         }
 
         /// <summary>

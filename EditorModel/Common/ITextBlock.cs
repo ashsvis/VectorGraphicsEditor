@@ -32,5 +32,7 @@ namespace EditorModel.Common
 
         Padding Padding { get; set; }
 
+        bool WordWrap { get; set; }
+
     }
 }

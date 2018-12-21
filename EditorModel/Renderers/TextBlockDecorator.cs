@@ -40,6 +40,8 @@ namespace EditorModel.Renderers
 
         public Padding Padding { get; set; }
 
+        public bool WordWrap { get; set; }
+
         public TextBlockDecorator(Renderer renderer, Padding padding)
             : base(renderer)
         {
@@ -59,7 +61,7 @@ namespace EditorModel.Renderers
         /// <returns></returns>
         public GraphicsPath GetTransformedPath(Graphics graphics, Figure figure)
         {
-            return TextRenderer.GetTextBlockTransformedPath(figure, this, Padding);
+            return TextRenderer.GetTextBlockTransformedPath(graphics, figure, this, Padding, WordWrap);
         }
 
         public override void Render(Graphics graphics, Figure figure)
