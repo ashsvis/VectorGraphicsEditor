@@ -42,15 +42,16 @@ namespace EditorModel.Renderers
 
         public bool WordWrap { get; set; }
 
-        public TextBlockDecorator(Renderer renderer, Padding padding)
+        public TextBlockDecorator(Renderer renderer, string text, Padding padding, bool wordWrap = true)
             : base(renderer)
         {
             _renderer = renderer;
-            Text = "TextBlock";
+            Text = text;
             FontName = "Arial";
             FontSize = 14f;
             Alignment = ContentAlignment.MiddleCenter;
             Padding = padding;
+            WordWrap = wordWrap;
         }
 
         /// <summary>

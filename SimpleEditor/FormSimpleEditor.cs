@@ -915,7 +915,7 @@ namespace SimpleEditor
                     foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(TextBlockDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.TextBlock))
-                            figure.Renderer = new TextBlockDecorator(figure.Renderer, new Padding(10));
+                            figure.Renderer = new TextBlockDecorator(figure.Renderer, "Text Block", new Padding(10));
                     }
                     OnLayerChanged();
                 }
