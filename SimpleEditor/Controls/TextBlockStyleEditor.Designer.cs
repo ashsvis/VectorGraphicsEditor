@@ -32,6 +32,10 @@
             this.cbFontName = new System.Windows.Forms.ComboBox();
             this.lbText = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.nudBottom = new System.Windows.Forms.NumericUpDown();
+            this.nudRight = new System.Windows.Forms.NumericUpDown();
+            this.nudLeft = new System.Windows.Forms.NumericUpDown();
+            this.nudTop = new System.Windows.Forms.NumericUpDown();
             this.cbFontSize = new System.Windows.Forms.ComboBox();
             this.btnBottomRightAllign = new System.Windows.Forms.Button();
             this.btnMiddleRightAllign = new System.Windows.Forms.Button();
@@ -45,15 +49,12 @@
             this.btnTextBold = new System.Windows.Forms.Button();
             this.btnMiddleLeftAllign = new System.Windows.Forms.Button();
             this.btnTopLeftAllign = new System.Windows.Forms.Button();
-            this.nudTop = new System.Windows.Forms.NumericUpDown();
-            this.nudLeft = new System.Windows.Forms.NumericUpDown();
-            this.nudRight = new System.Windows.Forms.NumericUpDown();
-            this.nudBottom = new System.Windows.Forms.NumericUpDown();
+            this.cbWrap = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTop)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLeft)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBottom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTop)).BeginInit();
             this.SuspendLayout();
             // 
             // cbFontName
@@ -77,7 +78,7 @@
             this.lbText.Location = new System.Drawing.Point(93, 38);
             this.lbText.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbText.Name = "lbText";
-            this.lbText.Size = new System.Drawing.Size(102, 27);
+            this.lbText.Size = new System.Drawing.Size(50, 27);
             this.lbText.TabIndex = 2;
             this.lbText.Text = "Текст";
             this.lbText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -89,6 +90,7 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.cbWrap);
             this.groupBox1.Controls.Add(this.nudBottom);
             this.groupBox1.Controls.Add(this.nudRight);
             this.groupBox1.Controls.Add(this.nudLeft);
@@ -112,10 +114,42 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(1);
-            this.groupBox1.Size = new System.Drawing.Size(200, 151);
+            this.groupBox1.Size = new System.Drawing.Size(205, 151);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Text Block Style";
+            // 
+            // nudBottom
+            // 
+            this.nudBottom.Location = new System.Drawing.Point(130, 114);
+            this.nudBottom.Name = "nudBottom";
+            this.nudBottom.Size = new System.Drawing.Size(39, 20);
+            this.nudBottom.TabIndex = 13;
+            this.nudBottom.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
+            // 
+            // nudRight
+            // 
+            this.nudRight.Location = new System.Drawing.Point(156, 91);
+            this.nudRight.Name = "nudRight";
+            this.nudRight.Size = new System.Drawing.Size(39, 20);
+            this.nudRight.TabIndex = 13;
+            this.nudRight.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
+            // 
+            // nudLeft
+            // 
+            this.nudLeft.Location = new System.Drawing.Point(93, 91);
+            this.nudLeft.Name = "nudLeft";
+            this.nudLeft.Size = new System.Drawing.Size(39, 20);
+            this.nudLeft.TabIndex = 13;
+            this.nudLeft.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
+            // 
+            // nudTop
+            // 
+            this.nudTop.Location = new System.Drawing.Point(130, 68);
+            this.nudTop.Name = "nudTop";
+            this.nudTop.Size = new System.Drawing.Size(39, 20);
+            this.nudTop.TabIndex = 13;
+            this.nudTop.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
             // 
             // cbFontSize
             // 
@@ -342,37 +376,16 @@
             this.btnTopLeftAllign.UseVisualStyleBackColor = true;
             this.btnTopLeftAllign.Click += new System.EventHandler(this.btnTopLeftAllignClick);
             // 
-            // nudTop
+            // cbWrap
             // 
-            this.nudTop.Location = new System.Drawing.Point(130, 68);
-            this.nudTop.Name = "nudTop";
-            this.nudTop.Size = new System.Drawing.Size(39, 20);
-            this.nudTop.TabIndex = 13;
-            this.nudTop.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
-            // 
-            // nudLeft
-            // 
-            this.nudLeft.Location = new System.Drawing.Point(93, 91);
-            this.nudLeft.Name = "nudLeft";
-            this.nudLeft.Size = new System.Drawing.Size(39, 20);
-            this.nudLeft.TabIndex = 13;
-            this.nudLeft.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
-            // 
-            // nudRight
-            // 
-            this.nudRight.Location = new System.Drawing.Point(156, 91);
-            this.nudRight.Name = "nudRight";
-            this.nudRight.Size = new System.Drawing.Size(39, 20);
-            this.nudRight.TabIndex = 13;
-            this.nudRight.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
-            // 
-            // nudBottom
-            // 
-            this.nudBottom.Location = new System.Drawing.Point(130, 114);
-            this.nudBottom.Name = "nudBottom";
-            this.nudBottom.Size = new System.Drawing.Size(39, 20);
-            this.nudBottom.TabIndex = 13;
-            this.nudBottom.ValueChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
+            this.cbWrap.AutoSize = true;
+            this.cbWrap.Location = new System.Drawing.Point(149, 45);
+            this.cbWrap.Name = "cbWrap";
+            this.cbWrap.Size = new System.Drawing.Size(52, 17);
+            this.cbWrap.TabIndex = 14;
+            this.cbWrap.Text = "Wrap";
+            this.cbWrap.UseVisualStyleBackColor = true;
+            this.cbWrap.CheckedChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
             // 
             // TextBlockStyleEditor
             // 
@@ -382,12 +395,13 @@
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TextBlockStyleEditor";
-            this.Size = new System.Drawing.Size(202, 167);
+            this.Size = new System.Drawing.Size(203, 167);
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudTop)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLeft)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudRight)).EndInit();
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBottom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTop)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -415,5 +429,6 @@
         private System.Windows.Forms.NumericUpDown nudRight;
         private System.Windows.Forms.NumericUpDown nudLeft;
         private System.Windows.Forms.NumericUpDown nudTop;
+        private System.Windows.Forms.CheckBox cbWrap;
     }
 }

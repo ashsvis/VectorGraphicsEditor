@@ -137,6 +137,7 @@
             this.tsmiGlow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTextBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+            this.lbZoom = new System.Windows.Forms.ToolStripLabel();
             this.cbScaleFactor = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbBringToFront = new System.Windows.Forms.ToolStripButton();
@@ -178,7 +179,6 @@
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tvFigures = new System.Windows.Forms.TreeView();
-            this.lbZoom = new System.Windows.Forms.ToolStripLabel();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -286,7 +286,7 @@
             this.tsmCreate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCreate.Name = "tsmCreate";
             this.tsmCreate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmCreate.Size = new System.Drawing.Size(150, 26);
+            this.tsmCreate.Size = new System.Drawing.Size(156, 26);
             this.tsmCreate.Text = "&New";
             this.tsmCreate.Click += new System.EventHandler(this.tsmCreate_Click);
             // 
@@ -611,9 +611,9 @@
             // saveEditorFileDialog
             // 
             this.saveEditorFileDialog.DefaultExt = "vge";
-            this.saveEditorFileDialog.Filter = "Файл редактора (*.vge)|*.vge|Файлы (*.png)|*.png|Файлы (*.jpg)|*.jpg|Файлы (*.emf" +
-    ")|*.emf|Файлы (*.gif)|*.gif|Файлы (*.ico)|*.ico|Файлы (*.tif)|*.tif|Файлы (*.bmp" +
-    ")|*.bmp";
+            this.saveEditorFileDialog.Filter = "Файл редактора (*.vge)|*.vge|Файлы (*.svg)|*.svg|Файлы (*.png)|*.png|Файлы (*.jpg" +
+    ")|*.jpg|Файлы (*.emf)|*.emf|Файлы (*.gif)|*.gif|Файлы (*.ico)|*.ico|Файлы (*.tif" +
+    ")|*.tif|Файлы (*.bmp)|*.bmp";
             // 
             // openEditorFileDialog
             // 
@@ -951,7 +951,7 @@
             this.btnTextBlock.Image = global::SimpleEditor.Properties.Resources.text;
             this.btnTextBlock.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnTextBlock.Name = "btnTextBlock";
-            this.btnTextBlock.Size = new System.Drawing.Size(127, 22);
+            this.btnTextBlock.Size = new System.Drawing.Size(128, 22);
             this.btnTextBlock.Text = "Text Block";
             this.btnTextBlock.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -959,7 +959,7 @@
             // 
             this.btnText.Image = global::SimpleEditor.Properties.Resources.textline;
             this.btnText.Name = "btnText";
-            this.btnText.Size = new System.Drawing.Size(127, 22);
+            this.btnText.Size = new System.Drawing.Size(128, 22);
             this.btnText.Text = "Text";
             this.btnText.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1043,7 +1043,7 @@
             this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(0, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1017, 31);
+            this.tsArrange.Size = new System.Drawing.Size(986, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1072,28 +1072,28 @@
             // tsmiCyrcle
             // 
             this.tsmiCyrcle.Name = "tsmiCyrcle";
-            this.tsmiCyrcle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiCyrcle.Size = new System.Drawing.Size(160, 22);
             this.tsmiCyrcle.Text = "Cyrcle";
             this.tsmiCyrcle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiEllipse
             // 
             this.tsmiEllipse.Name = "tsmiEllipse";
-            this.tsmiEllipse.Size = new System.Drawing.Size(159, 22);
+            this.tsmiEllipse.Size = new System.Drawing.Size(160, 22);
             this.tsmiEllipse.Text = "Ellipse";
             this.tsmiEllipse.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRectangle
             // 
             this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRectangle.Size = new System.Drawing.Size(160, 22);
             this.tsmiRectangle.Text = "Rectangle";
             this.tsmiRectangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRegularTriangle
             // 
             this.tsmiRegularTriangle.Name = "tsmiRegularTriangle";
-            this.tsmiRegularTriangle.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegularTriangle.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegularTriangle.Tag = "3";
             this.tsmiRegularTriangle.Text = "Regular Triangle";
             this.tsmiRegularTriangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1101,14 +1101,14 @@
             // tsmiSquare
             // 
             this.tsmiSquare.Name = "tsmiSquare";
-            this.tsmiSquare.Size = new System.Drawing.Size(159, 22);
+            this.tsmiSquare.Size = new System.Drawing.Size(160, 22);
             this.tsmiSquare.Text = "Square";
             this.tsmiSquare.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
             // tsmiRomb
             // 
             this.tsmiRomb.Name = "tsmiRomb";
-            this.tsmiRomb.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRomb.Size = new System.Drawing.Size(160, 22);
             this.tsmiRomb.Tag = "4";
             this.tsmiRomb.Text = "Romb";
             this.tsmiRomb.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1116,7 +1116,7 @@
             // tsmiRegular5gon
             // 
             this.tsmiRegular5gon.Name = "tsmiRegular5gon";
-            this.tsmiRegular5gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular5gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular5gon.Tag = "5";
             this.tsmiRegular5gon.Text = "Regular 5-gon";
             this.tsmiRegular5gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1124,7 +1124,7 @@
             // tsmiRegular6gon
             // 
             this.tsmiRegular6gon.Name = "tsmiRegular6gon";
-            this.tsmiRegular6gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular6gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular6gon.Tag = "6";
             this.tsmiRegular6gon.Text = "Regular 6-gon";
             this.tsmiRegular6gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1132,7 +1132,7 @@
             // tsmiRegular7gon
             // 
             this.tsmiRegular7gon.Name = "tsmiRegular7gon";
-            this.tsmiRegular7gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular7gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular7gon.Tag = "7";
             this.tsmiRegular7gon.Text = "Regular 7-gon";
             this.tsmiRegular7gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1140,7 +1140,7 @@
             // tsmiRegular8gon
             // 
             this.tsmiRegular8gon.Name = "tsmiRegular8gon";
-            this.tsmiRegular8gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular8gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular8gon.Tag = "8";
             this.tsmiRegular8gon.Text = "Regular 8-gon";
             this.tsmiRegular8gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1148,7 +1148,7 @@
             // tsmiRegular9gon
             // 
             this.tsmiRegular9gon.Name = "tsmiRegular9gon";
-            this.tsmiRegular9gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular9gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular9gon.Tag = "9";
             this.tsmiRegular9gon.Text = "Regular 9-gon";
             this.tsmiRegular9gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1156,7 +1156,7 @@
             // tsmiRegular10gon
             // 
             this.tsmiRegular10gon.Name = "tsmiRegular10gon";
-            this.tsmiRegular10gon.Size = new System.Drawing.Size(159, 22);
+            this.tsmiRegular10gon.Size = new System.Drawing.Size(160, 22);
             this.tsmiRegular10gon.Tag = "10";
             this.tsmiRegular10gon.Text = "Regular 10-gon";
             this.tsmiRegular10gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1232,28 +1232,28 @@
             // tsmiNoneEffects
             // 
             this.tsmiNoneEffects.Name = "tsmiNoneEffects";
-            this.tsmiNoneEffects.Size = new System.Drawing.Size(124, 22);
+            this.tsmiNoneEffects.Size = new System.Drawing.Size(125, 22);
             this.tsmiNoneEffects.Text = "None";
             this.tsmiNoneEffects.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // tsmiShadow
             // 
             this.tsmiShadow.Name = "tsmiShadow";
-            this.tsmiShadow.Size = new System.Drawing.Size(124, 22);
+            this.tsmiShadow.Size = new System.Drawing.Size(125, 22);
             this.tsmiShadow.Text = "Shadow";
             this.tsmiShadow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // tsmiGlow
             // 
             this.tsmiGlow.Name = "tsmiGlow";
-            this.tsmiGlow.Size = new System.Drawing.Size(124, 22);
+            this.tsmiGlow.Size = new System.Drawing.Size(125, 22);
             this.tsmiGlow.Text = "Glow";
             this.tsmiGlow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // tsmiTextBlock
             // 
             this.tsmiTextBlock.Name = "tsmiTextBlock";
-            this.tsmiTextBlock.Size = new System.Drawing.Size(124, 22);
+            this.tsmiTextBlock.Size = new System.Drawing.Size(125, 22);
             this.tsmiTextBlock.Text = "TextBlock";
             this.tsmiTextBlock.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1261,6 +1261,12 @@
             // 
             this.toolStripSeparator19.Name = "toolStripSeparator19";
             this.toolStripSeparator19.Size = new System.Drawing.Size(6, 31);
+            // 
+            // lbZoom
+            // 
+            this.lbZoom.Name = "lbZoom";
+            this.lbZoom.Size = new System.Drawing.Size(42, 28);
+            this.lbZoom.Text = "Zoom:";
             // 
             // cbScaleFactor
             // 
@@ -1698,12 +1704,6 @@
             this.tvFigures.Size = new System.Drawing.Size(275, 208);
             this.tvFigures.TabIndex = 0;
             this.tvFigures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFigures_AfterSelect);
-            // 
-            // lbZoom
-            // 
-            this.lbZoom.Name = "lbZoom";
-            this.lbZoom.Size = new System.Drawing.Size(42, 28);
-            this.lbZoom.Text = "Zoom:";
             // 
             // FormSimpleEditor
             // 

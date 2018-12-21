@@ -62,6 +62,7 @@ namespace SimpleEditor.Controls
             nudTop.Value = textBlockStyles.GetProperty(f => f.Padding.Top);
             nudRight.Value = textBlockStyles.GetProperty(f => f.Padding.Right);
             nudBottom.Value = textBlockStyles.GetProperty(f => f.Padding.Bottom);
+            cbWrap.Checked = textBlockStyles.GetProperty(f => f.WordWrap);
 
             _updating--;
         }
@@ -93,6 +94,7 @@ namespace SimpleEditor.Controls
             var padding = new Padding((int)nudLeft.Value, (int)nudTop.Value, 
                                       (int)nudRight.Value, (int)nudBottom.Value);
             textBlockStyles.SetProperty(f => f.Padding = padding);
+            textBlockStyles.SetProperty(f => f.WordWrap = cbWrap.Checked);
             // fire event
             Changed(this, EventArgs.Empty);
         }
