@@ -149,10 +149,10 @@ namespace EditorModel.Figures
         /// Подключаем к фигуре геометрию ломаной линии
         /// </summary>
         /// <param name="figure"></param>
-        public static void BuildPolylineGeometry(Figure figure)
+        public static void BuildPolylineGeometry(Figure figure, PointF[] points = null)
         {
             figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry(isClosed: false) { Name = "Polyline" };
+            figure.Geometry = new PolygoneGeometry(false, points) { Name = "Polyline" };
         }
 
         /// <summary>
@@ -204,6 +204,12 @@ namespace EditorModel.Figures
         {
             figure.Style.BorderStyle.Width = 0;
             figure.Geometry = new FrameGeometry(startPoint) { Name = "Frame" };
+        }
+
+        public static void BuildAddLineGeometry(Figure figure, Point startPoint)
+        {
+            figure.Style.BorderStyle.Width = 0;
+            figure.Geometry = new AddLineGeometry(startPoint) { Name = "AddLine" };
         }
     }
 }

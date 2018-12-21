@@ -78,12 +78,16 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Конструктор с настройками по умолчанию
         /// </summary>
-        internal PolygoneGeometry(bool isClosed = true)
+        internal PolygoneGeometry(bool isClosed = true, PointF[] points = null)
         {
             IsClosed = isClosed;
             _allowedOperations = AllowedOperations.All ^ AllowedOperations.Pathed;
             var rect = new RectangleF(-0.5f, -0.5f, 1, 1);
-            if (isClosed)
+            if (points != null)
+            {
+                _points = (PointF[])points.Clone();
+            }
+            else if (isClosed)
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),

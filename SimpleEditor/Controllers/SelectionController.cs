@@ -16,6 +16,7 @@ namespace SimpleEditor.Controllers
     {
         Select,
         FrameSelect,
+        AddLine,
         ChangeGeometry,
         Drag,
         CreateFigure,
@@ -273,6 +274,14 @@ namespace SimpleEditor.Controllers
             //создаем новую фигуру
             var newFig = CreateFigureRequest();
             if (newFig == null) return;
+            var pg = newFig.Geometry as PolygoneGeometry;
+            if (pg != null && !pg.IsClosed)
+            {
+                FigureBuilder.BuildAddLineGeometry(_selection, location);
+                EditorMode = EditorMode.AddLine;
+                CreateFigureRequest = null;
+                return;
+            }
             // сразу смещаем на половину размера, чтобы левый верхний угол был в точке мышки
             newFig.Transform.Matrix.Translate(location.X + 0.5f, location.Y + 0.5f);
             _layer.Figures.Add(newFig);
@@ -309,6 +318,12 @@ namespace SimpleEditor.Controllers
                         var frameGeometry = _selection.Geometry as FrameGeometry;
                         if (frameGeometry != null)
                             frameGeometry.EndPoint = point;
+                        break;
+
+                    case EditorMode.AddLine:
+                        var addLineGeometry = _selection.Geometry as AddLineGeometry;
+                        if (addLineGeometry != null)
+                            addLineGeometry.AddPoint(point);
                         break;
 
                     case EditorMode.CreateFigure:
@@ -359,6 +374,15 @@ namespace SimpleEditor.Controllers
                             _selection.PushTransformToSelectedFigures();
                         //
                         OnSelectedFigureChanged();
+                        break;
+                    case EditorMode.AddLine:
+                        // добавляем полилинию
+                        var line = new Figure();
+                        FigureBuilder.BuildPolylineGeometry(line, 
+                            (_selection.Geometry as AddLineGeometry).Points.ToArray());
+                        OnLayerStartChanging();
+                        _layer.Figures.Add(line);
+                        OnLayerChanged();
                         break;
                     // создание предопределённых фигур
                     case EditorMode.CreateFigure:
@@ -883,6 +907,8 @@ namespace SimpleEditor.Controllers
                     return Cursors.Default;
                 case EditorMode.FrameSelect:
                     return CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                case EditorMode.AddLine:
+                    return CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 case EditorMode.CreateFigure:
                     return CreateFigureCursor;
                 // когда тащим фигуры
