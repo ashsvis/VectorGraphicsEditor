@@ -12,7 +12,6 @@ namespace EditorModel.Geometry
     public sealed class PolygoneGeometry : Geometry, IDisposable
     {
         private PointF[] _points;
-        private bool _isClosed = true;
 
         /// <summary>
         /// Локальное поле для хранения пути
@@ -27,11 +26,7 @@ namespace EditorModel.Geometry
         /// <summary>
         /// Признак замкнутого контура фигуры
         /// </summary>
-        public bool IsClosed
-        {
-            get { return _isClosed; }
-            set { _isClosed = value; }
-        }
+        public bool IsClosed { get; set; } = true;
 
         public bool IsSmoothed { get; set; }
 
@@ -91,19 +86,14 @@ namespace EditorModel.Geometry
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width/2, rect.Top),
                         new PointF(rect.Left + rect.Width, rect.Top),
-                        new PointF(rect.Left + rect.Width, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height),
-                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height),
-                        new PointF(rect.Left, rect.Top + rect.Height),
-                        new PointF(rect.Left, rect.Top + rect.Height/2)
+                        new PointF(rect.Left, rect.Top + rect.Height)
                     };
             else
                 _points = new[]
                     {
                         new PointF(rect.Left, rect.Top),
-                        new PointF(rect.Left + rect.Width/2, rect.Top + rect.Height/2),
                         new PointF(rect.Left + rect.Width, rect.Top + rect.Height)
                     };
         }

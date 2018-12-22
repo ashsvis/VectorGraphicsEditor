@@ -10,6 +10,13 @@ namespace EditorModel.Geometry
     {
         public readonly List<PointF> Points = new List<PointF>();
 
+        public PointF EndPoint { get; set; }
+
+        /// <summary>
+        /// Признак замкнутого контура фигуры
+        /// </summary>
+        public bool IsClosed { get; set; } = true;
+
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
@@ -26,7 +33,12 @@ namespace EditorModel.Geometry
             {
                 _path.Path.Reset();
                 if (Points.Count > 0)
+                {
                     _path.Path.AddLines(Points.ToArray());
+                    _path.Path.AddLines(new[] { EndPoint });
+                    if (IsClosed)
+                        _path.Path.CloseFigure();
+                }
                 return _path;
             }
         }
@@ -38,6 +50,7 @@ namespace EditorModel.Geometry
         internal AddLineGeometry(PointF startPoint)
         {
             Points.Add(startPoint);
+            EndPoint = startPoint;
         }
 
         public void Dispose()
@@ -47,7 +60,9 @@ namespace EditorModel.Geometry
 
         public void AddPoint(Point point)
         {
-            Points.Add(point);
+            if (!Points.Contains(point))
+                Points.Add(point);
+            EndPoint = point;
         }
     }
 }

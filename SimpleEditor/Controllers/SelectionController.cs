@@ -151,8 +151,22 @@ namespace SimpleEditor.Controllers
         /// <param name="modifierKeys"></param>
         public void OnDblClick(Point location, Keys modifierKeys)
         {
-            var pt = new PointF(location.X / ScaleFactor, location.Y / ScaleFactor);
-            // stub
+            var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
+            if (RibbonLineUpdated(point))
+            {
+                // добавляем полилинию
+                var line = new Figure();
+                var lineGeometry = _selection.Geometry as AddLineGeometry;
+                if (lineGeometry != null)
+                {
+                    var points = lineGeometry.Points.ToArray();
+                    FigureBuilder.BuildPolyGeometry(line, lineGeometry.IsClosed, points);
+                    OnLayerStartChanging();
+                    _layer.Figures.Add(line);
+                    OnLayerChanged();
+                }
+                return;
+            }
         }
 
         /// <summary>
@@ -179,6 +193,9 @@ namespace SimpleEditor.Controllers
                 _isFigureCreated = true;
                 return;
             }
+
+            if (RibbonLineUpdated(point, true))
+                return;
 
             if (EditorMode != EditorMode.Select &&
                 EditorMode != EditorMode.Skew &&
@@ -265,6 +282,21 @@ namespace SimpleEditor.Controllers
             }
         }
 
+        private bool RibbonLineUpdated(Point point, bool fixing = false)
+        {
+            var addLineGeometry = _selection.Geometry as AddLineGeometry;
+            if (addLineGeometry != null)
+            {
+                if (fixing)
+                    addLineGeometry.AddPoint(point);
+                else
+                    addLineGeometry.EndPoint = point;
+                OnSelectedTransformChanging();
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Создаём новую фигуру
         /// </summary>
@@ -275,9 +307,10 @@ namespace SimpleEditor.Controllers
             var newFig = CreateFigureRequest();
             if (newFig == null) return;
             var pg = newFig.Geometry as PolygoneGeometry;
-            if (pg != null && !pg.IsClosed)
+            if (pg != null)
             {
-                FigureBuilder.BuildAddLineGeometry(_selection, location);
+                if (!(_selection.Geometry is AddLineGeometry))
+                    FigureBuilder.BuildAddLineGeometry(_selection, location, pg.IsClosed);
                 EditorMode = EditorMode.AddLine;
                 CreateFigureRequest = null;
                 return;
@@ -298,8 +331,11 @@ namespace SimpleEditor.Controllers
         public void OnMouseMove(Point location, Keys modifierKeys)
         {
             var point = Point.Ceiling(new PointF(location.X / ScaleFactor, location.Y / ScaleFactor));
-
-            if (!_isMouseDown) return;
+            if (!_isMouseDown)
+            {
+                RibbonLineUpdated(point);
+                return;
+            }
             _wasMouseMoving = true;
 
             // если выбран маркер
@@ -321,9 +357,7 @@ namespace SimpleEditor.Controllers
                         break;
 
                     case EditorMode.AddLine:
-                        var addLineGeometry = _selection.Geometry as AddLineGeometry;
-                        if (addLineGeometry != null)
-                            addLineGeometry.AddPoint(point);
+                        RibbonLineUpdated(point);
                         break;
 
                     case EditorMode.CreateFigure:
@@ -336,10 +370,14 @@ namespace SimpleEditor.Controllers
                         break;
 
                     default:
-                        // показываем, как будет перемещаться список выбранных фигур
-                        var mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
-                        _selection.Translate(mouseOffset.X, mouseOffset.Y);
-                        OnSelectedTransformChanging();
+                        if (EditorMode == EditorMode.Drag) 
+                        {
+                            if (_lastMode == EditorMode.Verticies || _lastMode == EditorMode.Skew) break;
+                            // показываем, как будет перемещаться список выбранных фигур
+                            var mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
+                            _selection.Translate(mouseOffset.X, mouseOffset.Y);
+                            OnSelectedTransformChanging();
+                        }
                         break;
                 }
             }
@@ -376,14 +414,9 @@ namespace SimpleEditor.Controllers
                         OnSelectedFigureChanged();
                         break;
                     case EditorMode.AddLine:
-                        // добавляем полилинию
-                        var line = new Figure();
-                        FigureBuilder.BuildPolylineGeometry(line, 
-                            (_selection.Geometry as AddLineGeometry).Points.ToArray());
-                        OnLayerStartChanging();
-                        _layer.Figures.Add(line);
-                        OnLayerChanged();
-                        break;
+                        RibbonLineUpdated(point, true);
+                        _isMouseDown = false;
+                        return;
                     // создание предопределённых фигур
                     case EditorMode.CreateFigure:
                         _selection.PushTransformToSelectedFigures();

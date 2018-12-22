@@ -7,17 +7,17 @@ namespace EditorModel.Geometry
     /// Содержит геометрию фиксированной формы
     /// </summary>
     [Serializable]
-    public class PrimitiveGeometry : Geometry, IDisposable
+    public sealed class PrimitiveGeometry : Geometry, IDisposable
     {
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
-        protected readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+        readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
 
         /// <summary>
         /// Локальное поле для хранения ограничений для операций
         /// </summary>
-        protected readonly AllowedOperations _allowedOperations;
+        readonly AllowedOperations _allowedOperations;
 
         /// <summary>
         /// Свойство возвращает путь, указанный в конструкторе

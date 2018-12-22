@@ -188,7 +188,7 @@ namespace UnitTestProjectForEditorModel
             polygon.Transform.Matrix.Translate(100, 50);
             polygon.Transform.Matrix.Scale(160, 80);
             // настраиваем геометрию на квадрат
-            FigureBuilder.BuildPolygoneGeometry(polygon);
+            FigureBuilder.BuildPolyGeometry(polygon);
             // проверим, что все внутренние классы были подключены
             CheckInternalClassesConnection(polygon);
             polygon = SerializeDeserialize(polygon);

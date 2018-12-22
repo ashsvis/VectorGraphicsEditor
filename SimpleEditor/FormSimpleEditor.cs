@@ -291,8 +291,7 @@ namespace SimpleEditor
         {
             // состояние курсора обрабатывается вне зависимости от нажатых клавиш мышки
             Cursor = _selectionController.GetCursor(e.Location, ModifierKeys, e.Button);
-            if (e.Button == MouseButtons.Left)
-                _selectionController.OnMouseMove(e.Location, ModifierKeys);
+            _selectionController.OnMouseMove(e.Location, ModifierKeys);
         }
 
         /// <summary>
@@ -369,17 +368,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildPolylineGeometry(fig);
-                    return fig;
-                };
-            }
-            else if (sender == btnPolygone)
-            {
-                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
-                figureCreator = () =>
-                {
-                    var fig = new Figure();
-                    FigureBuilder.BuildPolygoneGeometry(fig);
+                    FigureBuilder.BuildPolyGeometry(fig, false);
                     return fig;
                 };
             }
@@ -954,11 +943,11 @@ namespace SimpleEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tsmCloneFigure_Click(object sender, EventArgs e)
+        private void tsmDuplicateFigure_Click(object sender, EventArgs e)
         {
             var exists = _selectionController.Selection.Count > 0;
             if (!exists) return;
-            OnLayerStartChanging("Clone Selected Figures");
+            OnLayerStartChanging("Duplicate Selected Figures");
             var list = new List<Figure>();
             foreach (var fig in _selectionController.Selection.Select(figure => figure.DeepClone()))
             {

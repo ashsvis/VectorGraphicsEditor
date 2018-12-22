@@ -136,23 +136,13 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
-        /// Подключаем к фигуре геометрию полигона
-        /// </summary>
-        /// <param name="figure"></param>
-        public static void BuildPolygoneGeometry(Figure figure)
-        {
-            figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry() { Name = "Polygon" };
-        }
-
-        /// <summary>
         /// Подключаем к фигуре геометрию ломаной линии
         /// </summary>
         /// <param name="figure"></param>
-        public static void BuildPolylineGeometry(Figure figure, PointF[] points = null)
+        public static void BuildPolyGeometry(Figure figure, bool isClosed = true, PointF[] points = null)
         {
-            figure.Style.FillStyle.IsVisible = false;
-            figure.Geometry = new PolygoneGeometry(false, points) { Name = "Polyline" };
+            figure.Style.FillStyle.IsVisible = isClosed;
+            figure.Geometry = new PolygoneGeometry(isClosed, points) { Name = isClosed ? "Polygon" : "Polyline" };
         }
 
         /// <summary>
@@ -206,10 +196,10 @@ namespace EditorModel.Figures
             figure.Geometry = new FrameGeometry(startPoint) { Name = "Frame" };
         }
 
-        public static void BuildAddLineGeometry(Figure figure, Point startPoint)
+        public static void BuildAddLineGeometry(Figure figure, Point startPoint, bool isClosed)
         {
             figure.Style.BorderStyle.Width = 0;
-            figure.Geometry = new AddLineGeometry(startPoint) { Name = "AddLine" };
+            figure.Geometry = new AddLineGeometry(startPoint) { Name = "AddLine", IsClosed = isClosed };
         }
     }
 }
