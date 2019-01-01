@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using EditorModel.Geometry;
@@ -73,6 +72,7 @@ namespace EditorModel.Common
 
         public static void ExportToSvg(string fileName, Layer layer)
         {
+            var fp = System.Globalization.CultureInfo.GetCultureInfo("en-US");
             var list = new List<string>
             {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
@@ -83,7 +83,7 @@ namespace EditorModel.Common
             foreach (var fig in layer.Figures)
             {
                 var stroke = fig.Style.BorderStyle != null && fig.Style.BorderStyle.IsVisible ?
-                    string.Format("stroke:{0};stroke-width:{1};", 
+                    string.Format(fp, "stroke:{0};stroke-width:{1};", 
                        fig.Style.BorderStyle.Color.ToKnownColor().ToString().ToLower(), fig.Style.BorderStyle.Width) : "";
                 var fill = fig.Style.FillStyle != null && fig.Style.FillStyle.IsVisible ?
                     string.Format("fill:{0};", fig.Style.FillStyle.Color.ToKnownColor().ToString().ToLower()) : "fill:none;";
@@ -91,44 +91,30 @@ namespace EditorModel.Common
                 var style = string.Format("style=\"{0}{1}\"", fill, stroke.TrimEnd(';'));
                 var rect = fig.GetTransformedPath().Path.GetBounds();
                 var m = fig.Transform.Matrix.Elements;
-                var transform = string.Format("transform=\"matrix({0}, {1}, {2}, {3}, {4}, {5})\"", 
+                var transform = string.Format(fp, "transform=\"matrix({0}, {1}, {2}, {3}, {4}, {5})\"", 
                                               m[0], m[1], m[2], m[3], m[4], m[5]);
-                var rx = rect.Width / 2f;
-                var ry = rect.Height / 2f;
-                float cx, cy;
                 switch (fig.Geometry.Name)
                 {
                     case "Rectangle":
                     case "Square":
-                        list.Add(string.Format("<rect x=\"{0}\" y=\"{1}\" width=\"{2}\" height=\"{3}\" {4} {5}/>",
-                                               rect.X, rect.Y, rect.Width, rect.Height, style, transform));
-                        //list.Add(string.Format("<rect x=\"-0.5\" y=\"-0.5\" width=\"1\" height=\"1\" {0} {1}/>",
-                        //                       transform, style));
+                        list.Add(string.Format("<rect x=\"-0.5\" y=\"-0.5\" width=\"1\" height=\"1\" {0} {1}/>",
+                                               transform, style));
                         break;
                     case "Ellipse":
-                        cx = rect.X + rx;
-                        cy = rect.Y + ry;
-                        list.Add(string.Format("<ellipse cx=\"{0}\" cy=\"{1}\" rx=\"{2}\" ry=\"{3}\" {4}/>",
-                                               cx, cy, rx, ry, style));
-                        //list.Add(string.Format("<ellipse cx=\"0.5\" cy=\"0.5\" rx=\"0.5\" ry=\"0.5\" {0} {1}/>",
-                        //                       transform, style));
+                        list.Add(string.Format("<ellipse cx=\"0\" cy=\"0\" rx=\"0.5\" ry=\"0.5\" {0} {1}/>",
+                                               transform, style));
                         break;
                     case "Circle":
-                        var r = rx;
-                        cx = rect.X + rx;
-                        cy = rect.Y + rx;
-                        list.Add(string.Format("<circle cx=\"{0}\" cy=\"{1}\" r=\"{2}\" {3}/>", 
-                            cx, cy, r, style));
+                        list.Add(string.Format("<circle cx=\"0\" cy=\"0\" r=\"0.5\" {0} {1}/>",
+                             transform, style));
                         break;
                     case "Polygon":
                     case "Polyline":
                         var pg = fig.Geometry as PolygoneGeometry;
-                        var points = (PointF[])pg.Points.Clone();
                         var sb = new StringBuilder();
-                        fig.Transform.Matrix.TransformPoints(points);
-                        foreach (var pt in points)
-                            sb.AppendFormat("{0},{1} ", pt.X, pt.Y);
-                        list.Add(string.Format("<{0} points=\"{1}\" {2}/>", fig.Geometry.Name.ToLower(), sb, style));
+                        foreach (var pt in pg.Points)
+                            sb.AppendFormat(fp, "{0},{1} ", pt.X, pt.Y);
+                        list.Add(string.Format("<{0} points=\"{1}\" {2} {3}/>", fig.Geometry.ToString().ToLower(), sb, transform, style));
                         break;
                 }
             }
