@@ -309,6 +309,8 @@ namespace EditorModel.Selections
                                     fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)))
             {
                 var pathPoints = fig.Geometry.Path.Path.PathPoints;
+                fig.Transform.Matrix.TransformPoints(pathPoints);
+                fig.Transform.Matrix = new Matrix();
                 fig.Geometry = new PolygoneGeometry() { Name = "Polygon" };
                 (fig.Geometry as PolygoneGeometry).Points = pathPoints;
             }

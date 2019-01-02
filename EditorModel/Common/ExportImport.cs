@@ -5,6 +5,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using EditorModel.Geometry;
+using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace EditorModel.Common
 {
@@ -96,31 +98,32 @@ namespace EditorModel.Common
                     string.Format("fill:{0};", ColorToStr(fig.Style.FillStyle.Color)) : "fill:none;";
 
                 var style = string.Format("style=\"{0}{1}\"", fill, stroke);
-                //var rect = fig.GetTransformedPath().Path.GetBounds();
-                var points = fig.GetTransformedPath().Path.PathPoints;
-                var prim = new StringBuilder();
-                foreach (var pt in points)
-                    prim.AppendFormat(fp, "{0},{1} ", pt.X, pt.Y);
-                var m = fig.Transform.Matrix.Elements;
-                var transform = string.Format(fp, "transform=\"matrix({0}, {1}, {2}, {3}, {4}, {5})\"", 
-                                              m[0], m[1], m[2], m[3], m[4], m[5]);
-                switch (fig.Geometry.ToString())
+                var pathPoints = fig.Geometry.Path.Path.PathPoints;
+                var pathTypes = fig.Geometry.Path.Path.PathTypes;
+                fig.Transform.Matrix.TransformPoints(pathPoints);
+                var pg = new PolygoneGeometry();
+                pg.Points = pathPoints;
+                var sb = new StringBuilder();
+                sb.AppendFormat(fp, "M{0} {1}", pg.Points[0].X, pg.Points[0].Y);
+                var nt = 0;
+                for (var i = 1; i < pathPoints.Length; i++)
                 {
-                    case "Rectangle":
-                    case "Square":
-                    case "Ellipse":
-                    case "Circle":
-                        list.Add(string.Format("<polygon points=\"{1}\" {2}/>", fig.Geometry.ToString().ToLower(), prim, style));
-                        break;
-                    case "Polygon":
-                    case "Polyline":
-                        var pg = fig.Geometry as PolygoneGeometry;
-                        var sb = new StringBuilder();
-                        foreach (var pt in pg.Points)
-                            sb.AppendFormat(fp, "{0},{1} ", pt.X, pt.Y);
-                        list.Add(string.Format("<{0} points=\"{1}\" {2} {3}/>", fig.Geometry.ToString().ToLower(), sb, transform, style));
-                        break;
+                    var pt = pathPoints[i];
+                    var typ = pathTypes[i];
+                    if ((typ & 0x7f) == 3)
+                    {
+                        sb.AppendFormat(fp, "{0} {1} {2}", (nt % 3 == 0 ? " C" : ","), pt.X, pt.Y);
+                        nt++;
+                    }
+                    else if ((typ & 0x7f) == 1)
+                    {
+                        sb.AppendFormat(fp, " L {0} {1}", pt.X, pt.Y);
+                        nt = 0;
+                    }
                 }
+                if (new[] { "Rectangle", "Square", "Chord", "Pie", "Polygon" }.Contains(fig.Geometry.ToString()))
+                    sb.Append(" Z");
+                list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
             }
             list.Add("</svg>");
             File.WriteAllLines(fileName, list, Encoding.UTF8);
