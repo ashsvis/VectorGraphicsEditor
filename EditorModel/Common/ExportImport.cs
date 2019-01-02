@@ -70,6 +70,13 @@ namespace EditorModel.Common
             return string.Format("{0:X}{1:X}{2:X}", color.R, color.G, color.B).ToLower();
         }
 
+        private static string ColorToStr(Color color)
+        {
+            return color.IsKnownColor 
+                ? color.ToKnownColor().ToString().ToLower()
+                : string.Format("rgb({0},{1},{2})", color.R, color.G, color.B);
+        }
+
         public static void ExportToSvg(string fileName, Layer layer)
         {
             var fp = System.Globalization.CultureInfo.GetCultureInfo("en-US");
@@ -83,30 +90,27 @@ namespace EditorModel.Common
             foreach (var fig in layer.Figures)
             {
                 var stroke = fig.Style.BorderStyle != null && fig.Style.BorderStyle.IsVisible ?
-                    string.Format(fp, "stroke:{0};stroke-width:{1};", 
-                       fig.Style.BorderStyle.Color.ToKnownColor().ToString().ToLower(), fig.Style.BorderStyle.Width) : "";
+                    string.Format(fp, "stroke:{0};stroke-width:{1};",
+                       ColorToStr(fig.Style.BorderStyle.Color), fig.Style.BorderStyle.Width) : "";
                 var fill = fig.Style.FillStyle != null && fig.Style.FillStyle.IsVisible ?
-                    string.Format("fill:{0};", fig.Style.FillStyle.Color.ToKnownColor().ToString().ToLower()) : "fill:none;";
+                    string.Format("fill:{0};", ColorToStr(fig.Style.FillStyle.Color)) : "fill:none;";
 
-                var style = string.Format("style=\"{0}{1}\"", fill, stroke.TrimEnd(';'));
-                var rect = fig.GetTransformedPath().Path.GetBounds();
+                var style = string.Format("style=\"{0}{1}\"", fill, stroke);
+                //var rect = fig.GetTransformedPath().Path.GetBounds();
+                var points = fig.GetTransformedPath().Path.PathPoints;
+                var prim = new StringBuilder();
+                foreach (var pt in points)
+                    prim.AppendFormat(fp, "{0},{1} ", pt.X, pt.Y);
                 var m = fig.Transform.Matrix.Elements;
                 var transform = string.Format(fp, "transform=\"matrix({0}, {1}, {2}, {3}, {4}, {5})\"", 
                                               m[0], m[1], m[2], m[3], m[4], m[5]);
-                switch (fig.Geometry.Name)
+                switch (fig.Geometry.ToString())
                 {
                     case "Rectangle":
                     case "Square":
-                        list.Add(string.Format("<rect x=\"-0.5\" y=\"-0.5\" width=\"1\" height=\"1\" {0} {1}/>",
-                                               transform, style));
-                        break;
                     case "Ellipse":
-                        list.Add(string.Format("<ellipse cx=\"0\" cy=\"0\" rx=\"0.5\" ry=\"0.5\" {0} {1}/>",
-                                               transform, style));
-                        break;
                     case "Circle":
-                        list.Add(string.Format("<circle cx=\"0\" cy=\"0\" r=\"0.5\" {0} {1}/>",
-                             transform, style));
+                        list.Add(string.Format("<polygon points=\"{1}\" {2}/>", fig.Geometry.ToString().ToLower(), prim, style));
                         break;
                     case "Polygon":
                     case "Polyline":
