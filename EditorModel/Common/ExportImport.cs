@@ -104,6 +104,7 @@ namespace EditorModel.Common
                 {
                     var pathPoints = fig.Geometry.Path.Path.PathPoints;
                     var pathTypes = fig.Geometry.Path.Path.PathTypes;
+                    var hasMarkers = pathTypes.Any(item => (item & 0x20) > 0);
                     fig.Transform.Matrix.TransformPoints(pathPoints);
                     var sb = new StringBuilder();
                     sb.AppendFormat(fp, "M{0} {1}", pathPoints[0].X, pathPoints[0].Y);
@@ -122,16 +123,19 @@ namespace EditorModel.Common
                             sb.AppendFormat(fp, " L {0} {1}", pt.X, pt.Y);
                             nt = 0;
                         }
-                        if ((typ & 0x80) > 0)
+                        if (hasMarkers && (typ & 0xA0) == 0xA0 ||
+                            !hasMarkers && ((typ & 0x80) == 0x80 || i == pathPoints.Length - 1))
                         {
-                            var pg = fig.Geometry as PolygoneGeometry;
-                            if (pg == null || pg != null && pg.IsClosed)
+                            if ((typ & 0x80) == 0x80)
                                 sb.Append(" Z");
-                            list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
+                            if (hasMarkers && (typ & 0xA0) == 0xA0)
+                                list.Add(string.Format("<path fill-rule=\"evenodd\" d=\"{0}\" {1}/>", sb, style));
+                            else
+                                list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
+                            sb.Clear();
                         }
                         else if (typ == 0)
                         {
-                            sb.Clear();
                             sb.AppendFormat(fp, "M{0} {1}", pathPoints[i].X, pathPoints[i].Y);
                             nt = 0;
                         }
