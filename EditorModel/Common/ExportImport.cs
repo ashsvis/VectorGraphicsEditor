@@ -7,6 +7,7 @@ using System.Text;
 using EditorModel.Geometry;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using EditorModel.Renderers;
 
 namespace EditorModel.Common
 {
@@ -98,32 +99,44 @@ namespace EditorModel.Common
                     string.Format("fill:{0};", ColorToStr(fig.Style.FillStyle.Color)) : "fill:none;";
 
                 var style = string.Format("style=\"{0}{1}\"", fill, stroke);
-                var pathPoints = fig.Geometry.Path.Path.PathPoints;
-                var pathTypes = fig.Geometry.Path.Path.PathTypes;
-                fig.Transform.Matrix.TransformPoints(pathPoints);
-                var pg = new PolygoneGeometry();
-                pg.Points = pathPoints;
-                var sb = new StringBuilder();
-                sb.AppendFormat(fp, "M{0} {1}", pg.Points[0].X, pg.Points[0].Y);
-                var nt = 0;
-                for (var i = 1; i < pathPoints.Length; i++)
+
+                if (RendererDecorator.GetBaseRenderer(fig.Renderer) is DefaultRenderer)
                 {
-                    var pt = pathPoints[i];
-                    var typ = pathTypes[i];
-                    if ((typ & 0x7f) == 3)
+                    var pathPoints = fig.Geometry.Path.Path.PathPoints;
+                    var pathTypes = fig.Geometry.Path.Path.PathTypes;
+                    fig.Transform.Matrix.TransformPoints(pathPoints);
+                    var sb = new StringBuilder();
+                    sb.AppendFormat(fp, "M{0} {1}", pathPoints[0].X, pathPoints[0].Y);
+                    var nt = 0;
+                    for (var i = 1; i < pathPoints.Length; i++)
                     {
-                        sb.AppendFormat(fp, "{0} {1} {2}", (nt % 3 == 0 ? " C" : ","), pt.X, pt.Y);
-                        nt++;
-                    }
-                    else if ((typ & 0x7f) == 1)
-                    {
-                        sb.AppendFormat(fp, " L {0} {1}", pt.X, pt.Y);
-                        nt = 0;
+                        var pt = pathPoints[i];
+                        var typ = pathTypes[i];
+                        if ((typ & 0x07) == 3)
+                        {
+                            sb.AppendFormat(fp, "{0} {1} {2}", (nt % 3 == 0 ? " C" : ","), pt.X, pt.Y);
+                            nt++;
+                        }
+                        else if ((typ & 0x07) == 1)
+                        {
+                            sb.AppendFormat(fp, " L {0} {1}", pt.X, pt.Y);
+                            nt = 0;
+                        }
+                        if ((typ & 0x80) > 0)
+                        {
+                            var pg = fig.Geometry as PolygoneGeometry;
+                            if (pg == null || pg != null && pg.IsClosed)
+                                sb.Append(" Z");
+                            list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
+                        }
+                        else if (typ == 0)
+                        {
+                            sb.Clear();
+                            sb.AppendFormat(fp, "M{0} {1}", pathPoints[i].X, pathPoints[i].Y);
+                            nt = 0;
+                        }
                     }
                 }
-                if (new[] { "Rectangle", "Square", "Chord", "Pie", "Polygon" }.Contains(fig.Geometry.ToString()))
-                    sb.Append(" Z");
-                list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
             }
             list.Add("</svg>");
             File.WriteAllLines(fileName, list, Encoding.UTF8);
