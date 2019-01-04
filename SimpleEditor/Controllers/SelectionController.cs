@@ -160,7 +160,10 @@ namespace SimpleEditor.Controllers
                 if (lineGeometry != null)
                 {
                     var points = lineGeometry.Points.ToArray();
-                    FigureBuilder.BuildPolyGeometry(line, lineGeometry.IsClosed, points);
+                    if (lineGeometry.IsSmoothed)
+                        FigureBuilder.BuildCurveGeometry(line, lineGeometry.Path.Path.PathPoints, lineGeometry.Path.Path.PathTypes);
+                    else
+                        FigureBuilder.BuildPolyGeometry(line, lineGeometry.IsClosed, points);
                     OnLayerStartChanging();
                     _layer.Figures.Add(line);
                     OnLayerChanged();
@@ -310,7 +313,16 @@ namespace SimpleEditor.Controllers
             if (pg != null)
             {
                 if (!(_selection.Geometry is AddLineGeometry))
-                    FigureBuilder.BuildAddLineGeometry(_selection, location, pg.IsClosed);
+                    FigureBuilder.BuildAddLineGeometry(_selection, location, pg.IsClosed, false);
+                EditorMode = EditorMode.AddLine;
+                CreateFigureRequest = null;
+                return;
+            }
+            var cg = newFig.Geometry as BezierGeometry;
+            if (cg != null)
+            {
+                if (!(_selection.Geometry is AddLineGeometry))
+                    FigureBuilder.BuildAddLineGeometry(_selection, location, cg.IsClosed, true);
                 EditorMode = EditorMode.AddLine;
                 CreateFigureRequest = null;
                 return;

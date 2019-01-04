@@ -178,6 +178,7 @@
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tvFigures = new System.Windows.Forms.TreeView();
+            this.btnBezier = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -203,7 +204,7 @@
             this.tsmSelectAll.Enabled = false;
             this.tsmSelectAll.Name = "tsmSelectAll";
             this.tsmSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmSelectAll.Size = new System.Drawing.Size(184, 26);
+            this.tsmSelectAll.Size = new System.Drawing.Size(166, 26);
             this.tsmSelectAll.Text = "Select &all";
             // 
             // toolStripSeparator9
@@ -258,7 +259,7 @@
             this.tsmEditMenu});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(204, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(84, 24);
             this.menuStripMain.TabIndex = 0;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -382,7 +383,7 @@
             this.tsmUndo.Image = global::SimpleEditor.Properties.Resources.undo;
             this.tsmUndo.Name = "tsmUndo";
             this.tsmUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmUndo.Size = new System.Drawing.Size(184, 26);
+            this.tsmUndo.Size = new System.Drawing.Size(166, 26);
             this.tsmUndo.Text = "&Undo";
             this.tsmUndo.Click += new System.EventHandler(this.tsmUndo_Click);
             // 
@@ -392,20 +393,20 @@
             this.tsmRedo.Image = global::SimpleEditor.Properties.Resources.redo;
             this.tsmRedo.Name = "tsmRedo";
             this.tsmRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.tsmRedo.Size = new System.Drawing.Size(184, 26);
+            this.tsmRedo.Size = new System.Drawing.Size(166, 26);
             this.tsmRedo.Text = "&Redo";
             this.tsmRedo.Click += new System.EventHandler(this.tsmRedo_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(163, 6);
             // 
             // tsmDuplicateFigure
             // 
             this.tsmDuplicateFigure.Image = global::SimpleEditor.Properties.Resources.double1;
             this.tsmDuplicateFigure.Name = "tsmDuplicateFigure";
-            this.tsmDuplicateFigure.Size = new System.Drawing.Size(184, 26);
+            this.tsmDuplicateFigure.Size = new System.Drawing.Size(166, 26);
             this.tsmDuplicateFigure.Text = "Duplicate";
             this.tsmDuplicateFigure.Click += new System.EventHandler(this.tsmDuplicateFigure_Click);
             // 
@@ -416,7 +417,7 @@
             this.tsmCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCut.Name = "tsmCut";
             this.tsmCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsmCut.Size = new System.Drawing.Size(184, 26);
+            this.tsmCut.Size = new System.Drawing.Size(166, 26);
             this.tsmCut.Text = "Cu&t";
             this.tsmCut.Click += new System.EventHandler(this.tsbCut_Click);
             // 
@@ -427,7 +428,7 @@
             this.tsmCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmCopy.Name = "tsmCopy";
             this.tsmCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmCopy.Size = new System.Drawing.Size(184, 26);
+            this.tsmCopy.Size = new System.Drawing.Size(166, 26);
             this.tsmCopy.Text = "&Copy";
             this.tsmCopy.Click += new System.EventHandler(this.tsbCopy_Click);
             // 
@@ -438,7 +439,7 @@
             this.tsmPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsmPaste.Name = "tsmPaste";
             this.tsmPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmPaste.Size = new System.Drawing.Size(184, 26);
+            this.tsmPaste.Size = new System.Drawing.Size(166, 26);
             this.tsmPaste.Text = "&Paste";
             this.tsmPaste.Click += new System.EventHandler(this.tsmPaste_Click);
             // 
@@ -447,14 +448,14 @@
             this.tsmDelete.Image = global::SimpleEditor.Properties.Resources.delete;
             this.tsmDelete.Name = "tsmDelete";
             this.tsmDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmDelete.Size = new System.Drawing.Size(184, 26);
+            this.tsmDelete.Size = new System.Drawing.Size(166, 26);
             this.tsmDelete.Text = "Delete";
             this.tsmDelete.Click += new System.EventHandler(this.tsmDelete_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(163, 6);
             // 
             // toolStripFile
             // 
@@ -674,7 +675,7 @@
             this.tsbCreateTools.Location = new System.Drawing.Point(0, 0);
             this.tsbCreateTools.Name = "tsbCreateTools";
             this.tsbCreateTools.Padding = new System.Windows.Forms.Padding(0);
-            this.tsbCreateTools.Size = new System.Drawing.Size(32, 215);
+            this.tsbCreateTools.Size = new System.Drawing.Size(32, 234);
             this.tsbCreateTools.Stretch = true;
             this.tsbCreateTools.TabIndex = 8;
             // 
@@ -732,7 +733,8 @@
             // 
             this.tsbPolyline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbPolyline.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnPolyline});
+            this.btnPolyline,
+            this.btnBezier});
             this.tsbPolyline.Image = global::SimpleEditor.Properties.Resources.polyline;
             this.tsbPolyline.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbPolyline.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1694,6 +1696,14 @@
             this.tvFigures.TabIndex = 0;
             this.tvFigures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFigures_AfterSelect);
             // 
+            // btnBezier
+            // 
+            this.btnBezier.Image = global::SimpleEditor.Properties.Resources.bezier;
+            this.btnBezier.Name = "btnBezier";
+            this.btnBezier.Size = new System.Drawing.Size(180, 22);
+            this.btnBezier.Text = "Bezier";
+            this.btnBezier.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            // 
             // FormSimpleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1887,6 +1897,7 @@
         private System.Windows.Forms.ToolStripComboBox cbScaleFactor;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripLabel lbZoom;
+        private System.Windows.Forms.ToolStripMenuItem btnBezier;
     }
 }
 

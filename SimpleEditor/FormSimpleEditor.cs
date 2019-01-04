@@ -372,6 +372,16 @@ namespace SimpleEditor
                     return fig;
                 };
             }
+            else if (sender == btnBezier)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePolyline);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildCurveGeometry(fig, new PointF[] { }, new byte[] { });
+                    return fig;
+                };
+            }
             else if (sender == btnRectangle || sender == tsbRect)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateRect);

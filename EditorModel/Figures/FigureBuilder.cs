@@ -151,7 +151,7 @@ namespace EditorModel.Figures
         /// <param name="figure"></param>
         public static void BuildCurveGeometry(Figure figure, PointF[] points, byte[] types)
         {
-            figure.Geometry = new CurveGeometry(points, types) { Name = "Curve" };
+            figure.Geometry = new BezierGeometry(points, types) { Name = "Bezier" };
         }
 
         /// <summary>
@@ -205,10 +205,15 @@ namespace EditorModel.Figures
             figure.Geometry = new FrameGeometry(startPoint) { Name = "Frame" };
         }
 
-        public static void BuildAddLineGeometry(Figure figure, Point startPoint, bool isClosed)
+        public static void BuildAddLineGeometry(Figure figure, Point startPoint, bool isClosed, bool isSmoothed)
         {
             figure.Style.BorderStyle.Width = 0;
-            figure.Geometry = new AddLineGeometry(startPoint) { Name = "AddLine", IsClosed = isClosed };
+            figure.Geometry = new AddLineGeometry(startPoint)
+            {
+                Name = "AddLine",
+                IsClosed = isClosed,
+                IsSmoothed = isSmoothed
+            };
         }
     }
 }

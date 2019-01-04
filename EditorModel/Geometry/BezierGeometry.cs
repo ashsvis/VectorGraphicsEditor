@@ -11,7 +11,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию кривой
     /// </summary>
     [Serializable]
-    public sealed class CurveGeometry : Geometry, IDisposable, ITransformedGeometry
+    public sealed class BezierGeometry : Geometry, IDisposable, ITransformedGeometry
     {
         private PointF[] _points;
         private byte[] _types;
@@ -26,7 +26,7 @@ namespace EditorModel.Geometry
         /// </summary>
         private readonly AllowedOperations _allowedOperations;
 
-        internal CurveGeometry(PointF[] points, byte[] types)
+        internal BezierGeometry(PointF[] points, byte[] types)
         {
             _allowedOperations = AllowedOperations.All ^ AllowedOperations.Pathed;
             Points = points;
@@ -67,7 +67,7 @@ namespace EditorModel.Geometry
         {
             get
             {
-                return (_types.Last() & 0x80) > 0;
+                return _types.Length > 0  && (_types.Last() & 0x80) > 0;
             }
         }
 
@@ -104,7 +104,7 @@ namespace EditorModel.Geometry
 
         public override string ToString()
         {
-            return "Curve";
+            return "Bezier";
         }
 
         public void Dispose()

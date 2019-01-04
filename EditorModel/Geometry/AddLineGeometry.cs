@@ -17,6 +17,8 @@ namespace EditorModel.Geometry
         /// </summary>
         public bool IsClosed { get; set; } = true;
 
+        public bool IsSmoothed { get; set; }
+
         /// <summary>
         /// Локальное поле для хранения пути
         /// </summary>
@@ -34,10 +36,22 @@ namespace EditorModel.Geometry
                 _path.Path.Reset();
                 if (Points.Count > 0)
                 {
-                    _path.Path.AddLines(Points.ToArray());
-                    _path.Path.AddLines(new[] { EndPoint });
-                    if (IsClosed)
-                        _path.Path.CloseFigure();
+                    if (IsSmoothed)
+                    {
+                        var list = new List<PointF>(Points);
+                        list.AddRange(new[] { EndPoint });
+                        if (list.Count > 2)
+                            _path.Path.AddCurve(list.ToArray());
+                        else
+                            _path.Path.AddLines(list.ToArray());
+                    }
+                    else
+                    {
+                        _path.Path.AddLines(Points.ToArray());
+                        _path.Path.AddLines(new[] { EndPoint });
+                        if (IsClosed)
+                            _path.Path.CloseFigure();
+                    }
                 }
                 return _path;
             }
