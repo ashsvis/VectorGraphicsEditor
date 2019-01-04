@@ -332,18 +332,18 @@ namespace EditorModel.Selections
             if (!allowVertex)
                 return; //не можем менять положение вершин
 
-            var polygone = owner.Geometry as PolygoneGeometry;
-            if (polygone == null)
+            var transformed = owner.Geometry as ITransformedGeometry;
+            if (transformed == null)
                 return; //работаем только с полигонами
 
             //get points in world coordinates
-            var points = polygone.GetTransformedPoints(owner);
+            var points = transformed.GetTransformedPoints(owner);
 
             //move point
             points[index] = newPosition; // todo: после удаления вершины здесь иногда возникает ошибка индекса 
 
             //push
-            polygone.SetTransformedPoints(owner, points);
+            transformed.SetTransformedPoints(owner, points);
             //
             GrabGeometry();
         }

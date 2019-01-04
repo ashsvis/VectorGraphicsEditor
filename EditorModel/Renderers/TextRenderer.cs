@@ -104,6 +104,7 @@ namespace EditorModel.Renderers
                     graphicsPath.AddLine(PointF.Empty, PointF.Empty);
             }
             var textBounds = graphicsPath.GetBounds();
+            if (textBounds.IsEmpty) return new GraphicsPath();
             var dx = outRectSize.Width - textBounds.Width - padding.Right;
             var dy = outRectSize.Height - textBounds.Height - padding.Bottom;
             switch (textBlock.Alignment)

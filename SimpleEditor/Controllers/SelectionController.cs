@@ -823,12 +823,12 @@ namespace SimpleEditor.Controllers
                     // создаём маркеры на вершинах фигур
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Vertex)) //если разрешено редактирование вершин
                     {
-                        foreach (var fig in _selection.Where(figure => figure.Geometry is PolygoneGeometry))
+                        foreach (var fig in _selection.Where(figure => figure.Geometry is ITransformedGeometry))
                         {
-                            var polygone = fig.Geometry as PolygoneGeometry;
+                            var transformed = fig.Geometry as ITransformedGeometry;
                             //get transformed points
-                            if (polygone == null) continue;
-                            var points = polygone.GetTransformedPoints(fig);
+                            if (transformed == null) continue;
+                            var points = transformed.GetTransformedPoints(fig);
                             for (var i = 0; i < points.Length; i++)
                                 Markers.Add(CreateMarker(MarkerType.Vertex, points[i], i, fig));
                         }

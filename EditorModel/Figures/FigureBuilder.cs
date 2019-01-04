@@ -146,6 +146,15 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
+        /// Подключаем к фигуре геометрию кривой линии
+        /// </summary>
+        /// <param name="figure"></param>
+        public static void BuildCurveGeometry(Figure figure, PointF[] points, byte[] types)
+        {
+            figure.Geometry = new CurveGeometry(points, types) { Name = "Curve" };
+        }
+
+        /// <summary>
         /// Подключаем к фигуре геометрию линии дуги, хорды и, как её там...
         /// </summary>
         /// <param name="figure"></param>

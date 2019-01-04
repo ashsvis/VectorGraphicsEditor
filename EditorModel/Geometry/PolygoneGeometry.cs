@@ -9,7 +9,7 @@ namespace EditorModel.Geometry
     /// Содержит геометрию полигона
     /// </summary>
     [Serializable]
-    public sealed class PolygoneGeometry : Geometry, IDisposable
+    public sealed class PolygoneGeometry : Geometry, IDisposable, ITransformedGeometry
     {
         private PointF[] _points;
 

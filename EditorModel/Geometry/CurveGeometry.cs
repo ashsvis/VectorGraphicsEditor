@@ -1,0 +1,115 @@
+﻿using EditorModel.Common;
+using EditorModel.Figures;
+using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+
+namespace EditorModel.Geometry
+{
+    /// <summary>
+    /// Содержит геометрию кривой
+    /// </summary>
+    [Serializable]
+    public sealed class CurveGeometry : Geometry, IDisposable, ITransformedGeometry
+    {
+        private PointF[] _points;
+        private byte[] _types;
+
+        /// <summary>
+        /// Локальное поле для хранения пути
+        /// </summary>
+        private readonly SerializableGraphicsPath _path = new SerializableGraphicsPath();
+
+        /// <summary>
+        /// Локальное поле для хранения ограничений для операций
+        /// </summary>
+        private readonly AllowedOperations _allowedOperations;
+
+        internal CurveGeometry(PointF[] points, byte[] types)
+        {
+            _allowedOperations = AllowedOperations.All ^ AllowedOperations.Pathed;
+            Points = points;
+            Types = types;
+        }
+
+        /// <summary>
+        /// Точки контура фигуры
+        /// </summary>
+        public PointF[] Points
+        {
+            get { return _points; }
+            set { _points = value; }
+        }
+
+        /// <summary>
+        /// Типы точек контура фигуры
+        /// </summary>
+        public byte[] Types
+        {
+            get { return _types; }
+            set { _types = value; }
+        }
+
+        /// <summary>
+        /// Get Transformed Points
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public PointF[] GetTransformedPoints(Figure owner)
+        {
+            var points = (PointF[])Points.Clone();
+            owner.Transform.Matrix.TransformPoints(points);
+            return points;
+        }
+
+        public bool IsClosed
+        {
+            get
+            {
+                return (_types.Last() & 0x80) > 0;
+            }
+        }
+
+        /// <summary>
+        /// Set Transformed Points
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="points"></param>
+        public void SetTransformedPoints(Figure owner, PointF[] points)
+        {
+            points = (PointF[])points.Clone();
+            var m = owner.Transform.Matrix.Clone();
+            m.Invert();
+            m.TransformPoints(points);
+            Points = points;
+        }
+
+        /// <summary>
+        /// Свойство возвращает путь, построенный по точкам
+        /// </summary>
+        public override SerializableGraphicsPath Path
+        {
+            get
+            {
+                _path.Path = new GraphicsPath(_points, _types);
+                return _path;
+            }
+        }
+
+        /// <summary>
+        /// Свойство возвращает определённые в конструкторе ограничения для операций
+        /// </summary>
+        public override AllowedOperations AllowedOperations { get { return _allowedOperations; } }
+
+        public override string ToString()
+        {
+            return "Curve";
+        }
+
+        public void Dispose()
+        {
+            _path?.Dispose();
+        }
+    }
+}

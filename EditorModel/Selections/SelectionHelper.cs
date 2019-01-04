@@ -301,7 +301,7 @@ namespace EditorModel.Selections
         }
 
         /// <summary>
-        /// Преобразование фигуры к замкнутому полигону
+        /// Преобразование фигуры к замкнутому полигону или к кривой
         /// </summary>
         public static void ConvertToPath(this IEnumerable<Figure> selection)
         {
@@ -309,10 +309,15 @@ namespace EditorModel.Selections
                                     fig.Geometry.AllowedOperations.HasFlag(AllowedOperations.Pathed)))
             {
                 var pathPoints = fig.Geometry.Path.Path.PathPoints;
-                fig.Transform.Matrix.TransformPoints(pathPoints);
-                fig.Transform.Matrix = new Matrix();
-                fig.Geometry = new PolygoneGeometry() { Name = "Polygon" };
-                (fig.Geometry as PolygoneGeometry).Points = pathPoints;
+                var pathTypes = fig.Geometry.Path.Path.PathTypes;
+                var hasCurves = pathTypes.Any(item => (item & 0x03) == 0x03);
+                if (hasCurves)
+                    fig.Geometry = new CurveGeometry(pathPoints, pathTypes) { Name = "Curve" };
+                else
+                {
+                    fig.Geometry = new PolygoneGeometry() { Name = "Polygon" };
+                    (fig.Geometry as PolygoneGeometry).Points = pathPoints;
+                }
             }
         }
 
