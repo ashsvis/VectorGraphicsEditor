@@ -34,6 +34,7 @@ namespace SimpleEditor.Controllers
         SkewX,
         SkewY,
         Vertex,
-        Grafient
+        Grafient,
+        ControlBezier
     }
 }

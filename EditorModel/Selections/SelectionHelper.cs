@@ -312,7 +312,11 @@ namespace EditorModel.Selections
                 var pathTypes = fig.Geometry.Path.Path.PathTypes;
                 var hasCurves = pathTypes.Any(item => (item & 0x03) == 0x03);
                 if (hasCurves)
+                {
                     fig.Geometry = new BezierGeometry(pathPoints, pathTypes) { Name = "Bezier" };
+                    if (pathTypes.Length > 0 && (pathTypes.Last() & 0x80) > 0)
+                        (fig.Geometry as BezierGeometry).IsClosed = true;
+                }
                 else
                 {
                     fig.Geometry = new PolygoneGeometry() { Name = "Polygon" };

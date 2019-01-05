@@ -54,6 +54,7 @@ namespace SimpleEditor
                 typeof(GradientStyleEditor),
                 typeof(HatchStyleEditor),
                 typeof(PolygonStyleEditor),
+                typeof(BezierStyleEditor),
                 typeof(TextStyleEditor),
                 typeof(TextBlockStyleEditor),
                 typeof(ImageStyleEditor),

@@ -151,6 +151,7 @@ namespace EditorModel.Figures
         /// <param name="figure"></param>
         public static void BuildCurveGeometry(Figure figure, PointF[] points, byte[] types)
         {
+            figure.Style.FillStyle.IsVisible = false;
             figure.Geometry = new BezierGeometry(points, types) { Name = "Bezier" };
         }
 

@@ -63,13 +63,11 @@ namespace EditorModel.Geometry
             return points;
         }
 
-        public bool IsClosed
-        {
-            get
-            {
-                return _types.Length > 0  && (_types.Last() & 0x80) > 0;
-            }
-        }
+        public bool IsFlatten { get; set; }
+
+        public float Flatness { get; set; } = 0.25f;
+
+        public bool IsClosed { get; set; }
 
         /// <summary>
         /// Set Transformed Points
@@ -92,7 +90,14 @@ namespace EditorModel.Geometry
         {
             get
             {
-                _path.Path = new GraphicsPath(_points, _types);
+                var types = (byte[])_types.Clone();
+                if (IsClosed)
+                    types[types.Length - 1] |= 0x80;
+                else
+                    types[types.Length - 1] &= 0x7f;
+                _path.Path = new GraphicsPath(_points, types);
+                 if (IsFlatten)
+                    _path.Path.Flatten(new Matrix(), Flatness);
                 return _path;
             }
         }
