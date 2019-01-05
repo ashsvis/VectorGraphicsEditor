@@ -63,6 +63,11 @@ namespace EditorModel.Geometry
             return points;
         }
 
+        public byte[] GetTransformedPointTypes(Figure owner)
+        {
+            return (byte[])_types.Clone();
+        }
+
         public bool IsFlatten { get; set; }
 
         public float Flatness { get; set; } = 0.25f;

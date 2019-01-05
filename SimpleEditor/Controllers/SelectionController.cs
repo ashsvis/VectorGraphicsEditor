@@ -271,13 +271,17 @@ namespace SimpleEditor.Controllers
                 {
                     if (modifierKeys.HasFlag(Keys.Control))
                     {
-                        OnLayerStartChanging();
-                        _selection.RemoveVertex(((VertexMarker) _movedMarker).Owner, 
-                                                ((VertexMarker) _movedMarker).Index);
-                        OnLayerChanged();
-                        //строим маркеры
-                        UpdateMarkers();
-                        OnSelectedFigureChanged();
+                        if (_movedMarker.MarkerType == MarkerType.Vertex)
+                        {
+                            // удаляем только вершины, а не контрольные точки
+                            OnLayerStartChanging();
+                            _selection.RemoveVertex(((VertexMarker)_movedMarker).Owner,
+                                                    ((VertexMarker)_movedMarker).Index);
+                            OnLayerChanged();
+                            //строим маркеры
+                            UpdateMarkers();
+                            OnSelectedFigureChanged();
+                        }
                     }
                 }
                 else
@@ -780,6 +784,7 @@ namespace SimpleEditor.Controllers
                     _selection.Rotate(angle, marker.AnchorPosition);
                     break;
                 case MarkerType.Vertex:
+                case MarkerType.ControlBezier:
                     if (!_wasVertexMoving)
                         OnLayerStartChanging();
                     
@@ -793,7 +798,7 @@ namespace SimpleEditor.Controllers
 
                     _wasVertexMoving = true;
                     break;
-                case MarkerType.Grafient:
+                case MarkerType.Gradient:
                     if (!_wasVertexMoving)
                         OnLayerStartChanging();
 
@@ -841,8 +846,25 @@ namespace SimpleEditor.Controllers
                             //get transformed points
                             if (transformed == null) continue;
                             var points = transformed.GetTransformedPoints(fig);
-                            for (var i = 0; i < points.Length; i++)
-                                Markers.Add(CreateMarker(MarkerType.Vertex, points[i], i, fig));
+                            var types = transformed.GetTransformedPointTypes(fig);
+                            Markers.Add(CreateMarker(MarkerType.Vertex, points[0], 0, fig));
+                            var nt = 0;
+                            MarkerType mt;
+                            for (var i = 1; i < points.Length; i++)
+                            {
+                                var typ = types[i];
+                                if ((typ & 0x07) == 3)
+                                {
+                                    mt = nt % 3 == 2 ? MarkerType.Vertex : MarkerType.ControlBezier;
+                                    nt++;
+                                }
+                                else
+                                {
+                                    mt = MarkerType.Vertex;
+                                    nt = 0;
+                                }
+                                Markers.Add(CreateMarker(mt, points[i], i, fig));
+                            }
                         }
                     }
                     // создаём маркеры градиента
@@ -853,7 +875,7 @@ namespace SimpleEditor.Controllers
                         if (gradient == null) continue;
                         var points = gradient.GetGradientPoints(fig);
                         for (var i = 0; i < points.Length; i++)
-                            Markers.Add(CreateMarker(MarkerType.Grafient, points[i], i, fig));
+                            Markers.Add(CreateMarker(MarkerType.Gradient, points[i], i, fig));
                     }
                     break;
                 case EditorMode.Select:
@@ -936,7 +958,7 @@ namespace SimpleEditor.Controllers
                     Marker marker;
                     if (FindMarkerAt(point, out marker))
                     {
-                        return modifierKeys.HasFlag(Keys.Control) 
+                        return modifierKeys.HasFlag(Keys.Control) && marker.MarkerType == MarkerType.Vertex 
                             ? CursorFactory.GetCursor(UserCursor.RemoveVertex) 
                             : marker.Cursor;
                     }

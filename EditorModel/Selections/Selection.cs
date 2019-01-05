@@ -340,8 +340,9 @@ namespace EditorModel.Selections
             var points = transformed.GetTransformedPoints(owner);
 
             //move point
-            points[index] = newPosition; // todo: после удаления вершины здесь иногда возникает ошибка индекса 
-
+            if (index >= 0 && index < points.Length)
+                points[index] = newPosition;
+  
             //push
             transformed.SetTransformedPoints(owner, points);
             //
@@ -360,20 +361,77 @@ namespace EditorModel.Selections
 
             if (!allowVertex)
                 return; //не можем менять положение вершин
-
+            List<PointF> points;
             var polygone = owner.Geometry as PolygoneGeometry;
-            if (polygone == null)
-                return; //работаем только с полигонами
+            if (polygone != null)
+            {
+                // работаем только с полигонами
+                points = new List<PointF>(polygone.Points);
 
-            var points = new List<PointF>(polygone.Points);
+                if (polygone.IsClosed && points.Count < 4) return;
+                if (!polygone.IsClosed && points.Count < 3) return;
 
-            if (polygone.IsClosed && points.Count < 4) return;
-            if (!polygone.IsClosed && points.Count < 3) return;
-
-            //удаляем вершину
-            points.RemoveAt(index);
+                //удаляем вершину
+                points.RemoveAt(index);
+                //push
+                polygone.Points = points.ToArray();
+                //
+                GrabGeometry();
+                return;
+            }
+            var bezier = owner.Geometry as BezierGeometry;
+            if (bezier == null) return;
+            points = new List<PointF>(bezier.Points);
+            // если точек минимум для кривой, выходим
+            if (points.Count < 5) return;
+            var types = new List<byte>(bezier.Types);
+            // если вершина угловая, то удаляем только её
+            if ((types[index] & 0x27) == 1)
+            {
+                //удаляем вершину
+                points.RemoveAt(index);
+                // и её тип
+                types.RemoveAt(index);
+            }
+            // если это начальная точка пути
+            else if ((types[index] & 0x07) == 0)
+            {
+                // запоминаем её тип, понятно, что это ноль, а вдруг?
+                var typ = types[index];
+                if ((types[index + 1] & 0x07) == 1)
+                {
+                    // удаляем вершину и тип
+                    points.RemoveAt(index);
+                    types.RemoveAt(index);
+                    // присваиваем теперь начальной точке её тип
+                    types[index] = typ;
+                }
+                else
+                {
+                    // иначе предполагается, удаляется гладкая вершина
+                    // поэтому удаляем сразу три точки
+                    for (var i = 0; i < 3; i++)
+                    {
+                        points.RemoveAt(index);
+                        types.RemoveAt(index);
+                    }
+                    // и присваиваем теперь оставшейся начальной точке её тип
+                    types[index] = typ;
+                }
+            }
+            else
+            {
+                // удаляем две предыдущие контрольные точки и вершину
+                index -= 2;
+                for (var i = 0; i < 3; i++)
+                {
+                    points.RemoveAt(index);
+                    types.RemoveAt(index);
+                }
+            }
             //push
-            polygone.Points = points.ToArray();
+            bezier.Points = points.ToArray();
+            bezier.Types = types.ToArray();
             //
             GrabGeometry();
         }

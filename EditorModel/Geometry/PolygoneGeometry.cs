@@ -30,6 +30,11 @@ namespace EditorModel.Geometry
 
         public bool IsSmoothed { get; set; }
 
+        public byte[] GetTransformedPointTypes(Figure owner)
+        {
+            return (byte[])_path.Path.PathTypes.Clone();
+        }
+
         /// <summary>
         /// Точки контура фигуры
         /// </summary>
