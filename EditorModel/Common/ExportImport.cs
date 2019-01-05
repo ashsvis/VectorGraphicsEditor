@@ -104,7 +104,7 @@ namespace EditorModel.Common
                 {
                     var pathPoints = fig.Geometry.Path.Path.PathPoints;
                     var pathTypes = fig.Geometry.Path.Path.PathTypes;
-                    var hasMarkers = pathTypes.Any(item => (item & 0x20) > 0);
+                    var hasMarkers = pathTypes.Any(item => (item & (byte)PathPointType.PathMarker) > 0);
                     fig.Transform.Matrix.TransformPoints(pathPoints);
                     var sb = new StringBuilder();
                     sb.AppendFormat(fp, "M{0} {1}", pathPoints[0].X, pathPoints[0].Y);
@@ -113,28 +113,29 @@ namespace EditorModel.Common
                     {
                         var pt = pathPoints[i];
                         var typ = pathTypes[i];
-                        if ((typ & 0x07) == 3)
+                        if ((typ & (byte)PathPointType.PathTypeMask) == (byte)PathPointType.Bezier)
                         {
                             sb.AppendFormat(fp, "{0} {1} {2}", (nt % 3 == 0 ? " C" : ","), pt.X, pt.Y);
                             nt++;
                         }
-                        else if ((typ & 0x07) == 1)
+                        else if ((typ & (byte)PathPointType.PathTypeMask) == (byte)PathPointType.Line)
                         {
                             sb.AppendFormat(fp, " L {0} {1}", pt.X, pt.Y);
                             nt = 0;
                         }
-                        if (hasMarkers && (typ & 0xA0) == 0xA0 ||
-                            !hasMarkers && ((typ & 0x80) == 0x80 || i == pathPoints.Length - 1))
+                        var combine = (byte)(PathPointType.CloseSubpath | PathPointType.PathMarker);
+                        if (hasMarkers && (typ & combine) == combine ||
+                            !hasMarkers && ((typ & (byte)PathPointType.CloseSubpath) == (byte)PathPointType.CloseSubpath || i == pathPoints.Length - 1))
                         {
-                            if ((typ & 0x80) == 0x80)
+                            if ((typ & (byte)PathPointType.CloseSubpath) == (byte)PathPointType.CloseSubpath)
                                 sb.Append(" Z");
-                            if (hasMarkers && (typ & 0xA0) == 0xA0)
+                            if (hasMarkers && (typ & combine) == combine)
                                 list.Add(string.Format("<path fill-rule=\"evenodd\" d=\"{0}\" {1}/>", sb, style));
                             else
                                 list.Add(string.Format("<path d=\"{0}\" {1}/>", sb, style));
                             sb.Clear();
                         }
-                        else if (typ == 0)
+                        else if (typ == (byte)PathPointType.Start)
                         {
                             sb.AppendFormat(fp, "M{0} {1}", pathPoints[i].X, pathPoints[i].Y);
                             nt = 0;

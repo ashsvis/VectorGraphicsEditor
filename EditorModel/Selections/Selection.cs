@@ -386,7 +386,7 @@ namespace EditorModel.Selections
             if (points.Count < 5) return;
             var types = new List<byte>(bezier.Types);
             // если вершина угловая, то удаляем только её
-            if ((types[index] & 0x27) == 1)
+            if ((types[index] & 0x27) == (byte)PathPointType.Line)
             {
                 //удаляем вершину
                 points.RemoveAt(index);
@@ -394,11 +394,11 @@ namespace EditorModel.Selections
                 types.RemoveAt(index);
             }
             // если это начальная точка пути
-            else if ((types[index] & 0x07) == 0)
+            else if ((types[index] & 0x07) == (byte)PathPointType.Start)
             {
                 // запоминаем её тип, понятно, что это ноль, а вдруг?
                 var typ = types[index];
-                if ((types[index + 1] & 0x07) == 1)
+                if ((types[index + 1] & 0x07) == (byte)PathPointType.Line)
                 {
                     // удаляем вершину и тип
                     points.RemoveAt(index);
@@ -449,17 +449,17 @@ namespace EditorModel.Selections
             if (!allowVertex)
                 return; //не можем менять положение вершин
 
-            var polygone = owner.Geometry as PolygoneGeometry;
-            if (polygone == null)
+            var transformed = owner.Geometry as ITransformedGeometry;
+            if (transformed == null)
                 return; //работаем только с полигонами
 
             //get points in world coordinates
-            var points = polygone.GetTransformedPoints(owner).ToList();
+            var points = transformed.GetTransformedPoints(owner).ToList();
 
             using (var pen = new Pen(Color.Black, 5))
             {
                 // поищем, на какой стороне фигуры добавлять новую вершину
-                var k = polygone.IsClosed ? 0 : 1;
+                var k = transformed.IsClosed ? 0 : 1;
                 for (var i = k; i < points.Count; i++)
                 {
                     // замыкаем контур отрезком, соединяющим начало и конец фигуры
@@ -469,10 +469,27 @@ namespace EditorModel.Selections
                     {
                         path.AddLine(pt1, pt2);
                         if (!path.IsOutlineVisible(point, pen)) continue;
-                        // вставляем новую точку
-                        points.Insert(i, point);
-                        //push
-                        polygone.SetTransformedPoints(owner, points.ToArray());
+                        if (owner.Geometry is PolygoneGeometry)
+                        {
+                            // вставляем новую точку
+                            points.Insert(i, point);
+                            //push
+                            transformed.SetTransformedPoints(owner, points.ToArray());
+                        }
+                        else
+                        {
+                            var bezier = owner.Geometry as BezierGeometry;
+                            if (bezier == null) break;
+                            var types = bezier.Types.ToList();
+                            // вставляем две контольные точки и вершину
+                            for (var j = 0; j < 3; j++)
+                            {
+                                points.Insert(i, point);
+                                types.Insert(i, (byte)PathPointType.Bezier); 
+                            }
+                            bezier.Points = points.ToArray();
+                            bezier.Types = types.ToArray();
+                        }
                         break;
                     }
                 }
