@@ -53,6 +53,7 @@ namespace SimpleEditor
                 typeof(GlowStyleEditor),
                 typeof(GradientStyleEditor),
                 typeof(HatchStyleEditor),
+                typeof(TextureStyleEditor),
                 typeof(PolygonStyleEditor),
                 typeof(BezierStyleEditor),
                 typeof(TextStyleEditor),
@@ -844,6 +845,26 @@ namespace SimpleEditor
                             var baseFill = FillDecorator.GetBaseFill(figure.Style.FillStyle);
                             if (baseFill.AllowedDecorators.HasFlag(AllowedFillDecorators.Hatch))
                                 figure.Style.FillStyle = new HatchFill(FillDecorator.GetBaseFill(figure.Style.FillStyle));
+                        }
+                    }
+                    OnLayerChanged();
+                }
+            }
+            else if (sender == tsmiTextureBrush)
+            {
+                if (FillDecorator.ExistsWithoutThisDecorator(figures, typeof(TextureFill)))
+                {
+                    OnLayerStartChanging("Change Texture Fill Brush");
+                    foreach (var figure in FillDecorator.WhereContainsDecorator(figures, typeof(TextureFill)))
+                    {
+                        if (figure.Style.FillStyle == null) continue;
+                        if (figure.Style.FillStyle.AllowedDecorators.HasFlag(AllowedFillDecorators.Texture))
+                            figure.Style.FillStyle = new TextureFill(figure.Style.FillStyle);
+                        else
+                        {
+                            var baseFill = FillDecorator.GetBaseFill(figure.Style.FillStyle);
+                            if (baseFill.AllowedDecorators.HasFlag(AllowedFillDecorators.Texture))
+                                figure.Style.FillStyle = new TextureFill(FillDecorator.GetBaseFill(figure.Style.FillStyle));
                         }
                     }
                     OnLayerChanged();

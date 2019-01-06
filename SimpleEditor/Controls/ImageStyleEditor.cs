@@ -51,10 +51,6 @@ namespace SimpleEditor.Controls
             StartChanging(this, new ChangingEventArgs("Image Fill Style"));
 
             // get list of objects
-            //var imageFillStyles = _selection.Select(f =>
-            //                (ImageRenderer)RendererDecorator.GetBaseRenerer(f.Renderer)).ToList();
-
-            //imageFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
             foreach (var fig in _selection.Where(f => 
                 RendererDecorator.GetBaseRenderer(f.Renderer) is ImageRenderer))
             {

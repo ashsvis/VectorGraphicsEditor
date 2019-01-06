@@ -85,6 +85,7 @@
             this.tsbArrow = new System.Windows.Forms.ToolStripButton();
             this.tsbPolyline = new System.Windows.Forms.ToolStripSplitButton();
             this.btnPolyline = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnBezier = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbRect = new System.Windows.Forms.ToolStripSplitButton();
             this.btnRectangle = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSquare = new System.Windows.Forms.ToolStripMenuItem();
@@ -178,7 +179,7 @@
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tvFigures = new System.Windows.Forms.TreeView();
-            this.btnBezier = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiTextureBrush = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -675,7 +676,7 @@
             this.tsbCreateTools.Location = new System.Drawing.Point(0, 0);
             this.tsbCreateTools.Name = "tsbCreateTools";
             this.tsbCreateTools.Padding = new System.Windows.Forms.Padding(0);
-            this.tsbCreateTools.Size = new System.Drawing.Size(32, 234);
+            this.tsbCreateTools.Size = new System.Drawing.Size(32, 215);
             this.tsbCreateTools.Stretch = true;
             this.tsbCreateTools.TabIndex = 8;
             // 
@@ -749,9 +750,17 @@
             this.btnPolyline.Image = global::SimpleEditor.Properties.Resources.polyline;
             this.btnPolyline.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnPolyline.Name = "btnPolyline";
-            this.btnPolyline.Size = new System.Drawing.Size(180, 22);
+            this.btnPolyline.Size = new System.Drawing.Size(116, 22);
             this.btnPolyline.Text = "Polyline";
             this.btnPolyline.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            // 
+            // btnBezier
+            // 
+            this.btnBezier.Image = global::SimpleEditor.Properties.Resources.bezier;
+            this.btnBezier.Name = "btnBezier";
+            this.btnBezier.Size = new System.Drawing.Size(116, 22);
+            this.btnBezier.Text = "Bezier";
+            this.btnBezier.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // tsbRect
             // 
@@ -1034,7 +1043,7 @@
             this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(0, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(986, 31);
+            this.tsArrange.Size = new System.Drawing.Size(1017, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1164,7 +1173,8 @@
             this.tsmiSolidBrush,
             this.tsmiLinearGradientBrush,
             this.tsmiRadialGradientBrush,
-            this.tsmiHatchBrush});
+            this.tsmiHatchBrush,
+            this.tsmiTextureBrush});
             this.tsddbFillBrushSwitcher.Image = ((System.Drawing.Image)(resources.GetObject("tsddbFillBrushSwitcher.Image")));
             this.tsddbFillBrushSwitcher.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbFillBrushSwitcher.Name = "tsddbFillBrushSwitcher";
@@ -1696,13 +1706,12 @@
             this.tvFigures.TabIndex = 0;
             this.tvFigures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFigures_AfterSelect);
             // 
-            // btnBezier
+            // tsmiTextureBrush
             // 
-            this.btnBezier.Image = global::SimpleEditor.Properties.Resources.bezier;
-            this.btnBezier.Name = "btnBezier";
-            this.btnBezier.Size = new System.Drawing.Size(180, 22);
-            this.btnBezier.Text = "Bezier";
-            this.btnBezier.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            this.tsmiTextureBrush.Name = "tsmiTextureBrush";
+            this.tsmiTextureBrush.Size = new System.Drawing.Size(181, 22);
+            this.tsmiTextureBrush.Text = "TextureBrush";
+            this.tsmiTextureBrush.Click += new System.EventHandler(this.tsmiSolidBrush_Click);
             // 
             // FormSimpleEditor
             // 
@@ -1898,6 +1907,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripLabel lbZoom;
         private System.Windows.Forms.ToolStripMenuItem btnBezier;
+        private System.Windows.Forms.ToolStripMenuItem tsmiTextureBrush;
     }
 }
 

@@ -85,6 +85,7 @@
     <Compile Include="Style\FillDecorator.cs" />
     <Compile Include="Style\HatchFill.cs" />
     <Compile Include="Style\IGradientFill.cs" />
+    <Compile Include="Style\TextureFill.cs" />
     <Compile Include="Style\LinearGradientFill.cs" />
     <Compile Include="Style\RadialGradientFill.cs" />
     <Compile Include="Style\Style.cs" />
