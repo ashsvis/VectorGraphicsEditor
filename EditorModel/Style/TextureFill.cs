@@ -11,7 +11,7 @@ namespace EditorModel.Style
     {
         private readonly Fill _fill;
 
-        public SerializableGraphicsImage Image { get; set; }
+        public Bitmap Image { get; set; }
 
         public WrapMode WrapMode { get; set; } = WrapMode.Tile;
 
@@ -27,7 +27,6 @@ namespace EditorModel.Style
             try
             {
                 var textureBrush = new TextureBrush(Image);
-                //textureBrush.Transform = figure.Transform;
                 return textureBrush;
             }
             catch
