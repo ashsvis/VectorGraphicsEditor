@@ -26,7 +26,7 @@ namespace EditorModel.Style
                 return new SolidBrush(Color.Transparent);
             try
             {
-                var textureBrush = new TextureBrush(Image, WrapMode);
+                var textureBrush = new TextureBrush(Image);
                 //textureBrush.Transform = figure.Transform;
                 return textureBrush;
             }

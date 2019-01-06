@@ -57,7 +57,7 @@ namespace SimpleEditor.Controls
                 (TextureFill)FillDecorator.GetDecorator(f.Style.FillStyle, typeof(TextureFill))).ToList();
 
             // send values back from GUI to object
-            textureFillStyles.SetProperty(f => f.Image = (SerializableGraphicsImage)_image);
+            textureFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
 
             // fire event
             Changed(this, EventArgs.Empty);
