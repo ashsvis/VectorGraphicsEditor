@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using EditorModel.Common;
 using EditorModel.Selections;
 using EditorModel.Style;
 
@@ -21,6 +21,21 @@ namespace SimpleEditor.Controls
         public TextureStyleEditor()
         {
             InitializeComponent();
+            cbWrap.Items.Clear();
+            cbWrap.Items.AddRange(GetWrapModeNames()); // получение всех имён доступных типов линий
+            cbWrap.SelectedIndex = 0;
+        }
+
+        static readonly WrapMode[] WrapModeArray = (WrapMode[])Enum.GetValues(typeof(WrapMode));
+        static readonly int WrapModeCount = WrapModeArray.Length - 1;
+
+        private object[] GetWrapModeNames()
+        {
+            var wrapNameArray = Enum.GetNames(typeof(WrapMode));
+            var names = new object[WrapModeCount];
+            for (var i = 0; i < WrapModeCount; i++)
+                names[i] = wrapNameArray[i];
+            return names;
         }
 
         public void Build(Selection selection)
@@ -41,6 +56,10 @@ namespace SimpleEditor.Controls
             _updating++;
 
             _image = textureFillStyles.GetProperty(f => f.Image);
+            lbWrap.Enabled = cbWrap.Enabled = lbScale.Enabled = nudScale.Enabled = _image != null;
+
+            cbWrap.SelectedIndex = (int)textureFillStyles.GetProperty(f => f.WrapMode);
+            nudScale.Value = (decimal)textureFillStyles.GetProperty(f => f.Scale, 1);
 
             _updating--;
         }
@@ -58,6 +77,8 @@ namespace SimpleEditor.Controls
 
             // send values back from GUI to object
             textureFillStyles.SetProperty(f => f.Image = (Bitmap)_image);
+            textureFillStyles.SetProperty(f => f.WrapMode = (WrapMode)cbWrap.SelectedIndex);
+            textureFillStyles.SetProperty(f => f.Scale = (float)nudScale.Value);
 
             // fire event
             Changed(this, EventArgs.Empty);
@@ -71,6 +92,12 @@ namespace SimpleEditor.Controls
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
             _image = (Bitmap)Image.FromFile(dlg.FileName);
+            lbWrap.Enabled = cbWrap.Enabled = lbScale.Enabled = nudScale.Enabled = _image != null;
+            UpdateObject();
+        }
+
+        private void nudScale_ValueChanged(object sender, EventArgs e)
+        {
             UpdateObject();
         }
     }

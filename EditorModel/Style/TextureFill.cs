@@ -15,6 +15,8 @@ namespace EditorModel.Style
 
         public WrapMode WrapMode { get; set; } = WrapMode.Tile;
 
+        public float Scale { get; set; } = 1f;
+
         public TextureFill(Fill fill) : base(fill)
         {
             _fill = fill;
@@ -24,15 +26,9 @@ namespace EditorModel.Style
         {
             if (Image == null)
                 return new SolidBrush(Color.Transparent);
-            try
-            {
-                var textureBrush = new TextureBrush(Image);
-                return textureBrush;
-            }
-            catch
-            {
-                return new SolidBrush(Color.Transparent);
-            }
+            var textureBrush = new TextureBrush(Image, WrapMode);
+            textureBrush.ScaleTransform(Scale, Scale);
+            return textureBrush;
         }
 
         /// <summary>
