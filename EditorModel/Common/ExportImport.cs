@@ -4,7 +4,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using EditorModel.Geometry;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using EditorModel.Renderers;
@@ -15,9 +14,11 @@ namespace EditorModel.Common
     {
         public static void SaveToImage(string fileName, Layer layer)
         {
-            HandleFillStyle(layer, out GroupFigure group, out int width, out int height);
+            GroupFigure @group;
+            int width, height;
+            HandleFillStyle(layer, out @group, out width, out height);
             var format = GetFileFormat(fileName);
-            SaveImage(fileName, layer, group, width, height, format);
+            SaveImage(fileName, layer, @group, width, height, format);
         }
 
         private static void HandleFillStyle(Layer layer, out GroupFigure group, out int width, out int height)
