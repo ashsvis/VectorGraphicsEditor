@@ -481,13 +481,13 @@ namespace EditorModel.Selections
                             var bezier = owner.Geometry as BezierGeometry;
                             if (bezier == null) break;
                             var types = bezier.Types.ToList();
-                            // вставляем две контольные точки и вершину
+                            // вставляем две контрольные точки и вершину
                             for (var j = 0; j < 3; j++)
                             {
                                 points.Insert(i, point);
                                 types.Insert(i, (byte)PathPointType.Bezier); 
                             }
-                            bezier.Points = points.ToArray();
+                            transformed.SetTransformedPoints(owner, points.ToArray());
                             bezier.Types = types.ToArray();
                         }
                         break;

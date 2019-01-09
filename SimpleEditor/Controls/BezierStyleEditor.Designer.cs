@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.nudFlatness = new System.Windows.Forms.NumericUpDown();
             this.cbIsFlatten = new System.Windows.Forms.CheckBox();
             this.cbIsClosed = new System.Windows.Forms.CheckBox();
-            this.nudFlatness = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFlatness)).BeginInit();
             this.SuspendLayout();
@@ -50,6 +50,36 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bezier Style";
+            // 
+            // nudFlatness
+            // 
+            this.nudFlatness.DecimalPlaces = 2;
+            this.nudFlatness.Enabled = false;
+            this.nudFlatness.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nudFlatness.Location = new System.Drawing.Point(142, 17);
+            this.nudFlatness.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            131072});
+            this.nudFlatness.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nudFlatness.Name = "nudFlatness";
+            this.nudFlatness.Size = new System.Drawing.Size(47, 20);
+            this.nudFlatness.TabIndex = 2;
+            this.nudFlatness.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.nudFlatness.ValueChanged += new System.EventHandler(this.cbIsClosed_CheckedChanged);
             // 
             // cbIsFlatten
             // 
@@ -74,31 +104,6 @@
             this.cbIsClosed.Text = "IsClosed";
             this.cbIsClosed.UseVisualStyleBackColor = true;
             this.cbIsClosed.CheckedChanged += new System.EventHandler(this.cbIsClosed_CheckedChanged);
-            // 
-            // nudFlatness
-            // 
-            this.nudFlatness.DecimalPlaces = 2;
-            this.nudFlatness.Enabled = false;
-            this.nudFlatness.Location = new System.Drawing.Point(142, 17);
-            this.nudFlatness.Maximum = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            131072});
-            this.nudFlatness.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.nudFlatness.Name = "nudFlatness";
-            this.nudFlatness.Size = new System.Drawing.Size(47, 20);
-            this.nudFlatness.TabIndex = 2;
-            this.nudFlatness.Value = new decimal(new int[] {
-            25,
-            0,
-            0,
-            131072});
-            this.nudFlatness.ValueChanged += new System.EventHandler(this.cbIsClosed_CheckedChanged);
             // 
             // BezierStyleEditor
             // 

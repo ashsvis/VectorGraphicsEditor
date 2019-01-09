@@ -1,6 +1,8 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 
@@ -148,6 +150,15 @@ namespace EditorModel.Common
         {
             return new System.Windows.Media.Matrix(matrix.Elements[0], matrix.Elements[1], matrix.Elements[2],
                                                        matrix.Elements[3], matrix.Elements[4], matrix.Elements[5]);
+        }
+
+        public static void CutLastBezierPoints(ref PointF[] points, ref byte[] types)
+        {
+            if (points.Length == types.Length && types.Length >= 4)
+            {
+                points = new List<PointF>(points.Take(points.Length - 3)).ToArray();
+                types = new List<byte>(types.Take(types.Length - 3)).ToArray();
+            }
         }
     }
 }

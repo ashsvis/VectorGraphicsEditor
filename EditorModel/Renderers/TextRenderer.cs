@@ -72,7 +72,7 @@ namespace EditorModel.Renderers
         /// <param name="graphics"></param>
         /// <param name="figure"></param>
         /// <returns></returns>
-        public GraphicsPath GetTransformedPath(Graphics graphics, Figure figure)
+        public virtual GraphicsPath GetTransformedPath(Graphics graphics, Figure figure)
         {
             return GetTextBlockTransformedPath(graphics, figure, this, Padding, WordWrap);
         }

@@ -5,6 +5,7 @@ using System.Drawing;
 using EditorModel.Geometry;
 using EditorModel.Renderers;
 using EditorModel.Style;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Figures
 {
@@ -143,16 +144,46 @@ namespace EditorModel.Figures
         {
             figure.Style.FillStyle.IsVisible = isClosed;
             figure.Geometry = new PolygoneGeometry(isClosed, points) { Name = isClosed ? "Polygon" : "Polyline" };
+            NormalizeVertex(figure);
         }
 
         /// <summary>
         /// Подключаем к фигуре геометрию кривой линии
         /// </summary>
         /// <param name="figure"></param>
-        public static void BuildCurveGeometry(Figure figure, PointF[] points, byte[] types)
+        public static void BuildBezierGeometry(Figure figure, PointF[] points, byte[] types)
         {
             figure.Style.FillStyle.IsVisible = false;
             figure.Geometry = new BezierGeometry(points, types) { Name = "Bezier" };
+            if (types.Length > 3)
+                NormalizeVertex(figure);
+        }
+
+        private static void NormalizeVertex(Figure figure)
+        {
+            var transformed = figure.Geometry as ITransformedGeometry;
+            if (transformed != null)
+            {
+                var bounds = figure.GetTransformedPath().Path.GetBounds();
+                var points = transformed.GetTransformedPoints(figure);
+                figure.Transform.Matrix.TransformPoints(points);
+                transformed.SetTransformedPoints(figure, points);
+                figure.Transform.Matrix = new Matrix();
+                var eps = Helper.EPSILON;
+                var kfx = (bounds.Width < eps) ? eps : 1 / bounds.Width;
+                var kfy = (bounds.Height < eps) ? eps : 1 / bounds.Height;
+                var pts = transformed.GetTransformedPoints(figure);
+                for (var i = 0; i < pts.Length; i++)
+                {
+                    pts[i].X = (pts[i].X - bounds.X) / bounds.Width - 0.5f;
+                    pts[i].Y = (pts[i].Y - bounds.Y) / bounds.Height - 0.5f;
+                }
+                transformed.SetTransformedPoints(figure, pts);
+                var m = new Matrix();
+                m.Translate(bounds.X + bounds.Width / 2f, bounds.Y + bounds.Height / 2f);
+                m.Scale(1 / kfx, 1 / kfy);
+                figure.Transform.Matrix = m;
+            }
         }
 
         /// <summary>

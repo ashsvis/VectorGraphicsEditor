@@ -380,7 +380,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildCurveGeometry(fig, new PointF[] { }, new byte[] { });
+                    FigureBuilder.BuildBezierGeometry(fig, new PointF[] { }, new byte[] { });
                     return fig;
                 };
             }
@@ -470,7 +470,7 @@ namespace SimpleEditor
                 figureCreator = () =>
                 {
                     var fig = new Figure();
-                    FigureBuilder.BuildTextRenderGeometry(fig, "Text");
+                    FigureBuilder.BuildTextRenderGeometry(fig, "TextBlock");
                     return fig;
                 };
             }
@@ -1000,10 +1000,9 @@ namespace SimpleEditor
             if (string.IsNullOrWhiteSpace(_fileName))
             {
                 if (saveEditorFileDialog.ShowDialog(this) != DialogResult.OK) return;
-                SaverLoader.SaveToFile(saveEditorFileDialog.FileName, _layer);
+                _fileName = saveEditorFileDialog.FileName;
             }
-            else
-                SaverLoader.SaveToFile(_fileName, _layer);
+            SaverLoader.SaveToFile(_fileName, _layer);
             UndoRedoManager.Instance.ClearHistory();
             Text = _caption + @" - " + _fileName;
             BuildInterface();
@@ -1015,7 +1014,11 @@ namespace SimpleEditor
             switch (saveEditorFileDialog.FilterIndex)
             {
                 case 1:
-                    SaverLoader.SaveToFile(saveEditorFileDialog.FileName, _layer);
+                    _fileName = saveEditorFileDialog.FileName;
+                    SaverLoader.SaveToFile(_fileName, _layer);
+                    UndoRedoManager.Instance.ClearHistory();
+                    Text = _caption + @" - " + _fileName;
+                    BuildInterface();
                     break;
                 case 2:
                     ExportImport.ExportToSvg(saveEditorFileDialog.FileName, _layer);

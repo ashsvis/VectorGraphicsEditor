@@ -159,11 +159,18 @@ namespace SimpleEditor.Controllers
                 var lineGeometry = _selection.Geometry as AddLineGeometry;
                 if (lineGeometry != null)
                 {
-                    var points = lineGeometry.Points.ToArray();
                     if (lineGeometry.IsSmoothed)
-                        FigureBuilder.BuildCurveGeometry(line, lineGeometry.Path.Path.PathPoints, lineGeometry.Path.Path.PathTypes);
+                    {
+                        var points = lineGeometry.Path.Path.PathPoints;
+                        var types = lineGeometry.Path.Path.PathTypes;
+                        Helper.CutLastBezierPoints(ref points, ref types);
+                        FigureBuilder.BuildBezierGeometry(line, points, types);
+                    }
                     else
+                    {
+                        var points = lineGeometry.Points.ToArray();
                         FigureBuilder.BuildPolyGeometry(line, lineGeometry.IsClosed, points);
+                    }
                     OnLayerStartChanging();
                     _layer.Figures.Add(line);
                     OnLayerChanged();
