@@ -77,6 +77,15 @@ namespace EditorModel.Renderers
             return GetTextBlockTransformedPath(graphics, figure, this, Padding, WordWrap);
         }
 
+        /// <summary>
+        /// Графический путь для рисования текстового блока
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="figure"></param>
+        /// <param name="textBlock"></param>
+        /// <param name="padding"></param>
+        /// <param name="wordWrap"></param>
+        /// <returns></returns>
         public static GraphicsPath GetTextBlockTransformedPath(Graphics graphics, Figure figure,
             ITextBlock textBlock, Padding padding, bool wordWrap = false)
         {

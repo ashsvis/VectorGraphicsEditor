@@ -561,7 +561,7 @@
     <None Include="Resources\wedge.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Надпись.bmp" />
+    <None Include="Resources\beziertext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

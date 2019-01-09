@@ -119,6 +119,27 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
+        /// Подключаем к фигуре геометрию текста на кривой
+        /// </summary>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        /// <param name="text">Текстовая строка</param>
+        public static void BuildBezierTextGeometry(Figure figure, string text)
+        {
+            var path = new SerializableGraphicsPath();
+            path.Path.AddBezier(-0.5f, -0.5f, 0.5f, -0.5f, 0, 1, 1, 1);
+
+            figure.Geometry = new PrimitiveBezier(path, AllowedOperations.All ^ AllowedOperations.Pathed)
+            { Name = "BezierText" };
+
+            figure.Style.BorderStyle = null; // отключение рамки для рендера
+            figure.Style.FillStyle = new DefaultFill(AllowedFillDecorators.All ^
+                AllowedFillDecorators.RadialGradient)
+            { Color = Color.Black };
+
+            figure.Renderer = new BezierTextRenderer(text) { FontSize = 18f };
+        }
+
+        /// <summary>
         /// Подключаем к фигуре геометрию и рендерер внешнего графического файла
         /// </summary>
         /// <param name="figure"></param>

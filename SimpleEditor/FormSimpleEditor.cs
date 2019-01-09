@@ -484,6 +484,16 @@ namespace SimpleEditor
                     return fig;
                 };
             }
+            else if (sender == btnTextOnBezier)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateBlockText);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildBezierTextGeometry(fig, "The quick brown fox jumps over the lazy dog.");
+                    return fig;
+                };
+            }
             else if (sender == tsbPicture || sender == btnInsertImage)
             {
                 figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateImage);
