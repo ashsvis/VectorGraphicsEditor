@@ -139,13 +139,17 @@ namespace EditorModel.Renderers
             {
                 using (var path = new GraphicsPath())
                 {
-                    var m = new Matrix();
-                    m.Translate(0, hy);
-                    m.Rotate(angle);
-                    m.Translate(start_point.X, start_point.Y);
-                    path.Transform(m);
-                    path.AddString(chars_that_fit, font.FontFamily, (int)font.Style, font.Size, Point.Empty, null);
-                    resultPath.AddPath(path, false);
+                    using (var m = new Matrix())
+                    {
+                        m.Translate(0, hy);
+                        m.Rotate(angle, MatrixOrder.Append);
+                        m.Translate(start_point.X, start_point.Y, MatrixOrder.Append);
+                        path.AddString(chars_that_fit, font.FontFamily, (int)font.Style, font.Size, Point.Empty, null);
+                        var pts = path.PathPoints;
+                        m.TransformPoints(pts);
+                        using (var transpath = new GraphicsPath(pts, path.PathTypes))
+                            resultPath.AddPath(transpath, false);
+                    }
                 }
             }
             else
@@ -173,5 +177,14 @@ namespace EditorModel.Renderers
         }
 
         #endregion
+
+        /// <summary>
+        /// Свойство возвращает ограничения для подключения декораторов
+        /// </summary>
+        public override AllowedRendererDecorators AllowedDecorators
+        {
+            get { return AllowedRendererDecorators.All ^ 
+                    (AllowedRendererDecorators.TextBlock | AllowedRendererDecorators.Shadow | AllowedRendererDecorators.Glow ); }
+        }
     }
 }
