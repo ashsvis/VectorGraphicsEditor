@@ -2,6 +2,7 @@
 using System.Drawing;
 using EditorModel.Common;
 using EditorModel.Figures;
+using System.Drawing.Drawing2D;
 
 namespace EditorModel.Renderers
 {
@@ -9,7 +10,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика фигуры с тенью
     /// </summary>
     [Serializable]
-    public class ShadowRenderer : RendererDecorator
+    public class ShadowRendererDecorator : RendererDecorator
     {
         private readonly Renderer _renderer;
         private int _opacity;
@@ -30,7 +31,7 @@ namespace EditorModel.Renderers
             }
         }
 
-        public ShadowRenderer(Renderer renderer) 
+        public ShadowRendererDecorator(Renderer renderer) 
             : base(renderer)
         {
             _renderer = renderer;
@@ -43,8 +44,8 @@ namespace EditorModel.Renderers
         {
             var baseRenderer = GetBaseRenderer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
-            using (var path = baseRenderer != null 
-                ? baseRenderer.GetTransformedPath(graphics, figure) 
+            using (var path = baseRenderer != null
+                ? baseRenderer.GetTransformedPath(graphics, figure)
                 : figure.GetTransformedPath().Path)
             {
                 graphics.TranslateTransform(Offset.X, Offset.Y);
@@ -72,7 +73,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public override AllowedRendererDecorators AllowedDecorators
         {
-            get { return AllowedRendererDecorators.All; }
+            get { return AllowedRendererDecorators.All ^ (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.TextBlock); }
         }
 
     }

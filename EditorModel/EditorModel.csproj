@@ -60,12 +60,12 @@
     <Compile Include="Geometry\PrimitiveBezier.cs" />
     <Compile Include="Geometry\WedgeGeometry.cs" />
     <Compile Include="Renderers\BezierTextRenderer.cs" />
-    <Compile Include="Renderers\GlowRenderer.cs" />
+    <Compile Include="Renderers\GlowRendererDecorator.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />
     <Compile Include="Renderers\ImageRenderer.cs" />
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />
-    <Compile Include="Renderers\ShadowRenderer.cs" />
+    <Compile Include="Renderers\ShadowRendererDecorator.cs" />
     <Compile Include="Renderers\TextBlockDecorator.cs" />
     <Compile Include="Renderers\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />

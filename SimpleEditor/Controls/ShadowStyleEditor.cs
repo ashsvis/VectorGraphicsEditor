@@ -23,7 +23,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => RendererDecorator.ContainsType(f.Renderer, typeof(ShadowRenderer))); 
+            Visible = selection.ForAll(f => RendererDecorator.ContainsType(f.Renderer, typeof(ShadowRendererDecorator))); 
             if (!Visible) return; // do not build anything
 
             // remember editing object
@@ -31,7 +31,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var shadowStyles = _selection.Select(f => 
-                (ShadowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRenderer))).ToList();
+                (ShadowRendererDecorator)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRendererDecorator))).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -53,7 +53,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var shadowStyles = _selection.Select(f =>
-                (ShadowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRenderer))).ToList();
+                (ShadowRendererDecorator)RendererDecorator.GetDecorator(f.Renderer, typeof(ShadowRendererDecorator))).ToList();
 
             // send values back from GUI to object
             shadowStyles.SetProperty(f => f.Opacity = (int)nudOpacity.Value);

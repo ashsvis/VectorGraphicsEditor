@@ -22,7 +22,7 @@ namespace SimpleEditor.Controls
         public void Build(Selection selection)
         {
             // check visibility
-            Visible = selection.ForAll(f => RendererDecorator.ContainsType(f.Renderer, typeof(GlowRenderer)));
+            Visible = selection.ForAll(f => RendererDecorator.ContainsType(f.Renderer, typeof(GlowRendererDecorator)));
             if (!Visible) return; // do not build anything
 
             // remember editing object
@@ -30,7 +30,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var glowStyles = _selection.Select(f =>
-                 (GlowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(GlowRenderer))).ToList();
+                 (GlowRendererDecorator)RendererDecorator.GetDecorator(f.Renderer, typeof(GlowRendererDecorator))).ToList();
 
             // copy properties of object to GUI
             _updating++;
@@ -49,7 +49,7 @@ namespace SimpleEditor.Controls
 
             // get list of objects
             var glowStyles = _selection.Select(f =>
-                (GlowRenderer)RendererDecorator.GetDecorator(f.Renderer, typeof(GlowRenderer))).ToList();
+                (GlowRendererDecorator)RendererDecorator.GetDecorator(f.Renderer, typeof(GlowRendererDecorator))).ToList();
 
             // send values back from GUI to object
             glowStyles.SetProperty(f => f.Color = lbColor.BackColor);

@@ -9,7 +9,7 @@ namespace EditorModel.Renderers
     /// Класс рисовальщика фигуры со "свечением"
     /// </summary>
     [Serializable]
-    public class GlowRenderer : RendererDecorator
+    public class GlowRendererDecorator : RendererDecorator
     {
         private readonly Renderer _renderer;
 
@@ -18,7 +18,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public Color Color { get; set; }
 
-        public GlowRenderer(Renderer renderer)
+        public GlowRendererDecorator(Renderer renderer)
             : base(renderer)
         {
             _renderer = renderer;
@@ -30,8 +30,8 @@ namespace EditorModel.Renderers
             var baseRenderer = GetBaseRenderer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = baseRenderer != null
-                ? baseRenderer.GetTransformedPath(graphics, figure)
-                : figure.GetTransformedPath().Path)
+            ? baseRenderer.GetTransformedPath(graphics, figure)
+            : figure.GetTransformedPath().Path)
             {
                 // то получаем карандаш из стиля рисования фигуры
                 using (var pen = new Pen(Color))
@@ -54,7 +54,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public override AllowedRendererDecorators AllowedDecorators
         {
-            get { return AllowedRendererDecorators.All; }
+            get { return AllowedRendererDecorators.All ^ (AllowedRendererDecorators.Glow | AllowedRendererDecorators.TextBlock); }
         }
     }
 }

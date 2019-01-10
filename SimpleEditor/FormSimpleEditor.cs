@@ -914,33 +914,34 @@ namespace SimpleEditor
             }
             else if (sender == tsmiShadow)
             {
-                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(ShadowRenderer)))
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(ShadowRendererDecorator)))
                 {
                     OnLayerStartChanging("Shadow Figure Effect");
-                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(ShadowRenderer)))
+                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(ShadowRendererDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Shadow))
-                            figure.Renderer = new ShadowRenderer(figure.Renderer);
+                            figure.Renderer = new ShadowRendererDecorator(figure.Renderer);
                     }
                     OnLayerChanged();
                 }
             }
             else if (sender == tsmiGlow)
             {
-                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(GlowRenderer)))
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(GlowRendererDecorator)))
                 {
                     OnLayerStartChanging("Glow Figure Effect");
-                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(GlowRenderer)))
+                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(GlowRendererDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
-                            figure.Renderer = new GlowRenderer(figure.Renderer);
+                            figure.Renderer = new GlowRendererDecorator(figure.Renderer);
                     }
                     OnLayerChanged();
                 }
             }
             else if (sender == tsmiTextBlock)
             {
-                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(TextBlockDecorator)))
+                if (!figures.Any(f => f.Geometry is TextGeometry) &&
+                    RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(TextBlockDecorator)))
                 {
                     OnLayerStartChanging("Block Text Figure Effect");
                     foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(TextBlockDecorator)))

@@ -32,6 +32,7 @@
             this.cbFontName = new System.Windows.Forms.ComboBox();
             this.lbText = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbWrap = new System.Windows.Forms.CheckBox();
             this.nudBottom = new System.Windows.Forms.NumericUpDown();
             this.nudRight = new System.Windows.Forms.NumericUpDown();
             this.nudLeft = new System.Windows.Forms.NumericUpDown();
@@ -49,7 +50,6 @@
             this.btnTextBold = new System.Windows.Forms.Button();
             this.btnMiddleLeftAllign = new System.Windows.Forms.Button();
             this.btnTopLeftAllign = new System.Windows.Forms.Button();
-            this.cbWrap = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBottom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRight)).BeginInit();
@@ -110,7 +110,7 @@
             this.groupBox1.Controls.Add(this.btnTopLeftAllign);
             this.groupBox1.Controls.Add(this.cbFontName);
             this.groupBox1.Controls.Add(this.lbText);
-            this.groupBox1.Location = new System.Drawing.Point(-3, 1);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(1);
@@ -118,6 +118,17 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Text Block Style";
+            // 
+            // cbWrap
+            // 
+            this.cbWrap.AutoSize = true;
+            this.cbWrap.Location = new System.Drawing.Point(149, 45);
+            this.cbWrap.Name = "cbWrap";
+            this.cbWrap.Size = new System.Drawing.Size(52, 17);
+            this.cbWrap.TabIndex = 14;
+            this.cbWrap.Text = "Wrap";
+            this.cbWrap.UseVisualStyleBackColor = true;
+            this.cbWrap.CheckedChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
             // 
             // nudBottom
             // 
@@ -376,17 +387,6 @@
             this.btnTopLeftAllign.UseVisualStyleBackColor = true;
             this.btnTopLeftAllign.Click += new System.EventHandler(this.btnTopLeftAllignClick);
             // 
-            // cbWrap
-            // 
-            this.cbWrap.AutoSize = true;
-            this.cbWrap.Location = new System.Drawing.Point(149, 45);
-            this.cbWrap.Name = "cbWrap";
-            this.cbWrap.Size = new System.Drawing.Size(52, 17);
-            this.cbWrap.TabIndex = 14;
-            this.cbWrap.Text = "Wrap";
-            this.cbWrap.UseVisualStyleBackColor = true;
-            this.cbWrap.CheckedChanged += new System.EventHandler(this.cbFontName_SelectionChangeCommitted);
-            // 
             // TextBlockStyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,7 +395,7 @@
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TextBlockStyleEditor";
-            this.Size = new System.Drawing.Size(203, 167);
+            this.Size = new System.Drawing.Size(212, 155);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBottom)).EndInit();

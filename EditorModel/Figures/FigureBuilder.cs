@@ -126,9 +126,10 @@ namespace EditorModel.Figures
         public static void BuildBezierTextGeometry(Figure figure, string text)
         {
             var path = new SerializableGraphicsPath();
-            path.Path.AddBezier(-0.5f, -0.5f, 0.5f, -0.5f, 0, 1, 1, 1);
+            path.Path.AddBezier(-0.5f, -0.5f,  0, 1,  0.5f, -0.5f,  1, 1);
 
-            figure.Geometry = new PrimitiveBezier(path, AllowedOperations.All ^ AllowedOperations.Pathed)
+            figure.Geometry = new PrimitiveBezier(path, AllowedOperations.All ^ 
+                (AllowedOperations.Pathed | AllowedOperations.Skew))
             { Name = "BezierText" };
 
             figure.Style.BorderStyle = null; // отключение рамки для рендера
@@ -136,7 +137,7 @@ namespace EditorModel.Figures
                 AllowedFillDecorators.RadialGradient)
             { Color = Color.Black };
 
-            figure.Renderer = new BezierTextRenderer(text) { FontSize = 18f };
+            figure.Renderer = new BezierTextRenderer(text) { FontSize = 14f };
         }
 
         /// <summary>

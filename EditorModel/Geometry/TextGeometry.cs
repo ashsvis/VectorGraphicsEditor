@@ -91,6 +91,7 @@ namespace EditorModel.Geometry
         {
             _path?.Dispose();
         }
+
         public override string ToString()
         {
             return "Text Line";

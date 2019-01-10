@@ -51,6 +51,8 @@ namespace SimpleEditor.Controls
                                           RendererDecorator.GetDecorator(figure.Renderer, typeof(TextBlockDecorator)) as ITextBlock
                         select decorator;
 
+            var isBezierText = selection.ForAll(f => RendererDecorator.GetBaseRenderer(f.Renderer) is BezierTextRenderer);
+
             _updating++;
 
             cbFontName.Text = textBlockStyles.GetProperty(f => f.FontName);
@@ -63,6 +65,10 @@ namespace SimpleEditor.Controls
             nudRight.Value = textBlockStyles.GetProperty(f => f.Padding.Right);
             nudBottom.Value = textBlockStyles.GetProperty(f => f.Padding.Bottom);
             cbWrap.Checked = textBlockStyles.GetProperty(f => f.WordWrap);
+
+            cbWrap.Enabled = nudLeft.Enabled = nudTop.Enabled = nudRight.Enabled = nudBottom.Enabled =
+               btnTopLeftAllign.Enabled = btnMiddleLeftAllign.Enabled = btnBottomLeftAllign.Enabled =
+               btnTopRightAllign.Enabled = btnMiddleRightAllign.Enabled = btnBottomRightAllign.Enabled = !isBezierText;
 
             _updating--;
         }
