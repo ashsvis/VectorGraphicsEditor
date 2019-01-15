@@ -201,6 +201,7 @@ namespace SimpleEditor
 
             tsbSelectMode.Checked = _selectionController.EditorMode == EditorMode.Select;
             tsbSkewMode.Checked = _selectionController.EditorMode == EditorMode.Skew;
+            tsbWarpMode.Checked = _selectionController.EditorMode == EditorMode.Warp;
             tsbVertexMode.Checked = _selectionController.EditorMode == EditorMode.Verticies;
 
             var changedUndo = FileChanged != UndoRedoManager.Instance.CanUndo;
@@ -212,11 +213,12 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => 
                                  f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled =  tsbBringToFront.Enabled = tsbSendToBack.Enabled =
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = 
                  tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
                     tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
+                 tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
@@ -638,6 +640,18 @@ namespace SimpleEditor
             UpdateInterface();
         }
 
+        private void tsbUpToFront_Click(object sender, EventArgs e)
+        {
+            _selectionController.UpToFront();
+            UpdateInterface();
+        }
+
+        private void tsbSendToDown_Click(object sender, EventArgs e)
+        {
+            _selectionController.SendToDown();
+            UpdateInterface();
+        }
+
         private void tsmiSendToBack_Click(object sender, EventArgs e)
         {
             _selectionController.SendToBack();
@@ -917,7 +931,7 @@ namespace SimpleEditor
                 if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(ShadowRendererDecorator)))
                 {
                     OnLayerStartChanging("Shadow Figure Effect");
-                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(ShadowRendererDecorator)))
+                    foreach (var figure in RendererDecorator.WhereNotContainsDecorator(figures, typeof(ShadowRendererDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Shadow))
                             figure.Renderer = new ShadowRendererDecorator(figure.Renderer);
@@ -930,7 +944,7 @@ namespace SimpleEditor
                 if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(GlowRendererDecorator)))
                 {
                     OnLayerStartChanging("Glow Figure Effect");
-                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(GlowRendererDecorator)))
+                    foreach (var figure in RendererDecorator.WhereNotContainsDecorator(figures, typeof(GlowRendererDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Glow))
                             figure.Renderer = new GlowRendererDecorator(figure.Renderer);
@@ -944,10 +958,23 @@ namespace SimpleEditor
                     RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(TextBlockDecorator)))
                 {
                     OnLayerStartChanging("Block Text Figure Effect");
-                    foreach (var figure in RendererDecorator.WhereContainsDecorator(figures, typeof(TextBlockDecorator)))
+                    foreach (var figure in RendererDecorator.WhereNotContainsDecorator(figures, typeof(TextBlockDecorator)))
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.TextBlock))
                             figure.Renderer = new TextBlockDecorator(figure.Renderer, "Text Block", new Padding(10));
+                    }
+                    OnLayerChanged();
+                }
+            }
+            else if (sender == tsmiWarp)
+            {
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(WarpRendererDecorator)))
+                {
+                    OnLayerStartChanging("Warp Figure Effect");
+                    foreach (var figure in RendererDecorator.WhereNotContainsDecorator(figures, typeof(WarpRendererDecorator)))
+                    {
+                        if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Warp))
+                            figure.Renderer = new WarpRendererDecorator(figure.Renderer);
                     }
                     OnLayerChanged();
                 }
@@ -1175,6 +1202,8 @@ namespace SimpleEditor
                 _selectionController.EditorMode = EditorMode.Skew;
             else if (sender == tsbVertexMode)
                 _selectionController.EditorMode = EditorMode.Verticies;
+            else if (sender == tsbWarpMode)
+                _selectionController.EditorMode = EditorMode.Warp;
         }
 
         private void tsbConvertToPath_Click(object sender, EventArgs e)

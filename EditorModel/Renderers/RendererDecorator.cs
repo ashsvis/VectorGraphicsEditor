@@ -61,9 +61,14 @@ namespace EditorModel.Renderers
             return figures.Count(figure => !ContainsType(figure.Renderer, type)) > 0;
         }
 
-        public static IEnumerable<Figure> WhereContainsDecorator(IEnumerable<Figure> figures, Type type)
+        public static IEnumerable<Figure> WhereNotContainsDecorator(IEnumerable<Figure> figures, Type type)
         {
             return figures.Where(figure => !ContainsType(figure.Renderer, type));
+        }
+
+        public static IEnumerable<Figure> WhereContainsDecorator(IEnumerable<Figure> figures, Type type)
+        {
+            return figures.Where(figure => ContainsType(figure.Renderer, type));
         }
     }
 }

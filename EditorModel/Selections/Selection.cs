@@ -8,6 +8,7 @@ using EditorModel.Common;
 using EditorModel.Figures;
 using EditorModel.Geometry;
 using EditorModel.Style;
+using EditorModel.Renderers;
 
 namespace EditorModel.Selections
 {
@@ -314,8 +315,29 @@ namespace EditorModel.Selections
             points[index] = newPosition;
 
             //push
-            gradient.SetGradientPoints(owner, points);
-            
+            gradient.SetGradientPoints(owner, points);         
+        }
+
+        /// <summary>
+        /// Перемещение точки искажения
+        /// </summary>
+        /// <param name="owner">Фигура</param>
+        /// <param name="index">Индекс точки искажения</param>
+        /// <param name="newPosition">Смещение</param>
+        public void MoveWarpNode(Figure owner, int index, PointF newPosition)
+        {
+            var warped = (WarpRendererDecorator)RendererDecorator.GetDecorator(owner.Renderer, typeof(WarpRendererDecorator));
+            if (warped == null)
+                return; // работаем только с градиентами
+
+            //get points in world coordinates
+            var points = warped.GetWarpPoints(owner);
+
+            //move point
+            points[index] = newPosition;
+
+            //push
+            warped.SetWarpPoints(owner, points);
         }
 
         /// <summary>

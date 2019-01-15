@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using EditorModel.Renderers;
 
 namespace SimpleEditor.Controllers
 {
@@ -21,7 +22,8 @@ namespace SimpleEditor.Controllers
         Drag,
         CreateFigure,
         Skew,
-        Verticies
+        Verticies,
+        Warp
     }
 
     /// <summary>
@@ -123,6 +125,7 @@ namespace SimpleEditor.Controllers
                 // прошлый режим запоминаем, если был любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
+                    _editorMode == EditorMode.Warp ||
                     _editorMode == EditorMode.Verticies)
                 {
                     _lastMode = _editorMode;
@@ -134,6 +137,7 @@ namespace SimpleEditor.Controllers
                 // если переключились в любой базовый режим
                 if (_editorMode == EditorMode.Select ||
                     _editorMode == EditorMode.Skew ||
+                    _editorMode == EditorMode.Warp ||
                     _editorMode == EditorMode.Verticies)
                 {
                     // то строим маркеры
@@ -209,6 +213,7 @@ namespace SimpleEditor.Controllers
 
             if (EditorMode != EditorMode.Select &&
                 EditorMode != EditorMode.Skew &&
+                EditorMode != EditorMode.Warp &&
                 EditorMode != EditorMode.Verticies)
                 Clear();   // очищаем список выбранных
 
@@ -218,7 +223,8 @@ namespace SimpleEditor.Controllers
             {
                 Figure fig;
                 if ((EditorMode == EditorMode.Select ||
-                     EditorMode == EditorMode.Skew || 
+                     EditorMode == EditorMode.Skew ||
+                     EditorMode == EditorMode.Warp ||
                      EditorMode == EditorMode.Verticies) &&
                     _selection.FindFigureAt(_layer, point, out fig)) // попробуем найти фигуру...
                 {
@@ -395,7 +401,7 @@ namespace SimpleEditor.Controllers
                     default:
                         if (EditorMode == EditorMode.Drag) 
                         {
-                            if (_lastMode == EditorMode.Verticies || _lastMode == EditorMode.Skew) break;
+                            if (_lastMode == EditorMode.Verticies || _lastMode == EditorMode.Skew || _lastMode == EditorMode.Warp) break;
                             // показываем, как будет перемещаться список выбранных фигур
                             var mouseOffset = new Point(point.X - _firstMouseDown.X, point.Y - _firstMouseDown.Y);
                             _selection.Translate(mouseOffset.X, mouseOffset.Y);
@@ -792,29 +798,22 @@ namespace SimpleEditor.Controllers
                     break;
                 case MarkerType.Vertex:
                 case MarkerType.ControlBezier:
+                case MarkerType.Gradient:
+                case MarkerType.Warp:
                     if (!_wasVertexMoving)
                         OnLayerStartChanging();
                     
                     // двигаем вершину
                     var vm = (VertexMarker) marker;
-                    _selection.MoveVertex(vm.Owner, vm.Index, mousePos);
+                    if (marker.MarkerType == MarkerType.Gradient)
+                        _selection.MoveGradient(vm.Owner, vm.Index, mousePos);
+                    else if (marker.MarkerType == MarkerType.Warp)
+                        _selection.MoveWarpNode(vm.Owner, vm.Index, mousePos);
+                    else
+                        _selection.MoveVertex(vm.Owner, vm.Index, mousePos);
 
                     //обновляем позицию маркера
                     vm.Position = mousePos;
-                    UpdateMarkerPositions();
-
-                    _wasVertexMoving = true;
-                    break;
-                case MarkerType.Gradient:
-                    if (!_wasVertexMoving)
-                        OnLayerStartChanging();
-
-                    // двигаем вершину
-                    var gm = (VertexMarker)marker;
-                    _selection.MoveGradient(gm.Owner, gm.Index, mousePos);
-
-                    //обновляем позицию маркера
-                    gm.Position = mousePos;
                     UpdateMarkerPositions();
 
                     _wasVertexMoving = true;
@@ -833,6 +832,22 @@ namespace SimpleEditor.Controllers
             if (Selection.Count == 0) return;
             switch (_editorMode)
             {
+                case EditorMode.Warp:
+                    //создаём маркеры искажения по горизонтали и по вертикали
+                    if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Warp)) //если разрешёно искажение
+                    {
+                        // создаём маркеры искажения
+                        foreach (var fig in RendererDecorator.WhereContainsDecorator(_selection, typeof(WarpRendererDecorator)))
+                        {
+                            var warped = fig.Renderer as WarpRendererDecorator;
+                            //get transformed points
+                            if (warped == null) continue;
+                            var points = warped.GetWarpPoints(fig);
+                            for (var i = 0; i < points.Length; i++)
+                                Markers.Add(CreateMarker(MarkerType.Warp, points[i], i, fig));
+                        }
+                    }
+                    break;
                 case EditorMode.Skew:
                     //создаём маркеры скоса по горизонтали и по вертикали
                     if (_selection.Geometry.AllowedOperations.HasFlag(AllowedOperations.Skew)) //если разрешён скос
@@ -924,7 +939,7 @@ namespace SimpleEditor.Controllers
             var marker = new VertexMarker
             {
                 MarkerType = markerType,
-                Cursor = CursorFactory.GetCursor(UserCursor.MoveAll),
+                Cursor = CursorFactory.GetCursor(UserCursor.SizeAll),
                 Position = point,
                 Index = index,
                 Owner = fig
@@ -961,6 +976,7 @@ namespace SimpleEditor.Controllers
                 // для базовых режимов настраиваем вид курсора на маркерах
                 case EditorMode.Select:
                 case EditorMode.Skew:
+                case EditorMode.Warp:
                 case EditorMode.Verticies:
                     Marker marker;
                     if (FindMarkerAt(point, out marker))
@@ -980,7 +996,9 @@ namespace SimpleEditor.Controllers
                     }
                     return Cursors.Default;
                 case EditorMode.FrameSelect:
-                    return CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                    return _lastMode == EditorMode.Verticies
+                                          ? Cursors.Default
+                                          : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
                 case EditorMode.AddLine:
                     return CursorFactory.GetCursor(UserCursor.CreatePolyline);
                 case EditorMode.CreateFigure:
@@ -989,9 +1007,11 @@ namespace SimpleEditor.Controllers
                 case EditorMode.Drag:
                     return _selection.Count > 0
                                ? modifierKeys.HasFlag(Keys.Control)
-                                          ? CursorFactory.GetCursor(UserCursor.DragCopy) 
-                                          : CursorFactory.GetCursor(UserCursor.SizeAll)
-                               : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
+                                    ? CursorFactory.GetCursor(UserCursor.DragCopy) 
+                                    : CursorFactory.GetCursor(UserCursor.SizeAll)
+                               : _lastMode == EditorMode.Verticies 
+                                    ? Cursors.Default 
+                                    : CursorFactory.GetCursor(UserCursor.SelectByRibbonRect);
                 // когда изменяем масштабируем, меняем ширину/высоту, вращаем или искажаем
                 case EditorMode.ChangeGeometry:
                     if (button == MouseButtons.Left && _lastMode == EditorMode.Verticies)
@@ -1012,6 +1032,44 @@ namespace SimpleEditor.Controllers
             {
                 _layer.Figures.Remove(fig);
                 _layer.Figures.Add(fig);
+            }
+            LayerChanged();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Переместить выбранные фигуры на один уровень вверх по оси z
+        /// </summary>
+        public void UpToFront()
+        {
+            LayerStartChanging();
+            foreach (var fig in _selection)
+            {
+                var i = _layer.Figures.IndexOf(fig);
+                if (i < _layer.Figures.Count - 1)
+                {
+                    _layer.Figures.Remove(fig);
+                    _layer.Figures.Insert(i + 1, fig);
+                }
+            }
+            LayerChanged();
+            OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Переместить выбранные фигуры на один уровень вниз по оси z
+        /// </summary>
+        public void SendToDown()
+        {
+            LayerStartChanging();
+            foreach (var fig in _selection)
+            {
+                var i = _layer.Figures.IndexOf(fig);
+                if (i > 0)
+                {
+                    _layer.Figures.Remove(fig);
+                    _layer.Figures.Insert(i - 1,fig);
+                }
             }
             LayerChanged();
             OnSelectedFigureChanged();

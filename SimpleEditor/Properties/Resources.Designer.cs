@@ -581,6 +581,26 @@ namespace SimpleEditor.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap movedown {
+            get {
+                object obj = ResourceManager.GetObject("movedown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap moveup {
+            get {
+                object obj = ResourceManager.GetObject("moveup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
         internal static byte[] MoveVertex {
@@ -1076,6 +1096,16 @@ namespace SimpleEditor.Properties {
         internal static System.Drawing.Bitmap wedge {
             get {
                 object obj = ResourceManager.GetObject("wedge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wrapmode {
+            get {
+                object obj = ResourceManager.GetObject("wrapmode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

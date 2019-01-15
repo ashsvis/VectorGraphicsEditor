@@ -563,5 +563,14 @@
   <ItemGroup>
     <None Include="Resources\beziertext.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrapmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\moveup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\movedown.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

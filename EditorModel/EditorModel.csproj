@@ -69,6 +69,7 @@
     <Compile Include="Renderers\TextBlockDecorator.cs" />
     <Compile Include="Renderers\TextRenderer.cs" />
     <Compile Include="Geometry\FrameGeometry.cs" />
+    <Compile Include="Renderers\WarpRendererDecorator.cs" />
     <Compile Include="Selections\SelectionHelper.cs" />
     <Compile Include="Style\Border.cs" />
     <Compile Include="Figures\Figure.cs" />
