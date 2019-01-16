@@ -153,6 +153,24 @@
     <Compile Include="Controls\WedgeStyleEditor.Designer.cs">
       <DependentUpon>WedgeStyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorLayersInterface\FormLayerLashing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorLayersInterface\FormLayerLashing.Designer.cs">
+      <DependentUpon>FormLayerLashing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorLayersInterface\FormLayerName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorLayersInterface\FormLayerName.Designer.cs">
+      <DependentUpon>FormLayerName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorLayersInterface\FormLayersProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorLayersInterface\FormLayersProperty.Designer.cs">
+      <DependentUpon>FormLayersProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSimpleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +227,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WedgeStyleEditor.resx">
       <DependentUpon>WedgeStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorLayersInterface\FormLayerLashing.resx">
+      <DependentUpon>FormLayerLashing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorLayersInterface\FormLayerName.resx">
+      <DependentUpon>FormLayerName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorLayersInterface\FormLayersProperty.resx">
+      <DependentUpon>FormLayersProperty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSimpleEditor.resx">
       <DependentUpon>FormSimpleEditor.cs</DependentUpon>
@@ -571,6 +598,63 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\movedown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\glow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\warpedit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\solidbrush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gradient1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regular10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hatchbrush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gradient2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\solidbrush1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gradient3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\texturebrush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\glow1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\radial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\radial1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\radial2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\radial3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

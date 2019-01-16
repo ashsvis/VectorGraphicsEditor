@@ -15,6 +15,7 @@ using SimpleEditor.Controls;
 using System.Text;
 using EditorModel.Common;
 using System.IO;
+using SimpleEditor.EditorLayersInterface;
 
 namespace SimpleEditor
 {
@@ -215,7 +216,8 @@ namespace SimpleEditor
             tsddbGeometySwitcher.Enabled = exists;
             tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = 
                  tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
-                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = _selectionController.Selection.Count > 0;
+                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = 
+                    tsmiAssignedToLayer.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
                  tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
@@ -1276,6 +1278,11 @@ namespace SimpleEditor
             UpdateInterface();
         }
 
+        /// <summary>
+        /// Пользователь изменил фактор масштабирования
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbScaleFactor_SelectedIndexChanged(object sender, EventArgs e)
         {
             var pst = float.Parse(cbScaleFactor.Text.TrimEnd('%'));
@@ -1283,6 +1290,44 @@ namespace SimpleEditor
             _selectionController.ScaleFactor = pst / 100f;
             UpdateCanvasSize();
             UpdateInterface();
+        }
+
+        /// <summary>
+        /// Отображение формы для настройки свойств слоёв
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiLayerProperty_Click(object sender, EventArgs e)
+        {
+            var frm = new FormLayersProperty();
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Привязка выделенных фигур к слою...
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiAssignedToLayer_Click(object sender, EventArgs e)
+        {
+            var frm = new FormLayerLashing();
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Показываем дополнительное меню вызова инструментов для слоя
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbLayers_ButtonClick(object sender, EventArgs e)
+        {
+            tsbLayers.ShowDropDown();
         }
     }
 }

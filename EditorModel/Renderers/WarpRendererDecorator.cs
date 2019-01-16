@@ -19,8 +19,8 @@ namespace EditorModel.Renderers
             : base(renderer)
         {
             _renderer = renderer;
-            _points = new[] { new PointF(-0.5f, -0.5f), new PointF(1, -0.5f), new PointF(1, 1),
-                              new PointF(-0.5f, 1) };
+            _points = new[] { new PointF(-0.5f, -0.5f), new PointF(0.5f, -0.5f),
+                              new PointF(-0.5f, 0.5f), new PointF(0.5f, 0.5f) };
         }
 
         /// <summary>
@@ -60,6 +60,24 @@ namespace EditorModel.Renderers
 
         public override void Render(Graphics graphics, Figure figure)
         {
+            var imageRenderer = GetBaseRenderer(figure.Renderer) as ImageRenderer;
+            if (imageRenderer != null && imageRenderer.Image.Bitmap != null)
+            {
+                using (var path = figure.GetTransformedPath().Path)
+                {
+                    // todo: Это, конечно, полурешение. Четвёртая точка не задействуется,
+                    // но стандартного пути решения для картинки нет.
+                    PointF[] pts = { Points[0],    // destination for upper-left point of original
+                                     Points[1],    // destination for upper-right point of original
+                                     Points[2]};   // destination for lower-left point of original
+
+                    figure.Transform.Matrix.TransformPoints(pts);
+                    var unit = GraphicsUnit.Pixel;
+                    var rect = imageRenderer.Image.Bitmap.GetBounds(ref unit);
+                    graphics.DrawImage(imageRenderer.Image.Bitmap, pts, rect, GraphicsUnit.Pixel);
+                }
+                return;
+            }
             var baseRenderer = GetBaseRenderer(figure.Renderer) as IRendererTransformedPath;
             // получаем путь для рисования, трансформированный методом фигуры
             using (var path = baseRenderer != null
@@ -67,13 +85,18 @@ namespace EditorModel.Renderers
                                 : figure.GetTransformedPath().Path)
             {
                 // поместить код искажения здесь
-                var pts = (PointF[])Points.Clone();
-                figure.Transform.Matrix.TransformPoints(pts);
-                path.Warp(pts, path.GetBounds(), new Matrix(), WarpMode.Perspective);
-                graphics.DrawPath(Pens.Black, path);
+                path.Warp(Points, path.GetBounds(), figure.Transform.Matrix, WarpMode.Perspective);
+                // если разрешено использование заливки
+                if (figure.Style.FillStyle != null && figure.Style.FillStyle.IsVisible)
+                    // то получаем кисть из стиля рисования фигуры
+                    using (var brush = figure.Style.FillStyle.GetBrush(figure))
+                        graphics.FillPath(brush, path);
+                // если разрешено рисование контура
+                if (figure.Style.BorderStyle != null && figure.Style.BorderStyle.IsVisible)
+                    // то получаем карандаш из стиля рисования фигуры
+                    using (var pen = figure.Style.BorderStyle.GetPen(figure))
+                        graphics.DrawPath(pen, path);
             }
-            // этот рендерер по умолчанию потом спрятать
-            //_renderer.Render(graphics, figure);
         }
 
         /// <summary>
@@ -81,8 +104,7 @@ namespace EditorModel.Renderers
         /// </summary>
         public override AllowedRendererDecorators AllowedDecorators
         {
-            get { return AllowedRendererDecorators.All ^ 
-                    (AllowedRendererDecorators.Warp | AllowedRendererDecorators.TextBlock); }
+            get { return AllowedRendererDecorators.All ^ AllowedRendererDecorators.Warp; }
         }
 
     }

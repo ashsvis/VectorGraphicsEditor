@@ -80,7 +80,7 @@ namespace EditorModel.Figures
             path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
                 (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | 
-                 AllowedOperations.Skew | AllowedOperations.Vertex))
+                 AllowedOperations.Skew | AllowedOperations.Vertex | AllowedOperations.Pathed | AllowedOperations.Warp))
             { Name = "Marker" };
         }
 
