@@ -51,10 +51,12 @@
             this.clbLayers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.clbLayers.CheckOnClick = true;
             this.clbLayers.FormattingEnabled = true;
             this.clbLayers.Location = new System.Drawing.Point(16, 31);
             this.clbLayers.Name = "clbLayers";
             this.clbLayers.Size = new System.Drawing.Size(193, 220);
+            this.clbLayers.Sorted = true;
             this.clbLayers.TabIndex = 1;
             // 
             // btnCheckAll
@@ -66,6 +68,7 @@
             this.btnCheckAll.TabIndex = 2;
             this.btnCheckAll.Text = "Check to all";
             this.btnCheckAll.UseVisualStyleBackColor = true;
+            this.btnCheckAll.Click += new System.EventHandler(this.btnCheckAll_Click);
             // 
             // btnUncheckAll
             // 
@@ -76,6 +79,7 @@
             this.btnUncheckAll.TabIndex = 3;
             this.btnUncheckAll.Text = "Uncheck all";
             this.btnUncheckAll.UseVisualStyleBackColor = true;
+            this.btnUncheckAll.Click += new System.EventHandler(this.btnUncheckAll_Click);
             // 
             // btnCreateLayer
             // 
@@ -98,6 +102,7 @@
             this.btnOk.TabIndex = 5;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 

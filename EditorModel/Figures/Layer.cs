@@ -59,6 +59,11 @@ namespace EditorModel.Figures
         /// </summary>
         public Color BorderColor { get; set; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 
     /// <summary>
