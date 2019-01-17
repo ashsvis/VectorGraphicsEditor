@@ -19,7 +19,9 @@ namespace EditorModel.Common
                 var versionInfo = (VersionInfo)formatter.Deserialize(zip);
                 if (versionInfo.Version > VersionInfo.DEFAULT_VERSION)
                     throw new Exception(@"Формат загружаемого файла не поддерживается.");
-                return (Layer)formatter.Deserialize(zip);
+                var layer = (Layer)formatter.Deserialize(zip);
+                if (layer.Layers == null) layer.Layers = new List<LayerItem>();
+                return layer;
             }
         }
 
