@@ -48,6 +48,7 @@
             this.lbOpacity = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,12 +67,16 @@
             this.chLashing,
             this.chGluing,
             this.chColor});
+            this.lvLayers.HideSelection = false;
             this.lvLayers.Location = new System.Drawing.Point(13, 13);
+            this.lvLayers.MultiSelect = false;
             this.lvLayers.Name = "lvLayers";
             this.lvLayers.Size = new System.Drawing.Size(632, 252);
+            this.lvLayers.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvLayers.TabIndex = 0;
             this.lvLayers.UseCompatibleStateImageBehavior = false;
             this.lvLayers.View = System.Windows.Forms.View.Details;
+            this.lvLayers.SelectedIndexChanged += new System.EventHandler(this.lvLayers_SelectedIndexChanged);
             // 
             // chName
             // 
@@ -101,7 +106,7 @@
             // 
             // chLocking
             // 
-            this.chLocking.Text = "Loking";
+            this.chLocking.Text = "Locking";
             this.chLocking.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // chLashing
@@ -164,6 +169,7 @@
             this.cboxRemoveUnusedLayers.TabIndex = 4;
             this.cboxRemoveUnusedLayers.Text = "Remove unused layers";
             this.cboxRemoveUnusedLayers.UseVisualStyleBackColor = true;
+            this.cboxRemoveUnusedLayers.CheckedChanged += new System.EventHandler(this.cboxRemoveUnusedLayers_CheckedChanged);
             // 
             // lbColorText
             // 
@@ -228,6 +234,7 @@
             this.btnOk.TabIndex = 7;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
@@ -239,6 +246,18 @@
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnApply
+            // 
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnApply.Enabled = false;
+            this.btnApply.Location = new System.Drawing.Point(366, 324);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(86, 26);
+            this.btnApply.TabIndex = 6;
+            this.btnApply.Text = "Apply";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // FormLayersProperty
             // 
@@ -255,6 +274,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnRenameLayer);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnDeleteLayer);
             this.Controls.Add(this.btnCreateLayer);
             this.Controls.Add(this.lvLayers);
@@ -293,5 +313,6 @@
         private System.Windows.Forms.Label lbOpacity;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnApply;
     }
 }

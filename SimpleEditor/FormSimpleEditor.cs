@@ -1105,6 +1105,7 @@ namespace SimpleEditor
             UndoRedoManager.Instance.ClearHistory();
             _layer.FillStyle = new DefaultFill { IsVisible = false };
             _layer.Figures.Clear();
+            _layer.Layers.Clear();
             BuildInterface();
         }
 
@@ -1300,9 +1301,20 @@ namespace SimpleEditor
         private void tsmiLayerProperty_Click(object sender, EventArgs e)
         {
             var frm = new FormLayersProperty();
-            if (frm.ShowDialog(this) == DialogResult.OK)
+            frm.StartChanging += pnStyle_StartChanging;
+            frm.Changed += pnStyle_Changed;
+            try
             {
+                frm.Build(_layer, _selectionController.Selection);
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
 
+                }
+            }
+            finally
+            {
+                frm.Changed -= pnStyle_Changed;
+                frm.StartChanging -= pnStyle_StartChanging;
             }
         }
 
@@ -1314,9 +1326,20 @@ namespace SimpleEditor
         private void tsmiAssignedToLayer_Click(object sender, EventArgs e)
         {
             var frm = new FormLayerLashing();
-            if (frm.ShowDialog(this) == DialogResult.OK)
+            frm.StartChanging += pnStyle_StartChanging;
+            frm.Changed += pnStyle_Changed;
+            try
             {
+                frm.Build(_layer, _selectionController.Selection);
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
 
+                }
+            }
+            finally
+            {
+                frm.Changed -= pnStyle_Changed;
+                frm.StartChanging -= pnStyle_StartChanging;
             }
         }
 

@@ -46,11 +46,15 @@ namespace SimpleEditor.Controllers
             Action undo = () =>
                 {
                     _layer.Figures = beforeOperationSnapshot.DeepClone().Figures;
+                    _layer.FillStyle = beforeOperationSnapshot.DeepClone().FillStyle;
+                    _layer.Layers = beforeOperationSnapshot.DeepClone().Layers;
                 };
 
             Action redo = () =>
                 {
                     _layer.Figures = afterOperationSnapshot.DeepClone().Figures;
+                    _layer.FillStyle = afterOperationSnapshot.DeepClone().FillStyle;
+                    _layer.Layers = afterOperationSnapshot.DeepClone().Layers;
                 };
 
             UndoRedoManager.Instance.Add(new ActionCommand(undo, redo) {Name = _operationName});
