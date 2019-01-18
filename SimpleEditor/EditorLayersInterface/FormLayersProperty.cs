@@ -3,8 +3,10 @@ using EditorModel.Selections;
 using SimpleEditor.Controls;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace SimpleEditor.EditorLayersInterface
 {
@@ -155,6 +157,49 @@ namespace SimpleEditor.EditorLayersInterface
         private void cboxRemoveUnusedLayers_CheckedChanged(object sender, EventArgs e)
         {
             btnApply.Enabled = true;
+        }
+
+        private void lvLayers_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void lvLayers_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = false;
+        }
+
+        private void lvLayers_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            var item = e.Item.Tag as LayerItem;
+            if (item == null) return;
+            switch (e.ColumnIndex)
+            {
+                case 0:
+                case 1:
+                    e.DrawDefault = true;
+                    break;
+                default:
+                    var rect = e.Bounds;
+                    e.DrawDefault = false;
+                    rect.Size = new Size(16, 16);
+                    rect.Offset((e.Bounds.Width - 16) / 2, 0);
+                    var state = bool.Parse(e.SubItem.Text);
+                    // запрещение выбора Actived
+                    var disabled = e.ColumnIndex == 4 &&
+                        (!item.AllowedOperations.HasFlag(LayerAllowedOperations.Visible) ||
+                         item.AllowedOperations.HasFlag(LayerAllowedOperations.Locking));
+                    CheckBoxRenderer.DrawCheckBox(e.Graphics, rect.Location,
+                        state 
+                           ? disabled ? CheckBoxState.CheckedDisabled : CheckBoxState.CheckedNormal 
+                           : disabled ? CheckBoxState.UncheckedDisabled : CheckBoxState.UncheckedNormal);
+                    break;
+            }
+        }
+
+        private void lvLayers_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

@@ -71,12 +71,17 @@
             this.lvLayers.Location = new System.Drawing.Point(13, 13);
             this.lvLayers.MultiSelect = false;
             this.lvLayers.Name = "lvLayers";
+            this.lvLayers.OwnerDraw = true;
             this.lvLayers.Size = new System.Drawing.Size(632, 252);
             this.lvLayers.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvLayers.TabIndex = 0;
             this.lvLayers.UseCompatibleStateImageBehavior = false;
             this.lvLayers.View = System.Windows.Forms.View.Details;
+            this.lvLayers.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.lvLayers_DrawColumnHeader);
+            this.lvLayers.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.lvLayers_DrawItem);
+            this.lvLayers.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.lvLayers_DrawSubItem);
             this.lvLayers.SelectedIndexChanged += new System.EventHandler(this.lvLayers_SelectedIndexChanged);
+            this.lvLayers.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lvLayers_MouseDown);
             // 
             // chName
             // 
