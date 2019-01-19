@@ -67,7 +67,9 @@
             this.chLashing,
             this.chGluing,
             this.chColor});
+            this.lvLayers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvLayers.HideSelection = false;
+            this.lvLayers.LabelWrap = false;
             this.lvLayers.Location = new System.Drawing.Point(13, 13);
             this.lvLayers.MultiSelect = false;
             this.lvLayers.Name = "lvLayers";

@@ -52,7 +52,17 @@ namespace EditorModel.Figures
         /// <summary>
         /// Допустимые операции в слое
         /// </summary>
-        public LayerAllowedOperations AllowedOperations { get; }
+        public LayerAllowedOperations AllowedOperations { get; private set; }
+
+        public void AddAllowedOperation(LayerAllowedOperations op)
+        {
+            AllowedOperations |= op; 
+        }
+
+        public void RemoveAllowedOperation(LayerAllowedOperations op)
+        {
+            AllowedOperations &= LayerAllowedOperations.All ^ op;
+        }
 
         /// <summary>
         /// Цвет контура для элементов слоя

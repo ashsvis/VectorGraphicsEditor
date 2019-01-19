@@ -54,16 +54,19 @@ namespace SimpleEditor.EditorLayersInterface
             lvLayers.Items.Add(lvi);
         }
 
-        private static void AddSubItems(LayerItem item, ListViewItem lvi)
+        private void AddSubItems(LayerItem item, ListViewItem lvi)
         {
-            lvi.SubItems.Add(string.Format("{0}", item.Figures.Count));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Visible)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Print)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Actived)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Lashing)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Gluing)));
-            lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Color)));
+            lvi.SubItems.Add(string.Format("{0}", item.Figures.Count)).Tag = 1;
+            for (var i = 2; i < _allowed.Length; i++)
+                lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(_allowed[i]))).Tag = i;
+
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Visible))).Tag = 2;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Print))).Tag = 3;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Actived))).Tag = 4;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Locking))).Tag = 5;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Lashing))).Tag = 6;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Gluing))).Tag = 7;
+            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Color))).Tag = 8;
         }
 
         private void UpdateObject()
@@ -90,13 +93,42 @@ namespace SimpleEditor.EditorLayersInterface
             {
                 var item = lvi.Tag as LayerItem;
                 if (item.Name == null)
-                    _layer.Layers.Add(new LayerItem() { Name = lvi.Text });
+                {
+                    item = new LayerItem() { Name = lvi.Text };
+                    _layer.Layers.Add(item);
+                }
                 else if (item.Name != lvi.Text) item.Name = lvi.Text;
+                UpdateOperations(item, lvi);
             }
             // fire event
             Changed(this, EventArgs.Empty);
             UpdateListView();
             btnApply.Enabled = false;
+        }
+
+        LayerAllowedOperations[] _allowed = new LayerAllowedOperations[]
+            {
+                LayerAllowedOperations.None,
+                LayerAllowedOperations.None,
+                LayerAllowedOperations.Visible,
+                LayerAllowedOperations.Print,
+                LayerAllowedOperations.Actived,
+                LayerAllowedOperations.Locking,
+                LayerAllowedOperations.Lashing,
+                LayerAllowedOperations.Gluing,
+                LayerAllowedOperations.Color
+            };
+
+        private void UpdateOperations(LayerItem item, ListViewItem lvi)
+        {
+            for (var i = 2; i < lvi.SubItems.Count; i++)
+            {
+                var state = bool.Parse(lvi.SubItems[i].Text);
+                if (state)
+                    item.AddAllowedOperation(_allowed[i]);
+                else
+                    item.RemoveAllowedOperation(_allowed[i]);
+            }
         }
 
         private void btnCreateLayer_Click(object sender, EventArgs e)
@@ -146,7 +178,14 @@ namespace SimpleEditor.EditorLayersInterface
 
         private void lvLayers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnRenameLayer.Enabled = btnDeleteLayer.Enabled = lvLayers.SelectedItems.Count > 0;
+            var enabled = btnRenameLayer.Enabled = btnDeleteLayer.Enabled = lvLayers.SelectedItems.Count > 0;
+            if (!enabled) return;
+            var lvi = lvLayers.SelectedItems[0];
+            var visible = bool.Parse(lvi.SubItems[2].Text);
+            var locking = bool.Parse(lvi.SubItems[5].Text);
+            btnRenameLayer.Enabled = btnDeleteLayer.Enabled = !locking;
+            lbColor.Enabled = nudOpacity.Enabled = visible && !locking;
+
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -173,6 +212,8 @@ namespace SimpleEditor.EditorLayersInterface
         {
             var item = e.Item.Tag as LayerItem;
             if (item == null) return;
+            var visible = bool.Parse(e.Item.SubItems[2].Text);
+            var locking = bool.Parse(e.Item.SubItems[5].Text);
             switch (e.ColumnIndex)
             {
                 case 0:
@@ -183,12 +224,10 @@ namespace SimpleEditor.EditorLayersInterface
                     var rect = e.Bounds;
                     e.DrawDefault = false;
                     rect.Size = new Size(16, 16);
-                    rect.Offset((e.Bounds.Width - 16) / 2, 0);
+                    rect.Offset((e.Bounds.Width - 16) / 2, (e.Bounds.Height - 16) / 2);
                     var state = bool.Parse(e.SubItem.Text);
                     // запрещение выбора Actived
-                    var disabled = e.ColumnIndex == 4 &&
-                        (!item.AllowedOperations.HasFlag(LayerAllowedOperations.Visible) ||
-                         item.AllowedOperations.HasFlag(LayerAllowedOperations.Locking));
+                    var disabled = e.ColumnIndex == 4 && (!visible || locking);
                     CheckBoxRenderer.DrawCheckBox(e.Graphics, rect.Location,
                         state 
                            ? disabled ? CheckBoxState.CheckedDisabled : CheckBoxState.CheckedNormal 
@@ -199,7 +238,23 @@ namespace SimpleEditor.EditorLayersInterface
 
         private void lvLayers_MouseDown(object sender, MouseEventArgs e)
         {
-
+            if (e.Button != MouseButtons.Left) return;
+            var ht = lvLayers.HitTest(e.Location);
+            if (ht.Item == null) return;
+            var visible = bool.Parse(ht.Item.SubItems[2].Text);
+            var locking = bool.Parse(ht.Item.SubItems[5].Text);
+            var actived = ht.SubItem.Tag != null && (int)ht.SubItem.Tag == 4;
+            var enabled = !actived || actived && visible && !locking;
+            bool state;
+            if (enabled && bool.TryParse(ht.SubItem.Text, out state))
+            {
+                ht.SubItem.Text = string.Format("{0}", !state);
+                lvLayers.Invalidate();
+                lvLayers.SelectedItems.Clear();
+                ht.Item.Selected = true;
+                lvLayers.FocusedItem = ht.Item;
+                btnApply.Enabled = true;
+            }
         }
     }
 }
