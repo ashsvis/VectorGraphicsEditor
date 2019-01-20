@@ -18,7 +18,6 @@ namespace EditorModel.Figures
         Print = 0x2,        // могут быть распечатаны, экспортированы
         Actived = 0x4,      // слой делается активным и вновь добавляемые элементы автоматически добавляются к нему
         Locking = 0x8,      // только отображение элементов (как фон)
-        Color = 0x10,       // цвет контура задаётся в настройках слоя
         // новые режимы добавлять здесь
 
         All = 0xffffffff,   // всё можно
@@ -42,8 +41,7 @@ namespace EditorModel.Figures
         public LayerItem()
         {
             AllowedOperations = LayerAllowedOperations.All ^
-                (LayerAllowedOperations.Actived | LayerAllowedOperations.Locking | LayerAllowedOperations.Color);
-            BorderColor = Color.Transparent;
+                (LayerAllowedOperations.Actived | LayerAllowedOperations.Locking);
         }
 
         public string Name { get; set; }
@@ -62,11 +60,6 @@ namespace EditorModel.Figures
         {
             AllowedOperations &= LayerAllowedOperations.All ^ op;
         }
-
-        /// <summary>
-        /// Цвет контура для элементов слоя
-        /// </summary>
-        public Color BorderColor { get; set; }
 
         public override string ToString()
         {
@@ -140,12 +133,6 @@ namespace EditorModel.Figures
 
         public bool IsLocked(Figure fig)
         {
-            foreach (var layer in Layers.Where(layer =>
-                                 !layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
-            {
-                if (layer.Figures.Contains(fig))
-                    return false;
-            }
             foreach (var layer in Layers.Where(layer =>
                                  layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
             {

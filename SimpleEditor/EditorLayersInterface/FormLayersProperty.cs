@@ -58,7 +58,10 @@ namespace SimpleEditor.EditorLayersInterface
         {
             lvi.SubItems.Add(string.Format("{0}", item.Figures.Count)).Tag = 1;
             for (var i = 2; i < _allowed.Length; i++)
-                lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(_allowed[i]))).Tag = i;
+            {
+                var si = lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(_allowed[i])));
+                si.Tag = i;
+            }
         }
 
         private void UpdateObject()
@@ -105,9 +108,16 @@ namespace SimpleEditor.EditorLayersInterface
                 LayerAllowedOperations.Visible,
                 LayerAllowedOperations.Print,
                 LayerAllowedOperations.Actived,
-                LayerAllowedOperations.Locking,
-                LayerAllowedOperations.Color
+                LayerAllowedOperations.Locking
             };
+
+        private int GetSubitemIndex(LayerAllowedOperations op)
+        {
+            for (var i = 0; i < _allowed.Length; i++)
+                if (_allowed[i] == op)
+                    return i;
+            return 0;
+        }
 
         private void UpdateOperations(LayerItem item, ListViewItem lvi)
         {
@@ -171,11 +181,9 @@ namespace SimpleEditor.EditorLayersInterface
             var enabled = btnRenameLayer.Enabled = btnDeleteLayer.Enabled = lvLayers.SelectedItems.Count > 0;
             if (!enabled) return;
             var lvi = lvLayers.SelectedItems[0];
-            var visible = bool.Parse(lvi.SubItems[2].Text);
-            var locking = bool.Parse(lvi.SubItems[5].Text);
+            var visible = bool.Parse(lvi.SubItems[GetSubitemIndex(LayerAllowedOperations.Visible)].Text);
+            var locking = bool.Parse(lvi.SubItems[GetSubitemIndex(LayerAllowedOperations.Locking)].Text);
             btnRenameLayer.Enabled = btnDeleteLayer.Enabled = !locking;
-            lbColor.Enabled = nudOpacity.Enabled = visible && !locking;
-
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -202,8 +210,8 @@ namespace SimpleEditor.EditorLayersInterface
         {
             var item = e.Item.Tag as LayerItem;
             if (item == null) return;
-            var visible = bool.Parse(e.Item.SubItems[2].Text);
-            var locking = bool.Parse(e.Item.SubItems[5].Text);
+            var visible = bool.Parse(e.Item.SubItems[GetSubitemIndex(LayerAllowedOperations.Visible)].Text);
+            var locking = bool.Parse(e.Item.SubItems[GetSubitemIndex(LayerAllowedOperations.Locking)].Text);
             switch (e.ColumnIndex)
             {
                 case 0:
@@ -217,7 +225,7 @@ namespace SimpleEditor.EditorLayersInterface
                     rect.Offset((e.Bounds.Width - 16) / 2, (e.Bounds.Height - 16) / 2);
                     var state = bool.Parse(e.SubItem.Text);
                     // запрещение выбора Actived
-                    var disabled = e.ColumnIndex == 4 && (!visible || locking);
+                    var disabled = _allowed[e.ColumnIndex] == LayerAllowedOperations.Actived && (!visible || locking);
                     CheckBoxRenderer.DrawCheckBox(e.Graphics, rect.Location,
                         state 
                            ? disabled ? CheckBoxState.CheckedDisabled : CheckBoxState.CheckedNormal 
@@ -231,9 +239,9 @@ namespace SimpleEditor.EditorLayersInterface
             if (e.Button != MouseButtons.Left) return;
             var ht = lvLayers.HitTest(e.Location);
             if (ht.Item == null) return;
-            var visible = bool.Parse(ht.Item.SubItems[2].Text);
-            var locking = bool.Parse(ht.Item.SubItems[5].Text);
-            var actived = ht.SubItem.Tag != null && (int)ht.SubItem.Tag == 4;
+            var visible = bool.Parse(ht.Item.SubItems[GetSubitemIndex(LayerAllowedOperations.Visible)].Text);
+            var locking = bool.Parse(ht.Item.SubItems[GetSubitemIndex(LayerAllowedOperations.Locking)].Text);
+            var actived = ht.SubItem.Tag != null && _allowed[(int)ht.SubItem.Tag] == LayerAllowedOperations.Actived;
             var enabled = !actived || actived && visible && !locking;
             bool state;
             if (enabled && bool.TryParse(ht.SubItem.Text, out state))

@@ -220,9 +220,9 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => 
                                  f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = 
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = tsmDuplicateFigure.Enabled = tsmiDuplicateFigure.Enabled = 
                  tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
-                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = 
+                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = tsmDelete.Enabled = tsmiDelete.Enabled =
                     tsmiAssignedToLayer.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
@@ -1354,6 +1354,11 @@ namespace SimpleEditor
         private void tsbLayers_ButtonClick(object sender, EventArgs e)
         {
             tsbLayers.ShowDropDown();
+        }
+
+        private void tsmSelectAll_Click(object sender, EventArgs e)
+        {
+            _selectionController.SelectAllFigures();
         }
     }
 }

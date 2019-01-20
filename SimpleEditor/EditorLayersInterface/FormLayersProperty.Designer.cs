@@ -35,19 +35,13 @@
             this.chPrint = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chActived = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chLocking = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCreateLayer = new System.Windows.Forms.Button();
             this.btnDeleteLayer = new System.Windows.Forms.Button();
             this.btnRenameLayer = new System.Windows.Forms.Button();
             this.cboxRemoveUnusedLayers = new System.Windows.Forms.CheckBox();
-            this.lbColorText = new System.Windows.Forms.Label();
-            this.lbColor = new System.Windows.Forms.Label();
-            this.nudOpacity = new System.Windows.Forms.NumericUpDown();
-            this.lbOpacity = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).BeginInit();
             this.SuspendLayout();
             // 
             // lvLayers
@@ -61,8 +55,7 @@
             this.chVisible,
             this.chPrint,
             this.chActived,
-            this.chLocking,
-            this.chColor});
+            this.chLocking});
             this.lvLayers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvLayers.HideSelection = false;
             this.lvLayers.LabelWrap = false;
@@ -70,7 +63,7 @@
             this.lvLayers.MultiSelect = false;
             this.lvLayers.Name = "lvLayers";
             this.lvLayers.OwnerDraw = true;
-            this.lvLayers.Size = new System.Drawing.Size(515, 252);
+            this.lvLayers.Size = new System.Drawing.Size(451, 258);
             this.lvLayers.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvLayers.TabIndex = 0;
             this.lvLayers.UseCompatibleStateImageBehavior = false;
@@ -112,15 +105,10 @@
             this.chLocking.Text = "Locking";
             this.chLocking.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // chColor
-            // 
-            this.chColor.Text = "Color";
-            this.chColor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // btnCreateLayer
             // 
             this.btnCreateLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCreateLayer.Location = new System.Drawing.Point(13, 272);
+            this.btnCreateLayer.Location = new System.Drawing.Point(13, 284);
             this.btnCreateLayer.Name = "btnCreateLayer";
             this.btnCreateLayer.Size = new System.Drawing.Size(86, 26);
             this.btnCreateLayer.TabIndex = 1;
@@ -132,7 +120,7 @@
             // 
             this.btnDeleteLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDeleteLayer.Enabled = false;
-            this.btnDeleteLayer.Location = new System.Drawing.Point(105, 272);
+            this.btnDeleteLayer.Location = new System.Drawing.Point(105, 284);
             this.btnDeleteLayer.Name = "btnDeleteLayer";
             this.btnDeleteLayer.Size = new System.Drawing.Size(86, 26);
             this.btnDeleteLayer.TabIndex = 2;
@@ -144,7 +132,7 @@
             // 
             this.btnRenameLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRenameLayer.Enabled = false;
-            this.btnRenameLayer.Location = new System.Drawing.Point(197, 272);
+            this.btnRenameLayer.Location = new System.Drawing.Point(197, 284);
             this.btnRenameLayer.Name = "btnRenameLayer";
             this.btnRenameLayer.Size = new System.Drawing.Size(86, 26);
             this.btnRenameLayer.TabIndex = 3;
@@ -156,7 +144,7 @@
             // 
             this.cboxRemoveUnusedLayers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cboxRemoveUnusedLayers.AutoSize = true;
-            this.cboxRemoveUnusedLayers.Location = new System.Drawing.Point(13, 302);
+            this.cboxRemoveUnusedLayers.Location = new System.Drawing.Point(300, 289);
             this.cboxRemoveUnusedLayers.Name = "cboxRemoveUnusedLayers";
             this.cboxRemoveUnusedLayers.Size = new System.Drawing.Size(144, 19);
             this.cboxRemoveUnusedLayers.TabIndex = 4;
@@ -164,64 +152,11 @@
             this.cboxRemoveUnusedLayers.UseVisualStyleBackColor = true;
             this.cboxRemoveUnusedLayers.CheckedChanged += new System.EventHandler(this.cboxRemoveUnusedLayers_CheckedChanged);
             // 
-            // lbColorText
-            // 
-            this.lbColorText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbColorText.AutoSize = true;
-            this.lbColorText.Location = new System.Drawing.Point(313, 278);
-            this.lbColorText.Name = "lbColorText";
-            this.lbColorText.Size = new System.Drawing.Size(68, 15);
-            this.lbColorText.TabIndex = 3;
-            this.lbColorText.Text = "Layer color:";
-            // 
-            // lbColor
-            // 
-            this.lbColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbColor.Enabled = false;
-            this.lbColor.Location = new System.Drawing.Point(384, 277);
-            this.lbColor.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.lbColor.Name = "lbColor";
-            this.lbColor.Size = new System.Drawing.Size(39, 17);
-            this.lbColor.TabIndex = 4;
-            // 
-            // nudOpacity
-            // 
-            this.nudOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudOpacity.Enabled = false;
-            this.nudOpacity.Location = new System.Drawing.Point(488, 276);
-            this.nudOpacity.Margin = new System.Windows.Forms.Padding(0);
-            this.nudOpacity.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudOpacity.Name = "nudOpacity";
-            this.nudOpacity.Size = new System.Drawing.Size(40, 23);
-            this.nudOpacity.TabIndex = 5;
-            this.nudOpacity.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            // 
-            // lbOpacity
-            // 
-            this.lbOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbOpacity.AutoSize = true;
-            this.lbOpacity.Location = new System.Drawing.Point(435, 278);
-            this.lbOpacity.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lbOpacity.Name = "lbOpacity";
-            this.lbOpacity.Size = new System.Drawing.Size(51, 15);
-            this.lbOpacity.TabIndex = 5;
-            this.lbOpacity.Text = "Opacity:";
-            // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(350, 324);
+            this.btnOk.Location = new System.Drawing.Point(286, 330);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(86, 26);
             this.btnOk.TabIndex = 7;
@@ -233,7 +168,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(442, 324);
+            this.btnCancel.Location = new System.Drawing.Point(378, 330);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(86, 26);
             this.btnCancel.TabIndex = 8;
@@ -244,7 +179,7 @@
             // 
             this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(249, 324);
+            this.btnApply.Location = new System.Drawing.Point(185, 330);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(86, 26);
             this.btnApply.TabIndex = 6;
@@ -258,11 +193,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(540, 358);
-            this.Controls.Add(this.nudOpacity);
-            this.Controls.Add(this.lbOpacity);
-            this.Controls.Add(this.lbColor);
-            this.Controls.Add(this.lbColorText);
+            this.ClientSize = new System.Drawing.Size(476, 364);
             this.Controls.Add(this.cboxRemoveUnusedLayers);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -278,7 +209,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Property layers";
-            ((System.ComponentModel.ISupportInitialize)(this.nudOpacity)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,15 +223,10 @@
         private System.Windows.Forms.ColumnHeader chPrint;
         private System.Windows.Forms.ColumnHeader chActived;
         private System.Windows.Forms.ColumnHeader chLocking;
-        private System.Windows.Forms.ColumnHeader chColor;
         private System.Windows.Forms.Button btnCreateLayer;
         private System.Windows.Forms.Button btnDeleteLayer;
         private System.Windows.Forms.Button btnRenameLayer;
         private System.Windows.Forms.CheckBox cboxRemoveUnusedLayers;
-        private System.Windows.Forms.Label lbColorText;
-        private System.Windows.Forms.Label lbColor;
-        private System.Windows.Forms.NumericUpDown nudOpacity;
-        private System.Windows.Forms.Label lbOpacity;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnApply;
