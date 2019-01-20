@@ -40,7 +40,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 15);
             this.label1.TabIndex = 0;
@@ -53,7 +53,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.clbLayers.CheckOnClick = true;
             this.clbLayers.FormattingEnabled = true;
-            this.clbLayers.Location = new System.Drawing.Point(16, 31);
+            this.clbLayers.Location = new System.Drawing.Point(12, 31);
             this.clbLayers.Name = "clbLayers";
             this.clbLayers.Size = new System.Drawing.Size(193, 220);
             this.clbLayers.Sorted = true;
@@ -96,7 +96,7 @@
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(144, 273);
+            this.btnOk.Location = new System.Drawing.Point(144, 274);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(76, 25);
             this.btnOk.TabIndex = 5;
@@ -108,7 +108,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(231, 273);
+            this.btnCancel.Location = new System.Drawing.Point(231, 274);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(76, 25);
             this.btnCancel.TabIndex = 6;
@@ -121,7 +121,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(314, 308);
+            this.ClientSize = new System.Drawing.Size(314, 309);
             this.Controls.Add(this.btnCreateLayer);
             this.Controls.Add(this.btnUncheckAll);
             this.Controls.Add(this.btnCancel);

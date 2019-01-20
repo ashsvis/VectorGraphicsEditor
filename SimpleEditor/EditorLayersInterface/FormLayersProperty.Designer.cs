@@ -35,8 +35,6 @@
             this.chPrint = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chActived = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chLocking = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chLashing = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chGluing = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCreateLayer = new System.Windows.Forms.Button();
             this.btnDeleteLayer = new System.Windows.Forms.Button();
@@ -64,8 +62,6 @@
             this.chPrint,
             this.chActived,
             this.chLocking,
-            this.chLashing,
-            this.chGluing,
             this.chColor});
             this.lvLayers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvLayers.HideSelection = false;
@@ -74,7 +70,7 @@
             this.lvLayers.MultiSelect = false;
             this.lvLayers.Name = "lvLayers";
             this.lvLayers.OwnerDraw = true;
-            this.lvLayers.Size = new System.Drawing.Size(632, 252);
+            this.lvLayers.Size = new System.Drawing.Size(515, 252);
             this.lvLayers.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvLayers.TabIndex = 0;
             this.lvLayers.UseCompatibleStateImageBehavior = false;
@@ -115,16 +111,6 @@
             // 
             this.chLocking.Text = "Locking";
             this.chLocking.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // chLashing
-            // 
-            this.chLashing.Text = "Lashing";
-            this.chLashing.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // chGluing
-            // 
-            this.chGluing.Text = "Gluing";
-            this.chGluing.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // chColor
             // 
@@ -182,7 +168,7 @@
             // 
             this.lbColorText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbColorText.AutoSize = true;
-            this.lbColorText.Location = new System.Drawing.Point(430, 278);
+            this.lbColorText.Location = new System.Drawing.Point(313, 278);
             this.lbColorText.Name = "lbColorText";
             this.lbColorText.Size = new System.Drawing.Size(68, 15);
             this.lbColorText.TabIndex = 3;
@@ -194,7 +180,7 @@
             this.lbColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbColor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbColor.Enabled = false;
-            this.lbColor.Location = new System.Drawing.Point(501, 277);
+            this.lbColor.Location = new System.Drawing.Point(384, 277);
             this.lbColor.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.lbColor.Name = "lbColor";
             this.lbColor.Size = new System.Drawing.Size(39, 17);
@@ -204,7 +190,7 @@
             // 
             this.nudOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.nudOpacity.Enabled = false;
-            this.nudOpacity.Location = new System.Drawing.Point(605, 276);
+            this.nudOpacity.Location = new System.Drawing.Point(488, 276);
             this.nudOpacity.Margin = new System.Windows.Forms.Padding(0);
             this.nudOpacity.Maximum = new decimal(new int[] {
             255,
@@ -224,7 +210,7 @@
             // 
             this.lbOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbOpacity.AutoSize = true;
-            this.lbOpacity.Location = new System.Drawing.Point(552, 278);
+            this.lbOpacity.Location = new System.Drawing.Point(435, 278);
             this.lbOpacity.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.lbOpacity.Name = "lbOpacity";
             this.lbOpacity.Size = new System.Drawing.Size(51, 15);
@@ -235,7 +221,7 @@
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(467, 324);
+            this.btnOk.Location = new System.Drawing.Point(350, 324);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(86, 26);
             this.btnOk.TabIndex = 7;
@@ -247,7 +233,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(559, 324);
+            this.btnCancel.Location = new System.Drawing.Point(442, 324);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(86, 26);
             this.btnCancel.TabIndex = 8;
@@ -256,9 +242,9 @@
             // 
             // btnApply
             // 
-            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(366, 324);
+            this.btnApply.Location = new System.Drawing.Point(249, 324);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(86, 26);
             this.btnApply.TabIndex = 6;
@@ -272,7 +258,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(657, 358);
+            this.ClientSize = new System.Drawing.Size(540, 358);
             this.Controls.Add(this.nudOpacity);
             this.Controls.Add(this.lbOpacity);
             this.Controls.Add(this.lbColor);
@@ -307,8 +293,6 @@
         private System.Windows.Forms.ColumnHeader chPrint;
         private System.Windows.Forms.ColumnHeader chActived;
         private System.Windows.Forms.ColumnHeader chLocking;
-        private System.Windows.Forms.ColumnHeader chLashing;
-        private System.Windows.Forms.ColumnHeader chGluing;
         private System.Windows.Forms.ColumnHeader chColor;
         private System.Windows.Forms.Button btnCreateLayer;
         private System.Windows.Forms.Button btnDeleteLayer;

@@ -107,6 +107,7 @@ namespace EditorModel.Selections
                 for (var i = layer.Figures.Count - 1; i >= 0; i--)
                 {
                     var fig = layer.Figures[i];
+                    if (!layer.IsVisible(fig) || layer.IsLocked(fig)) continue;
                     var path = fig.GetTransformedPath();
                     if (path.Path.IsVisible(point))
                     {

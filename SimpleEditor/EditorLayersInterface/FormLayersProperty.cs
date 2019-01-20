@@ -59,14 +59,6 @@ namespace SimpleEditor.EditorLayersInterface
             lvi.SubItems.Add(string.Format("{0}", item.Figures.Count)).Tag = 1;
             for (var i = 2; i < _allowed.Length; i++)
                 lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(_allowed[i]))).Tag = i;
-
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Visible))).Tag = 2;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Print))).Tag = 3;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Actived))).Tag = 4;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Locking))).Tag = 5;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Lashing))).Tag = 6;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Gluing))).Tag = 7;
-            //lvi.SubItems.Add(string.Format("{0}", item.AllowedOperations.HasFlag(LayerAllowedOperations.Color))).Tag = 8;
         }
 
         private void UpdateObject()
@@ -114,8 +106,6 @@ namespace SimpleEditor.EditorLayersInterface
                 LayerAllowedOperations.Print,
                 LayerAllowedOperations.Actived,
                 LayerAllowedOperations.Locking,
-                LayerAllowedOperations.Lashing,
-                LayerAllowedOperations.Gluing,
                 LayerAllowedOperations.Color
             };
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EditorModel.Style;
 using System.Drawing;
+using System.Linq;
 
 namespace EditorModel.Figures
 {
@@ -17,9 +18,7 @@ namespace EditorModel.Figures
         Print = 0x2,        // могут быть распечатаны, экспортированы
         Actived = 0x4,      // слой делается активным и вновь добавляемые элементы автоматически добавляются к нему
         Locking = 0x8,      // только отображение элементов (как фон)
-        Lashing = 0x10,     // элементы могут быть привязаны
-        Gluing = 0x20,      // элементы могут быть приклеены
-        Color = 0x40,       // цвет контура задаётся в настройках слоя
+        Color = 0x10,       // цвет контура задаётся в настройках слоя
         // новые режимы добавлять здесь
 
         All = 0xffffffff,   // всё можно
@@ -122,5 +121,38 @@ namespace EditorModel.Figures
             _layers = new List<LayerItem>();
         }
 
+        public bool IsVisible(Figure fig)
+        {
+            foreach (var layer in Layers.Where(layer => 
+                                 layer.AllowedOperations.HasFlag(LayerAllowedOperations.Visible)))
+            {
+                if (layer.Figures.Contains(fig))
+                    return true;
+            }
+            foreach (var layer in Layers.Where(layer =>
+                                 !layer.AllowedOperations.HasFlag(LayerAllowedOperations.Visible)))
+            {
+                if (layer.Figures.Contains(fig))
+                    return false;
+            }
+            return true;
+        }
+
+        public bool IsLocked(Figure fig)
+        {
+            foreach (var layer in Layers.Where(layer =>
+                                 !layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
+            {
+                if (layer.Figures.Contains(fig))
+                    return false;
+            }
+            foreach (var layer in Layers.Where(layer =>
+                                 layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
+            {
+                if (layer.Figures.Contains(fig))
+                    return true;
+            }
+            return false;
+        }
     }
 }

@@ -37,7 +37,8 @@ namespace SimpleEditor.EditorLayersInterface
         private void UpdateCheckListbox()
         {
             clbLayers.Items.Clear();
-            foreach (var item in _layer.Layers)
+            foreach (var item in _layer.Layers.Where(layer => 
+                     !layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
             {
                 var index = clbLayers.Items.Add(item);
                 foreach (var fig in _selection)

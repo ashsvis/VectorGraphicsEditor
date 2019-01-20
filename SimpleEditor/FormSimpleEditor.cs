@@ -127,7 +127,11 @@ namespace SimpleEditor
                 tvFigures.Nodes.Clear();
                 foreach (var fig in _layer.Figures.ToList().AsEnumerable().Reverse())
                 {
-                    var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig };
+                    var state = !_layer.IsVisible(fig)
+                        ? " (hidden)"
+                        : _layer.IsLocked(fig) ? " (locked)" : "";
+                    var fignode = new FigureTreeNode(
+                        string.Format("{0}{1}", fig.Geometry, state)) { Figure = fig };
                     tvFigures.Nodes.Add(fignode);
                     if (fig == first)
                         tvFigures.SelectedNode = fignode;
@@ -162,6 +166,8 @@ namespace SimpleEditor
             {
                 var fignode = e.Node as FigureTreeNode;
                 if (fignode == null) return;
+                if (!_layer.IsVisible(fignode.Figure) ||
+                    _layer.IsLocked(fignode.Figure)) return;
                 if (fignode.Group == null)
                 {
                     _selectionController.Selection.Add(fignode.Figure);
@@ -330,8 +336,9 @@ namespace SimpleEditor
                     graphics.FillRectangle(brush, pbCanvas.ClientRectangle);
 
             // отрисовка созданных фигур
-            foreach (var fig in _layer.Figures)
+            foreach (var fig in _layer.Figures.Where(fig => _layer.IsVisible(fig)))
             {
+
                 fig.Renderer.Render(graphics, fig);
             }
 
@@ -680,6 +687,8 @@ namespace SimpleEditor
         private void pnStyle_Changed(object sender, EventArgs e)
         {
             OnLayerChanged();
+            // убираем все невидимые или заблокированные фигуры из выделения
+            _selectionController.RemoveLockedOrNotVisible();
             UpdateInterface();
             _selectionController.UpdateMarkers();
         }
@@ -1306,10 +1315,7 @@ namespace SimpleEditor
             try
             {
                 frm.Build(_layer, _selectionController.Selection);
-                if (frm.ShowDialog(this) == DialogResult.OK)
-                {
-
-                }
+                frm.ShowDialog(this);
             }
             finally
             {
@@ -1331,10 +1337,7 @@ namespace SimpleEditor
             try
             {
                 frm.Build(_layer, _selectionController.Selection);
-                if (frm.ShowDialog(this) == DialogResult.OK)
-                {
-
-                }
+                frm.ShowDialog(this);
             }
             finally
             {

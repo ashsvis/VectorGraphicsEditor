@@ -432,9 +432,12 @@ namespace SimpleEditor.Controllers
                         // добавляем все фигуры, которые оказались охваченными прямоугольником выбора
                         // в список выбранных фигур
                         var rect = _selection.GetTransformedPath().Path.GetBounds();
-                        foreach (var fig in _layer.Figures.Where(fig => 
+                        foreach (var fig in _layer.Figures.Where(fig =>
                             rect.Contains(Rectangle.Ceiling(fig.GetTransformedPath().Path.GetBounds()))))
+                        {
+                            if (!_layer.IsVisible(fig) || _layer.IsLocked(fig)) continue;
                             _selection.Add(fig);
+                        }
                         // если ничего не выбралось, то вызываем метод PushTransformToSelectedFigures(),
                         // чтобы убрать остающуюся рамку выбора
                         if (_selection.Count == 0)
@@ -731,6 +734,27 @@ namespace SimpleEditor.Controllers
                 break;
             }
             return found;
+        }
+
+        /// <summary>
+        /// Убираем все невидимые или заблокированные фигуры из выделения
+        /// </summary>
+        public void RemoveLockedOrNotVisible()
+        {
+            var list = new List<Figure>();
+            foreach (var fig in _selection)
+            {
+                foreach (var layer in _layer.Layers.Where(layer =>
+                     !layer.AllowedOperations.HasFlag(LayerAllowedOperations.Visible) ||
+                      layer.AllowedOperations.HasFlag(LayerAllowedOperations.Locking)))
+                {
+                    if (!list.Contains(fig))
+                        list.Add(fig);
+                }
+            }
+            foreach (var fig in list)
+                _selection.Remove(fig);
+
         }
 
         /// <summary>
@@ -1208,7 +1232,11 @@ namespace SimpleEditor.Controllers
         /// </summary>
         public void SelectAllFigures()
         {
-            foreach (var fig in _layer.Figures) _selection.Add(fig);
+            foreach (var fig in _layer.Figures)
+            {
+                if (!_layer.IsVisible(fig) || _layer.IsLocked(fig)) continue;
+                _selection.Add(fig);
+            }
             BuildMarkers();
             UpdateMarkerPositions();
             OnSelectedFigureChanged();
