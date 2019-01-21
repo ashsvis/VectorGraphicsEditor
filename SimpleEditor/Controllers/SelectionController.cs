@@ -464,22 +464,7 @@ namespace SimpleEditor.Controllers
                         return;
                     default:
                         if (_firstMouseDown == point) break;
-                        // фиксация перемещения фигур
-                        if (!_selection.Transform.Matrix.IsIdentity)
-                        {
-                            OnLayerStartChanging();
-                            if (modifierKeys.HasFlag(Keys.Control))
-                            {
-                                var list = new List<Figure>();
-                                foreach (var fig in Selection.Select(figure => figure.DeepClone()))
-                                {
-                                    list.Add(fig);
-                                    _layer.Figures.Add(fig);
-                                }
-                            }
-                            _selection.PushTransformToSelectedFigures();
-                            OnLayerChanged();
-                        }
+                        FixFiguresTranslation(modifierKeys);
                         break;
                 }
 
@@ -503,6 +488,26 @@ namespace SimpleEditor.Controllers
             }
 
             _isMouseDown = false;
+        }
+
+        private void FixFiguresTranslation(Keys modifierKeys)
+        {
+            // фиксация перемещения фигур
+            if (!_selection.Transform.Matrix.IsIdentity)
+            {
+                OnLayerStartChanging();
+                if (modifierKeys.HasFlag(Keys.Control))
+                {
+                    var list = new List<Figure>();
+                    foreach (var fig in Selection.Select(figure => figure.DeepClone()))
+                    {
+                        list.Add(fig);
+                        _layer.Figures.Add(fig);
+                    }
+                }
+                _selection.PushTransformToSelectedFigures();
+                OnLayerChanged();
+            }
         }
 
         /// <summary>
@@ -1242,6 +1247,23 @@ namespace SimpleEditor.Controllers
             BuildMarkers();
             UpdateMarkerPositions();
             OnSelectedFigureChanged();
+        }
+
+        /// <summary>
+        /// Тонкие движения фигур (срелки плюс нажатый Alt)
+        /// </summary>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
+        /// <param name="modifierKeys"></param>
+        public void MoveByKeys(float offsetX, float offsetY, Keys modifierKeys)
+        {
+            _selection.Translate(offsetX, offsetY);
+            FixFiguresTranslation(modifierKeys);
+            BuildMarkers();
+            UpdateMarkerPositions();
+            var selrect = Rectangle.Ceiling(_selection.GetTransformedPath().Path.GetBounds());
+            var angle = Helper.GetAngle(_selection.Transform);
+            OnSelectedRangeChanging(selrect, angle);
         }
 
     }

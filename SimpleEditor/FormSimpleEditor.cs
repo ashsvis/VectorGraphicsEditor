@@ -224,7 +224,7 @@ namespace SimpleEditor
                  tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
                  tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = tsmDelete.Enabled = tsmiDelete.Enabled =
                     tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
-                    tsmiAssignedToLayer.Enabled = _selectionController.Selection.Count > 0;
+                    tsmiAssignedToLayer.Enabled = tsbDublicate.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
@@ -1359,6 +1359,26 @@ namespace SimpleEditor
         private void tsmSelectAll_Click(object sender, EventArgs e)
         {
             _selectionController.SelectAllFigures();
+        }
+
+        private void tsmiMoveUp_Click(object sender, EventArgs e)
+        {
+            _selectionController.MoveByKeys(0, -1, ModifierKeys);
+        }
+
+        private void tsmiMoveDown_Click(object sender, EventArgs e)
+        {
+            _selectionController.MoveByKeys(0, 1, ModifierKeys);
+        }
+
+        private void tsmiMoveLeft_Click(object sender, EventArgs e)
+        {
+            _selectionController.MoveByKeys(-1, 0, ModifierKeys);
+        }
+
+        private void tsmiMoveRight_Click(object sender, EventArgs e)
+        {
+            _selectionController.MoveByKeys(1, 0, ModifierKeys);
         }
     }
 }
