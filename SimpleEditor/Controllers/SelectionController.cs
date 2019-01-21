@@ -727,7 +727,9 @@ namespace SimpleEditor.Controllers
             for (var i = Markers.Count - 1; i >= 0; i--)
             {
                 var fig = Markers[i];
+                fig.Transform.Matrix.Scale(1 / ScaleFactor, 1 / ScaleFactor);
                 var path = fig.GetTransformedPath();
+                fig.Transform.Matrix.Scale(ScaleFactor, ScaleFactor);
                 if (!path.Path.IsVisible(point)) continue;
                 marker = fig;
                 found = true;

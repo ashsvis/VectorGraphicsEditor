@@ -220,13 +220,13 @@ namespace SimpleEditor
             var exists = _selectionController.Selection.ForAll(f => 
                                  f.Geometry is PrimitiveGeometry && f.Renderer is DefaultRenderer);
             tsddbGeometySwitcher.Enabled = exists;
-            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = tsmDuplicateFigure.Enabled = tsmiDuplicateFigure.Enabled = 
+            tsddbFillBrushSwitcher.Enabled = tsddbEffectSwitcher.Enabled = tsmDuplicateFigure.Enabled = tsmiDuplicateFigure.Enabled =
                  tsbFlipX.Enabled = tsbFlipY.Enabled = tsbRotate90Ccw.Enabled = tsbRotate90Cw.Enabled = tsbRotate180.Enabled =
-                    tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = tsmDelete.Enabled = tsmiDelete.Enabled =
+                 tsbCopy.Enabled = tsmCopy.Enabled = tsbCut.Enabled = tsmCut.Enabled = tsmDelete.Enabled = tsmiDelete.Enabled =
+                    tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
                     tsmiAssignedToLayer.Enabled = _selectionController.Selection.Count > 0;
 
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
-                 tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
             tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();

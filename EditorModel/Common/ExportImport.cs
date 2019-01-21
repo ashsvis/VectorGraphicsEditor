@@ -45,6 +45,8 @@ namespace EditorModel.Common
             {
                 using (var g = Graphics.FromImage(image))
                 {
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     if (layer.FillStyle.IsVisible)
                         g.Clear(Color.FromArgb(layer.FillStyle.Opacity, layer.FillStyle.Color));
                     @group.Renderer.Render(g, @group);
