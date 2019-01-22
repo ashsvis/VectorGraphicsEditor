@@ -54,6 +54,12 @@
     <Compile Include="Common\UndoRedoManager.cs" />
     <Compile Include="Controllers\Marker.cs" />
     <Compile Include="Controllers\UndoRedoController.cs" />
+    <Compile Include="Controls\ArrowStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ArrowStyleEditor.Designer.cs">
+      <DependentUpon>ArrowStyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BezierStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -180,6 +186,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
+    <EmbeddedResource Include="Controls\ArrowStyleEditor.resx">
+      <DependentUpon>ArrowStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BezierStyleEditor.resx">
       <DependentUpon>BezierStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -655,6 +664,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\radial3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrows.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

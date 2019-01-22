@@ -59,6 +59,7 @@
     <Compile Include="Geometry\ITransformedGeometry.cs" />
     <Compile Include="Geometry\PrimitiveBezier.cs" />
     <Compile Include="Geometry\WedgeGeometry.cs" />
+    <Compile Include="Renderers\ArrowRendererDecorator.cs" />
     <Compile Include="Renderers\BezierTextRenderer.cs" />
     <Compile Include="Renderers\GlowRendererDecorator.cs" />
     <Compile Include="Renderers\GroupRenderer.cs" />

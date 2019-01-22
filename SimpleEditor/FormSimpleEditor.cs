@@ -62,6 +62,7 @@ namespace SimpleEditor
                 typeof(ImageStyleEditor),
                 typeof(GroupStyleEditor),
                 typeof(WedgeStyleEditor),
+                typeof(ArrowStyleEditor)
             };
             foreach (var typeName in editors)
             {
@@ -986,6 +987,19 @@ namespace SimpleEditor
                     {
                         if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Warp))
                             figure.Renderer = new WarpRendererDecorator(figure.Renderer);
+                    }
+                    OnLayerChanged();
+                }
+            }
+            else if (sender == tsmiArrows)
+            {
+                if (RendererDecorator.ExistsWithoutThisDecorator(figures, typeof(ArrowRendererDecorator)))
+                {
+                    OnLayerStartChanging("Arrow Line Effect");
+                    foreach (var figure in RendererDecorator.WhereNotContainsDecorator(figures, typeof(ArrowRendererDecorator)))
+                    {
+                        if (figure.Renderer.AllowedDecorators.HasFlag(AllowedRendererDecorators.Arrow))
+                            figure.Renderer = new ArrowRendererDecorator(figure.Renderer);
                     }
                     OnLayerChanged();
                 }
