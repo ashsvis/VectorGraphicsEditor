@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using EditorModel.Figures;
+using EditorModel.Renderers;
+using EditorModel.Style;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -159,6 +162,14 @@ namespace EditorModel.Common
                 points = new List<PointF>(points.Take(points.Length - 3)).ToArray();
                 types = new List<byte>(types.Take(types.Length - 3)).ToArray();
             }
+        }
+
+        public static bool ContainsAnyDecorator(Figure figure)
+        {
+            var result = false;
+            result |= RendererDecorator.ContainsAnyDecorator(figure.Renderer);
+            result |= FillDecorator.ContainsAnyDecorator(figure.Style.FillStyle);
+            return result;
         }
     }
 }

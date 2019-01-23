@@ -108,8 +108,11 @@ namespace EditorModel.Selections
                 {
                     var fig = layer.Figures[i];
                     if (!layer.IsVisible(fig) || layer.IsLocked(fig)) continue;
+                    var closedGeometry = fig.Geometry as IGeometry;
+                    var isClosed = closedGeometry == null || 
+                        closedGeometry != null && closedGeometry.IsClosed;
                     var path = fig.GetTransformedPath();
-                    if (path.Path.IsVisible(point))
+                    if (isClosed && path.Path.IsVisible(point))
                     {
                         figure = fig;
                         found = true;

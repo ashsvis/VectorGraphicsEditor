@@ -87,5 +87,9 @@ namespace EditorModel.Renderers
         {
             get { return AllowedRendererDecorators.All ^ AllowedRendererDecorators.TextBlock; }
         }
+        public override string ToString()
+        {
+            return "TextBlock";
+        }
     }
 }

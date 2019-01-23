@@ -76,5 +76,10 @@ namespace EditorModel.Renderers
             get { return AllowedRendererDecorators.All ^ (AllowedRendererDecorators.Shadow | AllowedRendererDecorators.TextBlock); }
         }
 
+        public override string ToString()
+        {
+            return "Shadow";
+        }
+
     }
 }

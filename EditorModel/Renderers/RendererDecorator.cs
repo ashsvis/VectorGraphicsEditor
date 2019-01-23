@@ -18,6 +18,15 @@ namespace EditorModel.Renderers
             _renderer = renderer;
         }
 
+        public static List<RendererDecorator> GetDecorators(Renderer renderer, List<RendererDecorator> list = null)
+        {
+            if (list == null) list = new List<RendererDecorator>();
+            var rendererDecorator = renderer as RendererDecorator;
+            if (rendererDecorator == null) return list;
+            list.Add(rendererDecorator);
+            return GetDecorators(rendererDecorator._renderer, list);
+        }
+
         /// <summary>
         /// Ищет тип декоратора в цепочке подключенных декораторов
         /// </summary>

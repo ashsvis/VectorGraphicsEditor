@@ -3,11 +3,15 @@ using System.Drawing;
 
 namespace EditorModel.Geometry
 {
-    public interface ITransformedGeometry
+    public interface IGeometry
+    { 
+        bool IsClosed { get; }
+    }
+
+    public interface ITransformedGeometry: IGeometry
     {
         byte[] GetTransformedPointTypes(Figure owner);
         PointF[] GetTransformedPoints(Figure owner);
         void SetTransformedPoints(Figure owner, PointF[] points);
-        bool IsClosed { get; }
     }
 }

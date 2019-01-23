@@ -102,6 +102,10 @@ namespace EditorModel.Style
             set { _fill.IsVisible = value; }
         }
 
+        public override string ToString()
+        {
+            return "LinearGradient";
+        }
     }
 
 }

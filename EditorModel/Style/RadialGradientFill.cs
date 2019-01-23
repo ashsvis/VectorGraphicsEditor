@@ -105,5 +105,9 @@ namespace EditorModel.Style
             get { return _fill.IsVisible; }
             set { _fill.IsVisible = value; }
         }
+        public override string ToString()
+        {
+            return "RadialGradient";
+        }
     }
 }

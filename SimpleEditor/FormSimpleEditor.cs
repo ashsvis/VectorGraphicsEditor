@@ -121,29 +121,79 @@ namespace SimpleEditor
         private void UpdateFiguresTree()
         {
             var first = _selectionController.Selection.FirstOrDefault();
-            tvFigures.BeginUpdate();
             try
             {
                 tvFigures.AfterSelect -= tvFigures_AfterSelect;
-                tvFigures.Nodes.Clear();
-                foreach (var fig in _layer.Figures.ToList().AsEnumerable().Reverse())
+                tvFigures.BeginUpdate();
+                try
+                {
+                    tvFigures.Nodes.Clear();
+                    var noLayers = new TreeNode("(no layers)");
+                    tvFigures.Nodes.Add(noLayers);
+                    AddToTree(noLayers.Nodes, null, first);
+                    foreach (var layer in _layer.Layers.OrderBy(layer => layer.Name)
+                                                       .Where(layer => layer.Figures.Count > 0))
+                    {
+                        var nodeLayer = new TreeNode(layer.Name);
+                        tvFigures.Nodes.Add(nodeLayer);
+                        AddToTree(nodeLayer.Nodes, layer, first);
+                    }
+                }
+                finally
+                {
+                    tvFigures.EndUpdate();
+                }
+            }
+            finally
+            {
+                if (tvFigures.SelectedNode != null)
+                    tvFigures.SelectedNode.EnsureVisible();
+                tvFigures.AfterSelect += tvFigures_AfterSelect;
+            }
+        }
+
+        private void AddToTree(TreeNodeCollection nodes, LayerItem layer, Figure first)
+        {
+            foreach (var fig in _layer.Figures.ToList().AsEnumerable().Reverse())
+            {
+                if (layer == null && !_layer.AssignedToLayer(fig) ||
+                    layer != null && layer.Figures.Contains(fig))
                 {
                     var state = !_layer.IsVisible(fig)
                         ? " (hidden)"
                         : _layer.IsLocked(fig) ? " (locked)" : "";
                     var fignode = new FigureTreeNode(
-                        string.Format("{0}{1}", fig.Geometry, state)) { Figure = fig };
-                    tvFigures.Nodes.Add(fignode);
+                        string.Format("{0}{1}", fig.Geometry, state))
+                    { Figure = fig };
+                    nodes.Add(fignode);
+                    AddDecorators(fig, fignode);
                     if (fig == first)
+                    {
                         tvFigures.SelectedNode = fignode;
+                        fignode.ExpandAll();
+                    }
                     var group = fig as GroupFigure;
                     if (group != null) ExpandGroup(group, fignode, first);
                 }
             }
-            finally
+        }
+
+        private static void AddDecorators(Figure fig, FigureTreeNode fignode)
+        {
+            if (Helper.ContainsAnyDecorator(fig))
             {
-                tvFigures.EndUpdate();
-                tvFigures.AfterSelect += tvFigures_AfterSelect;
+                if (FillDecorator.ContainsAnyDecorator(fig.Style.FillStyle))
+                {
+                    var list = FillDecorator.GetDecorators(fig.Style.FillStyle);
+                    foreach (var item in list)
+                        fignode.Nodes.Add(string.Format("{0}FillStyleDecorator", item));
+                }
+                if (RendererDecorator.ContainsAnyDecorator(fig.Renderer))
+                {
+                    var list = RendererDecorator.GetDecorators(fig.Renderer);
+                    foreach (var item in list)
+                        fignode.Nodes.Add(string.Format("{0}RendererDecorator", item));
+                }
             }
         }
 
@@ -153,6 +203,7 @@ namespace SimpleEditor
             {
                 var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig, Group = group };
                 node.Nodes.Add(fignode);
+                AddDecorators(fig, fignode);
                 if (fig == firstInSelected)
                     tvFigures.SelectedNode = fignode;
                 var childgroup = fig as GroupFigure;
@@ -1027,7 +1078,12 @@ namespace SimpleEditor
             if (!exists) return;
             OnLayerStartChanging("Delete Selected Figures");
             foreach (var figure in _selectionController.Selection)
+            {
                 _layer.Figures.Remove(figure);
+                foreach (var layer in _layer.Layers)
+                    if (layer.Figures.Contains(figure))
+                        layer.Figures.Remove(figure);
+            }
             OnLayerChanged();
             _selectionController.Clear();
             BuildInterface();

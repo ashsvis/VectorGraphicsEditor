@@ -127,5 +127,10 @@ namespace EditorModel.Renderers
         {
             get { return AllowedRendererDecorators.All ^ (AllowedRendererDecorators.Arrow | AllowedRendererDecorators.TextBlock); }
         }
+
+        public override string ToString()
+        {
+            return "Arrow";
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Drawing;
 namespace EditorModel.Geometry
 {
     [Serializable]
-    public sealed class AddLineGeometry : Geometry, IDisposable
+    public sealed class AddLineGeometry : Geometry, IDisposable, IGeometry
     {
         public readonly List<PointF> Points = new List<PointF>();
 

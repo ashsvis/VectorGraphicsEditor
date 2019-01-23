@@ -56,5 +56,11 @@ namespace EditorModel.Renderers
         {
             get { return AllowedRendererDecorators.All ^ (AllowedRendererDecorators.Glow | AllowedRendererDecorators.TextBlock); }
         }
+
+        public override string ToString()
+        {
+            return "Glow";
+        }
+
     }
 }

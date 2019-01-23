@@ -107,5 +107,9 @@ namespace EditorModel.Renderers
             get { return AllowedRendererDecorators.All ^ AllowedRendererDecorators.Warp; }
         }
 
+        public override string ToString()
+        {
+            return "Warp";
+        }
     }
 }

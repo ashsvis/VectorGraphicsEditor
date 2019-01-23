@@ -232,9 +232,9 @@ namespace SimpleEditor.Controllers
                     // если этой фигуры не было в списке
                     if (!_selection.Contains(fig))
                     {
-                        // если не нажата управляющая клавиша Ctrl
+                        // если не нажата управляющая клавиша Shift
                         // в режиме изменения вершим может быть выбрана только одна фигура
-                        if (!modifierKeys.HasFlag(Keys.Control))
+                        if (!modifierKeys.HasFlag(Keys.Shift))
                             _selection.Clear(); // очистим список выбранных
                                                 // то добавим её в список
                         _selection.Add(fig);
@@ -249,10 +249,10 @@ namespace SimpleEditor.Controllers
                             _selection.InsertVertex(fig, point);
                             OnLayerChanged();
                         }
-                        // при нажатой клавише Ctrl удаляем эту фигуру из списка
+                        // при нажатой клавише Shift удаляем эту фигуру из списка выбора
                         // если она не последняя
-                        else 
-                        if (_selection.Count > 1 && modifierKeys.HasFlag(Keys.Control))
+                        else
+                        if (_selection.Count > 1 && modifierKeys.HasFlag(Keys.Shift))
                         {
                             _selection.Remove(fig);
                             OnSelectedFigureChanged();

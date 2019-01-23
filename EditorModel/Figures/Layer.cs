@@ -114,6 +114,16 @@ namespace EditorModel.Figures
             _layers = new List<LayerItem>();
         }
 
+        public bool AssignedToLayer(Figure fig)
+        {
+            foreach (var layer in Layers)
+            {
+                if (layer.Figures.Contains(fig))
+                    return true;
+            }
+            return false;
+        }
+
         public bool IsVisible(Figure fig)
         {
             foreach (var layer in Layers.Where(layer => 

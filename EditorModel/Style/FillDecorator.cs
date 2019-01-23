@@ -18,6 +18,15 @@ namespace EditorModel.Style
             _fill = fill;
         }
 
+        public static List<FillDecorator> GetDecorators(Fill fill, List<FillDecorator> list = null)
+        {
+            if (list == null) list = new List<FillDecorator>();
+            var fillDecorator = fill as FillDecorator;
+            if (fillDecorator == null) return list;
+            list.Add(fillDecorator);
+            return GetDecorators(fillDecorator._fill, list);
+        }
+
         public static bool ContainsType(Fill fill, Type decoratorType)
         {
             var fillDecorator = fill as FillDecorator;

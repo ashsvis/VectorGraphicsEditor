@@ -145,6 +145,7 @@
             this.tsmiGlow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTextBlock = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiWarp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiArrows = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.lbZoom = new System.Windows.Forms.ToolStripLabel();
             this.cbScaleFactor = new System.Windows.Forms.ToolStripComboBox();
@@ -194,7 +195,6 @@
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tvFigures = new System.Windows.Forms.TreeView();
-            this.tsmiArrows = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -1130,7 +1130,7 @@
             this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(0, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1080, 31);
+            this.tsArrange.Size = new System.Drawing.Size(1070, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1361,7 +1361,7 @@
             // tsmiNoneEffects
             // 
             this.tsmiNoneEffects.Name = "tsmiNoneEffects";
-            this.tsmiNoneEffects.Size = new System.Drawing.Size(152, 22);
+            this.tsmiNoneEffects.Size = new System.Drawing.Size(125, 22);
             this.tsmiNoneEffects.Text = "None";
             this.tsmiNoneEffects.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1370,7 +1370,7 @@
             this.tsmiShadow.Image = global::SimpleEditor.Properties.Resources.shadow;
             this.tsmiShadow.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiShadow.Name = "tsmiShadow";
-            this.tsmiShadow.Size = new System.Drawing.Size(152, 22);
+            this.tsmiShadow.Size = new System.Drawing.Size(125, 22);
             this.tsmiShadow.Text = "Shadow";
             this.tsmiShadow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1379,7 +1379,7 @@
             this.tsmiGlow.Image = ((System.Drawing.Image)(resources.GetObject("tsmiGlow.Image")));
             this.tsmiGlow.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiGlow.Name = "tsmiGlow";
-            this.tsmiGlow.Size = new System.Drawing.Size(152, 22);
+            this.tsmiGlow.Size = new System.Drawing.Size(125, 22);
             this.tsmiGlow.Text = "Glow";
             this.tsmiGlow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1388,7 +1388,7 @@
             this.tsmiTextBlock.Image = global::SimpleEditor.Properties.Resources.text;
             this.tsmiTextBlock.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiTextBlock.Name = "tsmiTextBlock";
-            this.tsmiTextBlock.Size = new System.Drawing.Size(152, 22);
+            this.tsmiTextBlock.Size = new System.Drawing.Size(125, 22);
             this.tsmiTextBlock.Text = "TextBlock";
             this.tsmiTextBlock.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1397,9 +1397,18 @@
             this.tsmiWarp.Image = global::SimpleEditor.Properties.Resources.warpedit;
             this.tsmiWarp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiWarp.Name = "tsmiWarp";
-            this.tsmiWarp.Size = new System.Drawing.Size(152, 22);
+            this.tsmiWarp.Size = new System.Drawing.Size(125, 22);
             this.tsmiWarp.Text = "Warp";
             this.tsmiWarp.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
+            // 
+            // tsmiArrows
+            // 
+            this.tsmiArrows.Image = global::SimpleEditor.Properties.Resources.arrows;
+            this.tsmiArrows.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiArrows.Name = "tsmiArrows";
+            this.tsmiArrows.Size = new System.Drawing.Size(125, 22);
+            this.tsmiArrows.Text = "Arrows";
+            this.tsmiArrows.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // toolStripSeparator19
             // 
@@ -1904,15 +1913,6 @@
             this.tvFigures.Size = new System.Drawing.Size(275, 208);
             this.tvFigures.TabIndex = 0;
             this.tvFigures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFigures_AfterSelect);
-            // 
-            // tsmiArrows
-            // 
-            this.tsmiArrows.Image = global::SimpleEditor.Properties.Resources.arrows;
-            this.tsmiArrows.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsmiArrows.Name = "tsmiArrows";
-            this.tsmiArrows.Size = new System.Drawing.Size(152, 22);
-            this.tsmiArrows.Text = "Arrows";
-            this.tsmiArrows.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
             // FormSimpleEditor
             // 
