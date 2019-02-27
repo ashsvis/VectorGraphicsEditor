@@ -197,8 +197,8 @@ namespace EditorModel.Figures
                 var pts = transformed.GetTransformedPoints(figure);
                 for (var i = 0; i < pts.Length; i++)
                 {
-                    pts[i].X = (pts[i].X - bounds.X) / bounds.Width - 0.5f;
-                    pts[i].Y = (pts[i].Y - bounds.Y) / bounds.Height - 0.5f;
+                    pts[i].X = (bounds.Width < eps) ? 0 : (pts[i].X - bounds.X) / bounds.Width - 0.5f;
+                    pts[i].Y = (bounds.Height < eps) ? 0 : (pts[i].Y - bounds.Y) / bounds.Height - 0.5f;
                 }
                 transformed.SetTransformedPoints(figure, pts);
                 var m = new Matrix();

@@ -804,10 +804,12 @@ namespace SimpleEditor.Controllers
             switch (marker.MarkerType)
             {
                 case MarkerType.SizeX:
-                    _selection.Scale(scale, 1, marker.AnchorPosition);
+                    if (_selection.GetTransformedPath().Path.GetBounds().Width > Helper.EPSILON)
+                        _selection.Scale(scale, 1, marker.AnchorPosition);
                     break;
                 case MarkerType.SizeY:
-                    _selection.Scale(1, scale, marker.AnchorPosition);
+                    if (_selection.GetTransformedPath().Path.GetBounds().Height > Helper.EPSILON)
+                        _selection.Scale(1, scale, marker.AnchorPosition);
                     break;
                 case MarkerType.SkewX:
                     var dx = (marker.Position.X - mousePos.X)/(marker.AnchorPosition.Y - marker.Position.Y);
