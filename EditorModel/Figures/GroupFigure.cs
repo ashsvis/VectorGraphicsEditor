@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using EditorModel.Common;
 using EditorModel.Geometry;
 using EditorModel.Renderers;
@@ -98,6 +99,11 @@ namespace EditorModel.Figures
                 if (fig is Placeholder) _placeHolder = fig.DeepClone();
             }
             Transform = new SerializableGraphicsMatrix();
+            // это не работает, увы...
+            foreach (var fig in _figures.OfType<GroupFigure>())
+            {
+                fig.PushTransform(matrix);
+            }
         }
     }
 
