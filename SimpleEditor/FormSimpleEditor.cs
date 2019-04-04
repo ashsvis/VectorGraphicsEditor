@@ -60,7 +60,7 @@ namespace SimpleEditor
                 typeof(TextStyleEditor),
                 typeof(TextBlockStyleEditor),
                 typeof(ImageStyleEditor),
-                typeof(GroupStyleEditor),
+                //typeof(GroupStyleEditor),
                 typeof(WedgeStyleEditor),
                 typeof(ArrowStyleEditor)
             };
@@ -172,8 +172,8 @@ namespace SimpleEditor
                         tvFigures.SelectedNode = fignode;
                         fignode.ExpandAll();
                     }
-                    var group = fig as GroupFigure;
-                    if (group != null) ExpandGroup(group, fignode, first);
+                    //var group = fig as GroupFigure;
+                    //if (group != null) ExpandGroup(group, fignode, first);
                 }
             }
         }
@@ -197,19 +197,19 @@ namespace SimpleEditor
             }
         }
 
-        private void ExpandGroup(GroupFigure group, FigureTreeNode node, Figure firstInSelected)
-        {
-            foreach (var fig in group.Figures.ToList().AsEnumerable().Reverse())
-            {
-                var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig, Group = group };
-                node.Nodes.Add(fignode);
-                AddDecorators(fig, fignode);
-                if (fig == firstInSelected)
-                    tvFigures.SelectedNode = fignode;
-                var childgroup = fig as GroupFigure;
-                if (childgroup != null) ExpandGroup(childgroup, fignode, firstInSelected);
-            }
-        }
+        //private void ExpandGroup(GroupFigure group, FigureTreeNode node, Figure firstInSelected)
+        //{
+        //    foreach (var fig in group.Figures.ToList().AsEnumerable().Reverse())
+        //    {
+        //        var fignode = new FigureTreeNode(fig.Geometry.ToString()) { Figure = fig, Group = group };
+        //        node.Nodes.Add(fignode);
+        //        AddDecorators(fig, fignode);
+        //        if (fig == firstInSelected)
+        //            tvFigures.SelectedNode = fignode;
+        //        var childgroup = fig as GroupFigure;
+        //        if (childgroup != null) ExpandGroup(childgroup, fignode, firstInSelected);
+        //    }
+        //}
 
         private void tvFigures_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -220,16 +220,16 @@ namespace SimpleEditor
                 if (fignode == null) return;
                 if (!_layer.IsVisible(fignode.Figure) ||
                     _layer.IsLocked(fignode.Figure)) return;
-                if (fignode.Group == null)
-                {
+                //if (fignode.Group == null)
+                //{
                     _selectionController.Selection.Add(fignode.Figure);
                     _selectionController.UpdateMarkers();
-                }
-                else
-                {
-                    _selectionController.UpdateMarkers();
-                    _selectionController.Selection.Add(fignode.Figure);
-                }
+                //}
+                //else
+                //{
+                //    _selectionController.UpdateMarkers();
+                //    _selectionController.Selection.Add(fignode.Figure);
+                //}
                 BuildInterface();
             }
         }
@@ -281,7 +281,7 @@ namespace SimpleEditor
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
-            tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
+            //tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
                          _selectionController.Selection.Count(SelectionHelper.IsNotSkewAndRotated) > 1;
@@ -567,15 +567,15 @@ namespace SimpleEditor
                     return fig;
                 };
             }
-            else if (sender == btnLoadGroup)
-            {
-                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePicture);
-                figureCreator = () =>
-                {
-                    var fig = new GroupFigure();
-                    return fig;
-                };
-            }
+            //else if (sender == btnLoadGroup)
+            //{
+            //    figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreatePicture);
+            //    figureCreator = () =>
+            //    {
+            //        var fig = new GroupFigure();
+            //        return fig;
+            //    };
+            //}
             else if (sender is ToolStripMenuItem)
             {
                 var name = (sender as ToolStripMenuItem).Text;
@@ -721,14 +721,14 @@ namespace SimpleEditor
 
         private void tsmiGroup_Click(object sender, EventArgs e)
         {
-            _selectionController.Group();
-            UpdateInterface();
+            //_selectionController.Group();
+            //UpdateInterface();
         }
 
         private void tsmiUngroup_Click(object sender, EventArgs e)
         {
-            _selectionController.Ungroup();
-            UpdateInterface();
+            //_selectionController.Ungroup();
+            //UpdateInterface();
         }
 
         private void pnStyle_StartChanging(object sender, ChangingEventArgs e)
@@ -1142,9 +1142,9 @@ namespace SimpleEditor
                 case 2:
                     ExportImport.ExportToSvg(saveEditorFileDialog.FileName, _layer);
                     break;
-                default:
-                    ExportImport.SaveToImage(saveEditorFileDialog.FileName, _layer);
-                    break;
+                //default:
+                //    ExportImport.SaveToImage(saveEditorFileDialog.FileName, _layer);
+                //    break;
             }
         }
 

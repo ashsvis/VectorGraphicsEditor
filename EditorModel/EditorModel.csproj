@@ -53,7 +53,6 @@
     <Compile Include="Common\SaverLoader.cs" />
     <Compile Include="Common\SerializableGraphicsImage.cs" />
     <Compile Include="Common\VersionInfo.cs" />
-    <Compile Include="Figures\GroupFigure.cs" />
     <Compile Include="Geometry\AddLineGeometry.cs" />
     <Compile Include="Geometry\BezierGeometry.cs" />
     <Compile Include="Geometry\ITransformedGeometry.cs" />
@@ -62,7 +61,6 @@
     <Compile Include="Renderers\ArrowRendererDecorator.cs" />
     <Compile Include="Renderers\BezierTextRenderer.cs" />
     <Compile Include="Renderers\GlowRendererDecorator.cs" />
-    <Compile Include="Renderers\GroupRenderer.cs" />
     <Compile Include="Renderers\ImageRenderer.cs" />
     <Compile Include="Renderers\Renderer.cs" />
     <Compile Include="Renderers\RendererDecorator.cs" />

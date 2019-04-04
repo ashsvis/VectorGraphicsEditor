@@ -9,7 +9,7 @@ namespace SimpleEditor.Common
     {
         public Figure Figure { get; set; }
 
-        public GroupFigure Group { get; set; }
+        //public GroupFigure Group { get; set; }
 
         public FigureTreeNode(string text) : base (text) { }
     }

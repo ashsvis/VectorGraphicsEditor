@@ -117,12 +117,6 @@
     <Compile Include="Controls\GradientStyleEditor.Designer.cs">
       <DependentUpon>GradientStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GroupStyleEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\GroupStyleEditor.Designer.cs">
-      <DependentUpon>GroupStyleEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ShadowStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -215,9 +209,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientStyleEditor.resx">
       <DependentUpon>GradientStyleEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GroupStyleEditor.resx">
-      <DependentUpon>GroupStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ShadowStyleEditor.resx">
       <DependentUpon>ShadowStyleEditor.cs</DependentUpon>

@@ -521,31 +521,31 @@ namespace EditorModel.Selections
             GrabGeometry();
         }
 
-        /// <summary>
-        /// Объединение выбранных фигур в группу
-        /// </summary>
-        /// <returns></returns>
-        public Figure Group()
-        {
-            return new GroupFigure(_selected.ToList());
-        }
+        ///// <summary>
+        ///// Объединение выбранных фигур в группу
+        ///// </summary>
+        ///// <returns></returns>
+        //public Figure Group()
+        //{
+        //    return new GroupFigure(_selected.ToList());
+        //}
 
-        /// <summary>
-        /// Извлечение фигур из группы
-        /// </summary>
-        /// <returns>Список извлеченных фигур</returns>
-        public List<Figure> Ungroup()
-        {
-            var list = new List<Figure>();
-            foreach (var grp in _selected.OfType<GroupFigure>())
-            {
-                foreach (var figure in grp.Figures)
-                {
-                    figure.Transform.Matrix.Multiply(grp.Transform, MatrixOrder.Append);
-                    list.Add(figure);
-                }
-            }
-            return list;
-        }
+        ///// <summary>
+        ///// Извлечение фигур из группы
+        ///// </summary>
+        ///// <returns>Список извлеченных фигур</returns>
+        //public List<Figure> Ungroup()
+        //{
+        //    var list = new List<Figure>();
+        //    foreach (var grp in _selected.OfType<GroupFigure>())
+        //    {
+        //        foreach (var figure in grp.Figures)
+        //        {
+        //            figure.Transform.Matrix.Multiply(grp.Transform, MatrixOrder.Append);
+        //            list.Add(figure);
+        //        }
+        //    }
+        //    return list;
+        //}
     }
 }

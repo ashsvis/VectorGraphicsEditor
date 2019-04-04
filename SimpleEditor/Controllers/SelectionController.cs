@@ -1123,42 +1123,42 @@ namespace SimpleEditor.Controllers
             OnSelectedFigureChanged();
         }
 
-        /// <summary>
-        /// Группировка фигур в одну фигуру
-        /// </summary>
-        public void Group()
-        {
-            if (_selection.Count < 2) return;
-            var group = _selection.Group();
-            LayerStartChanging();
-            foreach (var fig in _selection)
-                _layer.Figures.Remove(fig);
-            _layer.Figures.Add(group);
-            LayerChanged();
-            _selection.Clear();
-            _selection.Add(group);
-            OnSelectedFigureChanged();
-        }
+        ///// <summary>
+        ///// Группировка фигур в одну фигуру
+        ///// </summary>
+        //public void Group()
+        //{
+        //    if (_selection.Count < 2) return;
+        //    var group = _selection.Group();
+        //    LayerStartChanging();
+        //    foreach (var fig in _selection)
+        //        _layer.Figures.Remove(fig);
+        //    _layer.Figures.Add(group);
+        //    LayerChanged();
+        //    _selection.Clear();
+        //    _selection.Add(group);
+        //    OnSelectedFigureChanged();
+        //}
 
-        /// <summary>
-        /// Разгруппировка фигуры на несколько вложенных
-        /// </summary>
-        public void Ungroup()
-        {
-            if (!_selection.OfType<GroupFigure>().Any()) return;
-            LayerStartChanging();
-            foreach (var fig in _selection.OfType<GroupFigure>())
-                _layer.Figures.Remove(fig);
-            var list = _selection.Ungroup();
-            _layer.Figures.AddRange(list);
-            LayerChanged();
-            _selection.Clear();
-            foreach (var fig in list)
-                _selection.Add(fig);
-            BuildMarkers();
-            UpdateMarkerPositions();
-            OnSelectedFigureChanged();
-        }
+        ///// <summary>
+        ///// Разгруппировка фигуры на несколько вложенных
+        ///// </summary>
+        //public void Ungroup()
+        //{
+        //    if (!_selection.OfType<GroupFigure>().Any()) return;
+        //    LayerStartChanging();
+        //    foreach (var fig in _selection.OfType<GroupFigure>())
+        //        _layer.Figures.Remove(fig);
+        //    var list = _selection.Ungroup();
+        //    _layer.Figures.AddRange(list);
+        //    LayerChanged();
+        //    _selection.Clear();
+        //    foreach (var fig in list)
+        //        _selection.Add(fig);
+        //    BuildMarkers();
+        //    UpdateMarkerPositions();
+        //    OnSelectedFigureChanged();
+        //}
 
         public void ConvertToPath()
         {
