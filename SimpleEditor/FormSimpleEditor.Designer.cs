@@ -1026,7 +1026,7 @@
             this.btnTextBlock.Image = global::SimpleEditor.Properties.Resources.text;
             this.btnTextBlock.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnTextBlock.Name = "btnTextBlock";
-            this.btnTextBlock.Size = new System.Drawing.Size(147, 22);
+            this.btnTextBlock.Size = new System.Drawing.Size(146, 22);
             this.btnTextBlock.Text = "Text Block";
             this.btnTextBlock.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1034,7 +1034,7 @@
             // 
             this.btnText.Image = global::SimpleEditor.Properties.Resources.textline;
             this.btnText.Name = "btnText";
-            this.btnText.Size = new System.Drawing.Size(147, 22);
+            this.btnText.Size = new System.Drawing.Size(146, 22);
             this.btnText.Text = "Text";
             this.btnText.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1042,7 +1042,7 @@
             // 
             this.btnTextOnBezier.Image = global::SimpleEditor.Properties.Resources.beziertext;
             this.btnTextOnBezier.Name = "btnTextOnBezier";
-            this.btnTextOnBezier.Size = new System.Drawing.Size(147, 22);
+            this.btnTextOnBezier.Size = new System.Drawing.Size(146, 22);
             this.btnTextOnBezier.Text = "Text on bezier";
             this.btnTextOnBezier.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1065,7 +1065,7 @@
             this.btnInsertImage.Image = global::SimpleEditor.Properties.Resources.picture;
             this.btnInsertImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnInsertImage.Name = "btnInsertImage";
-            this.btnInsertImage.Size = new System.Drawing.Size(158, 22);
+            this.btnInsertImage.Size = new System.Drawing.Size(180, 22);
             this.btnInsertImage.Text = "Image";
             this.btnInsertImage.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1074,8 +1074,9 @@
             this.btnLoadGroup.Image = global::SimpleEditor.Properties.Resources.subpicture;
             this.btnLoadGroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnLoadGroup.Name = "btnLoadGroup";
-            this.btnLoadGroup.Size = new System.Drawing.Size(158, 22);
+            this.btnLoadGroup.Size = new System.Drawing.Size(180, 22);
             this.btnLoadGroup.Text = "Selection Group";
+            this.btnLoadGroup.Visible = false;
             this.btnLoadGroup.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // tsArrange
@@ -1130,7 +1131,7 @@
             this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(0, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1070, 31);
+            this.tsArrange.Size = new System.Drawing.Size(1080, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1161,7 +1162,7 @@
             this.tsmiCyrcle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.tsmiCyrcle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiCyrcle.Name = "tsmiCyrcle";
-            this.tsmiCyrcle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiCyrcle.Size = new System.Drawing.Size(159, 22);
             this.tsmiCyrcle.Text = "Cyrcle";
             this.tsmiCyrcle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
@@ -1170,7 +1171,7 @@
             this.tsmiEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.tsmiEllipse.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiEllipse.Name = "tsmiEllipse";
-            this.tsmiEllipse.Size = new System.Drawing.Size(160, 22);
+            this.tsmiEllipse.Size = new System.Drawing.Size(159, 22);
             this.tsmiEllipse.Text = "Ellipse";
             this.tsmiEllipse.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
@@ -1179,7 +1180,7 @@
             this.tsmiRectangle.Image = global::SimpleEditor.Properties.Resources.rect;
             this.tsmiRectangle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRectangle.Name = "tsmiRectangle";
-            this.tsmiRectangle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRectangle.Size = new System.Drawing.Size(159, 22);
             this.tsmiRectangle.Text = "Rectangle";
             this.tsmiRectangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
@@ -1188,7 +1189,7 @@
             this.tsmiRegularTriangle.Image = global::SimpleEditor.Properties.Resources.triangle;
             this.tsmiRegularTriangle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegularTriangle.Name = "tsmiRegularTriangle";
-            this.tsmiRegularTriangle.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegularTriangle.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegularTriangle.Tag = "3";
             this.tsmiRegularTriangle.Text = "Regular Triangle";
             this.tsmiRegularTriangle.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1198,7 +1199,7 @@
             this.tsmiSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.tsmiSquare.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiSquare.Name = "tsmiSquare";
-            this.tsmiSquare.Size = new System.Drawing.Size(160, 22);
+            this.tsmiSquare.Size = new System.Drawing.Size(159, 22);
             this.tsmiSquare.Text = "Square";
             this.tsmiSquare.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
             // 
@@ -1207,7 +1208,7 @@
             this.tsmiRomb.Image = global::SimpleEditor.Properties.Resources.romb;
             this.tsmiRomb.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRomb.Name = "tsmiRomb";
-            this.tsmiRomb.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRomb.Size = new System.Drawing.Size(159, 22);
             this.tsmiRomb.Tag = "4";
             this.tsmiRomb.Text = "Romb";
             this.tsmiRomb.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1216,7 +1217,7 @@
             // 
             this.tsmiRegular5gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular5gon.Name = "tsmiRegular5gon";
-            this.tsmiRegular5gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular5gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular5gon.Tag = "5";
             this.tsmiRegular5gon.Text = "Regular 5-gon";
             this.tsmiRegular5gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1226,7 +1227,7 @@
             this.tsmiRegular6gon.Image = global::SimpleEditor.Properties.Resources.regular6;
             this.tsmiRegular6gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular6gon.Name = "tsmiRegular6gon";
-            this.tsmiRegular6gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular6gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular6gon.Tag = "6";
             this.tsmiRegular6gon.Text = "Regular 6-gon";
             this.tsmiRegular6gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1236,7 +1237,7 @@
             this.tsmiRegular7gon.Image = global::SimpleEditor.Properties.Resources.regular7;
             this.tsmiRegular7gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular7gon.Name = "tsmiRegular7gon";
-            this.tsmiRegular7gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular7gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular7gon.Tag = "7";
             this.tsmiRegular7gon.Text = "Regular 7-gon";
             this.tsmiRegular7gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1246,7 +1247,7 @@
             this.tsmiRegular8gon.Image = global::SimpleEditor.Properties.Resources.regular8;
             this.tsmiRegular8gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular8gon.Name = "tsmiRegular8gon";
-            this.tsmiRegular8gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular8gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular8gon.Tag = "8";
             this.tsmiRegular8gon.Text = "Regular 8-gon";
             this.tsmiRegular8gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1255,7 +1256,7 @@
             // 
             this.tsmiRegular9gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular9gon.Name = "tsmiRegular9gon";
-            this.tsmiRegular9gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular9gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular9gon.Tag = "9";
             this.tsmiRegular9gon.Text = "Regular 9-gon";
             this.tsmiRegular9gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1265,7 +1266,7 @@
             this.tsmiRegular10gon.Image = global::SimpleEditor.Properties.Resources.regular10;
             this.tsmiRegular10gon.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiRegular10gon.Name = "tsmiRegular10gon";
-            this.tsmiRegular10gon.Size = new System.Drawing.Size(160, 22);
+            this.tsmiRegular10gon.Size = new System.Drawing.Size(159, 22);
             this.tsmiRegular10gon.Tag = "10";
             this.tsmiRegular10gon.Text = "Regular 10-gon";
             this.tsmiRegular10gon.Click += new System.EventHandler(this.tsmiPrimitiveGeometry_Click);
@@ -1361,7 +1362,7 @@
             // tsmiNoneEffects
             // 
             this.tsmiNoneEffects.Name = "tsmiNoneEffects";
-            this.tsmiNoneEffects.Size = new System.Drawing.Size(125, 22);
+            this.tsmiNoneEffects.Size = new System.Drawing.Size(124, 22);
             this.tsmiNoneEffects.Text = "None";
             this.tsmiNoneEffects.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1370,7 +1371,7 @@
             this.tsmiShadow.Image = global::SimpleEditor.Properties.Resources.shadow;
             this.tsmiShadow.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiShadow.Name = "tsmiShadow";
-            this.tsmiShadow.Size = new System.Drawing.Size(125, 22);
+            this.tsmiShadow.Size = new System.Drawing.Size(124, 22);
             this.tsmiShadow.Text = "Shadow";
             this.tsmiShadow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1379,7 +1380,7 @@
             this.tsmiGlow.Image = ((System.Drawing.Image)(resources.GetObject("tsmiGlow.Image")));
             this.tsmiGlow.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiGlow.Name = "tsmiGlow";
-            this.tsmiGlow.Size = new System.Drawing.Size(125, 22);
+            this.tsmiGlow.Size = new System.Drawing.Size(124, 22);
             this.tsmiGlow.Text = "Glow";
             this.tsmiGlow.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1388,7 +1389,7 @@
             this.tsmiTextBlock.Image = global::SimpleEditor.Properties.Resources.text;
             this.tsmiTextBlock.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiTextBlock.Name = "tsmiTextBlock";
-            this.tsmiTextBlock.Size = new System.Drawing.Size(125, 22);
+            this.tsmiTextBlock.Size = new System.Drawing.Size(124, 22);
             this.tsmiTextBlock.Text = "TextBlock";
             this.tsmiTextBlock.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1397,7 +1398,7 @@
             this.tsmiWarp.Image = global::SimpleEditor.Properties.Resources.warpedit;
             this.tsmiWarp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiWarp.Name = "tsmiWarp";
-            this.tsmiWarp.Size = new System.Drawing.Size(125, 22);
+            this.tsmiWarp.Size = new System.Drawing.Size(124, 22);
             this.tsmiWarp.Text = "Warp";
             this.tsmiWarp.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1406,7 +1407,7 @@
             this.tsmiArrows.Image = global::SimpleEditor.Properties.Resources.arrows;
             this.tsmiArrows.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiArrows.Name = "tsmiArrows";
-            this.tsmiArrows.Size = new System.Drawing.Size(125, 22);
+            this.tsmiArrows.Size = new System.Drawing.Size(124, 22);
             this.tsmiArrows.Text = "Arrows";
             this.tsmiArrows.Click += new System.EventHandler(this.tsmiNoneEffects_Click);
             // 
@@ -1548,6 +1549,7 @@
             // tsbGroup
             // 
             this.tsbGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbGroup.Enabled = false;
             this.tsbGroup.Image = global::SimpleEditor.Properties.Resources.grouping;
             this.tsbGroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1559,6 +1561,7 @@
             // tsbUngroup
             // 
             this.tsbUngroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbUngroup.Enabled = false;
             this.tsbUngroup.Image = global::SimpleEditor.Properties.Resources.ungrouping;
             this.tsbUngroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbUngroup.ImageTransparentColor = System.Drawing.Color.Magenta;

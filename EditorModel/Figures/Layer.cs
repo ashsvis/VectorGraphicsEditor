@@ -76,6 +76,17 @@ namespace EditorModel.Figures
     {
         private readonly List<Figure> _figures = new List<Figure>();
         private List<LayerItem> _layers = new List<LayerItem>();
+        private readonly List<Figure> _groups = new List<Figure>();
+
+        public List<Figure> Groups
+        {
+            get { return _groups; }
+            set
+            {
+                _groups.Clear();
+                _groups.AddRange(value);
+            }
+        }
 
         public List<Figure> Figures
         {
@@ -112,6 +123,7 @@ namespace EditorModel.Figures
             FillStyle = new DefaultFill { IsVisible = false };
             _figures = new List<Figure>();
             _layers = new List<LayerItem>();
+            _groups = new List<Figure>();
         }
 
         public bool AssignedToLayer(Figure fig)

@@ -281,7 +281,7 @@ namespace SimpleEditor
             tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
-            //tsbUngroup.Enabled = _selectionController.Selection.OfType<GroupFigure>().Any();
+            tsbUngroup.Enabled = false; // _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
                          _selectionController.Selection.Count(SelectionHelper.IsNotSkewAndRotated) > 1;
@@ -721,14 +721,14 @@ namespace SimpleEditor
 
         private void tsmiGroup_Click(object sender, EventArgs e)
         {
-            //_selectionController.Group();
-            //UpdateInterface();
+            _selectionController.Group();
+            UpdateInterface();
         }
 
         private void tsmiUngroup_Click(object sender, EventArgs e)
         {
-            //_selectionController.Ungroup();
-            //UpdateInterface();
+            _selectionController.Ungroup();
+            UpdateInterface();
         }
 
         private void pnStyle_StartChanging(object sender, ChangingEventArgs e)
