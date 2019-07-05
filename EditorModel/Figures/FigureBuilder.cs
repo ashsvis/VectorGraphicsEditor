@@ -44,6 +44,20 @@ namespace EditorModel.Figures
         }
 
         /// <summary>
+        /// Построение пути для прямоугольника со скругленными углами
+        /// </summary>
+        /// <param name="figure">Фигура для присвоения геометрии</param>
+        public static void BuildRoundedRectangleGeometry(Figure figure)
+        {
+            var path = new SerializableGraphicsPath();
+            var radius = 0.2f;
+            path.Path.AddPath(RoundedRectangle.Create(new RectangleF(-0.5f, -0.5f, 1, 1),
+                                                      radius < 0 ? 0 : radius > 0.5f ? 0.5f : radius), false);
+            figure.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ AllowedOperations.Vertex)
+            { Name = "RoundedRectangle" };
+        }
+
+        /// <summary>
         /// Построение пути для круга
         /// </summary>
         /// <param name="figure">Фигура для присвоения геометрии</param>

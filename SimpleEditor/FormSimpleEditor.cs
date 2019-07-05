@@ -278,10 +278,9 @@ namespace SimpleEditor
                     tsbBringToFront.Enabled = tsbSendToBack.Enabled = tsbUpToFront.Enabled = tsbSendToDown.Enabled =
                     tsmiAssignedToLayer.Enabled = tsbDublicate.Enabled = _selectionController.Selection.Count > 0;
 
-            tsbGroup.Enabled = tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
+            tsbAlignLeft.Enabled = tsbAlignCenter.Enabled = tsbAlignRight.Enabled =
                  tsbAlignTop.Enabled = tsbAlignMiddle.Enabled = tsbAlignBottom.Enabled = _selectionController.Selection.Count > 1;
             tsbEvenHorizontalSpaces.Enabled = tsbEvenVerticalSpaces.Enabled = _selectionController.Selection.Count > 2;
-            tsbUngroup.Enabled = false; // _selectionController.Selection.OfType<GroupFigure>().Any();
 
             tsbSameWidth.Enabled = tsbSameHeight.Enabled = tsbSameBothSizes.Enabled =
                          _selectionController.Selection.Count(SelectionHelper.IsNotSkewAndRotated) > 1;
@@ -454,6 +453,16 @@ namespace SimpleEditor
                 {
                     var fig = new Figure();
                     FigureBuilder.BuildRectangleGeometry(fig);
+                    return fig;
+                };
+            }
+            else if (sender == btnRounded)
+            {
+                figureCreatorCursor = Cursor = CursorFactory.GetCursor(UserCursor.CreateRect);
+                figureCreator = () =>
+                {
+                    var fig = new Figure();
+                    FigureBuilder.BuildRoundedRectangleGeometry(fig);
                     return fig;
                 };
             }
@@ -716,18 +725,6 @@ namespace SimpleEditor
         private void tsmiSendToBack_Click(object sender, EventArgs e)
         {
             _selectionController.SendToBack();
-            UpdateInterface();
-        }
-
-        private void tsmiGroup_Click(object sender, EventArgs e)
-        {
-            _selectionController.Group();
-            UpdateInterface();
-        }
-
-        private void tsmiUngroup_Click(object sender, EventArgs e)
-        {
-            _selectionController.Ungroup();
             UpdateInterface();
         }
 

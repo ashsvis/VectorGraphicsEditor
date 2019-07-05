@@ -50,6 +50,7 @@
     <Compile Include="Common\ITextBlock.cs" />
     <Compile Include="Common\ObjectCloner.cs" />
     <Compile Include="Common\PointFExtension.cs" />
+    <Compile Include="Common\RoundedRectangle.cs" />
     <Compile Include="Common\SaverLoader.cs" />
     <Compile Include="Common\SerializableGraphicsImage.cs" />
     <Compile Include="Common\VersionInfo.cs" />

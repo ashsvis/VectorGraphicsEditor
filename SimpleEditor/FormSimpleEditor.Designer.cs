@@ -161,9 +161,6 @@
             this.tsbSendToDown = new System.Windows.Forms.ToolStripButton();
             this.tsbSendToBack = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbGroup = new System.Windows.Forms.ToolStripButton();
-            this.tsbUngroup = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbFlipX = new System.Windows.Forms.ToolStripButton();
             this.tsbFlipY = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
@@ -195,6 +192,7 @@
             this.pbCanvas = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tvFigures = new System.Windows.Forms.TreeView();
+            this.btnRounded = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCanvasPopup.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.toolStripFile.SuspendLayout();
@@ -837,6 +835,7 @@
             this.tsbRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbRect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnRectangle,
+            this.btnRounded,
             this.btnSquare,
             this.btnEllipse,
             this.btnCircle,
@@ -857,7 +856,7 @@
             this.btnRectangle.Image = global::SimpleEditor.Properties.Resources.rect;
             this.btnRectangle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnRectangle.Name = "btnRectangle";
-            this.btnRectangle.Size = new System.Drawing.Size(126, 22);
+            this.btnRectangle.Size = new System.Drawing.Size(180, 22);
             this.btnRectangle.Text = "Rectangle";
             this.btnRectangle.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -866,7 +865,7 @@
             this.btnSquare.Image = global::SimpleEditor.Properties.Resources.square;
             this.btnSquare.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnSquare.Name = "btnSquare";
-            this.btnSquare.Size = new System.Drawing.Size(126, 22);
+            this.btnSquare.Size = new System.Drawing.Size(180, 22);
             this.btnSquare.Text = "Square";
             this.btnSquare.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -875,7 +874,7 @@
             this.btnEllipse.Image = global::SimpleEditor.Properties.Resources.ellipse;
             this.btnEllipse.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnEllipse.Name = "btnEllipse";
-            this.btnEllipse.Size = new System.Drawing.Size(126, 22);
+            this.btnEllipse.Size = new System.Drawing.Size(180, 22);
             this.btnEllipse.Text = "Ellipse";
             this.btnEllipse.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -884,20 +883,20 @@
             this.btnCircle.Image = global::SimpleEditor.Properties.Resources.circle;
             this.btnCircle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnCircle.Name = "btnCircle";
-            this.btnCircle.Size = new System.Drawing.Size(126, 22);
+            this.btnCircle.Size = new System.Drawing.Size(180, 22);
             this.btnCircle.Text = "Circle";
             this.btnCircle.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // btnArc
             // 
             this.btnArc.Image = global::SimpleEditor.Properties.Resources.arc;
             this.btnArc.Name = "btnArc";
-            this.btnArc.Size = new System.Drawing.Size(126, 22);
+            this.btnArc.Size = new System.Drawing.Size(180, 22);
             this.btnArc.Text = "Arc";
             this.btnArc.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -905,7 +904,7 @@
             // 
             this.btnSegment.Image = global::SimpleEditor.Properties.Resources.chord;
             this.btnSegment.Name = "btnSegment";
-            this.btnSegment.Size = new System.Drawing.Size(126, 22);
+            this.btnSegment.Size = new System.Drawing.Size(180, 22);
             this.btnSegment.Text = "Chord";
             this.btnSegment.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -913,7 +912,7 @@
             // 
             this.btnPie.Image = global::SimpleEditor.Properties.Resources.wedge;
             this.btnPie.Name = "btnPie";
-            this.btnPie.Size = new System.Drawing.Size(126, 22);
+            this.btnPie.Size = new System.Drawing.Size(180, 22);
             this.btnPie.Text = "Pie";
             this.btnPie.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1065,7 +1064,7 @@
             this.btnInsertImage.Image = global::SimpleEditor.Properties.Resources.picture;
             this.btnInsertImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnInsertImage.Name = "btnInsertImage";
-            this.btnInsertImage.Size = new System.Drawing.Size(180, 22);
+            this.btnInsertImage.Size = new System.Drawing.Size(158, 22);
             this.btnInsertImage.Text = "Image";
             this.btnInsertImage.Click += new System.EventHandler(this.btnCreateFigure_Click);
             // 
@@ -1074,7 +1073,7 @@
             this.btnLoadGroup.Image = global::SimpleEditor.Properties.Resources.subpicture;
             this.btnLoadGroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnLoadGroup.Name = "btnLoadGroup";
-            this.btnLoadGroup.Size = new System.Drawing.Size(180, 22);
+            this.btnLoadGroup.Size = new System.Drawing.Size(158, 22);
             this.btnLoadGroup.Text = "Selection Group";
             this.btnLoadGroup.Visible = false;
             this.btnLoadGroup.Click += new System.EventHandler(this.btnCreateFigure_Click);
@@ -1103,9 +1102,6 @@
             this.tsbSendToDown,
             this.tsbSendToBack,
             this.toolStripSeparator10,
-            this.tsbGroup,
-            this.tsbUngroup,
-            this.toolStripSeparator11,
             this.tsbFlipX,
             this.tsbFlipY,
             this.toolStripSeparator15,
@@ -1131,7 +1127,7 @@
             this.tsbConvertToPath});
             this.tsArrange.Location = new System.Drawing.Point(0, 49);
             this.tsArrange.Name = "tsArrange";
-            this.tsArrange.Size = new System.Drawing.Size(1080, 31);
+            this.tsArrange.Size = new System.Drawing.Size(1049, 31);
             this.tsArrange.TabIndex = 2;
             // 
             // tsddbGeometySwitcher
@@ -1546,35 +1542,6 @@
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 31);
             // 
-            // tsbGroup
-            // 
-            this.tsbGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbGroup.Enabled = false;
-            this.tsbGroup.Image = global::SimpleEditor.Properties.Resources.grouping;
-            this.tsbGroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbGroup.Name = "tsbGroup";
-            this.tsbGroup.Size = new System.Drawing.Size(23, 28);
-            this.tsbGroup.Text = "Group";
-            this.tsbGroup.Click += new System.EventHandler(this.tsmiGroup_Click);
-            // 
-            // tsbUngroup
-            // 
-            this.tsbUngroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbUngroup.Enabled = false;
-            this.tsbUngroup.Image = global::SimpleEditor.Properties.Resources.ungrouping;
-            this.tsbUngroup.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbUngroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbUngroup.Name = "tsbUngroup";
-            this.tsbUngroup.Size = new System.Drawing.Size(23, 28);
-            this.tsbUngroup.Text = "Ungroup";
-            this.tsbUngroup.Click += new System.EventHandler(this.tsmiUngroup_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 31);
-            // 
             // tsbFlipX
             // 
             this.tsbFlipX.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1917,6 +1884,14 @@
             this.tvFigures.TabIndex = 0;
             this.tvFigures.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFigures_AfterSelect);
             // 
+            // btnRounded
+            // 
+            this.btnRounded.Image = global::SimpleEditor.Properties.Resources.roundrect;
+            this.btnRounded.Name = "btnRounded";
+            this.btnRounded.Size = new System.Drawing.Size(180, 22);
+            this.btnRounded.Text = "Rounded";
+            this.btnRounded.Click += new System.EventHandler(this.btnCreateFigure_Click);
+            // 
             // FormSimpleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2011,9 +1986,6 @@
         private System.Windows.Forms.ToolStripButton tsbBringToFront;
         private System.Windows.Forms.ToolStripButton tsbSendToBack;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
-        private System.Windows.Forms.ToolStripButton tsbGroup;
-        private System.Windows.Forms.ToolStripButton tsbUngroup;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripButton tsbAlignLeft;
         private System.Windows.Forms.ToolStripButton tsbAlignCenter;
         private System.Windows.Forms.ToolStripButton tsbAlignRight;
@@ -2127,6 +2099,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveLeft;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveRight;
         private System.Windows.Forms.ToolStripMenuItem tsmiArrows;
+        private System.Windows.Forms.ToolStripMenuItem btnRounded;
     }
 }
 
