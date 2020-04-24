@@ -85,8 +85,8 @@ namespace EditorModel.Renderers
                 prevPoint = arrowAtStart ? points[1] : points[points.Length - 2];
             }
             //расчёт точек стрелки
-            var HeadWidth = 10f; // Ширина между ребрами стрелки
-            var HeadHeight = 3f; // Длина ребер стрелки
+            var HeadWidth = 10f; // Длина ребер стрелки
+            var HeadHeight = 3f; // Ширина между ребрами стрелки
 
             var theta = Math.Atan2(prevPoint.Y - endPoint.Y, prevPoint.X - endPoint.X);
             var sint = Math.Sin(theta);
