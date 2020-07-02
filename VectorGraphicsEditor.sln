@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleEditor", "SimpleEdito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorModel", "EditorModel\EditorModel.csproj", "{134D1E65-A6B1-4B0A-B010-19914A733BE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProjectForEditorModel", "UnitTestProjectForEditorModel\UnitTestProjectForEditorModel.csproj", "{CF50AA1F-E76A-4D11-8196-A510426D8504}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{134D1E65-A6B1-4B0A-B010-19914A733BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{134D1E65-A6B1-4B0A-B010-19914A733BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{134D1E65-A6B1-4B0A-B010-19914A733BE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF50AA1F-E76A-4D11-8196-A510426D8504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF50AA1F-E76A-4D11-8196-A510426D8504}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF50AA1F-E76A-4D11-8196-A510426D8504}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF50AA1F-E76A-4D11-8196-A510426D8504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
