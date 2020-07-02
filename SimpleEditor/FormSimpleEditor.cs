@@ -1139,9 +1139,9 @@ namespace SimpleEditor
                 case 2:
                     ExportImport.ExportToSvg(saveEditorFileDialog.FileName, _layer);
                     break;
-                //default:
-                //    ExportImport.SaveToImage(saveEditorFileDialog.FileName, _layer);
-                //    break;
+                default:
+                    ExportImport.SaveToImage(saveEditorFileDialog.FileName, _layer);
+                    break;
             }
         }
 
