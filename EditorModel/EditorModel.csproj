@@ -55,6 +55,7 @@
     <Compile Include="Common\SerializableGraphicsImage.cs" />
     <Compile Include="Common\VersionInfo.cs" />
     <Compile Include="Figures\GroupFigure.cs" />
+    <Compile Include="Figures\Marker.cs" />
     <Compile Include="Geometry\AddLineGeometry.cs" />
     <Compile Include="Geometry\BezierGeometry.cs" />
     <Compile Include="Geometry\ITransformedGeometry.cs" />

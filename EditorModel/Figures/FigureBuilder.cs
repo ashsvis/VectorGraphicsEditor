@@ -90,8 +90,17 @@ namespace EditorModel.Figures
         {
             var path = new SerializableGraphicsPath();
             marker.Style.BorderStyle.Width = 0;
-            // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
-            path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
+            switch (((Marker)marker).MarkerType)
+            {
+                case MarkerType.ControlBezier:
+                    // управляющие маркеры Безье рисуем круглыми
+                    path.Path.AddEllipse(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
+                    break;
+                default:
+                    // здесь задаём размер макера в 5 единиц и смешение от центра маркера в -2 единицы
+                    path.Path.AddRectangle(new RectangleF(-MARKER_SIZE / 2f, -MARKER_SIZE / 2f, MARKER_SIZE, MARKER_SIZE));
+                    break;
+            }
             marker.Geometry = new PrimitiveGeometry(path, AllowedOperations.All ^ 
                 (AllowedOperations.Size | AllowedOperations.Rotate | AllowedOperations.Select | 
                  AllowedOperations.Skew | AllowedOperations.Vertex | AllowedOperations.Pathed | AllowedOperations.Warp))

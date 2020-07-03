@@ -53,7 +53,6 @@
     <Compile Include="Common\MultipleCommand.cs" />
     <Compile Include="Common\UndoableCommand.cs" />
     <Compile Include="Common\UndoRedoManager.cs" />
-    <Compile Include="Controllers\Marker.cs" />
     <Compile Include="Controllers\UndoRedoController.cs" />
     <Compile Include="Controls\ArrowStyleEditor.cs">
       <SubType>UserControl</SubType>
