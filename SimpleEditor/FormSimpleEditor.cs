@@ -24,6 +24,8 @@ namespace SimpleEditor
         readonly string _caption;
         readonly VersionInfo _versionInfo;
 
+        BackgroundType _backgroundMode = BackgroundType.Chess;
+
         Layer _layer;
         SelectionController _selectionController;
         UndoRedoController _undoRedoController;
@@ -1446,6 +1448,20 @@ namespace SimpleEditor
         private void tsmiMoveRight_Click(object sender, EventArgs e)
         {
             _selectionController.MoveByKeys(1, 0, ModifierKeys);
+        }
+
+        /// <summary>
+        /// Переключение типа фона редактора
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsbBackground_Click(object sender, EventArgs e)
+        {            
+            var res = ((int)_backgroundMode + 1) % Enum.GetValues(typeof(BackgroundType)).Length;
+            _backgroundMode = (BackgroundType)res;
+            var colors = new Color[] { Color.Transparent, Color.White, Color.Black, Color.Gray, Color.Transparent };
+            panelForScroll.BackColor = colors[res];
+            panelForScroll.BackgroundImage = _backgroundMode == BackgroundType.Chess ? Properties.Resources.transparent1 : null;
         }
     }
 }
