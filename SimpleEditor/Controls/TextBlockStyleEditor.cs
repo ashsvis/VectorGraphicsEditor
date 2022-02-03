@@ -59,7 +59,7 @@ namespace SimpleEditor.Controls
             cbFontSize.Text = textBlockStyles.GetProperty(f => f.FontSize.ToString("0"));
             _fontStyle = textBlockStyles.GetProperty(f => f.FontStyle);
             lbText.Text = textBlockStyles.GetProperty(f => f.Text);
-            lbText.TextAlign = textBlockStyles.GetProperty(f => f.Alignment);
+            lbText.TextAlign = textBlockStyles.GetProperty(f => f.Alignment, ContentAlignment.MiddleCenter); // public enum ContentAlignment не содержит константу для значения 0
             nudLeft.Value = textBlockStyles.GetProperty(f => f.Padding.Left);
             nudTop.Value = textBlockStyles.GetProperty(f => f.Padding.Top);
             nudRight.Value = textBlockStyles.GetProperty(f => f.Padding.Right);
